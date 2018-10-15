@@ -10,4 +10,5 @@ recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
 
-recursive-include mobile_telemetry_sdk_probe_parser/schemas *.yaml
+recursive-include glean_parser/schemas *.yaml
+recursize-include glean_parser/templates *

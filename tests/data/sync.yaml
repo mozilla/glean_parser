@@ -1,0 +1,75 @@
+$schema: http://mozilla.org/schemas/mobile-telemetry-sdk/probes
+
+telemetry:
+  client_id:
+    type: string
+    user_property: true
+    expiration_attr: …
+    description: >
+      A UUID identifying a profile and allowing user-oriented
+      Correlation of data.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    pings:
+      - default
+      - core
+
+sync_ping:
+  discarded:
+    type: counter
+    expiration_attr: …
+    description: Number of syncs discarded.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    pings:
+      - sync
+
+  why:
+    type: enumeration
+    values:
+      - shutdown
+      - schedule
+      - idchanged
+    expiration_attr: …
+    description: Why did we submit the ping?
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    pings:
+      - sync
+
+
+  uid:
+    type: string
+    user_property: true
+    expiration_attr: …
+    description: >
+      Hashed FxA unique ID, or string of 32 zeros.
+      If this changes between syncs, the payload is submitted.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    pings:
+      - sync
+
+
+  sessionStartDate:
+    type: datetime
+    precision: hourly
+    user_property: true
+    expiration_attr: …
+    description: >
+      Hashed FxA unique ID, or string of 32 zeros.
+      If this changes between syncs, the payload is submitted.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    pings:
+      - sync

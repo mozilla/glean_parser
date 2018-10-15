@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for Mobile Telemetry SDK Probe Parser."""
+"""Top-level package for glean parser."""
 
 __author__ = """Michael Droettboom"""
 __email__ = 'mdroettboom@mozilla.com'
