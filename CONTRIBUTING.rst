@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/mdboom/glean_parser/issues.
+Report bugs at TODO
 
 If you are reporting a bug, please include:
 
@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/mdboom/glean_parser/issues.
+The best way to send feedback is to file an issue at TODO
 
 If you are proposing a feature:
 
@@ -64,7 +64,9 @@ Ready to contribute? Here's how to set up `glean_parser` for local development.
 
     $ git clone git@github.com:your_name_here/glean_parser.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have
+   virtualenvwrapper installed, this is how you set up your fork for local
+   development::
 
     $ mkvirtualenv glean_parser
     $ cd glean_parser/
@@ -102,9 +104,8 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.4, 3.5 and 3.6, and for PyPy. Check
-   https://travis-ci.org/mdboom/glean_parser/pull_requests
-   and make sure that the tests pass for all supported Python versions.
+3. The pull request should work for Python 3.7. Check TODO and make sure that
+   the tests pass for all supported Python versions.
 
 Tips
 ----

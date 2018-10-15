@@ -5,12 +5,6 @@ Glean Parser
 
 
 
-.. image:: https://pyup.io/repos/github/mdboom/glean_parser/shield.svg
-     :target: https://pyup.io/repos/github/mdboom/glean_parser/
-     :alt: Updates
-
-
-
 Parser tools for Mozilla's glean telemetry
 
 
