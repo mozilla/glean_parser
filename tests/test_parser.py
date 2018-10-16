@@ -91,7 +91,9 @@ def test_merge_metrics():
 
     all_metrics = parser._merge_metrics(contents)
 
-    assert set(all_metrics['group1'].keys()) == set(['metric1', 'metric2', 'metric4'])
+    assert set(all_metrics['group1'].keys()) == set(
+        ['metric1', 'metric2', 'metric4']
+    )
     assert set(all_metrics['group2'].keys()) == set(['metric3'])
     assert set(all_metrics['group3'].keys()) == set(['metric5'])
 
