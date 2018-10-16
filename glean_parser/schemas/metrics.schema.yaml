@@ -2,6 +2,7 @@ $schema: http://json-schema.org/draft-06/schema#
 title: Metrics
 description: |
   Schema for the metrics.yaml file for the proposed Mozilla Mobile Telemetry SDK.
+
 $id: http://mozilla.org/schemas/glean/metrics
 
 definitions:
