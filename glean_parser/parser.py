@@ -93,9 +93,16 @@ def parse_metrics(filepaths):
     Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`
     instances.
 
-    The result is a dictionary of group names to groups, where each group is a
-    dictionary from metric name to `metrics.Metric` instances.
+    The result is a generator over any errors.  If there are no errors, the
+    actual metrics can be obtained from `result.value`.  For example::
 
+      result = metrics.parse_metrics(filepaths)
+      for err in result:
+          print(err)
+      all_metrics = result.value
+
+    The result value is a dictionary of group names to groups, where each group
+    is a dictionary from metric name to `metrics.Metric` instances.
     """
     filepaths = util.ensure_list(filepaths)
     all_metrics = yield from _merge_and_instantiate_metrics(filepaths)
