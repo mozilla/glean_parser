@@ -8,6 +8,7 @@
 Classes for each of the high-level metric types.
 """
 
+import dataclasses
 from dataclasses import dataclass, field, InitVar
 from typing import List, Union
 
@@ -44,7 +45,7 @@ class Metric:
         """
         Serialize the metric back to JSON object model.
         """
-        d = dict(self.__dict__)
+        d = dataclasses.asdict(self)
         del d['name']
         del d['group_name']
         return d
