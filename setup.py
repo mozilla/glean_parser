@@ -7,7 +7,18 @@
 
 """The setup script."""
 
+import sys
+
 from setuptools import setup, find_packages
+
+
+if sys.version_info < (3, 7):
+    print(
+        "glean_parser requires at least Python 3.7",
+        file=sys.stderr
+    )
+    sys.exit(1)
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()

@@ -5,7 +5,7 @@ Glean Parser
 
 
 
-Parser tools for Mozilla's glean telemetry
+Parser tools for Mozilla's glean telemetry.
 
 
 
@@ -13,6 +13,20 @@ Features
 --------
 
 * TODO
+
+Requirements
+------------
+
+- Python 3.7 (or later)
+
+The following library requirements are installed automatically when glean_parser
+is installed by `pip`.
+
+- Click
+- PyYAML
+- jsonschema
+- inflection
+- Jinja2
 
 Credits
 -------
