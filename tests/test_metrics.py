@@ -3,6 +3,8 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
+import datetime
+
 import jsonschema
 import pytest
 
@@ -36,4 +38,27 @@ def test_enforcement():
             name='metric',
             bugs=[42],
             description=42,
+        )
+
+
+def test_isodate():
+    """
+    Test that expires_after_build_date is parsed into a datetime.
+    """
+    m = metrics.Boolean(
+        type='boolean',
+        group_name='group',
+        name='metric',
+        bugs=[42],
+        expires_after_build_date='2018-06-10'
+    )
+    assert isinstance(m.expires_after_build_date, datetime.date)
+
+    with pytest.raises(ValueError):
+        m = metrics.Boolean(
+            type='boolean',
+            group_name='group',
+            name='metric',
+            bugs=[42],
+            expires_after_build_date='foo'
         )

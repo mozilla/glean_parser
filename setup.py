@@ -31,7 +31,8 @@ requirements = [
     'PyYAML>=3.13',
     'jsonschema>=2.6.0',
     'inflection>=0.3.1',
-    'Jinja2>=2.10'
+    'Jinja2>=2.10',
+    'isodate>=0.6.0'
 ]
 
 setup_requirements = ['pytest-runner', ]

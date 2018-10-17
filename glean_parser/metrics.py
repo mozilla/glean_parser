@@ -10,8 +10,10 @@ Classes for each of the high-level metric types.
 
 import dataclasses
 from dataclasses import dataclass, field, InitVar
+import datetime
 from typing import List, Union
 
+import isodate
 import jsonschema
 
 from . import parser
@@ -50,17 +52,19 @@ class Metric:
         del d['group_name']
         return d
 
-    def __post_init__(self, _validated):
-        if _validated:
-            return
-
-        schema = parser._get_metrics_schema()
-        data = {
-            self.group_name: {
-                self.name: self.serialize()
+    def __post_init__(self, expires_after_build_date, _validated):
+        if not _validated:
+            schema = parser._get_metrics_schema()
+            data = {
+                self.group_name: {
+                    self.name: self.serialize()
+                }
             }
-        }
-        jsonschema.validate(data, schema)
+            jsonschema.validate(data, schema)
+        if expires_after_build_date is not None:
+            self.expires_after_build_date = isodate.parse_date(
+                expires_after_build_date
+            )
 
     type: str
 
@@ -80,8 +84,7 @@ class Metric:
 
     # Expiry
     disabled: bool = False
-    # TODO: Handle datetimes
-    expires_after_build_date: Union[str, None] = None
+    expires_after_build_date: InitVar[datetime.date] = None
 
     # Labeled metrics
     labeled: bool = False
