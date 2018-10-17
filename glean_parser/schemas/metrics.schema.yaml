@@ -14,6 +14,11 @@ definitions:
     type: string
     pattern: "^[a-z_][a-z0-9_]*$"
 
+  short_id:
+    allOf:
+      - $ref: "#/definitions/snake_case"
+      - maxLength: 20
+
   metric:
     type: object
 
@@ -245,7 +250,7 @@ type: object
 
 propertyNames:
   anyOf:
-    - $ref: "#/definitions/snake_case"
+    - $ref: "#/definitions/short_id"
     - enum: ['$schema']
 
 properties:
@@ -257,6 +262,6 @@ additionalProperties:
   type: object
   propertyNames:
     anyOf:
-      - $ref: "#/definitions/snake_case"
+      - $ref: "#/definitions/short_id"
   additionalProperties:
     $ref: "#/definitions/metric"

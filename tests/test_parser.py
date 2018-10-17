@@ -157,7 +157,7 @@ def test_snake_case_enforcement():
         metrics = parser._load_metrics_file(content)
         errors = list(metrics)
         assert len(errors) == 1
-        assert 'definitions/snake_case' in errors[0]
+        assert 'definitions/short_id' in errors[0]
 
 
 def test_multiple_errors():
