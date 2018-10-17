@@ -84,3 +84,23 @@ def get_jinja2_template(template_name):
     env.filters['Camelize'] = Camelize
 
     return env.get_template(template_name)
+
+
+def keep_value(f):
+    """
+    Wrap a generator so the value it returns (rather than yields), will be
+    accessible on the .value attribute when the generator is exhausted.
+    """
+    class ValueKeepingGenerator(object):
+        def __init__(self, g):
+            self.g = g
+            self.value = None
+
+        def __iter__(self):
+            self.value = yield from self.g
+
+    @functools.wraps(f)
+    def g(*args, **kwargs):
+        return ValueKeepingGenerator(f(*args, **kwargs))
+
+    return g

@@ -31,24 +31,26 @@ def _load_metrics_file(filepath):
     try:
         metrics_content = util.load_yaml_or_json(filepath)
     except Exception as e:
-        raise ValueError(
-            f"In file '{filepath}', {str(e)}"
-        )
+        yield f"{filepath}: {str(e)}"
+        return {}
 
     if metrics_content.get('$schema') != schema.get('$id'):
-        raise ValueError(
-            f"In file '{filepath}', $schema key must be set to "
-            f"'{schema.get('$id')}'"
-        )
+        yield f"{filepath}: $schema key must be set to {schema.get('$id')}'"
 
-    jsonschema.validate(metrics_content, schema)
+    validator_class = jsonschema.validators.validator_for(schema)
+    validator = validator_class(schema)
+    yield from (
+        f"{filepath}: {e}"
+        for e in validator.iter_errors(metrics_content)
+    )
 
     return metrics_content
 
 
-def _merge_metrics(filepaths):
+def _merge_and_instantiate_metrics(filepaths):
     """
-    Load a list of metrics.yaml files and merge them into a single tree.
+    Load a list of metrics.yaml files, convert the JSON information into Metric
+    objects, and merge them into a single tree.
     """
     output_metrics = {}
     # Keep track of where each metric came from to provide a better error
@@ -56,40 +58,36 @@ def _merge_metrics(filepaths):
     sources = {}
 
     for filepath in filepaths:
-        metrics_content = _load_metrics_file(filepath)
+        metrics_content = yield from _load_metrics_file(filepath)
         for group_key, group_val in metrics_content.items():
             if group_key.startswith('$'):
                 continue
             output_metrics.setdefault(group_key, {})
             for metric_key, metric_val in group_val.items():
+                try:
+                    metric_obj = Metric.make_metric(
+                        group_key, metric_key, metric_val, validated=True
+                    )
+                except Exception as e:
+                    yield f"{filepath}: {e}"
+                    metric_obj = None
+
                 already_seen = sources.get((group_key, metric_key))
                 if already_seen is not None:
                     # We've seen this metric name already
-                    raise ValueError(
-                        f"Duplicate metric name '{group_key}.{metric_key}' "
-                        f"in '{filepath}', already defined in '{already_seen}'"
+                    yield (
+                        f"{filepath}: Duplicate metric name "
+                        f"'{group_key}.{metric_key}' already defined in "
+                        f"'{already_seen}'"
                     )
-                output_metrics[group_key][metric_key] = metric_val
-                sources[(group_key, metric_key)] = filepath
+                else:
+                    output_metrics[group_key][metric_key] = metric_obj
+                    sources[(group_key, metric_key)] = filepath
 
     return output_metrics
 
 
-def _instantiate_metrics(all_metrics):
-    """
-    Instantiate each of the metrics info sections of the metrics.yaml file into
-    Metric objects (see metrics.py).
-    """
-    output_metrics = {}
-    for group_key, group_val in all_metrics.items():
-        output_metrics[group_key] = {}
-        for metric_key, metric_val in group_val.items():
-            output_metrics[group_key][metric_key] = Metric.make_metric(
-                group_key, metric_key, metric_val
-            )
-    return output_metrics
-
-
+@util.keep_value
 def parse_metrics(filepaths):
     """
     Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`
@@ -100,5 +98,5 @@ def parse_metrics(filepaths):
 
     """
     filepaths = util.ensure_list(filepaths)
-    all_metrics = _merge_metrics(filepaths)
-    return _instantiate_metrics(all_metrics)
+    all_metrics = yield from _merge_and_instantiate_metrics(filepaths)
+    return all_metrics

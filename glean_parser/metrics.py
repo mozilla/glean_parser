@@ -8,7 +8,7 @@
 Classes for each of the high-level metric types.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 from typing import List, Union
 
 import jsonschema
@@ -27,7 +27,7 @@ class Metric:
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, group_name, name, metric_info):
+    def make_metric(cls, group_name, name, metric_info, validated=False):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
@@ -36,6 +36,7 @@ class Metric:
         return cls.metric_types[metric_type](
             group_name=group_name,
             name=name,
+            _validated=validated,
             **metric_info
         )
 
@@ -48,7 +49,10 @@ class Metric:
         del d['group_name']
         return d
 
-    def __post_init__(self):
+    def __post_init__(self, _validated):
+        if _validated:
+            return
+
         schema = parser._get_metrics_schema()
         data = {
             self.group_name: {
@@ -81,6 +85,9 @@ class Metric:
     # Labeled metrics
     labeled: bool = False
     labels: List[str] = field(default_factory=list)
+
+    # Implementation detail
+    _validated: InitVar[bool] = False
 
 
 @dataclass

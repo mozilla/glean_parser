@@ -6,7 +6,7 @@
 import os
 from pathlib import Path
 
-from glean_parser import parser, kotlin
+from glean_parser import translate
 
 
 ROOT = Path(__file__).parent
@@ -14,8 +14,7 @@ ROOT = Path(__file__).parent
 
 def test_parser(tmpdir):
     """Test translating metrics to Kotlin files."""
-    metrics = parser.parse_metrics(ROOT / "data" / "core.yaml")
-    kotlin.output_kotlin(metrics, tmpdir)
+    translate.translate(ROOT / "data" / "core.yaml", 'kotlin', Path(tmpdir))
 
     assert (
         set(os.listdir(tmpdir)) ==

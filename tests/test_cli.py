@@ -45,6 +45,24 @@ def test_translate(tmpdir):
     )
 
 
+def test_translate_errors(tmpdir):
+    """Test the 'translate' command."""
+    runner = CliRunner()
+    result = runner.invoke(
+        cli.main,
+        [
+            'translate',
+            str(ROOT / 'data' / 'invalid.yaml'),
+            '-o',
+            str(tmpdir),
+            '-f',
+            'kotlin'
+        ]
+    )
+    assert result.exit_code == 1
+    assert len(os.listdir(tmpdir)) == 0
+
+
 def test_translate_invalid_format(tmpdir):
     """Test passing an invalid format to the 'translate' command."""
     runner = CliRunner()

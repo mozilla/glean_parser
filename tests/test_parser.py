@@ -5,10 +5,8 @@
 
 from pathlib import Path
 
-import jsonschema
-import pytest
-
-from glean_parser import parser, metrics
+from glean_parser import metrics
+from glean_parser import parser
 
 
 ROOT = Path(__file__).parent
@@ -22,15 +20,19 @@ def add_schema(chunk):
 def test_parser():
     """Test the basics of parsing a single file."""
     all_metrics = parser.parse_metrics(ROOT / "data" / "core.yaml")
-    for group_key, group_val in all_metrics.items():
+    for err in all_metrics:
+        pass
+    for group_key, group_val in all_metrics.value.items():
         for metric_key, metric_val in group_val.items():
             assert isinstance(metric_val, metrics.Metric)
 
 
 def test_parser_invalid():
     """Test the basics of parsing a single file."""
-    with pytest.raises(ValueError):
-        parser.parse_metrics(ROOT / "data" / "invalid.yaml")
+    all_metrics = parser.parse_metrics(ROOT / "data" / "invalid.yaml")
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert 'could not determine a constructor for the tag' in errors[0]
 
 
 def test_no_schema():
@@ -46,9 +48,10 @@ def test_no_schema():
         },
     ]
 
-    with pytest.raises(ValueError) as e:
-        parser._load_metrics_file(contents[0])
-    assert '$schema key must be set to' in str(e)
+    all_metrics = parser._load_metrics_file(contents[0])
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert '$schema key must be set to' in errors[0]
 
 
 def test_merge_metrics():
@@ -89,7 +92,9 @@ def test_merge_metrics():
     ]
     contents = [add_schema(x) for x in contents]
 
-    all_metrics = parser._merge_metrics(contents)
+    all_metrics = parser.parse_metrics(contents)
+    list(all_metrics)
+    all_metrics = all_metrics.value
 
     assert set(all_metrics['group1'].keys()) == set(
         ['metric1', 'metric2', 'metric4']
@@ -120,9 +125,10 @@ def test_merge_metrics_clash():
     ]
     contents = [add_schema(x) for x in contents]
 
-    with pytest.raises(ValueError) as e:
-        parser._merge_metrics(contents)
-    assert 'Duplicate metric name' in str(e)
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert 'Duplicate metric name' in errors[0]
 
 
 def test_snake_case_enforcement():
@@ -148,6 +154,24 @@ def test_snake_case_enforcement():
 
     for content in contents:
         add_schema(content)
-        with pytest.raises(jsonschema.exceptions.ValidationError) as e:
-            parser._load_metrics_file(content)
-        assert 'definitions/snake_case' in str(e.value)
+        metrics = parser._load_metrics_file(content)
+        errors = list(metrics)
+        assert len(errors) == 1
+        assert 'definitions/snake_case' in errors[0]
+
+
+def test_multiple_errors():
+    """Make sure that if there are multiple errors, we get all of them."""
+    contents = [
+        {
+            'camelCaseName': {
+                'metric': {
+                    'type': 'unknown',
+                },
+            },
+        },
+    ]
+
+    metrics = parser.parse_metrics(contents)
+    errors = list(metrics)
+    assert len(errors) == 5

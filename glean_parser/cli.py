@@ -46,10 +46,12 @@ def translate(input, format, output):
     """
     Translate metrics.yaml files to other formats.
     """
-    mod_translate.translate(
-        [Path(x) for x in input],
-        format,
-        Path(output)
+    sys.exit(
+        mod_translate.translate(
+            [Path(x) for x in input],
+            format,
+            Path(output)
+        )
     )
 
 
