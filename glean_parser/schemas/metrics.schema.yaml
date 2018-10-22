@@ -236,6 +236,8 @@ definitions:
         title: Labels
         description: |
           A list of labels for a labeled metric or use counter.
+          
+          Valid when `labeled` is `true`.
         type: array
         items:
           $ref: "#/definitions/snake_case"
