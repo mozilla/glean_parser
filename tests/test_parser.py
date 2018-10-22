@@ -165,3 +165,22 @@ def test_user_and_application_exclusive():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'may not both be true' in errors[0]
+
+
+def test_required_denominator():
+    """denominator is required on use_counter"""
+    contents = [
+        {
+            'group': {
+                'metric': {
+                    'type': 'use_counter',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert 'denominator is required' in errors[0]

@@ -154,6 +154,14 @@ class UseCounter(Metric):
     typename = 'use_counter'
     denominator: str = ''
 
+    def __post_init__(self, *args):
+        super().__post_init__(*args)
+
+        if not self.denominator:
+            raise ValueError(
+                "denominator is required on all use_counter metrics"
+            )
+
 
 @dataclass
 class Usage(Metric):
