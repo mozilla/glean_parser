@@ -33,7 +33,7 @@ core_ping:
     type: datetime
     time_unit: day
     description: >
-      The date the ping was created, in local time.
+      The date the ping was created.
     bugs:
       - 1137353
     notification_emails:
@@ -57,6 +57,7 @@ core_ping:
     description: >
       The combined duration, in seconds, of all the sessions
       since the last upload.
+    time_unit: second
     bugs:
       - 1137353
     notification_emails:
@@ -167,7 +168,7 @@ environment:
   profile_date:
     type: datetime
     user_property: true
-    description: Profile creation date, ISO date with daily precision.
+    description: Profile creation date.
     time_unit: day
     bugs:
       - 1137353
