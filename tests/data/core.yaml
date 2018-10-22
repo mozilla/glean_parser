@@ -130,7 +130,7 @@ environment:
   os_version:
     type: string
     application_property: true
-    description: The name of the operating system.
+    description: The version of the operating system.
     bugs:
       - 1137353
     notification_emails:
