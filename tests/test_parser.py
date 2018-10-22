@@ -8,13 +8,10 @@ from pathlib import Path
 from glean_parser import metrics
 from glean_parser import parser
 
+import util
+
 
 ROOT = Path(__file__).parent
-
-
-def add_schema(chunk):
-    chunk['$schema'] = parser._get_metrics_schema()['$id']
-    return chunk
 
 
 def test_parser():
@@ -90,7 +87,7 @@ def test_merge_metrics():
             },
         },
     ]
-    contents = [add_schema(x) for x in contents]
+    contents = [util.add_schema(x) for x in contents]
 
     all_metrics = parser.parse_metrics(contents)
     list(all_metrics)
@@ -123,7 +120,7 @@ def test_merge_metrics_clash():
             },
         },
     ]
-    contents = [add_schema(x) for x in contents]
+    contents = [util.add_schema(x) for x in contents]
 
     all_metrics = parser.parse_metrics(contents)
     errors = list(all_metrics)
@@ -153,11 +150,11 @@ def test_snake_case_enforcement():
     ]
 
     for content in contents:
-        add_schema(content)
+        util.add_schema(content)
         metrics = parser._load_metrics_file(content)
         errors = list(metrics)
         assert len(errors) == 1
-        assert 'definitions/short_id' in errors[0]
+        assert 'short_id' in errors[0]
 
 
 def test_multiple_errors():

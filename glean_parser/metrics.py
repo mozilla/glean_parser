@@ -11,7 +11,7 @@ Classes for each of the high-level metric types.
 import dataclasses
 from dataclasses import dataclass, field, InitVar
 import datetime
-from typing import List, Union
+from typing import Dict, List, Union
 
 import isodate
 import jsonschema
@@ -162,3 +162,6 @@ class Rate(Metric):
 @dataclass
 class Event(Metric):
     typename = 'event'
+
+    objects: List[str] = field(default_factory=list)
+    extra_keys: Dict[str, str] = field(default_factory=dict)

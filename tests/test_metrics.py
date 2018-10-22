@@ -11,6 +11,8 @@ import pytest
 from glean_parser import parser
 from glean_parser import metrics
 
+import util
+
 
 def test_metrics_match_schema():
     """

@@ -223,3 +223,16 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+
+  event_example:
+    type: event
+    description: >
+      Just testing events
+    bugs:
+      - 123456789
+    objects:
+      - object1
+      - object2
+    extra_keys:
+      key1: "This is key one"
+      key2: "This is key two"

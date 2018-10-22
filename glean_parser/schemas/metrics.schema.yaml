@@ -17,6 +17,11 @@ definitions:
   short_id:
     allOf:
       - $ref: "#/definitions/snake_case"
+      - maxLength: 30
+
+  very_short_id:
+    allOf:
+      - $ref: "#/definitions/snake_case"
       - maxLength: 20
 
   metric:
@@ -57,7 +62,8 @@ definitions:
               equivalent to a counter, except the analysis and visualization
               will tie it to the duration of the ping to display it as a rate
               over time.
-            - event: TODO
+            - event: Record a specific event (with optional metadata).
+              Additional properties: `objects` and `extra_keys`.
         type: string
         enum:
           - boolean
@@ -230,8 +236,7 @@ definitions:
           A list of labels for a labeled metric or use counter.
         type: array
         items:
-          type: string
-          format: "#/definitions/snake_case"
+          $ref: "#/definitions/snake_case"
 
       denominator:
         title: Denominator
@@ -239,8 +244,35 @@ definitions:
           The name of the denominator value for a use counter.
 
           Valid when `type` is `use_counter`.
-        type: string
-        format: "#/definitions/snake_case"
+        allOf:
+          - $ref: "#/definitions/snake_case"
+
+      objects:
+        title: Objects
+        description: |
+          The valid event objects. This is a list of strings.
+
+          Valid when `type` is `event`.
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/definitions/very_short_id"
+
+      extra_keys:
+        title: Extra keys
+        description: |
+          The acceptable keys on the "extra" object sent with events. This is an
+          object mapping the key to a description.
+
+          Valid when `type` is `event`.
+        type: object
+        propertyNames:
+          $ref: "#/definitions/very_short_id"
+        additionalProperties:
+          type: string
+          maxLength: 80
+        default: {}
+        maxProperties: 10
 
     required:
       - type
@@ -262,6 +294,6 @@ additionalProperties:
   type: object
   propertyNames:
     anyOf:
-      - $ref: "#/definitions/short_id"
+      - $ref: "#/definitions/very_short_id"
   additionalProperties:
     $ref: "#/definitions/metric"
