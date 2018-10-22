@@ -69,7 +69,7 @@ def _merge_and_instantiate_metrics(filepaths):
                         group_key, metric_key, metric_val, validated=True
                     )
                 except Exception as e:
-                    yield f"{filepath}: {e}"
+                    yield f"{filepath}: {group_key}.{metric_key}: {e}"
                     metric_obj = None
 
                 already_seen = sources.get((group_key, metric_key))
