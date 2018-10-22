@@ -61,9 +61,15 @@ class Metric:
                 }
             }
             jsonschema.validate(data, schema)
+
         if expires_after_build_date is not None:
             self.expires_after_build_date = isodate.parse_date(
                 expires_after_build_date
+            )
+
+        if self.user_property and self.application_property:
+            raise ValueError(
+                "user_property and application_property may not both be true."
             )
 
     type: str

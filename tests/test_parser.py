@@ -172,3 +172,25 @@ def test_multiple_errors():
     metrics = parser.parse_metrics(contents)
     errors = list(metrics)
     assert len(errors) == 5
+
+
+def test_user_and_application_exclusive():
+    """user_property and application_property may not both be true"""
+    contents = [
+        {
+            'group': {
+                'metric': {
+                    'type': 'boolean',
+                    'user_property': True,
+                    'application_property': True,
+                    'bugs': [0],
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_schema(content) for content in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert 'may not both be true' in errors[0]
