@@ -37,14 +37,13 @@ def test_no_schema():
     contents = [
         {
             'group1': {
-                'metric1': {
-                    'type': 'string',
-                    'bugs': [0],
-                },
+                'metric1': {}
             },
         },
     ]
 
+    contents = [util.add_required(x) for x in contents]
+    del contents[0]['$schema']
     all_metrics = parser._load_metrics_file(contents[0])
     errors = list(all_metrics)
     assert len(errors) == 1
@@ -56,38 +55,23 @@ def test_merge_metrics():
     contents = [
         {
             'group1': {
-                'metric1': {
-                    'type': 'string',
-                    'bugs': [0],
-                },
-                'metric2': {
-                    'type': 'string',
-                    'bugs': [1],
-                },
+                'metric1': {},
+                'metric2': {},
             },
             'group2': {
-                'metric3': {
-                    'type': 'counter',
-                    'bugs': [2],
-                },
+                'metric3': {},
             },
         },
         {
             'group1': {
-                'metric4': {
-                    'type': 'counter',
-                    'bugs': [3],
-                },
+                'metric4': {},
             },
             'group3': {
-                'metric5': {
-                    'type': 'counter',
-                    'bugs': [4],
-                },
+                'metric5': {},
             },
         },
     ]
-    contents = [util.add_schema(x) for x in contents]
+    contents = [util.add_required(x) for x in contents]
 
     all_metrics = parser.parse_metrics(contents)
     list(all_metrics)
@@ -105,22 +89,16 @@ def test_merge_metrics_clash():
     contents = [
         {
             'group1': {
-                'metric1': {
-                    'type': 'string',
-                    'bugs': [0],
-                },
+                'metric1': {},
             },
         },
         {
             'group1': {
-                'metric1': {
-                    'type': 'counter',
-                    'bugs': [3]
-                },
+                'metric1': {},
             },
         },
     ]
-    contents = [util.add_schema(x) for x in contents]
+    contents = [util.add_required(x) for x in contents]
 
     all_metrics = parser.parse_metrics(contents)
     errors = list(all_metrics)
@@ -133,24 +111,18 @@ def test_snake_case_enforcement():
     contents = [
         {
             'groupWithCamelCase': {
-                'metric': {
-                    'type': 'string',
-                    'bugs': [0],
-                },
+                'metric': {}
             },
         },
         {
             'group': {
-                'metricWithCamelCase': {
-                    'type': 'string',
-                    'bugs': [0],
-                },
+                'metricWithCamelCase': {}
             },
         },
     ]
 
     for content in contents:
-        util.add_schema(content)
+        util.add_required(content)
         metrics = parser._load_metrics_file(content)
         errors = list(metrics)
         assert len(errors) == 1
@@ -169,9 +141,10 @@ def test_multiple_errors():
         },
     ]
 
+    contents = [util.add_required(x) for x in contents]
     metrics = parser.parse_metrics(contents)
     errors = list(metrics)
-    assert len(errors) == 5
+    assert len(errors) == 3
 
 
 def test_user_and_application_exclusive():
@@ -180,16 +153,14 @@ def test_user_and_application_exclusive():
         {
             'group': {
                 'metric': {
-                    'type': 'boolean',
                     'user_property': True,
                     'application_property': True,
-                    'bugs': [0],
                 },
             },
         },
     ]
 
-    contents = [util.add_schema(content) for content in contents]
+    contents = [util.add_required(x) for x in contents]
     all_metrics = parser.parse_metrics(contents)
     errors = list(all_metrics)
     assert len(errors) == 1

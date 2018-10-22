@@ -78,10 +78,10 @@ class Metric:
     group_name: str
     name: str
     bugs: List[Union[int, str]]
-    description: str = ''
+    description: str
+    notification_emails: List[str]
+    reviews: List[str] = field(default_factory=list)
     version: int = 0
-    notification_emails: List[str] = field(default_factory=list)
-    review: List[str] = field(default_factory=list)
 
     # Ping-related properties
     user_property: bool = False

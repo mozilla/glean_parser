@@ -11,8 +11,6 @@ import pytest
 from glean_parser import parser
 from glean_parser import metrics
 
-import util
-
 
 def test_metrics_match_schema():
     """
@@ -32,7 +30,8 @@ def test_enforcement():
     with pytest.raises(TypeError):
         metrics.Boolean()
 
-    # Python dataclasses don't actually validate any types
+    # Python dataclasses don't actually validate any types, so we
+    # delegate to jsonschema
     with pytest.raises(jsonschema.exceptions.ValidationError):
         metrics.Boolean(
             type='boolean',
@@ -40,6 +39,7 @@ def test_enforcement():
             name='metric',
             bugs=[42],
             description=42,
+            notification_emails=['nobody@nowhere.com']
         )
 
 
@@ -52,7 +52,9 @@ def test_isodate():
         group_name='group',
         name='metric',
         bugs=[42],
-        expires_after_build_date='2018-06-10'
+        expires_after_build_date='2018-06-10',
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
     )
     assert isinstance(m.expires_after_build_date, datetime.date)
 
@@ -62,5 +64,7 @@ def test_isodate():
             group_name='group',
             name='metric',
             bugs=[42],
-            expires_after_build_date='foo'
-        )
+            expires_after_build_date='foo',
+            notification_emails=['nobody@nowhere.com'],
+            description='description...',
+       )

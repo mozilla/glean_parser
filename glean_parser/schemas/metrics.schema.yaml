@@ -85,7 +85,6 @@ definitions:
           A textual description of what this metric does, means, its edge cases
           and any other helpful information.
         type: string
-        default: ""
 
       user_property:
         title: User property
@@ -125,6 +124,7 @@ definitions:
           metric or when people with context or ownership for the metric need to
           contacted.
         type: array
+        minItems: 1
         items:
           type: string
           format: email
@@ -145,7 +145,7 @@ definitions:
             - type: string
               format: uri
 
-      review:
+      reviews:
         title: Review references
         description: |
           A list of URLs to any data collection reviews relevant to the metric.
@@ -283,6 +283,8 @@ definitions:
     required:
       - type
       - bugs
+      - description
+      - notification_emails
 
 type: object
 

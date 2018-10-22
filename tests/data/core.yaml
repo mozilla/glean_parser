@@ -230,6 +230,8 @@ environment:
       Just testing events
     bugs:
       - 123456789
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
     objects:
       - object1
       - object2

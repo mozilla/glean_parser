@@ -7,6 +7,20 @@
 from glean_parser import parser
 
 
-def add_schema(chunk):
+def add_required(chunk):
+    DEFAULTS = {
+        'type': 'string',
+        'bugs': [0],
+        'description': 'DESCRIPTION...',
+        'notification_emails': ['nobody@nowhere.com'],
+    }
+
+    for group_key, group_val in chunk.items():
+        for metric in group_val.values():
+            for default_name, default_val in DEFAULTS.items():
+                if default_name not in metric:
+                    metric[default_name] = default_val
+
     chunk['$schema'] = parser._get_metrics_schema()['$id']
+
     return chunk
