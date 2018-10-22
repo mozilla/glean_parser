@@ -11,4 +11,4 @@ recursive-exclude * *.py[co]
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
 
 recursive-include glean_parser/schemas *.yaml
-recursize-include glean_parser/templates *
+recursive-include glean_parser/templates *
