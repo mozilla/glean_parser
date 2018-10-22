@@ -59,7 +59,7 @@ def ensure_list(value):
 
 
 @functools.lru_cache()
-def get_jinja2_template(template_name):
+def get_jinja2_template(template_name, filters=()):
     """
     Get a Jinja2 template that ships with glean_parser.
 
@@ -69,6 +69,9 @@ def get_jinja2_template(template_name):
     ----------
     template_name : str
         Name of a file in `glean_parser/templates`.
+
+    filters : tuple of 2-tuple
+        A tuple of (name, func) pairs defining additional filters.
     """
     env = jinja2.Environment(
         loader=jinja2.PackageLoader('glean_parser', 'templates')
@@ -82,6 +85,8 @@ def get_jinja2_template(template_name):
 
     env.filters['camelize'] = camelize
     env.filters['Camelize'] = Camelize
+    for filter_name, filter_func in filters:
+        env.filters[filter_name] = filter_func
 
     return env.get_template(template_name)
 

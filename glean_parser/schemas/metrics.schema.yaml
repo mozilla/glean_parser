@@ -107,12 +107,14 @@ definitions:
         title: Send in pings
         description: |
           Which pings the metric should be sent on. If not specified, the metric
-          is send on the "default ping", which is the "events" ping for events,
+          is sent on the "default ping", which is the "events" ping for events,
           and the "metrics" ping for everything else. Most metrics don't need to
           specify this.
         type: array
         items:
           $ref: "#/definitions/snake_case"
+        default:
+          - default
 
       notification_emails:
         title: Notification emails
