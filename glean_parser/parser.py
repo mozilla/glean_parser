@@ -59,30 +59,30 @@ def _merge_and_instantiate_metrics(filepaths):
 
     for filepath in filepaths:
         metrics_content = yield from _load_metrics_file(filepath)
-        for group_key, group_val in metrics_content.items():
-            if group_key.startswith('$'):
+        for category_key, category_val in metrics_content.items():
+            if category_key.startswith('$'):
                 continue
-            output_metrics.setdefault(group_key, {})
-            for metric_key, metric_val in group_val.items():
+            output_metrics.setdefault(category_key, {})
+            for metric_key, metric_val in category_val.items():
                 try:
                     metric_obj = Metric.make_metric(
-                        group_key, metric_key, metric_val, validated=True
+                        category_key, metric_key, metric_val, validated=True
                     )
                 except Exception as e:
-                    yield f"{filepath}: {group_key}.{metric_key}: {e}"
+                    yield f"{filepath}: {category_key}.{metric_key}: {e}"
                     metric_obj = None
 
-                already_seen = sources.get((group_key, metric_key))
+                already_seen = sources.get((category_key, metric_key))
                 if already_seen is not None:
                     # We've seen this metric name already
                     yield (
                         f"{filepath}: Duplicate metric name "
-                        f"'{group_key}.{metric_key}' already defined in "
+                        f"'{category_key}.{metric_key}' already defined in "
                         f"'{already_seen}'"
                     )
                 else:
-                    output_metrics[group_key][metric_key] = metric_obj
-                    sources[(group_key, metric_key)] = filepath
+                    output_metrics[category_key][metric_key] = metric_obj
+                    sources[(category_key, metric_key)] = filepath
 
     return output_metrics
 
@@ -101,8 +101,9 @@ def parse_metrics(filepaths):
           print(err)
       all_metrics = result.value
 
-    The result value is a dictionary of group names to groups, where each group
-    is a dictionary from metric name to `metrics.Metric` instances.
+    The result value is a dictionary of category names to categories, where
+    each category is a dictionary from metric name to `metrics.Metric`
+    instances.
     """
     filepaths = util.ensure_list(filepaths)
     all_metrics = yield from _merge_and_instantiate_metrics(filepaths)

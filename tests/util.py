@@ -15,8 +15,8 @@ def add_required(chunk):
         'notification_emails': ['nobody@nowhere.com'],
     }
 
-    for group_key, group_val in chunk.items():
-        for metric in group_val.values():
+    for category_key, category_val in chunk.items():
+        for metric in category_val.values():
             for default_name, default_val in DEFAULTS.items():
                 if default_name not in metric:
                     metric[default_name] = default_val

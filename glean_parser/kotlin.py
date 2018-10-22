@@ -68,7 +68,7 @@ def output_kotlin(metrics, output_dir):
     # The metric parameters to pass to constructors
     extra_args = [
         ('name', None),
-        ('group', None),
+        ('category', None),
         ('send_in_pings', ['default']),
         ('user_property', False),
         ('application_property', False),
@@ -82,19 +82,19 @@ def output_kotlin(metrics, output_dir):
         ('extra_keys', {}),
     ]
 
-    for group_key, group_val in metrics.items():
-        filename = inflection.camelize(group_key, True) + '.kt'
+    for category_key, category_val in metrics.items():
+        filename = inflection.camelize(category_key, True) + '.kt'
         filepath = output_dir / filename
 
         metric_types = sorted(list(set(
-            metric.type for metric in group_val.values()
+            metric.type for metric in category_val.values()
         )))
 
         with open(filepath, 'w', encoding='utf-8') as fd:
             fd.write(
                 template.render(
-                    group_name=group_key,
-                    metrics=group_val,
+                    category_name=category_key,
+                    metrics=category_val,
                     metric_types=metric_types,
                     extra_args=extra_args,
                 )

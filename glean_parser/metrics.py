@@ -30,14 +30,14 @@ class Metric:
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, group_name, name, metric_info, validated=False):
+    def make_metric(cls, category_name, name, metric_info, validated=False):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
         """
         metric_type = metric_info['type']
         return cls.metric_types[metric_type](
-            group_name=group_name,
+            category_name=category_name,
             name=name,
             _validated=validated,
             **metric_info
@@ -49,14 +49,14 @@ class Metric:
         """
         d = dataclasses.asdict(self)
         del d['name']
-        del d['group_name']
+        del d['category_name']
         return d
 
     def __post_init__(self, expires_after_build_date, _validated):
         if not _validated:
             schema = parser._get_metrics_schema()
             data = {
-                self.group_name: {
+                self.category_name: {
                     self.name: self.serialize()
                 }
             }
@@ -75,7 +75,7 @@ class Metric:
     type: str
 
     # Metadata
-    group_name: str
+    category_name: str
     name: str
     bugs: List[Union[int, str]]
     description: str

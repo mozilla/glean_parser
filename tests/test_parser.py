@@ -19,8 +19,8 @@ def test_parser():
     all_metrics = parser.parse_metrics(ROOT / "data" / "core.yaml")
     for err in all_metrics:
         pass
-    for group_key, group_val in all_metrics.value.items():
-        for metric_key, metric_val in group_val.items():
+    for category_key, category_val in all_metrics.value.items():
+        for metric_key, metric_val in category_val.items():
             assert isinstance(metric_val, metrics.Metric)
 
 
@@ -36,7 +36,7 @@ def test_no_schema():
     """Expect error if no $schema specified in the input file."""
     contents = [
         {
-            'group1': {
+            'category1': {
                 'metric1': {}
             },
         },
@@ -54,19 +54,19 @@ def test_merge_metrics():
     """Merge multiple metrics.yaml files"""
     contents = [
         {
-            'group1': {
+            'category1': {
                 'metric1': {},
                 'metric2': {},
             },
-            'group2': {
+            'category2': {
                 'metric3': {},
             },
         },
         {
-            'group1': {
+            'category1': {
                 'metric4': {},
             },
-            'group3': {
+            'category3': {
                 'metric5': {},
             },
         },
@@ -77,23 +77,23 @@ def test_merge_metrics():
     list(all_metrics)
     all_metrics = all_metrics.value
 
-    assert set(all_metrics['group1'].keys()) == set(
+    assert set(all_metrics['category1'].keys()) == set(
         ['metric1', 'metric2', 'metric4']
     )
-    assert set(all_metrics['group2'].keys()) == set(['metric3'])
-    assert set(all_metrics['group3'].keys()) == set(['metric5'])
+    assert set(all_metrics['category2'].keys()) == set(['metric3'])
+    assert set(all_metrics['category3'].keys()) == set(['metric5'])
 
 
 def test_merge_metrics_clash():
     """Merge multiple metrics.yaml files with conflicting metric names."""
     contents = [
         {
-            'group1': {
+            'category1': {
                 'metric1': {},
             },
         },
         {
-            'group1': {
+            'category1': {
                 'metric1': {},
             },
         },
@@ -110,12 +110,12 @@ def test_snake_case_enforcement():
     """Expect exception if names aren't in snake case."""
     contents = [
         {
-            'groupWithCamelCase': {
+            'categoryWithCamelCase': {
                 'metric': {}
             },
         },
         {
-            'group': {
+            'category': {
                 'metricWithCamelCase': {}
             },
         },
@@ -151,7 +151,7 @@ def test_user_and_application_exclusive():
     """user_property and application_property may not both be true"""
     contents = [
         {
-            'group': {
+            'category': {
                 'metric': {
                     'user_property': True,
                     'application_property': True,
@@ -171,7 +171,7 @@ def test_required_denominator():
     """denominator is required on use_counter"""
     contents = [
         {
-            'group': {
+            'category': {
                 'metric': {
                     'type': 'use_counter',
                 },

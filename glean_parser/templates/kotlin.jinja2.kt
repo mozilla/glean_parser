@@ -12,7 +12,7 @@ package GleanMetrics
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor %}
 
-object {{ group_name|Camelize }} {
+object {{ category_name|Camelize }} {
     {% for metric in metrics.values() %}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
