@@ -14,18 +14,13 @@ script:
   - flake8 .
   - tox
 
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
-# TODO
-# deploy:
-#   provider: pypi
-#   distributions: sdist bdist_wheel
-#   user: mdboom
-#   password:
-#     secure: PLEASE_REPLACE_ME
-#   on:
-#     tags: true
-#     repo: mdboom/glean_parser
-#     python: 3.7
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: mdboom2
+  password:
+    secure: UX0nwEz6fhe5PwT4ptrCfLpfWWeqHYHXelQgUZnvpSvYmnaVOGlDsgAYIalezRatqOHUx1UP7zCvQ+IbULn2hMocRKfE7CMvaKHbXYUiSBdAB8H86YcVFXoIshL/nLMypoANsIKljE2bv5FF5E3ru9mOo2UjPp9kC1hgFNuLo9ZWHZzuarsC6CAGtD1BnSyQa7ove0NP3pMe23Fe41OSYXJTSMXNXj9d3PT4WfsMBOYYvEA7WH4Eax5JtZcAMFhSnkCN0wdanVdStRrdyOrgc12AgbbVFvpEIrteahcNOJC7BJDm86JI1kKo+PZ//wf3fi+lZAvrg3wVXlvaJQ8xqwOidGAMdMqFuo+L/3Xyn6whkcFU7tQsXBVsF4GoL8EiKoDRNZ1rJu1AJvhyyq6mBvp142l1xSQrDwzbuqAlSSJH9Z4mDneSLf+AUDFiSDwwW/oYbOwm8pEvZUFZdAKEt2Rdt6LVn5+Ao7KV8F5YSvfHbyr9MfLsuO6zzjUxxm+nw1gdLnE1vN94veahCHb4n+oBwviLmtzYTrA967vgC9PPChGxCgrPhCqbCIwe1Xa+ivYqFu8LsIW19Sg2dqp1P9NyXTCWM3NPSakt6QyMWw9qS7zAt4yGt/rKLM46P7Ad1t+UKR9EqX84KL+z9WzG1gkForTmZYxCo6b9YIlcuDw=
+  on:
+    tags: true
+    repo: mozilla/glean_parser
+    python: 3.7
