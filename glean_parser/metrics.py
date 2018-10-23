@@ -30,14 +30,14 @@ class Metric:
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category_name, name, metric_info, validated=False):
+    def make_metric(cls, category, name, metric_info, validated=False):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
         """
         metric_type = metric_info['type']
         return cls.metric_types[metric_type](
-            category_name=category_name,
+            category=category,
             name=name,
             _validated=validated,
             **metric_info
@@ -49,14 +49,14 @@ class Metric:
         """
         d = dataclasses.asdict(self)
         del d['name']
-        del d['category_name']
+        del d['category']
         return d
 
     def __post_init__(self, expires_after_build_date, _validated):
         if not _validated:
             schema = parser._get_metrics_schema()
             data = {
-                self.category_name: {
+                self.category: {
                     self.name: self.serialize()
                 }
             }
@@ -75,7 +75,7 @@ class Metric:
     type: str
 
     # Metadata
-    category_name: str
+    category: str
     name: str
     bugs: List[Union[int, str]]
     description: str
@@ -179,3 +179,7 @@ class Event(Metric):
 
     objects: List[str] = field(default_factory=list)
     extra_keys: Dict[str, str] = field(default_factory=dict)
+
+    @property
+    def allowed_extra_keys(self):
+        return list(self.extra_keys.keys())

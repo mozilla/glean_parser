@@ -79,7 +79,7 @@ def output_kotlin(metrics, output_dir):
         ('denominator', ''),
         ('time_unit', 'millisecond'),
         ('objects', None),
-        ('extra_keys', {}),
+        ('allowed_extra_keys', []),
     ]
 
     for category_key, category_val in metrics.items():

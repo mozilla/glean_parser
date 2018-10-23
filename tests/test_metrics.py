@@ -35,7 +35,7 @@ def test_enforcement():
     with pytest.raises(jsonschema.exceptions.ValidationError):
         metrics.Boolean(
             type='boolean',
-            category_name='category',
+            category='category',
             name='metric',
             bugs=[42],
             description=42,
@@ -49,7 +49,7 @@ def test_isodate():
     """
     m = metrics.Boolean(
         type='boolean',
-        category_name='category',
+        category='category',
         name='metric',
         bugs=[42],
         expires_after_build_date='2018-06-10',
@@ -61,7 +61,7 @@ def test_isodate():
     with pytest.raises(ValueError):
         m = metrics.Boolean(
             type='boolean',
-            category_name='category',
+            category='category',
             name='metric',
             bugs=[42],
             expires_after_build_date='foo',
