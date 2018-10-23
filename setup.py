@@ -1,9 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 """The setup script."""
 
+import sys
+
 from setuptools import setup, find_packages
+
+
+if sys.version_info < (3, 7):
+    print(
+        "glean_parser requires at least Python 3.7",
+        file=sys.stderr
+    )
+    sys.exit(1)
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -11,7 +26,14 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=6.0', ]
+requirements = [
+    'Click>=6.0',
+    'PyYAML>=3.13',
+    'jsonschema>=3.0.0a3',
+    'inflection>=0.3.1',
+    'Jinja2>=2.10',
+    'isodate>=0.6.0'
+]
 
 setup_requirements = ['pytest-runner', ]
 

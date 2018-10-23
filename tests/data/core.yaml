@@ -1,0 +1,241 @@
+$schema: http://mozilla.org/schemas/glean/metrics
+
+telemetry:
+  client_id:
+    type: string
+    user_property: true
+    description: >
+      A UUID identifying a profile and allowing user-oriented
+      Correlation of data.
+      Some Unicode: جمع 搜集
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+core_ping:
+  seq:
+    type: counter
+    application_property: true
+    description: >
+      Running ping counter for this ping. This works as a sequence
+      number to allow detecting for missing send_in_pings.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  created:
+    type: datetime
+    time_unit: day
+    description: >
+      The date the ping was created.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  sessions:
+    type: counter
+    description: >
+      The number of sessions since the last upload.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  durations:
+    type: timespan
+    description: >
+      The combined duration, in seconds, of all the sessions
+      since the last upload.
+    time_unit: second
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  searches:
+    type: counter
+    labeled: true
+    description: >
+      The search use counts for each search source and engine
+      combination, e.g. “engine.source” = 3.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  flash_usage:
+    type: counter
+    description: >
+      The number of times the flash plugin was used since the last
+      upload.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  default_browser:
+    type: boolean
+    description: >
+      True if the user has set Firefox as the default browser.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+environment:
+  locale:
+    type: string
+    application_property: true
+    description: The application locale, e.g. “en-US”.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  os:
+    type: enumeration
+    application_property: true
+    labels:
+      - linux
+      - android
+      - ios
+    description: The name of the operating system.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  os_version:
+    type: string
+    application_property: true
+    description: The version of the operating system.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  device:
+    type: string
+    application_property: true
+    description: >
+      Build.MANUFACTURER + " - " + Build.MODEL, where manufacturer is
+      truncated to 12 characters & model is truncated to 19
+      characters.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  arch:
+    type: enumeration
+    application_property: true
+    labels:
+      - arm
+      - x86
+    description: The architecture of the device.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+
+  profile_date:
+    type: datetime
+    user_property: true
+    description: Profile creation date.
+    time_unit: day
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  default_search:
+    type: string
+    application_property: true
+    description: >
+      Identifier of the default search engine, e.g. “yahoo”.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  display_version:
+    type: string
+    application_property: true
+    description: >
+      Version displayed to the user, e.g. “57.0b2”.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  distribution_id:
+    type: string
+    application_property: true
+    description: >
+      Distribution identifier, e.g. “lollipop”.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  campaign_id:
+    type: string
+    application_property: true
+    description: >
+      Adjust’s campaign identifier.
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
+
+  event_example:
+    type: event
+    description: >
+      Just testing events
+    bugs:
+      - 123456789
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    objects:
+      - object1
+      - object2
+    extra_keys:
+      key1: "This is key one"
+      key2: "This is key two"
