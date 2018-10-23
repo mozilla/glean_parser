@@ -12,7 +12,8 @@ Parser tools for Mozilla's glean telemetry.
 Features
 --------
 
-* TODO
+Parses the metrics.yaml files for the glean telemetry SDK and produces output
+for various integrations.
 
 Requirements
 ------------
@@ -27,6 +28,20 @@ is installed by `pip`.
 - jsonschema
 - inflection
 - Jinja2
+
+Usage
+-----
+
+
+```sh
+  $ glean_parser --help
+```
+
+Read in `metrics.yaml`, translate to kotlin format, and output to `output_dir`:
+
+```sh
+  $ glean_parser translate -o output_dir -f kotlin metrics.yaml
+```
 
 Credits
 -------
