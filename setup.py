@@ -52,7 +52,7 @@ setup(
     description="Parser tools for Mozilla's glean telemetry",
     entry_points={
         'console_scripts': [
-            'glean_parser=glean_parser.cli:main',
+            'glean_parser=glean_parser.__main__:main',
         ],
     },
     install_requires=requirements,

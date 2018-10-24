@@ -10,7 +10,7 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from glean_parser import cli
+from glean_parser import __main__
 
 
 ROOT = Path(__file__).parent
@@ -19,7 +19,7 @@ ROOT = Path(__file__).parent
 def test_basic_help():
     """Test the CLI."""
     runner = CliRunner()
-    help_result = runner.invoke(cli.main, ['--help'])
+    help_result = runner.invoke(__main__.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
 
@@ -28,7 +28,7 @@ def test_translate(tmpdir):
     """Test the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
-        cli.main,
+        __main__.main,
         [
             'translate',
             str(ROOT / 'data' / 'core.yaml'),
@@ -49,7 +49,7 @@ def test_translate_errors(tmpdir):
     """Test the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
-        cli.main,
+        __main__.main,
         [
             'translate',
             str(ROOT / 'data' / 'invalid.yaml'),
@@ -67,7 +67,7 @@ def test_translate_invalid_format(tmpdir):
     """Test passing an invalid format to the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
-        cli.main,
+        __main__.main,
         [
             'translate',
             str(ROOT / 'data' / 'core.yaml'),
