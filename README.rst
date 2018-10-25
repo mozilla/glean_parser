@@ -2,12 +2,7 @@
 Glean Parser
 ============
 
-
-
-
 Parser tools for Mozilla's glean telemetry.
-
-
 
 Features
 --------
@@ -32,16 +27,15 @@ is installed by `pip`.
 Usage
 -----
 
+.. code-block:: console
 
-```sh
   $ glean_parser --help
-```
 
 Read in `metrics.yaml`, translate to kotlin format, and output to `output_dir`:
 
-```sh
+.. code-block:: console
+
   $ glean_parser translate -o output_dir -f kotlin metrics.yaml
-```
 
 Credits
 -------
