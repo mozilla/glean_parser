@@ -27,13 +27,13 @@ is installed by `pip`.
 Usage
 -----
 
-.. code-block:: text
+.. code-block:: console
 
   $ glean_parser --help
 
 Read in `metrics.yaml`, translate to kotlin format, and output to `output_dir`:
 
-.. code-block:: text
+.. code-block:: console
 
   $ glean_parser translate -o output_dir -f kotlin metrics.yaml
 
