@@ -67,17 +67,17 @@ def output_kotlin(metrics, output_dir):
 
     # The metric parameters to pass to constructors
     extra_args = [
-        ('name', None),
-        ('category', None),
-        ('send_in_pings', ['default']),
-        ('user_property', False),
-        ('application_property', False),
-        ('disabled', False),
-        ('values', []),
-        ('denominator', ''),
-        ('time_unit', 'millisecond'),
-        ('objects', None),
-        ('allowed_extra_keys', []),
+        'name',
+        'category',
+        'send_in_pings',
+        'user_property',
+        'application_property',
+        'disabled',
+        'values',
+        'denominator',
+        'time_unit',
+        'objects',
+        'allowed_extra_keys'
     ]
 
     for category_key, category_val in metrics.items():
