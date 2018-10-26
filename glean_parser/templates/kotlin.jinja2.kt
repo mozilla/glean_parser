@@ -19,7 +19,7 @@ object {{ category_name|Camelize }} {
      */
     val {{ metric.name|camelize }}: {{ metric.type|Camelize }}MetricType by lazy {
         {{ metric.type|Camelize }}MetricType(
-            {% for arg_name, default in extra_args if metric[arg_name] is defined and metric[arg_name] != default -%}
+            {% for arg_name in extra_args if metric[arg_name] is defined -%}
             {{ arg_name|camelize }}={{ metric[arg_name]|kotlin }}{{ "," if not loop.last }}
             {% endfor -%}
         )
