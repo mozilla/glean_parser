@@ -108,14 +108,11 @@ class Boolean(Metric):
 @dataclass
 class String(Metric):
     typename = 'string'
-    max_length: int = 256
 
 
 @dataclass
 class StringList(Metric):
     typename = 'string_list'
-    max_length: int = 256
-    max_entries: int = 256
 
 
 @dataclass

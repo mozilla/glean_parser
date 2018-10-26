@@ -39,9 +39,8 @@ definitions:
 
           The supported types are:
             - boolean: true or false.
-            - string: a Unicode string value. Additional properties: `max_length`.
-            - string_list: a list of Unicode strings. Additional properties:
-              `max_length`, `max_entries`.
+            - string: a Unicode string value.
+            - string_list: a list of Unicode strings.
             - enumeration: a string with a fixes set of values. Additional properties:
               `values`.
             - counter: A numeric value that can only be incremented.
@@ -181,24 +180,6 @@ definitions:
           The version of the metric. A monotonically increasing value. If not
           provided, defaults to 0.
 
-      max_length:
-        title: Maximum string length
-        description: |
-          The maximum length of the string.
-
-          Valid when `type` is `string` or `string_list`.
-        type: integer
-        minimum: 0
-
-      max_entries:
-        title: Maximum number of entries
-        description: |
-          The maximum number of entries in a list.
-
-          Valid when `type` is `string_list`.
-        type: integer
-        minimum: 0
-
       values:
         title: Supported values
         description: |
@@ -238,7 +219,7 @@ definitions:
         title: Labels
         description: |
           A list of labels for a labeled metric or use counter.
-          
+
           Valid when `labeled` is `true`.
         type: array
         items:
