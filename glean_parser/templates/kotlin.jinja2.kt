@@ -11,18 +11,17 @@ package GleanMetrics
 {% for metric_type in metric_types -%}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor %}
-
 object {{ category_name|Camelize }} {
-    {% for metric in metrics.values() %}
+{%- for metric in metrics.values() %}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
      */
     val {{ metric.name|camelize }}: {{ metric.type|Camelize }}MetricType by lazy {
         {{ metric.type|Camelize }}MetricType(
             {% for arg_name in extra_args if metric[arg_name] is defined -%}
-            {{ arg_name|camelize }}={{ metric[arg_name]|kotlin }}{{ "," if not loop.last }}
+            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }}{{ "," if not loop.last }}
             {% endfor -%}
         )
-    };
-    {% endfor %}
+    }
+{% endfor -%}
 }

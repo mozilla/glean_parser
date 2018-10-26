@@ -7,10 +7,14 @@ matrix:
       dist: xenial
       sudo: true
 
-install: pip install -U tox-travis flake8
+install:
+    - pip install -U tox-travis flake8
+    - curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint &&
+        chmod a+x ktlint
 
 # Command to run tests, e.g. python setup.py test
 script:
+  - export PATH=.:$PATH
   - flake8 .
   - tox
 
