@@ -6,6 +6,7 @@
 import os
 from pathlib import Path
 
+from glean_parser import kotlin
 from glean_parser import translate
 
 
@@ -30,3 +31,12 @@ def test_parser(tmpdir):
     with open(tmpdir / 'Telemetry.kt', 'r', encoding='utf-8') as fd:
         content = fd.read()
         assert 'جمع 搜集' in content
+
+
+def test_kotlin_generator():
+    kdf = kotlin.kotlin_datatypes_filter
+
+    assert kdf("\n") == r'"\n"'
+    assert kdf([42, "\n"]) == r'listOf(42, "\n")'
+    assert kdf({'key': 'value', 'key2': 'value2'}) == \
+        r'mapOf("key" to "value", "key2" to "value2")'
