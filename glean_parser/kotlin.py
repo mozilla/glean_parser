@@ -73,8 +73,6 @@ def output_kotlin(metrics, output_dir):
         ('user_property', False),
         ('application_property', False),
         ('disabled', False),
-        ('max_length', 256),
-        ('max_entries', 256),
         ('values', []),
         ('denominator', ''),
         ('time_unit', 'millisecond'),
