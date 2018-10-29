@@ -97,3 +97,5 @@ def output_kotlin(metrics, output_dir):
                     extra_args=extra_args,
                 )
             )
+            # Jinja2 squashes the final newline, so we explicitly add it
+            fd.write('\n')

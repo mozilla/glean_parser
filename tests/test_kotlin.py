@@ -3,8 +3,9 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-import os
 from pathlib import Path
+import shutil
+import subprocess
 
 from glean_parser import kotlin
 from glean_parser import translate
@@ -15,10 +16,12 @@ ROOT = Path(__file__).parent
 
 def test_parser(tmpdir):
     """Test translating metrics to Kotlin files."""
-    translate.translate(ROOT / "data" / "core.yaml", 'kotlin', Path(tmpdir))
+    tmpdir = Path(tmpdir)
+
+    translate.translate(ROOT / "data" / "core.yaml", 'kotlin', tmpdir)
 
     assert (
-        set(os.listdir(tmpdir)) ==
+        set(x.name for x in tmpdir.iterdir()) ==
         set(['CorePing.kt', 'Telemetry.kt', 'Environment.kt'])
     )
 
@@ -31,6 +34,11 @@ def test_parser(tmpdir):
     with open(tmpdir / 'Telemetry.kt', 'r', encoding='utf-8') as fd:
         content = fd.read()
         assert 'جمع 搜集' in content
+
+    # Only run this test if ktlint is on the path
+    if shutil.which('ktlint'):
+        for filepath in tmpdir.glob('*.kt'):
+            subprocess.check_call(['ktlint', filepath])
 
 
 def test_kotlin_generator():
