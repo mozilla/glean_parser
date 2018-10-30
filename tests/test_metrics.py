@@ -5,7 +5,6 @@
 
 import datetime
 
-import jsonschema
 import pytest
 
 from glean_parser import parser
@@ -32,7 +31,7 @@ def test_enforcement():
 
     # Python dataclasses don't actually validate any types, so we
     # delegate to jsonschema
-    with pytest.raises(jsonschema.exceptions.ValidationError):
+    with pytest.raises(ValueError):
         metrics.Boolean(
             type='boolean',
             category='category',

@@ -32,24 +32,6 @@ def test_parser_invalid():
     assert 'could not determine a constructor for the tag' in errors[0]
 
 
-def test_no_schema():
-    """Expect error if no $schema specified in the input file."""
-    contents = [
-        {
-            'category1': {
-                'metric1': {}
-            },
-        },
-    ]
-
-    contents = [util.add_required(x) for x in contents]
-    del contents[0]['$schema']
-    all_metrics = parser._load_metrics_file(contents[0])
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert '$schema key must be set to' in errors[0]
-
-
 def test_merge_metrics():
     """Merge multiple metrics.yaml files"""
     contents = [

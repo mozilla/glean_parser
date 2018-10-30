@@ -3,7 +3,7 @@ title: Metrics
 description: |
   Schema for the metrics.yaml files for Mozilla's glean telemetry SDK.
 
-$id: http://mozilla.org/schemas/glean/metrics
+$id: moz://mozilla.org/schemas/glean/metrics/1-0-0
 
 definitions:
   token:

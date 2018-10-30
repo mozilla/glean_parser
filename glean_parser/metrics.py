@@ -14,7 +14,6 @@ import datetime
 from typing import Dict, List, Union
 
 import isodate
-import jsonschema
 
 from . import parser
 
@@ -54,13 +53,13 @@ class Metric:
 
     def __post_init__(self, expires_after_build_date, _validated):
         if not _validated:
-            schema = parser._get_metrics_schema()
             data = {
                 self.category: {
                     self.name: self.serialize()
                 }
             }
-            jsonschema.validate(data, schema)
+            for error in parser.validate(data):
+                raise ValueError(error)
 
         if expires_after_build_date is not None:
             self.expires_after_build_date = isodate.parse_date(
