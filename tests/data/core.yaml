@@ -2,7 +2,7 @@ $schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
 
 telemetry:
   client_id:
-    type: string
+    type: uuid
     user_property: true
     description: >
       A UUID identifying a profile and allowing user-oriented

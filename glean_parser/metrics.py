@@ -179,3 +179,8 @@ class Event(Metric):
     @property
     def allowed_extra_keys(self):
         return list(self.extra_keys.keys())
+
+
+@dataclass
+class Uuid(Metric):
+    typename = 'uuid'
