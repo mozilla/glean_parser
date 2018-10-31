@@ -8,6 +8,7 @@
 Outputter to generate Kotlin code for metrics.
 """
 
+import enum
 import io
 import json
 
@@ -45,6 +46,8 @@ def kotlin_datatypes_filter(value):
                     yield from self.iterencode(subvalue)
                     first = False
                 yield ')'
+            elif isinstance(value, enum.Enum):
+                yield f'GLEAN_{value.__class__.__name__}_{value.name}'.upper()
             else:
                 yield from super().iterencode(value)
 
@@ -70,8 +73,7 @@ def output_kotlin(metrics, output_dir):
         'name',
         'category',
         'send_in_pings',
-        'user_property',
-        'application_property',
+        'lifetime',
         'disabled',
         'values',
         'denominator',

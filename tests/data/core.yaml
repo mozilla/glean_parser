@@ -3,7 +3,7 @@ $schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
 telemetry:
   client_id:
     type: uuid
-    user_property: true
+    lifetime: user
     description: >
       A UUID identifying a profile and allowing user-oriented
       Correlation of data.
@@ -18,7 +18,7 @@ telemetry:
 core_ping:
   seq:
     type: counter
-    application_property: true
+    lifetime: application
     description: >
       Running ping counter for this ping. This works as a sequence
       number to allow detecting for missing send_in_pings.
@@ -104,7 +104,7 @@ core_ping:
 environment:
   locale:
     type: string
-    application_property: true
+    lifetime: application
     description: The application locale, e.g. “en-US”.
     bugs:
       - 1137353
@@ -115,7 +115,7 @@ environment:
 
   os:
     type: enumeration
-    application_property: true
+    lifetime: application
     labels:
       - linux
       - android
@@ -130,7 +130,7 @@ environment:
 
   os_version:
     type: string
-    application_property: true
+    lifetime: application
     description: The version of the operating system.
     bugs:
       - 1137353
@@ -141,7 +141,7 @@ environment:
 
   device:
     type: string
-    application_property: true
+    lifetime: application
     description: >
       Build.MANUFACTURER + " - " + Build.MODEL, where manufacturer is
       truncated to 12 characters & model is truncated to 19
@@ -155,7 +155,7 @@ environment:
 
   arch:
     type: enumeration
-    application_property: true
+    lifetime: application
     labels:
       - arm
       - x86
@@ -167,7 +167,7 @@ environment:
 
   profile_date:
     type: datetime
-    user_property: true
+    lifetime: user
     description: Profile creation date.
     time_unit: day
     bugs:
@@ -179,7 +179,7 @@ environment:
 
   default_search:
     type: string
-    application_property: true
+    lifetime: application
     description: >
       Identifier of the default search engine, e.g. “yahoo”.
     bugs:
@@ -191,7 +191,7 @@ environment:
 
   display_version:
     type: string
-    application_property: true
+    lifetime: application
     description: >
       Version displayed to the user, e.g. “57.0b2”.
     bugs:
@@ -203,7 +203,7 @@ environment:
 
   distribution_id:
     type: string
-    application_property: true
+    lifetime: application
     description: >
       Distribution identifier, e.g. “lollipop”.
     bugs:
@@ -215,7 +215,7 @@ environment:
 
   campaign_id:
     type: string
-    application_property: true
+    lifetime: application
     description: >
       Adjust’s campaign identifier.
     bugs:
