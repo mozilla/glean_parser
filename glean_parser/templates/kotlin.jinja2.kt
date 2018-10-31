@@ -8,6 +8,7 @@
 
 package GleanMetrics
 
+import mozilla.components.service.glean.Lifetime
 {% for metric_type in metric_types -%}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor %}

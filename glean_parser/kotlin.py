@@ -47,7 +47,10 @@ def kotlin_datatypes_filter(value):
                     first = False
                 yield ')'
             elif isinstance(value, enum.Enum):
-                yield f'GLEAN_{value.__class__.__name__}_{value.name}'.upper()
+                yield (
+                    f'{value.__class__.__name__}.'
+                    f'{inflection.Camelize(value.name)}'
+                )
             else:
                 yield from super().iterencode(value)
 

@@ -49,4 +49,4 @@ def test_kotlin_generator():
     assert kdf([42, "\n"]) == r'listOf(42, "\n")'
     assert kdf({'key': 'value', 'key2': 'value2'}) == \
         r'mapOf("key" to "value", "key2" to "value2")'
-    assert kdf(metrics.Lifetime.ping) == 'GLEAN_LIFETIME_PING'
+    assert kdf(metrics.Lifetime.ping) == 'Lifetime.Ping'
