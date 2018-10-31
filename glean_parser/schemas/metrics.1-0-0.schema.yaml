@@ -63,6 +63,7 @@ definitions:
               over time.
             - event: Record a specific event (with optional metadata).
               Additional properties: `objects` and `extra_keys`.
+            - uuid: Record a UUID v4.
         type: string
         enum:
           - boolean
@@ -77,6 +78,7 @@ definitions:
           - usage
           - rate
           - event
+          - uuid
 
       description:
         title: Description
