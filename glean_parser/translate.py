@@ -9,7 +9,9 @@ High-level interface for translating `metrics.yaml` into other formats.
 """
 
 import os
+from pathlib import Path
 import sys
+from typing import List
 
 from . import parser
 from . import kotlin
@@ -20,7 +22,11 @@ OUTPUTTERS = {
 }
 
 
-def translate(input_filepaths, output_format, output_dir):
+def translate(
+        input_filepaths: List[Path],
+        output_format: str,
+        output_dir: Path
+) -> int:
     """
     Translate the files in `input_filepaths` to the given `output_format` and
     put the results in `output_dir`.

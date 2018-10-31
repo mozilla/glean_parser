@@ -6,6 +6,7 @@ Code for parsing metrics.yaml files.
 
 import functools
 from pathlib import Path
+from typing import Any, Dict, Generator, List, Tuple, Union
 
 import jsonschema
 
@@ -22,7 +23,10 @@ def _get_metrics_schema():
     return util.load_yaml_or_json(SCHEMAS_DIR / 'metrics.1-0-0.schema.yaml')
 
 
-def validate(content, filepath='<input>'):
+def validate(
+        content: dict,
+        filepath: Union[Path, str] = '<input>'
+) -> Generator[str, None, None]:
     """
     Validate the given content against the metrics.schema.yaml schema.
     """
@@ -48,7 +52,7 @@ def validate(content, filepath='<input>'):
     )
 
 
-def _load_metrics_file(filepath):
+def _load_metrics_file(filepath: Path) -> Generator[str, None, dict]:
     """
     Load a metrics.yaml format file.
     """
@@ -63,15 +67,17 @@ def _load_metrics_file(filepath):
     return metrics_content
 
 
-def _merge_and_instantiate_metrics(filepaths):
+def _merge_and_instantiate_metrics(
+        filepaths: List[Path]
+) -> Generator[str, None, dict]:
     """
     Load a list of metrics.yaml files, convert the JSON information into Metric
     objects, and merge them into a single tree.
     """
-    output_metrics = {}
+    output_metrics: Dict[str, Any] = {}
     # Keep track of where each metric came from to provide a better error
     # message
-    sources = {}
+    sources: Dict[Tuple[str, str], Path] = {}
 
     for filepath in filepaths:
         metrics_content = yield from _load_metrics_file(filepath)
@@ -104,7 +110,7 @@ def _merge_and_instantiate_metrics(filepaths):
 
 
 @util.keep_value
-def parse_metrics(filepaths):
+def parse_metrics(filepaths: List[Path]) -> Generator[str, None, dict]:
     """
     Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`
     instances.

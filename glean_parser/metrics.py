@@ -12,7 +12,7 @@ import dataclasses
 from dataclasses import dataclass, field, InitVar
 import datetime
 import enum
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Type, Union
 
 import isodate
 
@@ -27,22 +27,26 @@ class Lifetime(enum.Enum):
 
 @dataclass
 class Metric:
-    metric_types = {}
-
     def __init_subclass__(cls, **kwargs):
         # Create a mapping of all of the subclasses of this class
-        if cls not in Metric.metric_types and hasattr(cls, 'typename'):
-            Metric.metric_types[cls.typename] = cls
+        if cls not in _metric_types and hasattr(cls, 'typename'):
+            _metric_types[cls.typename] = cls
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category, name, metric_info, validated=False):
+    def make_metric(
+            cls,
+            category: str,
+            name: str,
+            metric_info: Dict[str, Any],
+            validated: bool = False
+    ):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
         """
         metric_type = metric_info['type']
-        return cls.metric_types[metric_type](
+        return _metric_types[metric_type](
             category=category,
             name=name,
             _validated=validated,
@@ -62,7 +66,10 @@ class Metric:
         del d['category']
         return d
 
-    def __post_init__(self, expires_after_build_date, _validated):
+    def __post_init__(
+            self,
+            _validated: bool
+    ):
         # Convert enum fields to Python enums
         for f in dataclasses.fields(self):
             if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
@@ -72,9 +79,11 @@ class Metric:
                     getattr(f.type, getattr(self, f.name))
                 )
 
-        if expires_after_build_date is not None:
-            self.expires_after_build_date = isodate.parse_date(
-                expires_after_build_date
+        if self.expires_after_build_date is not None:
+            setattr(
+                self,
+                'expires_after_build_date',
+                isodate.parse_date(self.expires_after_build_date)
             )
 
         if not _validated:
@@ -98,12 +107,12 @@ class Metric:
     version: int = 0
 
     # Ping-related properties
-    lifetime: Lifetime = 'ping'
+    lifetime: Lifetime = Lifetime.ping
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
 
     # Expiry
     disabled: bool = False
-    expires_after_build_date: InitVar[datetime.date] = None
+    expires_after_build_date: Union[datetime.date, None] = None
 
     # Labeled metrics
     labeled: bool = False
@@ -111,6 +120,9 @@ class Metric:
 
     # Implementation detail
     _validated: InitVar[bool] = False
+
+
+_metric_types: Dict[str, Type[Metric]] = {}
 
 
 @dataclass

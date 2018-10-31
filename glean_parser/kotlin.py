@@ -11,13 +11,15 @@ Outputter to generate Kotlin code for metrics.
 import enum
 import io
 import json
+from pathlib import Path
+from typing import Any
 
 import inflection
 
 from . import util
 
 
-def kotlin_datatypes_filter(value):
+def kotlin_datatypes_filter(value: Any) -> str:
     """
     A Jinja2 filter that renders Kotlin literals.
 
@@ -58,7 +60,7 @@ def kotlin_datatypes_filter(value):
     return fd.getvalue()
 
 
-def output_kotlin(metrics, output_dir):
+def output_kotlin(metrics: dict, output_dir: Path):
     """
     Given a tree of `metrics`, output Kotlin code to `output_dir`.
     """

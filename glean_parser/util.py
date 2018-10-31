@@ -6,6 +6,7 @@
 
 import functools
 import json
+from pathlib import Path
 import sys
 
 import inflection
@@ -16,7 +17,7 @@ import yaml
 TESTING_MODE = 'pytest' in sys.modules
 
 
-def load_yaml_or_json(path):
+def load_yaml_or_json(path: Path) -> dict:
     """
     Load the content from either a .json or .yaml file, based on the filename
     extension.
