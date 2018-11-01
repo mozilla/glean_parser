@@ -49,7 +49,7 @@ def kotlin_datatypes_filter(value):
             elif isinstance(value, enum.Enum):
                 yield (
                     f'{value.__class__.__name__}.'
-                    f'{inflection.Camelize(value.name)}'
+                    f'{inflection.camelize(value.name, True)}'
                 )
             else:
                 yield from super().iterencode(value)
