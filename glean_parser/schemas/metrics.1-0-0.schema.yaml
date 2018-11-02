@@ -87,23 +87,20 @@ definitions:
           and any other helpful information.
         type: string
 
-      user_property:
-        title: User property
+      lifetime:
+        title: Lifetime
         description: |
-          If true, the metric contains a property that is part of the user's
-          profile and is never reset. Only one of `user_property` or
-          `application_property` may be `true`.
-        type: boolean
-        default: false
-
-      application_property:
-        title: Application property
-        description: |
-          If true, the metric contains a property that is related to the
-          application, and is reset only at application restarts. Only one of
-          `user_property` or `application_property` may be `true`.
-        type: boolean
-        default: false
+          Defines the lifetime of the metric.  If must be one of the following values:
+          - `ping` (default): The metric is reset each time it is sent in a ping.
+          - `user`: The metric contains a property that is part of the user's
+            profile and is never reset.
+          - `application`: The metric contains a property that is related to the
+            application, and is reset only at application restarts.
+        enum:
+          - ping
+          - user
+          - application
+        default: ping
 
       send_in_pings:
         title: Send in pings

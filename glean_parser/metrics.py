@@ -11,11 +11,18 @@ Classes for each of the high-level metric types.
 import dataclasses
 from dataclasses import dataclass, field, InitVar
 import datetime
+import enum
 from typing import Dict, List, Union
 
 import isodate
 
 from . import parser
+
+
+class Lifetime(enum.Enum):
+    ping = 0
+    user = 1
+    application = 2
 
 
 @dataclass
@@ -47,11 +54,29 @@ class Metric:
         Serialize the metric back to JSON object model.
         """
         d = dataclasses.asdict(self)
+        # Convert enum fields back to strings
+        for key, val in d.items():
+            if isinstance(val, enum.Enum):
+                d[key] = d[key].name
         del d['name']
         del d['category']
         return d
 
     def __post_init__(self, expires_after_build_date, _validated):
+        # Convert enum fields to Python enums
+        for f in dataclasses.fields(self):
+            if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
+                setattr(
+                    self,
+                    f.name,
+                    getattr(f.type, getattr(self, f.name))
+                )
+
+        if expires_after_build_date is not None:
+            self.expires_after_build_date = isodate.parse_date(
+                expires_after_build_date
+            )
+
         if not _validated:
             data = {
                 self.category: {
@@ -60,16 +85,6 @@ class Metric:
             }
             for error in parser.validate(data):
                 raise ValueError(error)
-
-        if expires_after_build_date is not None:
-            self.expires_after_build_date = isodate.parse_date(
-                expires_after_build_date
-            )
-
-        if self.user_property and self.application_property:
-            raise ValueError(
-                "user_property and application_property may not both be true."
-            )
 
     type: str
 
@@ -83,8 +98,7 @@ class Metric:
     version: int = 0
 
     # Ping-related properties
-    user_property: bool = False
-    application_property: bool = False
+    lifetime: Lifetime = 'ping'
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
 
     # Expiry

@@ -22,6 +22,8 @@ def test_parser():
     for category_key, category_val in all_metrics.value.items():
         for metric_key, metric_val in category_val.items():
             assert isinstance(metric_val, metrics.Metric)
+            assert isinstance(metric_val.lifetime,
+                              metrics.Lifetime)
 
 
 def test_parser_invalid():
@@ -30,6 +32,14 @@ def test_parser_invalid():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'could not determine a constructor for the tag' in errors[0]
+
+
+def test_invalid_schema():
+    all_metrics = parser.parse_metrics([{
+        "$schema": "This is wrong"
+    }])
+    errors = list(all_metrics)
+    assert any('key must be set to' in str(e) for e in errors)
 
 
 def test_merge_metrics():
@@ -127,26 +137,6 @@ def test_multiple_errors():
     metrics = parser.parse_metrics(contents)
     errors = list(metrics)
     assert len(errors) == 3
-
-
-def test_user_and_application_exclusive():
-    """user_property and application_property may not both be true"""
-    contents = [
-        {
-            'category': {
-                'metric': {
-                    'user_property': True,
-                    'application_property': True,
-                },
-            },
-        },
-    ]
-
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert 'may not both be true' in errors[0]
 
 
 def test_required_denominator():
