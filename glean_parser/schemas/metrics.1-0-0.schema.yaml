@@ -1,4 +1,4 @@
-$schema: http://json-schema.org/draft-06/schema#
+$schema: http://json-schema.org/draft-07/schema#
 title: Metrics
 description: |
   Schema for the metrics.yaml files for Mozilla's glean telemetry SDK.
@@ -284,4 +284,13 @@ additionalProperties:
     anyOf:
       - $ref: "#/definitions/very_short_id"
   additionalProperties:
-    $ref: "#/definitions/metric"
+    allOf:
+      - $ref: "#/definitions/metric"
+      - if:
+          properties:
+            type:
+              const: event
+        then:
+          properties:
+            lifetime:
+              const: ping

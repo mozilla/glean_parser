@@ -156,3 +156,22 @@ def test_required_denominator():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'denominator is required' in errors[0]
+
+
+def test_event_must_be_ping_lifetime():
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'event',
+                    'lifetime': 'user'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "On instance['category']['metric']['lifetime']" in errors[0]
