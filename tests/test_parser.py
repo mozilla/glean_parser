@@ -42,6 +42,14 @@ def test_parser_schema_violation():
     assert len(errors) == 5
 
 
+def test_parser_empty():
+    """1507792: Get a good error message if the metrics.yaml file is empty."""
+    all_metrics = parser.parse_metrics(ROOT / "data" / "empty.yaml")
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert 'metrics file can not be empty' in errors[0]
+
+
 def test_invalid_schema():
     all_metrics = parser.parse_metrics([{
         "$schema": "This is wrong"

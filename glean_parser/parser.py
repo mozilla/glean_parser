@@ -98,6 +98,10 @@ def _load_metrics_file(filepath):
         yield f"{filepath}: {str(e)}"
         return {}
 
+    if metrics_content is None:
+        yield f"{filepath}: metrics file can not be empty."
+        return {}
+
     has_error = False
     for error in validate(metrics_content, filepath):
         has_error = True
