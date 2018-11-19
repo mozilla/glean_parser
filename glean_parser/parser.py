@@ -19,17 +19,7 @@ SCHEMAS_DIR = ROOT_DIR / 'schemas'
 
 @functools.lru_cache(maxsize=1)
 def _get_metrics_schema():
-    return util.load_yaml_or_json(SCHEMAS_DIR / 'metrics.1-0-0.schema.yaml')
-
-
-def validate(content, filepath='<input>'):
-    """
-    Validate the given content against the metrics.schema.yaml schema.
-    """
-    schema = _get_metrics_schema()
-
-    if '$schema' in content and content['$schema'] != schema.get('$id'):
-        yield f"{filepath}: $schema key must be set to {schema.get('$id')}'"
+    schema = util.load_yaml_or_json(SCHEMAS_DIR / 'metrics.1-0-0.schema.yaml')
 
     class NullResolver(jsonschema.RefResolver):
         def resolve_remote(self, uri):
@@ -41,7 +31,20 @@ def validate(content, filepath='<input>'):
     resolver = NullResolver.from_schema(schema)
 
     validator_class = jsonschema.validators.validator_for(schema)
+    validator_class.check_schema(schema)
     validator = validator_class(schema, resolver=resolver)
+    return schema, validator
+
+
+def validate(content, filepath='<input>'):
+    """
+    Validate the given content against the metrics.schema.yaml schema.
+    """
+    schema, validator = _get_metrics_schema()
+
+    if '$schema' in content and content.get('$schema') != schema.get('$id'):
+        yield f"{filepath}: $schema key must be set to {schema.get('$id')}'"
+
     yield from (
         f"{filepath}: {e}"
         for e in validator.iter_errors(content)
@@ -58,9 +61,15 @@ def _load_metrics_file(filepath):
         yield f"{filepath}: {str(e)}"
         return {}
 
-    yield from validate(metrics_content, filepath)
+    has_error = False
+    for error in validate(metrics_content, filepath):
+        has_error = True
+        yield error
 
-    return metrics_content
+    if has_error:
+        return {}
+    else:
+        return metrics_content
 
 
 def _merge_and_instantiate_metrics(filepaths):
