@@ -7,9 +7,13 @@
 import functools
 import json
 import sys
+import urllib.request
 
+import appdirs
+import diskcache
 import inflection
 import jinja2
+import jsonschema
 import yaml
 
 
@@ -96,3 +100,46 @@ def keep_value(f):
         return ValueKeepingGenerator(f(*args, **kwargs))
 
     return g
+
+
+def get_null_resolver(schema):
+    """
+    Returns a JSON Pointer resolver that does nothing.
+
+    This lets us handle the moz: URLs in our schemas.
+    """
+    class NullResolver(jsonschema.RefResolver):
+        def resolve_remote(self, uri):
+            if uri in self.store:
+                return self.store[uri]
+            if uri == '':
+                return self.referrer
+
+    return NullResolver.from_schema(schema)
+
+
+def fetch_remote_url(url, cache=True):
+    """
+    Fetches the contents from an HTTP url or local file path, and optionally
+    caches it to disk.
+    """
+    is_http = url.startswith('http')
+
+    if not is_http:
+        with open(url, 'r', encoding='utf-8') as fd:
+            contents = fd.read()
+        return contents
+
+    if cache:
+        cache_dir = appdirs.user_cache_dir('glean_parser', 'mozilla')
+        with diskcache.Cache(cache_dir) as dc:
+            if url in dc:
+                return dc[url]
+
+    contents = urllib.request.urlopen(url).read()
+
+    if cache:
+        with diskcache.Cache(cache_dir) as dc:
+            dc[url] = contents
+
+    return contents

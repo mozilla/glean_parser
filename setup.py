@@ -32,7 +32,9 @@ requirements = [
     'jsonschema>=3.0.0a3',
     'inflection>=0.3.1',
     'Jinja2>=2.10',
-    'isodate>=0.6.0'
+    'isodate>=0.6.0',
+    'diskcache>=3.1.0',
+    'appdirs>=1.4.3'
 ]
 
 setup_requirements = ['pytest-runner', ]

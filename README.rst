@@ -18,11 +18,14 @@ Requirements
 The following library requirements are installed automatically when glean_parser
 is installed by `pip`.
 
+- appdirs
 - Click
-- PyYAML
-- jsonschema
+- diskcache
 - inflection
+- isodate
 - Jinja2
+- jsonschema
+- PyYAML
 
 Usage
 -----
@@ -36,6 +39,12 @@ Read in `metrics.yaml`, translate to kotlin format, and output to `output_dir`:
 .. code-block:: console
 
   $ glean_parser translate -o output_dir -f kotlin metrics.yaml
+
+Check a glean ping against the ping schema:
+
+.. code-block:: console
+
+  $ glean_parser check < ping.json
 
 Credits
 -------
