@@ -39,14 +39,15 @@ def _less_verbose_validation_error(self):
 
     pinstance = pprint.pformat(self.instance, width=72)
 
-    parts = []
-    parts.append('On {}{}:'.format(
-        self._word_for_instance_in_error_message,
-        _utils.format_as_index(self.relative_path),
-    ))
-    parts.append(_utils.indent(pinstance))
-    parts.append('')
-    parts.append(self.message)
+    parts = [
+        'On {}{}:'.format(
+            self._word_for_instance_in_error_message,
+            _utils.format_as_index(self.relative_path),
+        ),
+        _utils.indent(pinstance),
+        '',
+        self.message
+    ]
     if self.context:
         parts.extend(_utils.indent(x.message) for x in self.context)
 
