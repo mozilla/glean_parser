@@ -1,5 +1,5 @@
-Welcome to Glean Parser's documentation!
-======================================
+glean parser
+============
 
 .. toctree::
    :maxdepth: 2

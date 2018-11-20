@@ -21,18 +21,9 @@ def load_yaml_or_json(path):
     Load the content from either a .json or .yaml file, based on the filename
     extension.
 
-    Parameters
-    ----------
-    path : pathlib.Path object
-
-    Returns
-    -------
-    obj : any
-        The tree of objects as a result of parsing the file.
-
-    Exceptions
-    ----------
-    ValueError: The file is neither a .json, .yml or .yaml file.
+    :param path: `pathlib.Path` object
+    :rtype object: The tree of objects as a result of parsing the file.
+    :raises ValueError: The file is neither a .json, .yml or .yaml file.
     """
     # If in py.test, support bits of literal JSON/YAML content
     if TESTING_MODE and isinstance(path, dict):
@@ -65,13 +56,9 @@ def get_jinja2_template(template_name, filters=()):
 
     The template has extra filters for camel-casing identifiers.
 
-    Parameters
-    ----------
-    template_name : str
-        Name of a file in `glean_parser/templates`.
-
-    filters : tuple of 2-tuple
-        A tuple of (name, func) pairs defining additional filters.
+    :param template_name: Name of a file in ``glean_parser/templates``
+    :param filters: tuple of 2-tuple. A tuple of (name, func) pairs defining
+        additional filters.
     """
     env = jinja2.Environment(
         loader=jinja2.PackageLoader('glean_parser', 'templates')
