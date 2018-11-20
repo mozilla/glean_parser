@@ -7,7 +7,6 @@ Code for parsing metrics.yaml files.
 import functools
 from pathlib import Path
 import pprint
-import textwrap
 
 import jsonschema
 from jsonschema import _utils
