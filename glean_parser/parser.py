@@ -24,6 +24,11 @@ _unset = _utils.Unset()
 
 
 def _less_verbose_validation_error(self):
+    """
+    A version of jsonschema's ValidationError __str__ method that doesn't
+    include the schema fragment that failed.  This makes the error messages
+    much more succinct.
+    """
     essential_for_verbose = (
         self.validator, self.validator_value, self.instance, self.schema,
     )
