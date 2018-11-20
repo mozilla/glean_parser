@@ -22,7 +22,7 @@ SCHEMAS_DIR = ROOT_DIR / 'schemas'
 _unset = _utils.Unset()
 
 
-def _less_verbose_validation_error(self):
+def _pprint_validation_error(error):
     """
     A version of jsonschema's ValidationError __str__ method that doesn't
     include the schema fragment that failed.  This makes the error messages
@@ -32,30 +32,26 @@ def _less_verbose_validation_error(self):
     jsonschema calls "context").
     """
     essential_for_verbose = (
-        self.validator, self.validator_value, self.instance, self.schema,
+        error.validator, error.validator_value, error.instance, error.schema,
     )
     if any(m is _unset for m in essential_for_verbose):
-        return self.message
+        return error.message
 
-    pinstance = pprint.pformat(self.instance, width=72)
+    pinstance = pprint.pformat(error.instance, width=72)
 
     parts = [
         'On {}{}:'.format(
-            self._word_for_instance_in_error_message,
-            _utils.format_as_index(self.relative_path),
+            error._word_for_instance_in_error_message,
+            _utils.format_as_index(error.relative_path),
         ),
         _utils.indent(pinstance),
         '',
-        self.message
+        error.message
     ]
-    if self.context:
-        parts.extend(_utils.indent(x.message) for x in self.context)
+    if error.context:
+        parts.extend(_utils.indent(x.message) for x in error.context)
 
     return '\n'.join(parts)
-
-
-jsonschema.exceptions._Error.__str__ = \
-    _less_verbose_validation_error
 
 
 @functools.lru_cache(maxsize=1)
@@ -87,7 +83,7 @@ def validate(content, filepath='<input>'):
         yield f"{filepath}: $schema key must be set to {schema.get('$id')}'"
 
     yield from (
-        f"{filepath}: {e}"
+        f"{filepath}: {_pprint_validation_error(e)}"
         for e in validator.iter_errors(content)
     )
 
