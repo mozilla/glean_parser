@@ -53,6 +53,22 @@ def ensure_list(value):
     return value
 
 
+def camelize(value):
+    """
+    A wrapper around inflection.camelize that handles dots in addition to
+    underscores.
+    """
+    return inflection.camelize(value.replace('.', '_'), False)
+
+
+def Camelize(value):
+    """
+    A wrapper around inflection.camelize that handles dots in addition to
+    underscores.
+    """
+    return inflection.camelize(value.replace('.', '_'), True)
+
+
 @functools.lru_cache()
 def get_jinja2_template(template_name, filters=()):
     """
@@ -67,12 +83,6 @@ def get_jinja2_template(template_name, filters=()):
     env = jinja2.Environment(
         loader=jinja2.PackageLoader('glean_parser', 'templates')
     )
-
-    def camelize(value):
-        return inflection.camelize(value, False)
-
-    def Camelize(value):
-        return inflection.camelize(value, True)
 
     env.filters['camelize'] = camelize
     env.filters['Camelize'] = Camelize

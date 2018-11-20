@@ -14,6 +14,10 @@ definitions:
     type: string
     pattern: "^[a-z_][a-z0-9_]*$"
 
+  dotted_snake_case:
+    type: string
+    pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
+
   short_id:
     allOf:
       - $ref: "#/definitions/snake_case"
@@ -270,7 +274,7 @@ type: object
 
 propertyNames:
   anyOf:
-    - $ref: "#/definitions/short_id"
+    - $ref: "#/definitions/dotted_snake_case"
     - enum: ['$schema']
 
 properties:

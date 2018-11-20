@@ -26,4 +26,4 @@ def test_translate_missing_directory(tmpdir):
 
     translate.translate(ROOT / 'data' / 'core.yaml', 'kotlin', output)
 
-    assert len(os.listdir(output)) == 3
+    assert len(os.listdir(output)) == 4
