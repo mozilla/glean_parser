@@ -28,6 +28,9 @@ def _less_verbose_validation_error(self):
     A version of jsonschema's ValidationError __str__ method that doesn't
     include the schema fragment that failed.  This makes the error messages
     much more succinct.
+
+    It also shows any subschemas of anyOf/allOf that failed, if any (what
+    jsonschema calls "context").
     """
     essential_for_verbose = (
         self.validator, self.validator_value, self.instance, self.schema,
@@ -36,16 +39,19 @@ def _less_verbose_validation_error(self):
         return self.message
 
     pinstance = pprint.pformat(self.instance, width=72)
-    return self.message + textwrap.dedent("""
 
-        On %s%s:
-        %s
-        """.rstrip()
-    ) % (
+    parts = []
+    parts.append('On {}{}:'.format(
         self._word_for_instance_in_error_message,
         _utils.format_as_index(self.relative_path),
-        _utils.indent(pinstance),
-    )
+    ))
+    parts.append(_utils.indent(pinstance))
+    parts.append('')
+    parts.append(self.message)
+    if self.context:
+        parts.extend(_utils.indent(x.message) for x in self.context)
+
+    return '\n'.join(parts)
 
 
 jsonschema.exceptions._Error.__str__ = \
