@@ -39,7 +39,7 @@ def test_parser_schema_violation():
     all_metrics = parser.parse_metrics(ROOT / "data" / "schema-violation.yaml")
     errors = list(all_metrics)
     print('\n'.join(errors))
-    assert len(errors) == 2
+    assert len(errors) == 5
 
 
 def test_invalid_schema():
@@ -126,7 +126,6 @@ def test_snake_case_enforcement():
         metrics = parser._load_metrics_file(content)
         errors = list(metrics)
         assert len(errors) == 1
-        assert 'short_id' in errors[0]
 
 
 def test_multiple_errors():
