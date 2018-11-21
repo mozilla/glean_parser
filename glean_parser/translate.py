@@ -32,6 +32,7 @@ def translate(input_filepaths, output_format, output_dir):
     found_error = False
     for error in all_metrics:
         found_error = True
+        print('=' * 78, file=sys.stderr)
         print(error, file=sys.stderr)
     if found_error:
         return 1

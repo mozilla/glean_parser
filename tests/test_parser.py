@@ -34,6 +34,14 @@ def test_parser_invalid():
     assert 'could not determine a constructor for the tag' in errors[0]
 
 
+def test_parser_schema_violation():
+    """1507792"""
+    all_metrics = parser.parse_metrics(ROOT / "data" / "schema-violation.yaml")
+    errors = list(all_metrics)
+    print('\n'.join(errors))
+    assert len(errors) == 5
+
+
 def test_invalid_schema():
     all_metrics = parser.parse_metrics([{
         "$schema": "This is wrong"
@@ -118,7 +126,6 @@ def test_snake_case_enforcement():
         metrics = parser._load_metrics_file(content)
         errors = list(metrics)
         assert len(errors) == 1
-        assert 'short_id' in errors[0]
 
 
 def test_multiple_errors():
@@ -136,7 +143,7 @@ def test_multiple_errors():
     contents = [util.add_required(x) for x in contents]
     metrics = parser.parse_metrics(contents)
     errors = list(metrics)
-    assert len(errors) == 3
+    assert len(errors) == 2
 
 
 def test_required_denominator():

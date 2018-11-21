@@ -1,0 +1,5 @@
+gleantest.foo:
+    a: b
+gleantest:
+    test_event:
+        type: event
