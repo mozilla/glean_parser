@@ -55,16 +55,20 @@ def ensure_list(value):
 
 def camelize(value):
     """
-    A wrapper around inflection.camelize that handles dots in addition to
-    underscores.
+    Convert the value to camelCase (with a lower case first letter).
+
+    This is a thin wrapper around inflection.camelize that handles dots in
+    addition to underscores.
     """
     return inflection.camelize(value.replace('.', '_'), False)
 
 
 def Camelize(value):
     """
-    A wrapper around inflection.camelize that handles dots in addition to
-    underscores.
+    Convert the value to CamelCase (with an upper case first letter).
+
+    This is a thin wrapper around inflection.camelize that handles dots in
+    addition to underscores.
     """
     return inflection.camelize(value.replace('.', '_'), True)
 
