@@ -1,3 +1,6 @@
+docs/glean_parser.rst
+docs/modules.rst
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
