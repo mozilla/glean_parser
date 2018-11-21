@@ -57,15 +57,7 @@ def _pprint_validation_error(error):
 @functools.lru_cache(maxsize=1)
 def _get_metrics_schema():
     schema = util.load_yaml_or_json(SCHEMAS_DIR / 'metrics.1-0-0.schema.yaml')
-
-    class NullResolver(jsonschema.RefResolver):
-        def resolve_remote(self, uri):
-            if uri in self.store:
-                return self.store[uri]
-            if uri == '':
-                return self.referrer
-
-    resolver = NullResolver.from_schema(schema)
+    resolver = util.get_null_resolver(schema)
 
     validator_class = jsonschema.validators.validator_for(schema)
     validator_class.check_schema(schema)
