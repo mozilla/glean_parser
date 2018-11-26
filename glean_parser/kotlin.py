@@ -12,8 +12,6 @@ import enum
 import io
 import json
 
-import inflection
-
 from . import util
 
 
@@ -49,7 +47,7 @@ def kotlin_datatypes_filter(value):
             elif isinstance(value, enum.Enum):
                 yield (
                     f'{value.__class__.__name__}.'
-                    f'{inflection.camelize(value.name, True)}'
+                    f'{util.Camelize(value.name)}'
                 )
             else:
                 yield from super().iterencode(value)
@@ -86,7 +84,7 @@ def output_kotlin(metrics, output_dir):
     ]
 
     for category_key, category_val in metrics.items():
-        filename = inflection.camelize(category_key, True) + '.kt'
+        filename = util.Camelize(category_key) + '.kt'
         filepath = output_dir / filename
 
         metric_types = sorted(list(set(

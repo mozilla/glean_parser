@@ -239,3 +239,14 @@ environment:
     extra_keys:
       key1: "This is key one"
       key2: "This is key two"
+
+dotted.category:
+  metric:
+    type: string
+    lifetime: application
+    description: >
+      dummy metric
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com

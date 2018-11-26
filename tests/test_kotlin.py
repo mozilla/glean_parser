@@ -23,7 +23,12 @@ def test_parser(tmpdir):
 
     assert (
         set(x.name for x in tmpdir.iterdir()) ==
-        set(['CorePing.kt', 'Telemetry.kt', 'Environment.kt'])
+        set([
+            'CorePing.kt',
+            'Telemetry.kt',
+            'Environment.kt',
+            'DottedCategory.kt'
+        ])
     )
 
     # Make sure descriptions made it in

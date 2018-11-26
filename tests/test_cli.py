@@ -41,7 +41,12 @@ def test_translate(tmpdir):
     assert result.exit_code == 0
     assert (
         set(os.listdir(tmpdir)) ==
-        set(['CorePing.kt', 'Telemetry.kt', 'Environment.kt'])
+        set([
+            'CorePing.kt',
+            'Telemetry.kt',
+            'Environment.kt',
+            'DottedCategory.kt'
+        ])
     )
 
 
