@@ -67,7 +67,7 @@ def output_kotlin(metrics, output_dir):
     """
 
     template = util.get_jinja2_template(
-        'kotlin.jinja2.kt',
+        'kotlin.jinja2',
         filters=(('kotlin', kotlin_datatypes_filter),)
     )
 
