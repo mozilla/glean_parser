@@ -86,6 +86,9 @@ class Metric:
             for error in parser.validate(data):
                 raise ValueError(error)
 
+        if self.category == 'glean.internal.metrics':
+            self.category = ''
+
     type: str
 
     # Metadata

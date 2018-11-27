@@ -59,11 +59,16 @@ def kotlin_datatypes_filter(value):
     return fd.getvalue()
 
 
-def output_kotlin(metrics, output_dir):
+def output_kotlin(metrics, output_dir, options={}):
     """
     Given a tree of `metrics`, output Kotlin code to `output_dir`.
-    """
 
+    :param metrics: A tree of metrics, as returns from `parser.parse_metrics`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary, with the following optional keys:
+        - `namespace`: The package namespace to declare at the top of the
+          generated files. Defaults to `GleanMetrics`.
+    """
     template = util.get_jinja2_template(
         'kotlin.jinja2',
         filters=(('kotlin', kotlin_datatypes_filter),)
@@ -83,6 +88,8 @@ def output_kotlin(metrics, output_dir):
         'allowed_extra_keys'
     ]
 
+    namespace = options.get('namespace', 'GleanMetrics')
+
     for category_key, category_val in metrics.items():
         filename = util.Camelize(category_key) + '.kt'
         filepath = output_dir / filename
@@ -98,6 +105,7 @@ def output_kotlin(metrics, output_dir):
                     metrics=category_val,
                     metric_types=metric_types,
                     extra_args=extra_args,
+                    namespace=namespace,
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it

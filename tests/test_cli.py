@@ -35,7 +35,9 @@ def test_translate(tmpdir):
             '-o',
             str(tmpdir),
             '-f',
-            'kotlin'
+            'kotlin',
+            '-s',
+            'namespace=Foo'
         ]
     )
     assert result.exit_code == 0
@@ -45,9 +47,15 @@ def test_translate(tmpdir):
             'CorePing.kt',
             'Telemetry.kt',
             'Environment.kt',
-            'DottedCategory.kt'
+            'DottedCategory.kt',
+            'GleanInternalMetrics.kt'
         ])
     )
+    for filename in os.listdir(tmpdir):
+        path = tmpdir / filename
+        with open(path) as fd:
+            content = fd.read()
+        assert 'package Foo' in content
 
 
 def test_translate_errors(tmpdir):

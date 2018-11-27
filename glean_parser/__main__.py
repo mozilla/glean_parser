@@ -44,15 +44,29 @@ from . import validate_ping
     type=click.Choice(mod_translate.OUTPUTTERS.keys()),
     required=True,
 )
-def translate(input, format, output):
+@click.option(
+    '--option',
+    '-s',
+    help='backend-specific option. Must be of the form key=value',
+    type=str,
+    multiple=True,
+    required=False,
+)
+def translate(input, format, output, option):
     """
     Translate metrics.yaml files to other formats.
     """
+    option_dict = {}
+    for opt in option:
+        key, val = opt.split('=', 1)
+        option_dict[key] = val
+
     sys.exit(
         mod_translate.translate(
             [Path(x) for x in input],
             format,
-            Path(output)
+            Path(output),
+            option_dict
         )
     )
 
