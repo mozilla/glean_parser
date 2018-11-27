@@ -86,6 +86,8 @@ class Metric:
             for error in parser.validate(data):
                 raise ValueError(error)
 
+        # Metrics in the special category "glean.internal.metrics" need to have
+        # an empty category string when identifying the metrics in the ping.
         if self.category == 'glean.internal.metrics':
             self.category = ''
 
