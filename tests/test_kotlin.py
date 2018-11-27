@@ -19,7 +19,12 @@ def test_parser(tmpdir):
     """Test translating metrics to Kotlin files."""
     tmpdir = Path(tmpdir)
 
-    translate.translate(ROOT / "data" / "core.yaml", 'kotlin', tmpdir)
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        'kotlin',
+        tmpdir,
+        {'namespace': 'Foo'}
+    )
 
     assert (
         set(x.name for x in tmpdir.iterdir()) ==
@@ -27,7 +32,8 @@ def test_parser(tmpdir):
             'CorePing.kt',
             'Telemetry.kt',
             'Environment.kt',
-            'DottedCategory.kt'
+            'DottedCategory.kt',
+            'GleanInternalMetrics.kt'
         ])
     )
 
@@ -36,10 +42,16 @@ def test_parser(tmpdir):
         content = fd.read()
         assert ('True if the user has set Firefox as the default browser.'
                 in content)
+        # Make sure the namespace option is in effect
+        assert 'package Foo' in content
 
     with open(tmpdir / 'Telemetry.kt', 'r', encoding='utf-8') as fd:
         content = fd.read()
         assert 'جمع 搜集' in content
+
+    with open(tmpdir / 'GleanInternalMetrics.kt', 'r', encoding='utf-8') as fd:
+        content = fd.read()
+        assert 'category = ""' in content
 
     # Only run this test if ktlint is on the path
     if shutil.which('ktlint'):

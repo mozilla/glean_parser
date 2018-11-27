@@ -250,3 +250,14 @@ dotted.category:
       - 1137353
     notification_emails:
       - telemetry-client-dev@mozilla.com
+
+glean.internal.metrics:
+  internal:
+    type: string
+    lifetime: application
+    description: >
+      internal metric
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
