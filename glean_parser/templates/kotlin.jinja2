@@ -14,7 +14,10 @@ package {{ namespace }}
 import mozilla.components.service.glean.Lifetime
 {% for metric_type in metric_types -%}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
-{% endfor %}
+{% endfor -%}
+{% if 'timespan' in metric_types or 'timing_distribution' in metric_types -%}
+import mozilla.components.service.glean.TimeUnit
+{% endif %}
 object {{ category_name|Camelize }} {
 {%- for metric in metrics.values() %}
     /**

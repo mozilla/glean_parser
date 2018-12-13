@@ -144,9 +144,19 @@ class Counter(Metric):
     typename = 'counter'
 
 
+class TimeUnit(enum.Enum):
+    nanosecond = 0
+    microsecond = 1
+    millisecond = 2
+    second = 3
+    minute = 4
+    hours = 5
+    day = 6
+
+
 @dataclass
 class TimeBase(Metric):
-    time_unit: str = 'millisecond'
+    time_unit: TimeUnit = 'millisecond'
 
 
 @dataclass
