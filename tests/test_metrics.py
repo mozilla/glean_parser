@@ -67,3 +67,31 @@ def test_isodate():
             notification_emails=['nobody@nowhere.com'],
             description='description...',
         )
+
+
+def test_timespan_time_unit():
+    """
+    Test that the timespan's time_unit is coerced to an enum.
+    """
+    m = metrics.Timespan(
+        type='timespan',
+        category='category',
+        name='metric',
+        bugs=[42],
+        time_unit='day',
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+    )
+    assert isinstance(m.time_unit, metrics.TimeUnit)
+    assert m.time_unit == metrics.TimeUnit.day
+
+    with pytest.raises(AttributeError):
+        m = metrics.Timespan(
+            type='timespan',
+            category='category',
+            name='metric',
+            bugs=[42],
+            time_unit='foo',
+            notification_emails=['nobody@nowhere.com'],
+            description='description...',
+        )
