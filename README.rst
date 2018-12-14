@@ -7,8 +7,13 @@ Parser tools for Mozilla's glean telemetry.
 Features
 --------
 
-Parses the metrics.yaml files for the glean telemetry SDK and produces output
-for various integrations.
+Parses the ``metrics.yaml`` files for the glean telemetry SDK and produces
+output for various integrations.
+
+Documentation
+-------------
+
+The full documentation is available `here <https://mozilla.github.io/glean_parser/>`__.
 
 Requirements
 ------------
@@ -45,11 +50,3 @@ Check a glean ping against the ping schema:
 .. code-block:: console
 
   $ glean_parser check < ping.json
-
-Credits
--------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage

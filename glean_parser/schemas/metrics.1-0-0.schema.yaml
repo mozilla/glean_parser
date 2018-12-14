@@ -38,37 +38,51 @@ definitions:
       type:
         title: Metric type
         description: |
+          **Required.**
+
           Specifies the type of a metric, like "counter" or "event". This defines
           which operations are valid for the metric, how it is stored and how
           data analysis tooling displays it.
 
           The supported types are:
-            - boolean: true or false.
-            - string: a Unicode string value.
-            - string_list: a list of Unicode strings.
-            - enumeration: a string with a fixes set of values. Additional properties:
-              `values`.
-            - counter: A numeric value that can only be incremented.
-            - timespan: Represents a time interval. Additional properties: `time_unit`.
-            - timing_distribution: Record the distribution of multiple timings.
-              Additional properties: `time_unit`.
-            - datetime: A date/time value.  Represented as an ISO datetime in UTC.
-              Additional properties: `time_unit`.
-            - use_counter: Records the value of one of more values in relation
+            - `event`: Record a specific event (with optional metadata).
+              Additional properties: `objects` and `extra_keys`.
+
+            - `boolean`: A metric storing values of true or false.
+
+            - `string`: A metric storing Unicode string values.
+
+            - `string_list`: a list of Unicode strings.
+
+            - ``enumeration``: a string with a fixed set of values. Additional properties:
+              `values`_.
+
+            - `counter`: A numeric value that can only be incremented.
+
+            - ``timespan``: Represents a time interval. Additional properties: `time_unit`_.
+
+            - `timing_distribution`: Record the distribution of multiple timings.
+              Additional properties: `time_unit`_.
+
+            - `datetime`: A date/time value.  Represented as an ISO datetime in UTC.
+              Additional properties: `time_unit`_.
+
+            - `use_counter`: Records the value of one of more values in relation
               to another value. Represented internally as a list of numerators
               and denominator, all of which can be incremented separately.
-              Additional properties: `labels`, `denominator`.
-            - usage: Record whether a feature is used. This is functionally
+              Additional properties: `labels`_, `denominator`_.
+
+            - `usage`: Record whether a feature is used. This is functionally
               equivalent to a boolean metric type, except the analysis and
               visualization side may present it differently, knowing that it
               indicates the usage of a feature.
-            - rate: Record the rate of an event over time. This is functionally
+
+            - `rate`: Record the rate of an event over time. This is functionally
               equivalent to a counter, except the analysis and visualization
               will tie it to the duration of the ping to display it as a rate
               over time.
-            - event: Record a specific event (with optional metadata).
-              Additional properties: `objects` and `extra_keys`.
-            - uuid: Record a UUID v4.
+
+            - `uuid`: Record a UUID v4.
         type: string
         enum:
           - boolean
@@ -88,17 +102,22 @@ definitions:
       description:
         title: Description
         description: |
-          A textual description of what this metric does, means, its edge cases
-          and any other helpful information.
+          **Required.**
+
+          A textual description of what this metric does, what it means, and its
+          edge cases or any other helpful information.
         type: string
 
       lifetime:
         title: Lifetime
         description: |
-          Defines the lifetime of the metric.  If must be one of the following values:
+          Defines the lifetime of the metric.  It must be one of the following values:
+
           - `ping` (default): The metric is reset each time it is sent in a ping.
+
           - `user`: The metric contains a property that is part of the user's
             profile and is never reset.
+
           - `application`: The metric contains a property that is related to the
             application, and is reset only at application restarts.
         enum:
@@ -111,8 +130,8 @@ definitions:
         title: Send in pings
         description: |
           Which pings the metric should be sent on. If not specified, the metric
-          is sent on the "default ping", which is the "events" ping for events,
-          and the "metrics" ping for everything else. Most metrics don't need to
+          is sent on the "default ping", which is the `events` ping for events,
+          and the `metrics` ping for everything else. Most metrics don't need to
           specify this.
         type: array
         items:
@@ -123,9 +142,11 @@ definitions:
       notification_emails:
         title: Notification emails
         description: |
+          **Required.**
+
           A list of email addresses to notify for important events with the
           metric or when people with context or ownership for the metric need to
-          contacted.
+          be contacted.
         type: array
         minItems: 1
         items:
@@ -135,9 +156,13 @@ definitions:
       bugs:
         title: Related bugs
         description: |
+          **Required.**
+
           A list of bugs (e.g. Bugzilla and Github) that are relevant to this
           metric, e.g., tracking its original implementation or later changes to
-          it. If a number, it is an ID to an issue in the default tracker (e.g.
+          it.
+
+          If a number, it is an ID to an issue in the default tracker (e.g.
           Mozilla's Bugzilla instance). If a string, it must be a URI to a bug
           page in a tracker.
         type: array
@@ -151,7 +176,7 @@ definitions:
       reviews:
         title: Review references
         description: |
-          A list of URLs to any data collection reviews relevant to the metric.
+          A list of URIs to any data collection reviews relevant to the metric.
         type: array
         items:
           type: string
@@ -160,7 +185,7 @@ definitions:
       disabled:
         title: Disabled
         description: |
-          If true, the metric is disabled, and any metric collection on it will
+          If `true`, the metric is disabled, and any metric collection on it will
           be silently ignored at runtime.
         type: boolean
         default: false
@@ -171,7 +196,7 @@ definitions:
           If provided, an ISO 8601 date that represents the day from which any
           collection using the metric should be silently ignored. The date is
           checked at build time. If the specified date is passed, this metric is
-          seen as expired.
+          treated as expired.
         anyOf:
           - type: string
             format: date-time
@@ -187,9 +212,9 @@ definitions:
       values:
         title: Supported values
         description: |
-          A list of strings that are supported enum values.
+          A list of the supported enumeration values.
 
-          Valid when `type` is `enum`.
+          Valid when `type`_ is `enumeration`.
         type: array
         items:
           type: string
@@ -199,9 +224,10 @@ definitions:
         description: |
           Specifies the unit that the metric will be stored and displayed in. If
           not provided, it defaults to milliseconds. Time values are sent to the
-          backend as integers, so `time_unit` also implies the maximum
-          resolution at which timespans are recorded. Valid when `type` is
-          `timespan`, `timing_distribution` or `datetime`.
+          backend as integers, so `time_unit`_ determines the maximum
+          resolution at which timespans are recorded.
+
+          Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.
         enum:
           - nanosecond
           - microsecond
@@ -215,7 +241,7 @@ definitions:
         title: Labeled metric
         description: |
           Record multiple separate metrics under different labels.
-          The labels may be known ahead of time (provided in the `labels`
+          The labels may be known ahead of time (provided in the `labels`_
           property) or be dynamic at runtime.
         type: boolean
 
@@ -224,7 +250,7 @@ definitions:
         description: |
           A list of labels for a labeled metric or use counter.
 
-          Valid when `labeled` is `true`.
+          Valid when `labeled`_ is `true`.
         type: array
         items:
           $ref: "#/definitions/snake_case"
@@ -234,7 +260,7 @@ definitions:
         description: |
           The name of the denominator value for a use counter.
 
-          Valid when `type` is `use_counter`.
+          Valid when `type`_ is `use_counter`.
         allOf:
           - $ref: "#/definitions/snake_case"
 
@@ -243,7 +269,7 @@ definitions:
         description: |
           The valid event objects. This is a list of strings.
 
-          Valid when `type` is `event`.
+          Valid when `type`_ is `event`.
         type: array
         minItems: 1
         items:
@@ -255,7 +281,7 @@ definitions:
           The acceptable keys on the "extra" object sent with events. This is an
           object mapping the key to a description.
 
-          Valid when `type` is `event`.
+          Valid when `type`_ is `event`.
         type: object
         propertyNames:
           $ref: "#/definitions/very_short_id"

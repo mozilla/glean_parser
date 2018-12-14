@@ -1,4 +1,6 @@
-# Config file for automatic testing at travis-ci.org
+env:
+  global:
+    secure: L04acvHgwOeQat4csQstsuRiMcGKqGLyMig3jQMVbMyU+YJ1KMtpdp6xjrElFQKrKgXkz2gXdv26SCyx5eXX4TxC/Of7rj4xIWW7cU1f2l6Ka0tuVGrdc4IwVxYDWCVOZTrgUpd1/okC9R/ujR1je+AFA6xfyTn8+0/3NfFHTJb3Lfbtp2uIqvAm/8Si9qxPbx6Zedw8j4W7/CHHR63L1/3vFc1xCEX+q2Ju1/5iYyRV9U91Ggkv8pGDOfwleNbHjvh6Ob1HfPzu/lltC84kwYCZRvdemz2PJ96GotLd2vQLUP27Y9vo16A0wSRymUl86nJT3536h65dxKoSZmFeoA6GdceB3wyUpdpOmsiwsP7NFhdQO9rYfIjB7N9K/pnArHSKvKz01A0zOrrEeUP/jT25mKliWYeKfDd9D5HgeKZB5zkVAq/KE00Fw7AfUmsVEZi49iPfYir24gglyc6iHA7I2nmQODvRH8XjgzDE/t2UujccZyqBzP4qpzD0+fGjZ+YV8rC/yJpLrmCghkjS7iISkr2h1yqRaL3l59JW1P7asr6FOo5yn8VgtUtMfd9oxkUgwJ5f8clNwb6aH//GHtdTyifKBlkhkV30hNZd43k62m5z9o2vJCeNnQR2lS/C7obDcA6YUvaeooN2r8SdUq+ND/x5ly/snoHTmWnkS7o=
 
 language: python
 matrix:
@@ -19,12 +21,20 @@ script:
   - tox
 
 deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  user: mdboom2
-  password:
-    secure: UX0nwEz6fhe5PwT4ptrCfLpfWWeqHYHXelQgUZnvpSvYmnaVOGlDsgAYIalezRatqOHUx1UP7zCvQ+IbULn2hMocRKfE7CMvaKHbXYUiSBdAB8H86YcVFXoIshL/nLMypoANsIKljE2bv5FF5E3ru9mOo2UjPp9kC1hgFNuLo9ZWHZzuarsC6CAGtD1BnSyQa7ove0NP3pMe23Fe41OSYXJTSMXNXj9d3PT4WfsMBOYYvEA7WH4Eax5JtZcAMFhSnkCN0wdanVdStRrdyOrgc12AgbbVFvpEIrteahcNOJC7BJDm86JI1kKo+PZ//wf3fi+lZAvrg3wVXlvaJQ8xqwOidGAMdMqFuo+L/3Xyn6whkcFU7tQsXBVsF4GoL8EiKoDRNZ1rJu1AJvhyyq6mBvp142l1xSQrDwzbuqAlSSJH9Z4mDneSLf+AUDFiSDwwW/oYbOwm8pEvZUFZdAKEt2Rdt6LVn5+Ao7KV8F5YSvfHbyr9MfLsuO6zzjUxxm+nw1gdLnE1vN94veahCHb4n+oBwviLmtzYTrA967vgC9PPChGxCgrPhCqbCIwe1Xa+ivYqFu8LsIW19Sg2dqp1P9NyXTCWM3NPSakt6QyMWw9qS7zAt4yGt/rKLM46P7Ad1t+UKR9EqX84KL+z9WzG1gkForTmZYxCo6b9YIlcuDw=
-  on:
-    tags: true
-    repo: mozilla/glean_parser
-    python: 3.7
+  - provider: pypi
+    distributions: sdist bdist_wheel
+    user: mdboom2
+    password:
+        secure: UX0nwEz6fhe5PwT4ptrCfLpfWWeqHYHXelQgUZnvpSvYmnaVOGlDsgAYIalezRatqOHUx1UP7zCvQ+IbULn2hMocRKfE7CMvaKHbXYUiSBdAB8H86YcVFXoIshL/nLMypoANsIKljE2bv5FF5E3ru9mOo2UjPp9kC1hgFNuLo9ZWHZzuarsC6CAGtD1BnSyQa7ove0NP3pMe23Fe41OSYXJTSMXNXj9d3PT4WfsMBOYYvEA7WH4Eax5JtZcAMFhSnkCN0wdanVdStRrdyOrgc12AgbbVFvpEIrteahcNOJC7BJDm86JI1kKo+PZ//wf3fi+lZAvrg3wVXlvaJQ8xqwOidGAMdMqFuo+L/3Xyn6whkcFU7tQsXBVsF4GoL8EiKoDRNZ1rJu1AJvhyyq6mBvp142l1xSQrDwzbuqAlSSJH9Z4mDneSLf+AUDFiSDwwW/oYbOwm8pEvZUFZdAKEt2Rdt6LVn5+Ao7KV8F5YSvfHbyr9MfLsuO6zzjUxxm+nw1gdLnE1vN94veahCHb4n+oBwviLmtzYTrA967vgC9PPChGxCgrPhCqbCIwe1Xa+ivYqFu8LsIW19Sg2dqp1P9NyXTCWM3NPSakt6QyMWw9qS7zAt4yGt/rKLM46P7Ad1t+UKR9EqX84KL+z9WzG1gkForTmZYxCo6b9YIlcuDw=
+    on:
+      tags: true
+      repo: mozilla/glean_parser
+      python: 3.7
+  - provider: pages
+    skip-cleanup: true
+    keep-history: false
+    github-token: $GITHUB_TOKEN
+    local-dir: docs/_build/html
+    target-branch: gh-pages
+    on:
+      tags: true
