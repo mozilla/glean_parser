@@ -65,6 +65,14 @@ def _get_metrics_schema():
     return schema, validator
 
 
+def get_parameter_doc(key):
+    """
+    Returns documentation about a specific metric parameter.
+    """
+    schema, _ = _get_metrics_schema()
+    return schema['definitions']['metric']['properties'][key]['description']
+
+
 def validate(content, filepath='<input>'):
     """
     Validate the given content against the metrics.schema.yaml schema.

@@ -66,6 +66,7 @@ def output_kotlin(metrics, output_dir, options={}):
     :param metrics: A tree of metrics, as returns from `parser.parse_metrics`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
+
         - `namespace`: The package namespace to declare at the top of the
           generated files. Defaults to `GleanMetrics`.
     """

@@ -1,13 +1,15 @@
 glean parser
 ============
 
+.. image:: _static/glean.jpeg
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    readme
    installation
-   usage
+   metrics-yaml
    modules
    contributing
    authors
