@@ -1,0 +1,16 @@
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+telemetry:
+  client_id:
+    type: uuid
+    lifetime: user
+    description: >
+      A UUID identifying a profile and allowing user-oriented
+      Correlation of data.
+      Some Unicode: جمع 搜集
+    bugs:
+      - 1137353
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    send_in_pings:
+      - core
