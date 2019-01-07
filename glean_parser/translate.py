@@ -8,8 +8,10 @@
 High-level interface for translating `metrics.yaml` into other formats.
 """
 
-import os
+from pathlib import Path
+import shutil
 import sys
+import tempfile
 
 from . import parser
 from . import kotlin
@@ -42,7 +44,17 @@ def translate(input_filepaths, output_format, output_dir, options={}):
         print(error, file=sys.stderr)
     if found_error:
         return 1
-    if not output_dir.is_dir():
-        os.makedirs(output_dir)
-    OUTPUTTERS[output_format](all_metrics.value, output_dir, options)
+
+    # Write everything out to a temporary directory, and then move it to the
+    # real directory, for transactional integrity.
+    with tempfile.TemporaryDirectory() as tempdir:
+        OUTPUTTERS[output_format](all_metrics.value, Path(tempdir), options)
+
+        if output_dir.is_file():
+            output_dir.unlink()
+        elif output_dir.is_dir():
+            shutil.rmtree(output_dir)
+
+        shutil.copytree(tempdir, output_dir)
+
     return 0

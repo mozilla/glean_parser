@@ -3,7 +3,6 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-import os
 from pathlib import Path
 
 import pytest
@@ -26,4 +25,16 @@ def test_translate_missing_directory(tmpdir):
 
     translate.translate(ROOT / 'data' / 'core.yaml', 'kotlin', output)
 
-    assert len(os.listdir(output)) == 5
+    assert len(list(output.iterdir())) == 5
+
+
+def test_translate_remove_obsolete_files(tmpdir):
+    output = Path(tmpdir) / 'foo'
+
+    translate.translate(ROOT / 'data' / 'core.yaml', 'kotlin', output)
+
+    assert len(list(output.iterdir())) == 5
+
+    translate.translate(ROOT / 'data' / 'smaller.yaml', 'kotlin', output)
+
+    assert len(list(output.iterdir())) == 1
