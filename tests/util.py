@@ -12,6 +12,7 @@ def add_required(chunk):
         'bugs': [0],
         'description': 'DESCRIPTION...',
         'notification_emails': ['nobody@nowhere.com'],
+        'reviews': ['https://nowhere.com/review/']
     }
 
     for category_key, category_val in chunk.items():

@@ -10,6 +10,8 @@ telemetry:
       Some Unicode: جمع 搜集
     bugs:
       - 1137353
+    reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:

@@ -296,6 +296,7 @@ definitions:
       - bugs
       - description
       - notification_emails
+      - reviews
 
 type: object
 
