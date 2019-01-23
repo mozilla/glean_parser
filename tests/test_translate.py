@@ -23,7 +23,12 @@ def test_translate_unknown_format():
 def test_translate_missing_directory(tmpdir):
     output = Path(tmpdir) / 'foo'
 
-    translate.translate(ROOT / 'data' / 'core.yaml', 'kotlin', output)
+    translate.translate(
+        ROOT / 'data' / 'core.yaml',
+        'kotlin',
+        output,
+        parser_config={'reserved': True}
+    )
 
     assert len(list(output.iterdir())) == 5
 
@@ -31,7 +36,12 @@ def test_translate_missing_directory(tmpdir):
 def test_translate_remove_obsolete_files(tmpdir):
     output = Path(tmpdir) / 'foo'
 
-    translate.translate(ROOT / 'data' / 'core.yaml', 'kotlin', output)
+    translate.translate(
+        ROOT / 'data' / 'core.yaml',
+        'kotlin',
+        output,
+        parser_config={'reserved': True}
+    )
 
     assert len(list(output.iterdir())) == 5
 

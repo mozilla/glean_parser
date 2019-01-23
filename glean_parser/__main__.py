@@ -52,7 +52,15 @@ from . import validate_ping
     multiple=True,
     required=False,
 )
-def translate(input, format, output, option):
+@click.option(
+    '--reserved',
+    is_flag=True,
+    help=(
+        "If provided, allow the use of reserved fields. "
+        "Should only be set when building the Glean library itself."
+    )
+)
+def translate(input, format, output, option, reserved):
     """
     Translate metrics.yaml files to other formats.
     """
@@ -66,7 +74,8 @@ def translate(input, format, output, option):
             [Path(x) for x in input],
             format,
             Path(output),
-            option_dict
+            option_dict,
+            {'reserved': reserved}
         )
     )
 

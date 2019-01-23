@@ -190,3 +190,25 @@ def test_event_must_be_ping_lifetime():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "On instance['category']['metric']['lifetime']" in errors[0]
+
+
+def test_parser_reserved():
+    contents = [
+        {
+            'glean.baseline': {
+                'metric': {
+                    'type': 'string',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "For category 'glean.baseline'" in errors[0]
+
+    all_metrics = parser.parse_metrics(contents, {'reserved': True})
+    errors = list(all_metrics)
+    assert len(errors) == 0

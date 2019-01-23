@@ -22,7 +22,13 @@ OUTPUTTERS = {
 }
 
 
-def translate(input_filepaths, output_format, output_dir, options={}):
+def translate(
+        input_filepaths,
+        output_format,
+        output_dir,
+        options={},
+        parser_config={}
+):
     """
     Translate the files in `input_filepaths` to the given `output_format` and
     put the results in `output_dir`.
@@ -32,11 +38,13 @@ def translate(input_filepaths, output_format, output_dir, options={}):
     :param output_dir: the path to the output directory
     :param options: dictionary of options. The available options are backend
         format specific.
+    :param parser_config: A dictionary of options that change parsing behavior.
+        See `parser.parse_metrics` for more info.
     """
     if output_format not in OUTPUTTERS:
         raise ValueError(f"Unknown output format '{output_format}'")
 
-    all_metrics = parser.parse_metrics(input_filepaths)
+    all_metrics = parser.parse_metrics(input_filepaths, parser_config)
     found_error = False
     for error in all_metrics:
         found_error = True

@@ -23,7 +23,8 @@ def test_parser(tmpdir):
         ROOT / "data" / "core.yaml",
         'kotlin',
         tmpdir,
-        {'namespace': 'Foo'}
+        {'namespace': 'Foo'},
+        {'reserved': True}
     )
 
     assert (
