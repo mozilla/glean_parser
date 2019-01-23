@@ -27,7 +27,7 @@ def test_translate_missing_directory(tmpdir):
         ROOT / 'data' / 'core.yaml',
         'kotlin',
         output,
-        parser_config={'reserved': True}
+        parser_config={'allow_reserved': True}
     )
 
     assert len(list(output.iterdir())) == 5
@@ -40,7 +40,7 @@ def test_translate_remove_obsolete_files(tmpdir):
         ROOT / 'data' / 'core.yaml',
         'kotlin',
         output,
-        parser_config={'reserved': True}
+        parser_config={'allow_reserved': True}
     )
 
     assert len(list(output.iterdir())) == 5

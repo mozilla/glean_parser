@@ -128,7 +128,7 @@ def _merge_and_instantiate_metrics(filepaths, config):
         for category_key, category_val in metrics_content.items():
             if category_key.startswith('$'):
                 continue
-            if (not config.get('reserved') and
+            if (not config.get('allow_reserved') and
                     category_key.split('.')[0] == 'glean'):
                 yield (
                     f"{filepath}: For category '{category_key}': "
@@ -182,7 +182,7 @@ def parse_metrics(filepaths, config={}):
     :param filepaths: list of Path objects to metrics.yaml files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
-            - `reserved`: When True, allow values that are reserved for
+            - `allow_reserved`: When True, allow values that are reserved for
               internal Glean use.
     """
     filepaths = util.ensure_list(filepaths)

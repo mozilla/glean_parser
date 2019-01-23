@@ -24,7 +24,7 @@ def test_parser(tmpdir):
         'kotlin',
         tmpdir,
         {'namespace': 'Foo'},
-        {'reserved': True}
+        {'allow_reserved': True}
     )
 
     assert (

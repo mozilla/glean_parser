@@ -209,6 +209,6 @@ def test_parser_reserved():
     assert len(errors) == 1
     assert "For category 'glean.baseline'" in errors[0]
 
-    all_metrics = parser.parse_metrics(contents, {'reserved': True})
+    all_metrics = parser.parse_metrics(contents, {'allow_reserved': True})
     errors = list(all_metrics)
     assert len(errors) == 0
