@@ -37,7 +37,8 @@ def test_translate(tmpdir):
             '-f',
             'kotlin',
             '-s',
-            'namespace=Foo'
+            'namespace=Foo',
+            '--allow-reserved'
         ]
     )
     assert result.exit_code == 0

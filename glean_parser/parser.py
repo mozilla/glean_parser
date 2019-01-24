@@ -113,7 +113,7 @@ def _load_metrics_file(filepath):
         return metrics_content
 
 
-def _merge_and_instantiate_metrics(filepaths):
+def _merge_and_instantiate_metrics(filepaths, config):
     """
     Load a list of metrics.yaml files, convert the JSON information into Metric
     objects, and merge them into a single tree.
@@ -127,6 +127,14 @@ def _merge_and_instantiate_metrics(filepaths):
         metrics_content = yield from _load_metrics_file(filepath)
         for category_key, category_val in metrics_content.items():
             if category_key.startswith('$'):
+                continue
+            if (not config.get('allow_reserved') and
+                    category_key.split('.')[0] == 'glean'):
+                yield (
+                    f"{filepath}: For category '{category_key}': "
+                    f"Categories beginning with 'glean' are reserved for "
+                    f"glean internal use."
+                )
                 continue
             output_metrics.setdefault(category_key, {})
             for metric_key, metric_val in category_val.items():
@@ -154,7 +162,7 @@ def _merge_and_instantiate_metrics(filepaths):
 
 
 @util.keep_value
-def parse_metrics(filepaths):
+def parse_metrics(filepaths, config={}):
     """
     Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`
     instances.
@@ -170,7 +178,13 @@ def parse_metrics(filepaths):
     The result value is a dictionary of category names to categories, where
     each category is a dictionary from metric name to `metrics.Metric`
     instances.
+
+    :param filepaths: list of Path objects to metrics.yaml files
+    :param config: A dictionary of options that change parsing behavior.
+        Supported keys are:
+            - `allow_reserved`: When True, allow values that are reserved for
+              internal Glean use.
     """
     filepaths = util.ensure_list(filepaths)
-    all_metrics = yield from _merge_and_instantiate_metrics(filepaths)
+    all_metrics = yield from _merge_and_instantiate_metrics(filepaths, config)
     return all_metrics
