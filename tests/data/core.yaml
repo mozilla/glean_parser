@@ -10,6 +10,8 @@ telemetry:
       Some Unicode: جمع 搜集
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -24,6 +26,8 @@ core_ping:
       number to allow detecting for missing send_in_pings.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -36,6 +40,8 @@ core_ping:
       The date the ping was created.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -47,6 +53,8 @@ core_ping:
       The number of sessions since the last upload.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -60,6 +68,8 @@ core_ping:
     time_unit: second
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -73,6 +83,8 @@ core_ping:
       combination, e.g. “engine.source” = 3.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -85,6 +97,8 @@ core_ping:
       upload.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -96,6 +110,8 @@ core_ping:
       True if the user has set Firefox as the default browser.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -108,6 +124,8 @@ environment:
     description: The application locale, e.g. “en-US”.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -123,6 +141,8 @@ environment:
     description: The name of the operating system.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -134,6 +154,8 @@ environment:
     description: The version of the operating system.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -148,6 +170,8 @@ environment:
       characters.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -162,6 +186,8 @@ environment:
     description: The architecture of the device.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
 
@@ -172,6 +198,8 @@ environment:
     time_unit: day
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -184,6 +212,8 @@ environment:
       Identifier of the default search engine, e.g. “yahoo”.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -196,6 +226,8 @@ environment:
       Version displayed to the user, e.g. “57.0b2”.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -208,6 +240,8 @@ environment:
       Distribution identifier, e.g. “lollipop”.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -220,6 +254,8 @@ environment:
       Adjust’s campaign identifier.
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
@@ -231,6 +267,8 @@ environment:
       Just testing events
     bugs:
       - 123456789
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
     objects:
@@ -248,6 +286,8 @@ dotted.category:
       dummy metric
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
 
@@ -259,5 +299,7 @@ glean.internal.metrics:
       internal metric
     bugs:
       - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com

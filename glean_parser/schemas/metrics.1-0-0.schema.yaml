@@ -173,7 +173,7 @@ definitions:
             - type: string
               format: uri
 
-      reviews:
+      data_reviews:
         title: Review references
         description: |
           A list of URIs to any data collection reviews relevant to the metric.
@@ -296,6 +296,7 @@ definitions:
       - bugs
       - description
       - notification_emails
+      - data_reviews
 
 type: object
 

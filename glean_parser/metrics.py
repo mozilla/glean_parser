@@ -99,7 +99,7 @@ class Metric:
     bugs: List[Union[int, str]]
     description: str
     notification_emails: List[str]
-    reviews: List[str] = field(default_factory=list)
+    data_reviews: List[str] = field(default_factory=list)
     version: int = 0
 
     # Ping-related properties
