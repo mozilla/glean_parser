@@ -18,7 +18,7 @@ import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% if 'timespan' in metric_types or 'timing_distribution' in metric_types -%}
 import mozilla.components.service.glean.TimeUnit
 {% endif %}
-object {{ category_name|Camelize }} {
+internal object {{ category_name|Camelize }} {
 {%- for metric in metrics.values() %}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
