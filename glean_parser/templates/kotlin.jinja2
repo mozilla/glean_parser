@@ -15,11 +15,38 @@ import mozilla.components.service.glean.Lifetime
 {% for metric_type in metric_types -%}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor -%}
+{% if has_labeled_metrics -%}
+import mozilla.components.service.glean.LabeledMetricType
+{% endif -%}
 {% if 'timespan' in metric_types or 'timing_distribution' in metric_types -%}
 import mozilla.components.service.glean.TimeUnit
-{% endif %}
+{% endif -%}
+
 internal object {{ category_name|Camelize }} {
 {%- for metric in metrics.values() %}
+    {%- if metric.labeled %}
+    private val {{ metric.name|camelize }}Label: {{ metric.type|Camelize }}MetricType by lazy {
+        {{ metric.type|Camelize }}MetricType(
+            {% for arg_name in extra_args if metric[arg_name] is defined -%}
+            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }}{{ "," if not loop.last }}
+            {% endfor -%}
+        )
+    }
+    /**
+     * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
+     */
+    val {{ metric.name|camelize }}: LabeledMetricType<{{ metric.type|Camelize }}MetricType> by lazy {
+        LabeledMetricType(
+            category = {{ metric.category|kotlin }},
+            name = {{ metric.name|kotlin }},
+            subMetric = {{ metric.name|camelize }}Label,
+            disabled = {{ metric.disabled|kotlin }},
+            lifetime = {{ metric.lifetime|kotlin }},
+            sendInPings = {{ metric.send_in_pings|kotlin }},
+            labels = {{ metric.labels|kotlin }}
+        )
+    }
+    {%- else %}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
      */
@@ -30,5 +57,6 @@ internal object {{ category_name|Camelize }} {
             {% endfor -%}
         )
     }
-{% endfor -%}
+    {%- endif -%}
+{%- endfor %}
 }

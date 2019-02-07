@@ -24,6 +24,8 @@ def test_parser():
             assert isinstance(metric_val, metrics.Metric)
             assert isinstance(metric_val.lifetime,
                               metrics.Lifetime)
+            if metric_val.labels is not None:
+                assert isinstance(metric_val.labels, set)
 
 
 def test_parser_invalid():

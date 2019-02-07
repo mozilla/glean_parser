@@ -12,7 +12,7 @@ import dataclasses
 from dataclasses import dataclass, field, InitVar
 import datetime
 import enum
-from typing import Dict, List, Union
+from typing import Dict, List, Set, Union
 
 import isodate
 
@@ -58,6 +58,8 @@ class Metric:
         for key, val in d.items():
             if isinstance(val, enum.Enum):
                 d[key] = d[key].name
+            if isinstance(val, set):
+                d[key] = list(val)
         del d['name']
         del d['category']
         return d
@@ -71,6 +73,10 @@ class Metric:
                     f.name,
                     getattr(f.type, getattr(self, f.name))
                 )
+            if f.type == Set[str]:
+                value = getattr(self, f.name)
+                if isinstance(value, list):
+                    setattr(self, f.name, set(value))
 
         if expires_after_build_date is not None:
             self.expires_after_build_date = isodate.parse_date(
@@ -112,7 +118,7 @@ class Metric:
 
     # Labeled metrics
     labeled: bool = False
-    labels: List[str] = field(default_factory=list)
+    labels: Set[str] = None
 
     # Implementation detail
     _validated: InitVar[bool] = False
