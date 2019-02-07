@@ -214,3 +214,58 @@ def test_parser_reserved():
     all_metrics = parser.parse_metrics(contents, {'allow_reserved': True})
     errors = list(all_metrics)
     assert len(errors) == 0
+
+
+def test_parser_slash_in_name():
+    contents = [
+        {
+            'glean.baseline': {
+                'metric/with_slash': {
+                    'type': 'string',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "metric/with_slash" in errors[0]
+
+
+def test_parser_slash_in_category():
+    contents = [
+        {
+            'glean.baseline/slash': {
+                'metric': {
+                    'type': 'string',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "glean.baseline/slash" in errors[0]
+
+
+def test_parser_slash_in_labels():
+    contents = [
+        {
+            'glean.baseline': {
+                'metric': {
+                    'type': 'string',
+                    'labels': ['has/a_slash']
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "has/a_slash" in errors[0]
