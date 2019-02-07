@@ -251,9 +251,12 @@ definitions:
           A list of labels for a labeled metric or use counter.
 
           Valid when `labeled`_ is `true`.
-        type: array
-        items:
-          $ref: "#/definitions/snake_case"
+        anyOf:
+          - type: array
+            items:
+              $ref: "#/definitions/snake_case"
+            maxItems: 16
+          - type: "null"
 
       denominator:
         title: Denominator

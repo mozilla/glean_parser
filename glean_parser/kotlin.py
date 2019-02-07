@@ -49,6 +49,15 @@ def kotlin_datatypes_filter(value):
                     f'{value.__class__.__name__}.'
                     f'{util.Camelize(value.name)}'
                 )
+            elif isinstance(value, set):
+                yield 'setOf('
+                first = True
+                for subvalue in sorted(list(value)):
+                    if not first:
+                        yield ', '
+                    yield from self.iterencode(subvalue)
+                    first = False
+                yield ')'
             else:
                 yield from super().iterencode(value)
 
@@ -98,6 +107,9 @@ def output_kotlin(metrics, output_dir, options={}):
         metric_types = sorted(list(set(
             metric.type for metric in category_val.values()
         )))
+        has_labeled_metrics = any(
+            metric.labeled for metric in category_val.values()
+        )
 
         with open(filepath, 'w', encoding='utf-8') as fd:
             fd.write(
@@ -107,6 +119,7 @@ def output_kotlin(metrics, output_dir, options={}):
                     metric_types=metric_types,
                     extra_args=extra_args,
                     namespace=namespace,
+                    has_labeled_metrics=has_labeled_metrics,
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
