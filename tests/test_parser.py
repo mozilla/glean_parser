@@ -5,6 +5,8 @@
 
 from pathlib import Path
 
+import pytest
+
 from glean_parser import metrics
 from glean_parser import parser
 
@@ -214,3 +216,60 @@ def test_parser_reserved():
     all_metrics = parser.parse_metrics(contents, {'allow_reserved': True})
     errors = list(all_metrics)
     assert len(errors) == 0
+
+
+def invalid_in_category(name):
+    return [
+        {
+            name: {
+                'metric': {
+                    'type': 'string',
+                },
+            },
+        },
+    ]
+
+
+def invalid_in_name(name):
+    return [
+        {
+            'glean.baseline': {
+                name: {
+                    'type': 'string',
+                },
+            },
+        },
+    ]
+
+
+def invalid_in_label(name):
+    return [
+        {
+            'glean.baseline': {
+                'metric': {
+                    'type': 'string',
+                    'labels': [name]
+                },
+            },
+        },
+    ]
+
+
+@pytest.mark.parametrize('location', [
+    invalid_in_category,
+    invalid_in_name,
+    invalid_in_label
+])
+@pytest.mark.parametrize('name', [
+    "name/with_slash",
+    "name#with_pound",
+    "this_name_is_too_long_and_shouldnt_be_used",
+    ""
+])
+def test_invalid_names(location, name):
+    contents = location(name)
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_metrics(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert name in errors[0]
