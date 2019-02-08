@@ -263,7 +263,8 @@ def invalid_in_label(name):
 @pytest.mark.parametrize('name', [
     "name/with_slash",
     "name#with_pound",
-    "this_name_is_too_long_and_shouldnt_be_used"
+    "this_name_is_too_long_and_shouldnt_be_used",
+    ""
 ])
 def test_invalid_names(location, name):
     contents = location(name)
