@@ -5,6 +5,8 @@
 
 from pathlib import Path
 
+import pytest
+
 from glean_parser import metrics
 from glean_parser import parser
 
@@ -216,28 +218,10 @@ def test_parser_reserved():
     assert len(errors) == 0
 
 
-def test_parser_slash_in_name():
-    contents = [
+def invalid_in_category(name):
+    return [
         {
-            'glean.baseline': {
-                'metric/with_slash': {
-                    'type': 'string',
-                },
-            },
-        },
-    ]
-
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert "metric/with_slash" in errors[0]
-
-
-def test_parser_slash_in_category():
-    contents = [
-        {
-            'glean.baseline/slash': {
+            name: {
                 'metric': {
                     'type': 'string',
                 },
@@ -245,27 +229,46 @@ def test_parser_slash_in_category():
         },
     ]
 
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert "glean.baseline/slash" in errors[0]
 
-
-def test_parser_slash_in_labels():
-    contents = [
+def invalid_in_name(name):
+    return [
         {
             'glean.baseline': {
-                'metric': {
+                name: {
                     'type': 'string',
-                    'labels': ['has/a_slash']
                 },
             },
         },
     ]
 
+
+def invalid_in_label(name):
+    return [
+        {
+            'glean.baseline': {
+                'metric': {
+                    'type': 'string',
+                    'labels': [name]
+                },
+            },
+        },
+    ]
+
+
+@pytest.mark.parametrize('location', [
+    invalid_in_category,
+    invalid_in_name,
+    invalid_in_label
+])
+@pytest.mark.parametrize('name', [
+    "name/with_slash",
+    "name#with_pound",
+    "this_name_is_too_long_and_shouldnt_be_used"
+])
+def test_invalid_names(location, name):
+    contents = location(name)
     contents = [util.add_required(x) for x in contents]
     all_metrics = parser.parse_metrics(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "has/a_slash" in errors[0]
+    assert name in errors[0]
