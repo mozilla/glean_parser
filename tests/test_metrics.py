@@ -95,3 +95,37 @@ def test_timespan_time_unit():
             notification_emails=['nobody@nowhere.com'],
             description='description...',
         )
+
+
+def test_identifier():
+    """
+    Test that the identifier is created correctly.
+    """
+    m = metrics.Timespan(
+        type='timespan',
+        category='category',
+        name='metric',
+        bugs=[42],
+        time_unit='day',
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+    )
+
+    assert m.identifier() == "category.metric"
+
+
+def test_identifier_glean_category():
+    """
+    Test that the glean-internal identifier is created correctly.
+    """
+    m = metrics.Timespan(
+        type='timespan',
+        category=metrics.Metric.glean_internal_metric_cat,
+        name='metric',
+        bugs=[42],
+        time_unit='day',
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+    )
+
+    assert m.identifier() == "metric"

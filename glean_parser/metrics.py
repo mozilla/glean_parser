@@ -27,6 +27,7 @@ class Lifetime(enum.Enum):
 
 @dataclass
 class Metric:
+    glean_internal_metric_cat = 'glean.internal.metrics'
     metric_types = {}
 
     def __init_subclass__(cls, **kwargs):
@@ -64,6 +65,16 @@ class Metric:
         del d['category']
         return d
 
+    def identifier(self):
+        """
+        Create an identifier unique for this metric.
+        Generally, category.name; however, glean internal
+        metrics only use name.
+        """
+        if not self.category:
+            return self.name
+        return '.'.join((self.category, self.name))
+
     def __post_init__(self, expires_after_build_date, _validated):
         # Convert enum fields to Python enums
         for f in dataclasses.fields(self):
@@ -94,7 +105,7 @@ class Metric:
 
         # Metrics in the special category "glean.internal.metrics" need to have
         # an empty category string when identifying the metrics in the ping.
-        if self.category == 'glean.internal.metrics':
+        if self.category == Metric.glean_internal_metric_cat:
             self.category = ''
 
     type: str
