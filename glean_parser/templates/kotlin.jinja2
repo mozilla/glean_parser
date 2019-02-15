@@ -12,14 +12,12 @@
 package {{ namespace }}
 
 import mozilla.components.service.glean.Lifetime
+import mozilla.components.service.glean.TimeUnit // ktlint-disable no-unused-imports
 {% for metric_type in metric_types -%}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor -%}
 {% if has_labeled_metrics -%}
 import mozilla.components.service.glean.LabeledMetricType
-{% endif -%}
-{% if 'timespan' in metric_types or 'timing_distribution' in metric_types -%}
-import mozilla.components.service.glean.TimeUnit
 {% endif -%}
 
 internal object {{ category_name|Camelize }} {
