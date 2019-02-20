@@ -14,6 +14,7 @@ script:
   - export PATH=.:$PATH
   - flake8 .
   - tox
+  - make docs
 deploy:
   - provider: pypi
     distributions: sdist bdist_wheel

@@ -182,8 +182,7 @@ def parse_metrics(filepaths, config={}):
     :param filepaths: list of Path objects to metrics.yaml files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
-            - `allow_reserved`: When True, allow values that are reserved for
-              internal Glean use.
+        - `allow_reserved`: Allow values reserved for internal Glean use.
     """
     filepaths = util.ensure_list(filepaths)
     all_metrics = yield from _merge_and_instantiate_metrics(filepaths, config)

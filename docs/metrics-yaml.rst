@@ -28,7 +28,7 @@ Metric parameters
 
 .. metric_parameter:: bugs
 
-.. metric_parameter:: reviews
+.. metric_parameter:: data_reviews
 
 .. metric_parameter:: lifetime
 

@@ -72,7 +72,7 @@ def output_kotlin(metrics, output_dir, options={}):
     """
     Given a tree of `metrics`, output Kotlin code to `output_dir`.
 
-    :param metrics: A tree of metrics, as returns from `parser.parse_metrics`.
+    :param metrics: A tree of metrics, as returned from `parser.parse_metrics`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 
