@@ -14,6 +14,7 @@ script:
   - export PATH=.:$PATH
   - flake8 .
   - tox
+  - pip install -r requirements_dev.txt
   - make docs
 deploy:
   - provider: pypi
