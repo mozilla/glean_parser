@@ -15,6 +15,7 @@ script:
   - flake8 .
   - tox
   - pip install -r requirements_dev.txt
+  - python setup.py develop
   - make docs
 deploy:
   - provider: pypi
