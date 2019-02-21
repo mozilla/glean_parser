@@ -17,6 +17,7 @@ script:
   - pip install -r requirements_dev.txt
   - python setup.py develop
   - make docs
+  - touch docs/_build/html/.nojekyll
 deploy:
   - provider: pypi
     distributions: sdist bdist_wheel
