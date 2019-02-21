@@ -50,8 +50,6 @@ Metric parameters
 
 .. metric_parameter:: denominator
 
-.. metric_parameter:: objects
-
 .. metric_parameter:: extra_keys
 
 JSON Schema
