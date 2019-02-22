@@ -120,10 +120,12 @@ Deploying
 
 A reminder for the maintainers on how to deploy.
 Make sure all your changes are committed (including an entry in HISTORY.rst).
-Then run::
+Then run (assuming the main fork is in a git remote called `upstream`)::
 
+$ git checkout master
+$ git fetch upstream
+$ git rebase upstream/master
 $ bumpversion patch # possible: major / minor / patch
-$ git push
-$ git push --tags
+$ git push upstream master --tags
 
 Travis will then deploy to PyPI if tests pass.
