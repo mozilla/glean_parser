@@ -94,7 +94,6 @@ def output_kotlin(metrics, output_dir, options={}):
         'values',
         'denominator',
         'time_unit',
-        'objects',
         'allowed_extra_keys'
     ]
 

@@ -219,7 +219,6 @@ class Rate(Metric):
 class Event(Metric):
     typename = 'event'
 
-    objects: List[str] = field(default_factory=list)
     extra_keys: Dict[str, str] = field(default_factory=dict)
 
     @property
