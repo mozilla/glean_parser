@@ -230,7 +230,9 @@ definitions:
           Specifies the unit that the metric will be stored and displayed in. If
           not provided, it defaults to milliseconds. Time values are sent to the
           backend as integers, so `time_unit`_ determines the maximum
-          resolution at which timespans are recorded.
+          resolution at which timespans are recorded. Times are always truncated,
+          not rounded, to the nearest time unit. For example, a measurement of 25 ns
+          will be returned as 0 ms if `time_unit` is `"millisecond"`.
 
           Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.
         enum:
