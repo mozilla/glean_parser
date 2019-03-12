@@ -90,7 +90,6 @@ def output_kotlin(metrics, output_dir, options={}):
         'category',
         'send_in_pings',
         'lifetime',
-        'disabled',
         'values',
         'denominator',
         'time_unit',

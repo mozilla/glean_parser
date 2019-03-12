@@ -16,3 +16,4 @@ telemetry:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never

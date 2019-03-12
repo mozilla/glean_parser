@@ -16,6 +16,7 @@ telemetry:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
 core_ping:
   seq:
@@ -32,6 +33,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   created:
     type: datetime
@@ -46,6 +48,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   sessions:
     type: counter
@@ -59,6 +62,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   durations:
     type: timespan
@@ -74,6 +78,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   searches:
     type: counter
@@ -89,6 +94,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   flash_usage:
     type: counter
@@ -103,6 +109,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   default_browser:
     type: boolean
@@ -116,6 +123,7 @@ core_ping:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
 environment:
   locale:
@@ -130,6 +138,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   os:
     type: enumeration
@@ -147,6 +156,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   os_version:
     type: string
@@ -160,6 +170,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   device:
     type: string
@@ -176,6 +187,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   arch:
     type: enumeration
@@ -190,6 +202,7 @@ environment:
       - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
+    expires: never
 
   profile_date:
     type: datetime
@@ -204,6 +217,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   default_search:
     type: string
@@ -218,6 +232,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   display_version:
     type: string
@@ -232,6 +247,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   distribution_id:
     type: string
@@ -246,6 +262,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   campaign_id:
     type: string
@@ -260,6 +277,7 @@ environment:
       - telemetry-client-dev@mozilla.com
     send_in_pings:
       - core
+    expires: never
 
   event_example:
     type: event
@@ -274,6 +292,7 @@ environment:
     extra_keys:
       key1: "This is key one"
       key2: "This is key two"
+    expires: never
 
 dotted.category:
   metric:
@@ -287,6 +306,7 @@ dotted.category:
       - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
+    expires: never
 
 glean.internal.metrics:
   internal:
@@ -300,3 +320,4 @@ glean.internal.metrics:
       - http://nowhere.com/reviews
     notification_emails:
       - telemetry-client-dev@mozilla.com
+    expires: never

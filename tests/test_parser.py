@@ -43,7 +43,7 @@ def test_parser_schema_violation():
     all_metrics = parser.parse_metrics(ROOT / "data" / "schema-violation.yaml")
     errors = list(all_metrics)
     print('\n'.join(errors))
-    assert len(errors) == 5
+    assert len(errors) == 6
 
 
 def test_parser_empty():
