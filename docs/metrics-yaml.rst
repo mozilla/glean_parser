@@ -36,7 +36,7 @@ Metric parameters
 
 .. metric_parameter:: disabled
 
-.. metric_parameter:: expires_after_build_date
+.. metric_parameter:: expires
 
 .. metric_parameter:: version
 

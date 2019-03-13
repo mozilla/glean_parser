@@ -140,7 +140,8 @@ class Metric:
                 date = datetime.date.fromisoformat(self.expires)
             except ValueError:
                 raise ValueError(
-                    f"Invalid expiration date '{self.expires}'"
+                    f"Invalid expiration date '{self.expires}'. "
+                    "Must be of the form yyyy-mm-dd in UTC."
                 )
             return date <= datetime.datetime.utcnow().date()
 

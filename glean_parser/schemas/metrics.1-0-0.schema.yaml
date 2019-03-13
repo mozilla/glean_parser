@@ -201,8 +201,9 @@ definitions:
           May be one of the following values:
             - `never`: This metric never expires
             - `expired`: This metric is manually expired
-            - `<build date>`: An ISO date in UTC on which the metric expires. This
-              date is checked at build time.
+            - `<build date>`: An ISO date 'yyyy-mm-dd' in UTC on which the
+              metric expires. For example, '2019-03-13'. This date is checked
+              at build time.
         type: string
         pattern: "(never)|(expired)|([0-9]{4}-[0-9]{2}-[0-9]{2})"
 
