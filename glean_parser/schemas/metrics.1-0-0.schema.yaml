@@ -181,6 +181,8 @@ definitions:
       data_reviews:
         title: Review references
         description: |
+          **Required.**
+
           A list of URIs to any data collection reviews relevant to the metric.
         type: array
         items:
@@ -198,6 +200,8 @@ definitions:
       expires:
         title: Expires
         description: |
+          **Required.**
+
           May be one of the following values:
             - `never`: This metric never expires
             - `expired`: This metric is manually expired
