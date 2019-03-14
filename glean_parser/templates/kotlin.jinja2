@@ -26,8 +26,9 @@ internal object {{ category_name|Camelize }} {
     private val {{ metric.name|camelize }}Label: {{ metric.type|Camelize }}MetricType by lazy {
         {{ metric.type|Camelize }}MetricType(
             {% for arg_name in extra_args if metric[arg_name] is defined -%}
-            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }}{{ "," if not loop.last }}
+            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }},
             {% endfor -%}
+            disabled = {{ metric.is_disabled()|kotlin }}
         )
     }
     /**
