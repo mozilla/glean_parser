@@ -38,24 +38,30 @@ def test_enforcement():
             name='metric',
             bugs=[42],
             description=42,
-            notification_emails=['nobody@nowhere.com']
+            notification_emails=['nobody@nowhere.com'],
+            expires='never'
         )
 
 
-def test_isodate():
+def test_expires():
     """
-    Test that expires_after_build_date is parsed into a datetime.
+    Test that expires is parsed correctly
     """
-    m = metrics.Boolean(
-        type='boolean',
-        category='category',
-        name='metric',
-        bugs=[42],
-        expires_after_build_date='2018-06-10',
-        notification_emails=['nobody@nowhere.com'],
-        description='description...',
-    )
-    assert isinstance(m.expires_after_build_date, datetime.date)
+    for date, expired in [
+            ('2018-06-10', True),
+            (datetime.datetime.utcnow().date().isoformat(), True),
+            ('3000-01-01', False)
+    ]:
+        m = metrics.Boolean(
+            type='boolean',
+            category='category',
+            name='metric',
+            bugs=[42],
+            expires=date,
+            notification_emails=['nobody@nowhere.com'],
+            description='description...',
+        )
+        assert m.is_expired() == expired
 
     with pytest.raises(ValueError):
         m = metrics.Boolean(
@@ -63,7 +69,7 @@ def test_isodate():
             category='category',
             name='metric',
             bugs=[42],
-            expires_after_build_date='foo',
+            expires='foo',
             notification_emails=['nobody@nowhere.com'],
             description='description...',
         )
@@ -81,6 +87,7 @@ def test_timespan_time_unit():
         time_unit='day',
         notification_emails=['nobody@nowhere.com'],
         description='description...',
+        expires='never',
     )
     assert isinstance(m.time_unit, metrics.TimeUnit)
     assert m.time_unit == metrics.TimeUnit.day
@@ -94,6 +101,7 @@ def test_timespan_time_unit():
             time_unit='foo',
             notification_emails=['nobody@nowhere.com'],
             description='description...',
+            expires='never',
         )
 
 
@@ -109,6 +117,7 @@ def test_identifier():
         time_unit='day',
         notification_emails=['nobody@nowhere.com'],
         description='description...',
+        expires='never',
     )
 
     assert m.identifier() == "category.metric"
@@ -126,6 +135,7 @@ def test_identifier_glean_category():
         time_unit='day',
         notification_emails=['nobody@nowhere.com'],
         description='description...',
+        expires='never',
     )
 
     assert m.identifier() == "metric"

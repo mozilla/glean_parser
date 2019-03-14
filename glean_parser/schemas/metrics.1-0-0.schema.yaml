@@ -195,18 +195,17 @@ definitions:
         type: boolean
         default: false
 
-      expires_after_build_date:
-        title: Expires after build date.
+      expires:
+        title: Expires
         description: |
-          If provided, an ISO 8601 date that represents the day from which any
-          collection using the metric should be silently ignored. The date is
-          checked at build time. If the specified date is passed, this metric is
-          treated as expired.
-        anyOf:
-          - type: string
-            format: date-time
-          - type: "null"
-        default: null
+          May be one of the following values:
+            - `never`: This metric never expires
+            - `expired`: This metric is manually expired
+            - `<build date>`: An ISO date 'yyyy-mm-dd' in UTC on which the
+              metric expires. For example, '2019-03-13'. This date is checked
+              at build time.
+        type: string
+        pattern: "(never)|(expired)|([0-9]{4}-[0-9]{2}-[0-9]{2})"
 
       version:
         title: Metric version
@@ -295,6 +294,7 @@ definitions:
       - description
       - notification_emails
       - data_reviews
+      - expires
 
 type: object
 

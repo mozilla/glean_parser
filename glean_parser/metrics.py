@@ -14,8 +14,6 @@ import datetime
 import enum
 from typing import Dict, List, Set, Union
 
-import isodate
-
 from . import parser
 
 
@@ -60,7 +58,7 @@ class Metric:
             if isinstance(val, enum.Enum):
                 d[key] = d[key].name
             if isinstance(val, set):
-                d[key] = list(val)
+                d[key] = sorted(list(val))
         del d['name']
         del d['category']
         return d
@@ -75,7 +73,7 @@ class Metric:
             return self.name
         return '.'.join((self.category, self.name))
 
-    def __post_init__(self, expires_after_build_date, _validated):
+    def __post_init__(self, _validated):
         # Convert enum fields to Python enums
         for f in dataclasses.fields(self):
             if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
@@ -89,12 +87,9 @@ class Metric:
                 if isinstance(value, list):
                     setattr(self, f.name, set(value))
 
-        if expires_after_build_date is not None:
-            self.expires_after_build_date = isodate.parse_date(
-                expires_after_build_date
-            )
-
         if not _validated:
+            self.validate_expires(self.expires)
+
             data = {
                 self.category: {
                     self.name: self.serialize()
@@ -116,16 +111,14 @@ class Metric:
     bugs: List[Union[int, str]]
     description: str
     notification_emails: List[str]
+    expires: str
     data_reviews: List[str] = field(default_factory=list)
     version: int = 0
+    disabled: bool = False
 
     # Ping-related properties
     lifetime: Lifetime = 'ping'
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
-
-    # Expiry
-    disabled: bool = False
-    expires_after_build_date: InitVar[datetime.date] = None
 
     # Labeled metrics
     labeled: bool = False
@@ -133,6 +126,30 @@ class Metric:
 
     # Implementation detail
     _validated: InitVar[bool] = False
+
+    def is_disabled(self):
+        return self.disabled or self.is_expired()
+
+    def is_expired(self):
+        if self.expires == 'never':
+            return False
+        elif self.expires == 'expired':
+            return True
+        else:
+            try:
+                date = datetime.date.fromisoformat(self.expires)
+            except ValueError:
+                raise ValueError(
+                    f"Invalid expiration date '{self.expires}'. "
+                    "Must be of the form yyyy-mm-dd in UTC."
+                )
+            return date <= datetime.datetime.utcnow().date()
+
+    @staticmethod
+    def validate_expires(expires):
+        if expires in ('never', 'expired'):
+            return
+        datetime.date.fromisoformat(expires)
 
 
 @dataclass

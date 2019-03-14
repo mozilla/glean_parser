@@ -29,10 +29,9 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     'Click>=6.0',
     'PyYAML>=3.13',
-    'jsonschema>=3.0.0a3',
+    'jsonschema>=3.0.0',
     'inflection>=0.3.1',
     'Jinja2>=2.10',
-    'isodate>=0.6.0',
     'diskcache>=3.1.0',
     'appdirs>=1.4.3'
 ]
