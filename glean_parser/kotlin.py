@@ -9,7 +9,6 @@ Outputter to generate Kotlin code for metrics.
 """
 
 import enum
-import io
 import json
 
 from . import util
@@ -19,8 +18,11 @@ def kotlin_datatypes_filter(value):
     """
     A Jinja2 filter that renders Kotlin literals.
 
-    Based on Python's JSONEncoder, but overrides lists to use listOf, and dicts
-    to use mapOf.
+    Based on Python's JSONEncoder, but overrides:
+      - lists to use listOf
+      - dicts to use mapOf
+      - sets to use setOf
+      - enums to use the like-named Kotlin enum
     """
     class KotlinEncoder(json.JSONEncoder):
         def iterencode(self, value):
@@ -61,11 +63,7 @@ def kotlin_datatypes_filter(value):
             else:
                 yield from super().iterencode(value)
 
-    fd = io.StringIO()
-    encoder = KotlinEncoder()
-    for chunk in encoder.iterencode(value):
-        fd.write(chunk)
-    return fd.getvalue()
+    return ''.join(KotlinEncoder().iterencode(value))
 
 
 def output_kotlin(metrics, output_dir, options={}):
