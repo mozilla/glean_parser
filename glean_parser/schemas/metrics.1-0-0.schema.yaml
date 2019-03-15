@@ -277,15 +277,22 @@ definitions:
         title: Extra keys
         description: |
           The acceptable keys on the "extra" object sent with events. This is an
-          object mapping the key to a description.
+          object mapping the key to an object containing metadata about the key.
+          This metadata object has the following keys:
+
+            - `description`: **Required.** A description of the key.
 
           Valid when `type`_ is `event`.
         type: object
         propertyNames:
-          $ref: "#/definitions/long_id"
+          $ref: "#/definitions/dotted_snake_case"
         additionalProperties:
-          type: string
-          maxLength: 100
+          type: object
+          properties:
+            description:
+              type: string
+          required:
+            - description
         default: {}
 
     required:

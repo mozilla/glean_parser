@@ -35,16 +35,26 @@ class Metric:
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category, name, metric_info, validated=False):
+    def make_metric(cls, category, name, metric_info, config={}, validated=False):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
+
+        :param: category The category the metric lives in
+        :param: name The name of the metric
+        :param: metric_info A dictionary of the remaining metric parameters
+        :param: config A dictionary containing commandline configuration
+            parameters
+        :param: validated True if the metric has already gone through
+            jsonschema validation
+        :return: A new Metric instance.
         """
         metric_type = metric_info['type']
         return cls.metric_types[metric_type](
             category=category,
             name=name,
             _validated=validated,
+            _config=config,
             **metric_info
         )
 
@@ -73,7 +83,7 @@ class Metric:
             return self.name
         return '.'.join((self.category, self.name))
 
-    def __post_init__(self, _validated):
+    def __post_init__(self, _config, _validated):
         # Convert enum fields to Python enums
         for f in dataclasses.fields(self):
             if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
@@ -87,9 +97,13 @@ class Metric:
                 if isinstance(value, list):
                     setattr(self, f.name, set(value))
 
-        if not _validated:
-            self.validate_expires(self.expires)
+        self.validate_expires(self.expires)
+        if hasattr(self, 'extra_keys'):
+            self.validate_extra_keys(self.extra_keys, _config)
 
+        # _validated indicates whether this metric has already been jsonschema
+        # validated (but not any of the Python-level validation).
+        if not _validated:
             data = {
                 self.category: {
                     self.name: self.serialize()
@@ -124,7 +138,9 @@ class Metric:
     labeled: bool = False
     labels: Set[str] = None
 
-    # Implementation detail
+    # Implementation detail -- these are parameters to the constructor that
+    # aren't stored in the dataclass object.
+    _config: InitVar[dict] = {}
     _validated: InitVar[bool] = False
 
     def is_disabled(self):
@@ -240,7 +256,19 @@ class Event(Metric):
 
     @property
     def allowed_extra_keys(self):
-        return list(self.extra_keys.keys())
+        # Sort keys so that output is deterministic
+        return sorted(list(self.extra_keys.keys()))
+
+    @staticmethod
+    def validate_extra_keys(extra_keys, config):
+        if (
+                not config.get('allow_reserved') and
+                any(k.startswith('glean.') for k in extra_keys.keys())
+        ):
+            raise ValueError(
+                "Extra keys beginning with 'glean.' are reserved for "
+                "glean internal use."
+            )
 
 
 @dataclass

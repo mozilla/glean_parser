@@ -139,3 +139,33 @@ def test_identifier_glean_category():
     )
 
     assert m.identifier() == "metric"
+
+
+def test_reserved_extra_keys():
+    """
+    Test that extra keys starting with 'glean.' are rejected for
+    non-internal metrics.
+    """
+    with pytest.raises(ValueError):
+        metrics.Event(
+            type='event',
+            category='category',
+            name='metric',
+            bugs=[42],
+            notification_emails=['nobody@nowhere.com'],
+            description='description...',
+            expires='never',
+            extra_keys={'glean.internal': {'description': 'foo'}}
+        )
+
+    metrics.Event(
+        type='event',
+        category='category',
+        name='metric',
+        bugs=[42],
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+        expires='never',
+        extra_keys={'glean.internal': {'description': 'foo'}},
+        _config={'allow_reserved': True}
+    )
