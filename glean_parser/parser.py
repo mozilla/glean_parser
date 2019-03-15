@@ -140,7 +140,8 @@ def _merge_and_instantiate_metrics(filepaths, config):
             for metric_key, metric_val in category_val.items():
                 try:
                     metric_obj = Metric.make_metric(
-                        category_key, metric_key, metric_val, validated=True
+                        category_key, metric_key, metric_val,
+                        validated=True, config=config
                     )
                 except Exception as e:
                     yield f"{filepath}: {category_key}.{metric_key}: {e}"
