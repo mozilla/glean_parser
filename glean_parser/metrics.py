@@ -35,7 +35,14 @@ class Metric:
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category, name, metric_info, config={}, validated=False):
+    def make_metric(
+            cls,
+            category,
+            name,
+            metric_info,
+            config={},
+            validated=False
+    ):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
