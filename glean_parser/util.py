@@ -85,7 +85,9 @@ def get_jinja2_template(template_name, filters=()):
         additional filters.
     """
     env = jinja2.Environment(
-        loader=jinja2.PackageLoader('glean_parser', 'templates')
+        loader=jinja2.PackageLoader('glean_parser', 'templates'),
+        trim_blocks=True,
+        lstrip_blocks=True,
     )
 
     env.filters['camelize'] = camelize

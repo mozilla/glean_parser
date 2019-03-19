@@ -11,6 +11,7 @@ Outputter to generate Kotlin code for metrics.
 import enum
 import json
 
+from . import metrics
 from . import util
 
 
@@ -66,6 +67,20 @@ def kotlin_datatypes_filter(value):
     return ''.join(KotlinEncoder().iterencode(value))
 
 
+def metric_type_name(metric):
+    """
+    Returns the Kotlin class name to use for a given metric.
+    """
+    if isinstance(metric, metrics.Event):
+        if len(metric.extra_keys):
+            enumeration = f'{util.camelize(metric.name)}Keys'
+        else:
+            enumeration = 'NoExtraKeys'
+        return f'EventMetricType<{enumeration}>'
+    else:
+        return f'{util.Camelize(metric.type)}MetricType'
+
+
 def output_kotlin(metrics, output_dir, options={}):
     """
     Given a tree of `metrics`, output Kotlin code to `output_dir`.
@@ -79,7 +94,10 @@ def output_kotlin(metrics, output_dir, options={}):
     """
     template = util.get_jinja2_template(
         'kotlin.jinja2',
-        filters=(('kotlin', kotlin_datatypes_filter),)
+        filters=(
+            ('kotlin', kotlin_datatypes_filter),
+            ('metric_type_name', metric_type_name)
+        )
     )
 
     # The metric parameters to pass to constructors
@@ -90,8 +108,7 @@ def output_kotlin(metrics, output_dir, options={}):
         'lifetime',
         'values',
         'denominator',
-        'time_unit',
-        'allowed_extra_keys'
+        'time_unit'
     ]
 
     namespace = options.get('namespace', 'GleanMetrics')

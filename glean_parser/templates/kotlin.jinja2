@@ -7,34 +7,45 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+{% macro metric_declaration(metric, suffix='', access='') %}
+{{ access }}val {{ metric.name|camelize }}{{ suffix }}: {{ metric|metric_type_name }} by lazy {
+        {{ metric|metric_type_name }}(
+            {% for arg_name in extra_args if metric[arg_name] is defined %}
+            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }},
+            {% endfor %}
+            disabled = {{ metric.is_disabled()|kotlin }}
+        )
+    }{% endmacro %}
 
 @file:Suppress("PackageNaming")
 package {{ namespace }}
 
 import mozilla.components.service.glean.Lifetime
 import mozilla.components.service.glean.TimeUnit // ktlint-disable no-unused-imports
-{% for metric_type in metric_types -%}
+{% for metric_type in metric_types %}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
-{% endfor -%}
-{% if has_labeled_metrics -%}
+{% endfor %}
+{% if has_labeled_metrics %}
 import mozilla.components.service.glean.LabeledMetricType
-{% endif -%}
+{% endif %}
 
 internal object {{ category_name|Camelize }} {
-{%- for metric in metrics.values() %}
-    {%- if metric.labeled %}
-    private val {{ metric.name|camelize }}Label: {{ metric.type|Camelize }}MetricType by lazy {
-        {{ metric.type|Camelize }}MetricType(
-            {% for arg_name in extra_args if metric[arg_name] is defined -%}
-            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }},
-            {% endfor -%}
-            disabled = {{ metric.is_disabled()|kotlin }}
-        )
+{% for metric in metrics.values() %}
+    {% if metric.extra_keys|length %}
+    enum class {{ metric.name|camelize }}Keys(val value: String) {
+    {% for key in metric.allowed_extra_keys %}
+        {{ key|camelize }}({{ key|kotlin }}){{ "," if not loop.last }}
+    {% endfor %}
     }
+    {% endif %}
+{% endfor %}
+{% for metric in metrics.values() %}
+    {% if metric.labeled %}
+    {{ metric_declaration(metric, 'Label', 'private ') }}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
      */
-    val {{ metric.name|camelize }}: LabeledMetricType<{{ metric.type|Camelize }}MetricType> by lazy {
+    val {{ metric.name|camelize }}: LabeledMetricType<{{ metric|metric_type_name }}> by lazy {
         LabeledMetricType(
             category = {{ metric.category|kotlin }},
             name = {{ metric.name|kotlin }},
@@ -45,18 +56,11 @@ internal object {{ category_name|Camelize }} {
             labels = {{ metric.labels|kotlin }}
         )
     }
-    {%- else %}
+    {% else %}
     /**
      * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
      */
-    val {{ metric.name|camelize }}: {{ metric.type|Camelize }}MetricType by lazy {
-        {{ metric.type|Camelize }}MetricType(
-            {% for arg_name in extra_args if metric[arg_name] is defined -%}
-            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }},
-            {% endfor -%}
-            disabled = {{ metric.is_disabled()|kotlin }}
-        )
-    }
-    {%- endif -%}
+    {{ metric_declaration(metric) }}
+    {% endif %}
 {%- endfor %}
 }

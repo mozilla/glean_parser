@@ -296,6 +296,18 @@ environment:
         description: "This is key two"
     expires: never
 
+  event_no_keys:
+    type: event
+    description: >
+      Just testing events
+    bugs:
+      - 123456789
+    data_reviews:
+      - http://nowhere.com/reviews
+    notification_emails:
+      - telemetry-client-dev@mozilla.com
+    expires: never
+
 dotted.category:
   metric:
     type: string
