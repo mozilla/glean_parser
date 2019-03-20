@@ -68,3 +68,42 @@ def test_kotlin_generator():
     assert kdf({'key': 'value', 'key2': 'value2'}) == \
         r'mapOf("key" to "value", "key2" to "value2")'
     assert kdf(metrics.Lifetime.ping) == 'Lifetime.Ping'
+
+
+def test_metric_type_name():
+    event = metrics.Event(
+        type='event',
+        category='category',
+        name='metric',
+        bugs=[42],
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+        expires='never',
+        extra_keys={'my_extra': {'description': 'an extra'}},
+    )
+
+    assert kotlin.metric_type_name(event) == 'EventMetricType<metricKeys>'
+
+    event = metrics.Event(
+        type='event',
+        category='category',
+        name='metric',
+        bugs=[42],
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+        expires='never',
+    )
+
+    assert kotlin.metric_type_name(event) == 'EventMetricType<NoExtraKeys>'
+
+    boolean = metrics.Boolean(
+        type='boolean',
+        category='category',
+        name='metric',
+        bugs=[42],
+        notification_emails=['nobody@nowhere.com'],
+        description='description...',
+        expires='never'
+    )
+
+    assert kotlin.metric_type_name(boolean) == 'BooleanMetricType'
