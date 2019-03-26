@@ -22,6 +22,7 @@ package {{ namespace }}
 
 import mozilla.components.service.glean.Lifetime
 import mozilla.components.service.glean.TimeUnit // ktlint-disable no-unused-imports
+import mozilla.components.service.glean.NoExtraKeys // ktlint-disable no-unused-imports
 {% for metric_type in metric_types %}
 import mozilla.components.service.glean.{{ metric_type|Camelize }}MetricType
 {% endfor %}
