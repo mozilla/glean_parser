@@ -20,6 +20,37 @@ import yaml
 TESTING_MODE = 'pytest' in sys.modules
 
 
+# Adapted from
+# https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
+class _NoDatesSafeLoader(yaml.SafeLoader):
+    @classmethod
+    def remove_implicit_resolver(cls, tag_to_remove):
+        """
+        Remove implicit resolvers for a particular tag
+
+        Takes care not to modify resolvers in super classes.
+
+        We want to load datetimes as strings, not dates, because we
+        go on to serialise as json which doesn't have the advanced types
+        of yaml, and leads to incompatibilities down the track.
+        """
+        if 'yaml_implicit_resolvers' not in cls.__dict__:
+            cls.yaml_implicit_resolvers = cls.yaml_implicit_resolvers.copy()
+
+        for first_letter, mappings in cls.yaml_implicit_resolvers.items():
+            cls.yaml_implicit_resolvers[first_letter] = [
+                (tag, regexp)
+                for tag, regexp in mappings
+                if tag != tag_to_remove
+            ]
+
+
+# Since we use JSON schema to validate, and JSON schema doesn't support
+# datetimes, we don't want the YAML loader to give us datetimes -- just
+# strings.
+_NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
+
+
 def load_yaml_or_json(path):
     """
     Load the content from either a .json or .yaml file, based on the filename
@@ -38,7 +69,7 @@ def load_yaml_or_json(path):
             return json.load(fd)
     elif path.suffix in ('.yml', '.yaml'):
         with open(path, 'r') as fd:
-            return yaml.safe_load(fd)
+            return yaml.load(fd, Loader=_NoDatesSafeLoader)
     else:
         raise ValueError(f'Unknown file extension {path.suffix}')
 

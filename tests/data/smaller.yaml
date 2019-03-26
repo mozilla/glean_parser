@@ -13,7 +13,7 @@ telemetry:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
