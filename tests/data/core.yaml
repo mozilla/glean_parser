@@ -13,10 +13,10 @@ telemetry:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
 core_ping:
   seq:
@@ -30,10 +30,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   created:
     type: datetime
@@ -45,10 +45,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   sessions:
     type: counter
@@ -59,10 +59,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   durations:
     type: timespan
@@ -75,10 +75,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   searches:
     type: counter
@@ -91,10 +91,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   flash_usage:
     type: counter
@@ -106,10 +106,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   default_browser:
     type: boolean
@@ -120,10 +120,10 @@ core_ping:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
 environment:
   locale:
@@ -135,10 +135,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   os:
     type: enumeration
@@ -153,10 +153,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   os_version:
     type: string
@@ -167,10 +167,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   device:
     type: string
@@ -184,10 +184,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   arch:
     type: enumeration
@@ -201,8 +201,8 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
-    expires: never
+      - CHANGE-ME@test-only.com
+    expires: 2100-01-01
 
   profile_date:
     type: datetime
@@ -214,10 +214,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   default_search:
     type: string
@@ -229,10 +229,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   display_version:
     type: string
@@ -244,10 +244,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   distribution_id:
     type: string
@@ -259,10 +259,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   campaign_id:
     type: string
@@ -274,10 +274,10 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     send_in_pings:
       - core
-    expires: never
+    expires: 2100-01-01
 
   event_example:
     type: event
@@ -288,13 +288,13 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
+      - CHANGE-ME@test-only.com
     extra_keys:
       key1:
         description: "This is key one"
       key2:
         description: "This is key two"
-    expires: never
+    expires: 2100-01-01
 
   event_no_keys:
     type: event
@@ -305,8 +305,8 @@ environment:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
-    expires: never
+      - CHANGE-ME@test-only.com
+    expires: 2100-01-01
 
 dotted.category:
   metric:
@@ -319,8 +319,8 @@ dotted.category:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
-    expires: never
+      - CHANGE-ME@test-only.com
+    expires: 2100-01-01
 
 glean.internal.metrics:
   internal:
@@ -333,5 +333,5 @@ glean.internal.metrics:
     data_reviews:
       - http://nowhere.com/reviews
     notification_emails:
-      - telemetry-client-dev@mozilla.com
-    expires: never
+      - CHANGE-ME@test-only.com
+    expires: 2100-01-01
