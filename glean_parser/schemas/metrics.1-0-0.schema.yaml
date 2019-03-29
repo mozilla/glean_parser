@@ -59,12 +59,12 @@ definitions:
 
             - `string_list`: a list of Unicode strings.
 
-            - ``enumeration``: a string with a fixed set of values. Additional properties:
+            - `enumeration`: a string with a fixed set of values. Additional properties:
               `values`_.
 
             - `counter`: A numeric value that can only be incremented.
 
-            - ``timespan``: Represents a time interval. Additional properties: `time_unit`_.
+            - `timespan`: Represents a time interval. Additional properties: `time_unit`_.
 
             - `timing_distribution`: Record the distribution of multiple timings.
               Additional properties: `time_unit`_.
@@ -203,11 +203,12 @@ definitions:
           **Required.**
 
           May be one of the following values:
-            - `never`: This metric never expires
-            - `expired`: This metric is manually expired
-            - `<build date>`: An ISO date 'yyyy-mm-dd' in UTC on which the
-              metric expires. For example, '2019-03-13'. This date is checked
-              at build time.
+            - `<build date>`: An ISO date `yyyy-mm-dd` in UTC on which the
+              metric expires. For example, `2019-03-13`. This date is checked at
+              build time. Except in special cases, this form should be used so
+              that the metric automatically "sunsets" after a period of time.
+            - `never`: This metric never expires.
+            - `expired`: This metric is manually expired.
         type: string
         pattern: "(never)|(expired)|([0-9]{4}-[0-9]{2}-[0-9]{2})"
 
