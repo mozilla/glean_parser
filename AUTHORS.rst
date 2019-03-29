@@ -12,6 +12,7 @@ Contributors
 ------------
 
 * Frank Bertsch <frank@mozilla.com>
+* Travis Long <tlong@mozilla.com>
 
 Acknowledgements
 ----------------
