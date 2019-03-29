@@ -27,7 +27,7 @@ import mozilla.components.service.glean.metrics.NoExtraKeys // ktlint-disable no
 import mozilla.components.service.glean.metrics.{{ metric_type|Camelize }}MetricType
 {% endfor %}
 {% if has_labeled_metrics %}
-import mozilla.components.service.glean.LabeledMetricType
+import mozilla.components.service.glean.metrics.LabeledMetricType
 {% endif %}
 
 internal object {{ category_name|Camelize }} {
