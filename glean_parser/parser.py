@@ -6,10 +6,12 @@ Code for parsing metrics.yaml files.
 
 import functools
 from pathlib import Path
-import pprint
+import textwrap
 
 import jsonschema
 from jsonschema import _utils
+from jsonschema.exceptions import ValidationError
+import yaml
 
 from .metrics import Metric
 from . import util
@@ -35,23 +37,69 @@ def _pprint_validation_error(error):
         error.validator, error.validator_value, error.instance, error.schema,
     )
     if any(m is _unset for m in essential_for_verbose):
-        return error.message
+        return textwrap.fill(error.message)
 
-    pinstance = pprint.pformat(error.instance, width=72)
+    instance = error.instance
+    for path in list(error.relative_path)[::-1]:
+        if isinstance(path, str):
+            instance = {path: instance}
+        else:
+            instance = [instance]
+
+    yaml_instance = yaml.dump(instance, width=72, default_flow_style=False)
 
     parts = [
-        'On {}{}:'.format(
-            error._word_for_instance_in_error_message,
-            _utils.format_as_index(error.relative_path),
-        ),
-        _utils.indent(pinstance),
+        '```',
+        yaml_instance.rstrip(),
+        '```',
         '',
-        error.message
+        textwrap.fill(error.message)
     ]
     if error.context:
-        parts.extend(_utils.indent(x.message) for x in error.context)
+        parts.extend(
+            textwrap.fill(
+                x.message,
+                initial_indent='    ',
+                subsequent_indent='    '
+            )
+            for x in error.context
+        )
+
+    description = error.schema.get('description')
+    if description:
+        parts.extend([
+            "",
+            "Documentation for this node:",
+            _utils.indent(description)
+        ])
 
     return '\n'.join(parts)
+
+
+def _format_error(filepath, header, content):
+    if header:
+        return f'{filepath}: {header}:\n{_utils.indent(content)}'
+    else:
+        return f'{filepath}:\n{_utils.indent(content)}'
+
+
+def _update_validator(validator):
+    """
+    Adds some custom validators to the jsonschema validator that produce
+    nicer error messages.
+    """
+    def required(validator, required, instance, schema):
+        if not validator.is_type(instance, "object"):
+            return
+        missing_properties = set(
+            property for property in required if property not in instance
+        )
+        if len(missing_properties):
+            missing_properties = sorted(list(missing_properties))
+            yield ValidationError(
+                f"Missing required properties: {', '.join(missing_properties)}"
+            )
+    validator.VALIDATORS['required'] = required
 
 
 @functools.lru_cache(maxsize=1)
@@ -60,6 +108,7 @@ def _get_metrics_schema():
     resolver = util.get_null_resolver(schema)
 
     validator_class = jsonschema.validators.validator_for(schema)
+    _update_validator(validator_class)
     validator_class.check_schema(schema)
     validator = validator_class(schema, resolver=resolver)
     return schema, validator
@@ -80,10 +129,14 @@ def validate(content, filepath='<input>'):
     schema, validator = _get_metrics_schema()
 
     if '$schema' in content and content.get('$schema') != schema.get('$id'):
-        yield f"{filepath}: $schema key must be set to {schema.get('$id')}'"
+        yield _format_error(
+            filepath,
+            '',
+            f"$schema key must be set to {schema.get('$id')}'"
+        )
 
     yield from (
-        f"{filepath}: {_pprint_validation_error(e)}"
+        _format_error(filepath, '', _pprint_validation_error(e))
         for e in validator.iter_errors(content)
     )
 
@@ -95,11 +148,11 @@ def _load_metrics_file(filepath):
     try:
         metrics_content = util.load_yaml_or_json(filepath)
     except Exception as e:
-        yield f"{filepath}: {str(e)}"
+        yield _format_error(filepath, '', textwrap.fill(str(e)))
         return {}
 
     if metrics_content is None:
-        yield f"{filepath}: metrics file can not be empty."
+        yield _format_error(filepath, '', 'metrics file can not be empty.')
         return {}
 
     has_error = False
@@ -125,13 +178,18 @@ def _merge_and_instantiate_metrics(filepaths, config):
 
     for filepath in filepaths:
         metrics_content = yield from _load_metrics_file(filepath)
+        if isinstance(filepath, Path):
+            filepath = filepath.resolve()
+        else:
+            filepath = '<string>'
         for category_key, category_val in metrics_content.items():
             if category_key.startswith('$'):
                 continue
             if (not config.get('allow_reserved') and
                     category_key.split('.')[0] == 'glean'):
-                yield (
-                    f"{filepath}: For category '{category_key}': "
+                yield _format_error(
+                    filepath,
+                    f"For category '{category_key}'",
                     f"Categories beginning with 'glean' are reserved for "
                     f"glean internal use."
                 )
@@ -144,16 +202,21 @@ def _merge_and_instantiate_metrics(filepaths, config):
                         validated=True, config=config
                     )
                 except Exception as e:
-                    yield f"{filepath}: {category_key}.{metric_key}: {e}"
+                    yield _format_error(
+                        filepath,
+                        f'On instance {category_key}.{metric_key}',
+                        str(e)
+                    )
                     metric_obj = None
 
                 already_seen = sources.get((category_key, metric_key))
                 if already_seen is not None:
                     # We've seen this metric name already
-                    yield (
-                        f"{filepath}: Duplicate metric name "
-                        f"'{category_key}.{metric_key}' already defined in "
-                        f"'{already_seen}'"
+                    yield _format_error(
+                        filepath,
+                        "",
+                        f"Duplicate metric name '{category_key}.{metric_key}'"
+                        f"already defined in '{already_seen}'"
                     )
                 else:
                     output_metrics[category_key][metric_key] = metric_obj
