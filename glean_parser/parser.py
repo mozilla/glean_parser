@@ -77,6 +77,10 @@ def _pprint_validation_error(error):
 
 
 def _format_error(filepath, header, content):
+    if isinstance(filepath, Path):
+        filepath = filepath.resolve()
+    else:
+        filepath = '<string>'
     if header:
         return f'{filepath}: {header}:\n{_utils.indent(content)}'
     else:
@@ -178,10 +182,6 @@ def _merge_and_instantiate_metrics(filepaths, config):
 
     for filepath in filepaths:
         metrics_content = yield from _load_metrics_file(filepath)
-        if isinstance(filepath, Path):
-            filepath = filepath.resolve()
-        else:
-            filepath = '<string>'
         for category_key, category_val in metrics_content.items():
             if category_key.startswith('$'):
                 continue
