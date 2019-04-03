@@ -4,8 +4,10 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
+import textwrap
 
 import pytest
+from jsonschema import _utils
 
 from glean_parser import metrics
 from glean_parser import parser
@@ -42,8 +44,69 @@ def test_parser_schema_violation():
     """1507792"""
     all_metrics = parser.parse_metrics(ROOT / "data" / "schema-violation.yaml")
     errors = list(all_metrics)
-    print('\n'.join(errors))
-    assert len(errors) == 6
+
+    found_errors = set(
+        str(error).split('\n', 1)[1].strip().replace(' ', '')
+        for error in errors
+    )
+
+    expected_errors = [
+        """
+        ```
+        gleantest:
+          test_event:
+            type: event
+        ```
+
+        Missing required properties: bugs, data_reviews, description, expires,
+        notification_emails
+
+        Documentation for this node:
+            Describes a single metric.
+
+            See https://mozilla.github.io/glean_parser/metrics-yaml.html
+        """,
+        """
+        ```
+        gleantest.lifetime:
+          test_event_inv_lt:
+            lifetime: user2
+        ```
+
+        'user2' is not one of ['ping', 'user', 'application']
+
+        Documentation for this node:
+        Definesthelifetimeofthe metric. It must be one of the following values:
+
+        - `ping` (default): The metric is reset each time it is sent in a ping.
+
+        - `user`: The metric contains a property that is part of the user's
+          profile and is never reset.
+
+        - `application`: The metric contains a property that is related to the
+          application, and is reset only at application restarts.
+        """,
+        """
+        ```
+        gleantest.foo:
+          a: b
+        ```
+
+        'b' is not of type 'object'
+
+        Documentation for this node:
+            Describes a single metric.
+
+            See https://mozilla.github.io/glean_parser/metrics-yaml.html
+        """
+    ]
+
+    expected_errors = set(
+        _utils.indent(textwrap.dedent(x)).strip().replace(' ', '')
+        for x in expected_errors
+    )
+
+    assert sorted(list(found_errors)) == sorted(list(expected_errors))
 
 
 def test_parser_empty():
@@ -193,7 +256,7 @@ def test_event_must_be_ping_lifetime():
     all_metrics = parser.parse_metrics(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "On instance['category']['metric']['lifetime']" in errors[0]
+    assert "Event metrics must have ping lifetime" in errors[0]
 
 
 def test_parser_reserved():
@@ -233,7 +296,7 @@ def invalid_in_category(name):
 def invalid_in_name(name):
     return [
         {
-            'glean.baseline': {
+            'baseline': {
                 name: {
                     'type': 'string',
                 },
@@ -245,7 +308,7 @@ def invalid_in_name(name):
 def invalid_in_label(name):
     return [
         {
-            'glean.baseline': {
+            'baseline': {
                 'metric': {
                     'type': 'string',
                     'labels': [name]

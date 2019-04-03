@@ -3,6 +3,10 @@ title: Metrics
 description: |
   Schema for the metrics.yaml files for Mozilla's glean telemetry SDK.
 
+  The top-level of the `metrics.yaml` file has a key defining each category of
+  metrics. Categories must be snake_case, and they may also have dots `.` to
+  define subcategories.
+
 $id: moz://mozilla.org/schemas/glean/metrics/1-0-0
 
 definitions:
@@ -35,6 +39,11 @@ definitions:
       - maxLength: 20
 
   metric:
+    description: |
+      Describes a single metric.
+
+      See https://mozilla.github.io/glean_parser/metrics-yaml.html
+
     type: object
 
     additionalProperties: false
@@ -265,7 +274,7 @@ definitions:
         anyOf:
           - type: array
             items:
-              $ref: "#/definitions/snake_case"
+              $ref: "#/definitions/long_id"
             maxItems: 16
           - type: "null"
 
@@ -328,11 +337,14 @@ additionalProperties:
   additionalProperties:
     allOf:
       - $ref: "#/definitions/metric"
-      - if:
+      -
+        if:
           properties:
             type:
               const: event
         then:
           properties:
             lifetime:
+              description: |
+                Event metrics must have ping lifetime.
               const: ping
