@@ -1,0 +1,15 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: circleci/python:3.7.2
+        steps:
+            - checkout
+            - pip install -U -r requirements_dev.txt
+            - curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint && chmod a+x ktlint
+            - export PATH=.:$PATH
+            - make lint
+            - make test-all
+            - python setup.py install
+            - make docs
+            - touch docs/_build/html/.nojekyll
