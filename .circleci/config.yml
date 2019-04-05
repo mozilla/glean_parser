@@ -1,0 +1,32 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: circleci/python:3.7.2
+        steps:
+            - checkout
+            - run:
+                    name: environment
+                    command: |
+                        echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+            - run:
+                    name: install
+                    command: |
+                        pip install --user -U -r requirements_dev.txt
+                        sudo apt install openjdk-8-jdk-headless
+                        curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint && chmod a+x ktlint
+
+            - run:
+                    name: lint
+                    command: make lint
+            - run:
+                    name: test
+                    command: make test-all
+            - run:
+                    name: install
+                    command: python setup.py install --user
+            - run:
+                    name: make-docs
+                    command: |
+                        make docs
+                        touch docs/_build/html/.nojekyll
