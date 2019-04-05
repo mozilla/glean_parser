@@ -30,3 +30,38 @@ jobs:
                     command: |
                         make docs
                         touch docs/_build/html/.nojekyll
+            - persist-to-workspace:
+                    root: docs/_build
+                    paths: html
+
+    docs-deploy:
+        docker:
+            - image: node:8.10.0
+        steps:
+            - checkout
+            - add_ssh_keys:
+                    fingerprints:
+                        - "9b:25:aa:bf:39:b6:4a:e7:c3:52:cf:ab:23:81:3d:52"
+            - attach_workspace:
+                    at: docs/_build
+            - run:
+                    name: install
+                    command: |
+                        npm install -g --silent gh-pages@2.0.1
+                        git config user.email "glean-ci@nowhere.com"
+                        git config user.name "glean-ci"
+            - run:
+                    name: deploy
+                    command: gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
+
+workflows:
+    version: 2
+    build:
+        jobs:
+            - build
+            - docs-deploy:
+                    requires:
+                        - build
+                    filters:
+                        branches:
+                            only: master
