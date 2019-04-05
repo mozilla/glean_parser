@@ -52,7 +52,9 @@ jobs:
                         git config user.name "glean-ci"
             - run:
                     name: deploy
-                    command: gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
+                    command: |
+                        ls docs/_build/html/*
+                        gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
 
 workflows:
     version: 2
