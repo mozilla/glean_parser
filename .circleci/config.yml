@@ -50,9 +50,6 @@ jobs:
                         npm install -g --silent gh-pages@2.0.1
                         git config user.email "glean-ci@nowhere.com"
                         git config user.name "glean-ci"
-            - run:
-                    name: deploy
-                    command: |
                         ls docs/_build/html/*
                         gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
 
