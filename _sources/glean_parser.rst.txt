@@ -1,0 +1,62 @@
+glean\_parser package
+=====================
+
+Submodules
+----------
+
+glean\_parser.kotlin module
+---------------------------
+
+.. automodule:: glean_parser.kotlin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+glean\_parser.metrics module
+----------------------------
+
+.. automodule:: glean_parser.metrics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+glean\_parser.parser module
+---------------------------
+
+.. automodule:: glean_parser.parser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+glean\_parser.translate module
+------------------------------
+
+.. automodule:: glean_parser.translate
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+glean\_parser.util module
+-------------------------
+
+.. automodule:: glean_parser.util
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+glean\_parser.validate\_ping module
+-----------------------------------
+
+.. automodule:: glean_parser.validate_ping
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: glean_parser
+    :members:
+    :undoc-members:
+    :show-inheritance:

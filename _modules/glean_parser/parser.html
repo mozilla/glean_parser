@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>glean_parser.parser &#8212; Glean Parser 0.21.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for glean_parser.parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Code for parsing metrics.yaml files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+
+<span class="kn">import</span> <span class="nn">jsonschema</span>
+<span class="kn">from</span> <span class="nn">jsonschema</span> <span class="k">import</span> <span class="n">_utils</span>
+<span class="kn">from</span> <span class="nn">jsonschema.exceptions</span> <span class="k">import</span> <span class="n">ValidationError</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">.metrics</span> <span class="k">import</span> <span class="n">Metric</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+
+
+<span class="n">ROOT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">SCHEMAS_DIR</span> <span class="o">=</span> <span class="n">ROOT_DIR</span> <span class="o">/</span> <span class="s1">&#39;schemas&#39;</span>
+
+
+<span class="n">_unset</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">Unset</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_pprint_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A version of jsonschema&#39;s ValidationError __str__ method that doesn&#39;t</span>
+<span class="sd">    include the schema fragment that failed.  This makes the error messages</span>
+<span class="sd">    much more succinct.</span>
+
+<span class="sd">    It also shows any subschemas of anyOf/allOf that failed, if any (what</span>
+<span class="sd">    jsonschema calls &quot;context&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">essential_for_verbose</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">error</span><span class="o">.</span><span class="n">validator</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">validator_value</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="n">error</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="ow">is</span> <span class="n">_unset</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">essential_for_verbose</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">instance</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">relative_path</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">{</span><span class="n">path</span><span class="p">:</span> <span class="n">instance</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance</span><span class="p">]</span>
+
+    <span class="n">yaml_instance</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;```&#39;</span><span class="p">,</span>
+        <span class="n">yaml_instance</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span>
+        <span class="s1">&#39;```&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
+                <span class="n">initial_indent</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span>
+                <span class="n">subsequent_indent</span><span class="o">=</span><span class="s1">&#39;    &#39;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">error</span><span class="o">.</span><span class="n">context</span>
+        <span class="p">)</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Documentation for this node:&quot;</span><span class="p">,</span>
+            <span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;&lt;string&gt;&#39;</span>
+    <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{filepath}</span><span class="s1">: </span><span class="si">{header}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">{_utils.indent(content)}&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{filepath}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">{_utils.indent(content)}&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_update_validator</span><span class="p">(</span><span class="n">validator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds some custom validators to the jsonschema validator that produce</span>
+<span class="sd">    nicer error messages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">required</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">validator</span><span class="o">.</span><span class="n">is_type</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">missing_properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="nb">property</span> <span class="k">for</span> <span class="nb">property</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="nb">property</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instance</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_properties</span><span class="p">):</span>
+            <span class="n">missing_properties</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">missing_properties</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="n">f</span><span class="s2">&quot;Missing required properties: {&#39;, &#39;.join(missing_properties)}&quot;</span>
+            <span class="p">)</span>
+    <span class="n">validator</span><span class="o">.</span><span class="n">VALIDATORS</span><span class="p">[</span><span class="s1">&#39;required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
+
+
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_metrics_schema</span><span class="p">():</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">SCHEMAS_DIR</span> <span class="o">/</span> <span class="s1">&#39;metrics.1-0-0.schema.yaml&#39;</span><span class="p">)</span>
+    <span class="n">resolver</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_null_resolver</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+    <span class="n">validator_class</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">_update_validator</span><span class="p">(</span><span class="n">validator_class</span><span class="p">)</span>
+    <span class="n">validator_class</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="n">validator_class</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">schema</span><span class="p">,</span> <span class="n">validator</span>
+
+
+<div class="viewcode-block" id="get_parameter_doc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.get_parameter_doc">[docs]</a><span class="k">def</span> <span class="nf">get_parameter_doc</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns documentation about a specific metric parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schema</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_metrics_schema</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">schema</span><span class="p">[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;metric&#39;</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="validate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.validate">[docs]</a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s1">&#39;&lt;input&gt;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the given content against the metrics.schema.yaml schema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schema</span><span class="p">,</span> <span class="n">validator</span> <span class="o">=</span> <span class="n">_get_metrics_schema</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="s1">&#39;$schema&#39;</span> <span class="ow">in</span> <span class="n">content</span> <span class="ow">and</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$schema&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$id&#39;</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+            <span class="n">filepath</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">f</span><span class="s2">&quot;$schema key must be set to {schema.get(&#39;$id&#39;)}&#39;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">yield from</span> <span class="p">(</span>
+        <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">_pprint_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">validator</span><span class="o">.</span><span class="n">iter_errors</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_load_metrics_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a metrics.yaml format file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metrics_content</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">metrics_content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;metrics file can not be empty.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="n">has_error</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">validate</span><span class="p">(</span><span class="n">metrics_content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="n">has_error</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">yield</span> <span class="n">error</span>
+
+    <span class="k">if</span> <span class="n">has_error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">metrics_content</span>
+
+
+<span class="k">def</span> <span class="nf">_merge_and_instantiate_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a list of metrics.yaml files, convert the JSON information into Metric</span>
+<span class="sd">    objects, and merge them into a single tree.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output_metrics</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Keep track of where each metric came from to provide a better error</span>
+    <span class="c1"># message</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">metrics_content</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">_load_metrics_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">metrics_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">category_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allow_reserved&#39;</span><span class="p">)</span> <span class="ow">and</span>
+                    <span class="n">category_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;glean&#39;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                    <span class="n">filepath</span><span class="p">,</span>
+                    <span class="n">f</span><span class="s2">&quot;For category &#39;</span><span class="si">{category_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="n">f</span><span class="s2">&quot;Categories beginning with &#39;glean&#39; are reserved for &quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;glean internal use.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">output_metrics</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category_key</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">metric_obj</span> <span class="o">=</span> <span class="n">Metric</span><span class="o">.</span><span class="n">make_metric</span><span class="p">(</span>
+                        <span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span><span class="p">,</span>
+                        <span class="n">validated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                        <span class="n">filepath</span><span class="p">,</span>
+                        <span class="n">f</span><span class="s1">&#39;On instance </span><span class="si">{category_key}</span><span class="s1">.</span><span class="si">{metric_key}</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># We&#39;ve seen this metric name already</span>
+                    <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                        <span class="n">filepath</span><span class="p">,</span>
+                        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                        <span class="n">f</span><span class="s2">&quot;Duplicate metric name &#39;</span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&#39;&quot;</span>
+                        <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">output_metrics</span><span class="p">[</span><span class="n">category_key</span><span class="p">][</span><span class="n">metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_obj</span>
+                    <span class="n">sources</span><span class="p">[(</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">filepath</span>
+
+    <span class="k">return</span> <span class="n">output_metrics</span>
+
+
+<div class="viewcode-block" id="parse_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.parse_metrics">[docs]</a><span class="nd">@util</span><span class="o">.</span><span class="n">keep_value</span>
+<span class="k">def</span> <span class="nf">parse_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`</span>
+<span class="sd">    instances.</span>
+
+<span class="sd">    The result is a generator over any errors.  If there are no errors, the</span>
+<span class="sd">    actual metrics can be obtained from `result.value`.  For example::</span>
+
+<span class="sd">      result = metrics.parse_metrics(filepaths)</span>
+<span class="sd">      for err in result:</span>
+<span class="sd">          print(err)</span>
+<span class="sd">      all_metrics = result.value</span>
+
+<span class="sd">    The result value is a dictionary of category names to categories, where</span>
+<span class="sd">    each category is a dictionary from metric name to `metrics.Metric`</span>
+<span class="sd">    instances.</span>
+
+<span class="sd">    :param filepaths: list of Path objects to metrics.yaml files</span>
+<span class="sd">    :param config: A dictionary of options that change parsing behavior.</span>
+<span class="sd">        Supported keys are:</span>
+<span class="sd">        - `allow_reserved`: Allow values reserved for internal Glean use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filepaths</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span>
+    <span class="n">all_metrics</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">_merge_and_instantiate_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_metrics</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Glean Parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Michael Droettboom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
