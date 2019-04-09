@@ -50,8 +50,30 @@ jobs:
                         npm install -g --silent gh-pages@2.0.1
                         git config user.email "glean-ci@nowhere.com"
                         git config user.name "glean-ci"
-                        ls docs/_build/html/*
+            - run:
+                    name: deploy
+                    command: |
                         gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
+
+    pypi-deploy:
+        docker:
+            - image: circleci/python:3.7.2
+        steps:
+            - checkout
+            - run:
+                    name: environment
+                    command: |
+                        echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+            - run:
+                    name: install
+                    command: |
+                        pip install --user -U -r requirements_dev.txt
+            - run:
+                    name: deploy
+                    # Requires that the TWINE_USERNAME and TWINE_PASSWORD environment
+                    # variables are configured in CircleCI's environment variables.
+                    command: |
+                        make release
 
 workflows:
     version: 2
@@ -64,3 +86,11 @@ workflows:
                     filters:
                         branches:
                             only: master
+            - pypi-deploy:
+                    requires:
+                        - build
+                    filters:
+                        branches:
+                            ignore: /.*/
+                        tags:
+                            only: /v[0-9]+(\.[0-9]+)*/
