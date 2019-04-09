@@ -141,10 +141,6 @@ class Metric:
     lifetime: Lifetime = 'ping'
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
 
-    # Labeled metrics
-    labeled: bool = False
-    labels: Set[str] = None
-
     # Implementation detail -- these are parameters to the constructor that
     # aren't stored in the dataclass object.
     _config: InitVar[dict] = {}
@@ -281,3 +277,69 @@ class Event(Metric):
 @dataclass
 class Uuid(Metric):
     typename = 'uuid'
+
+
+@dataclass
+class Labeled(Metric):
+    labels: Set[str] = None
+    labeled = True
+
+
+@dataclass
+class LabeledBoolean(Labeled, Boolean):
+    typename = 'labeled_boolean'
+
+
+@dataclass
+class LabeledString(Labeled, String):
+    typename = 'labeled_string'
+
+
+@dataclass
+class LabeledStringList(Labeled, StringList):
+    typename = 'labeled_string_list'
+
+
+@dataclass
+class LabeledEnumeration(Labeled, Enumeration):
+    typename = 'labeled_enumeration'
+
+
+@dataclass
+class LabeledCounter(Labeled, Counter):
+    typename = 'labeled_counter'
+
+
+@dataclass
+class LabeledTimespan(Labeled, Timespan):
+    typename = 'labeled_timespan'
+
+
+@dataclass
+class LabeledTimingDistribution(Labeled, TimingDistribution):
+    typename = 'labeled_timing_distribution'
+
+
+@dataclass
+class LabeledDatetime(Labeled, Datetime):
+    typename = 'labeled_datetime'
+
+
+@dataclass
+class LabeledUseCounter(Labeled, UseCounter):
+    typename = 'labeled_use_counter'
+
+
+@dataclass
+class LabeledUsage(Labeled, Usage):
+    typename = 'labeled_usage'
+
+
+@dataclass
+class LabeledRate(Labeled, Rate):
+    typename = 'labeled_rate'
+
+
+@dataclass
+class LabeledUuid(Labeled, Uuid):
+    typename = 'labeled_uuid'
