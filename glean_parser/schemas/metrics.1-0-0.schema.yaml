@@ -97,8 +97,20 @@ definitions:
               over time.
 
             - `uuid`: Record a UUID v4.
+
+            - Additionally, labeled versions of many metric types are
+              supported.  These support the `labels`_ parameter, allowing multiple
+              instances of the metric to be stored at a given set of labels.  The
+              labeled metric types include:
+
+                `labeled_boolean`, `labeled_string`, `labeled_string_list`,
+                `labeled_enumeration`, `labeled_counter`, `labeled_timespan`,
+                `labeled_timing_distribution`, `labeled_datetime`,
+                `labeled_use_counter`, `labeled_usage`, `labeled_rate`,
+                `labeled_uuid`.
         type: string
         enum:
+          - event
           - boolean
           - string
           - string_list
@@ -110,8 +122,19 @@ definitions:
           - use_counter
           - usage
           - rate
-          - event
           - uuid
+          - labeled_boolean
+          - labeled_string
+          - labeled_string_list
+          - labeled_enumeration
+          - labeled_counter
+          - labeled_timespan
+          - labeled_timing_distribution
+          - labeled_datetime
+          - labeled_use_counter
+          - labeled_usage
+          - labeled_rate
+          - labeled_uuid
 
       description:
         title: Description
@@ -257,20 +280,16 @@ definitions:
           - hour
           - day
 
-      labeled:
-        title: Labeled metric
-        description: |
-          Record multiple separate metrics under different labels.
-          The labels may be known ahead of time (provided in the `labels`_
-          property) or be dynamic at runtime.
-        type: boolean
-
       labels:
         title: Labels
         description: |
-          A list of labels for a labeled metric or use counter.
+          A list of labels for a labeled metric.  If provided, the labels are
+          enforced at run time, and recording to an unknown label is recorded
+          to the special label ``__other__``.  If not provided, the labels
+          may be anything, but using too many unique labels will put some
+          labels in the special label ``__other__``.
 
-          Valid when `labeled`_ is `true`.
+          Valid with any of the labeled metric types.
         anyOf:
           - type: array
             items:

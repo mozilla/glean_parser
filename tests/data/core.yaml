@@ -81,8 +81,7 @@ core_ping:
     expires: 2100-01-01
 
   searches:
-    type: counter
-    labeled: true
+    type: labeled_counter
     description: >
       The search use counts for each search source and engine
       combination, e.g. “engine.source” = 3.
@@ -143,7 +142,7 @@ environment:
   os:
     type: enumeration
     lifetime: application
-    labels:
+    values:
       - linux
       - android
       - ios
@@ -192,7 +191,7 @@ environment:
   arch:
     type: enumeration
     lifetime: application
-    labels:
+    values:
       - arm
       - x86
     description: The architecture of the device.

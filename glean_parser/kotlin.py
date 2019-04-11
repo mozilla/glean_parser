@@ -78,7 +78,13 @@ def metric_type_name(metric):
             enumeration = 'NoExtraKeys'
         return f'EventMetricType<{enumeration}>'
     else:
-        return f'{util.Camelize(metric.type)}MetricType'
+        return f'{util.Camelize(metric_type_class(metric.type))}MetricType'
+
+
+def metric_type_class(metric_type):
+    if metric_type.startswith('labeled_'):
+        return metric_type[8:]
+    return metric_type
 
 
 def output_kotlin(metrics, output_dir, options={}):
@@ -96,7 +102,8 @@ def output_kotlin(metrics, output_dir, options={}):
         'kotlin.jinja2',
         filters=(
             ('kotlin', kotlin_datatypes_filter),
-            ('metric_type_name', metric_type_name)
+            ('metric_type_name', metric_type_name),
+            ('metric_type_class', metric_type_class)
         )
     )
 
@@ -121,7 +128,8 @@ def output_kotlin(metrics, output_dir, options={}):
             metric.type for metric in category_val.values()
         )))
         has_labeled_metrics = any(
-            metric.labeled for metric in category_val.values()
+            getattr(metric, 'labeled', False)
+            for metric in category_val.values()
         )
 
         with open(filepath, 'w', encoding='utf-8') as fd:

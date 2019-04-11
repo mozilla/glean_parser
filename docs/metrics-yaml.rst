@@ -44,8 +44,6 @@ Metric parameters
 
 .. metric_parameter:: time_unit
 
-.. metric_parameter:: labeled
-
 .. metric_parameter:: labels
 
 .. metric_parameter:: denominator
