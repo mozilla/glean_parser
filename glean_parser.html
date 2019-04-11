@@ -59,6 +59,11 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="glean_parser.kotlin.metric_type_class">
+<code class="descclassname">glean_parser.kotlin.</code><code class="descname">metric_type_class</code><span class="sig-paren">(</span><em>metric_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#metric_type_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.metric_type_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="glean_parser.kotlin.metric_type_name">
 <code class="descclassname">glean_parser.kotlin.</code><code class="descname">metric_type_name</code><span class="sig-paren">(</span><em>metric</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#metric_type_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.metric_type_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Kotlin class name to use for a given metric.</p>
@@ -94,7 +99,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 <p>Classes for each of the high-level metric types.</p>
 <dl class="class">
 <dt id="glean_parser.metrics.Boolean">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Boolean</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Boolean" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Boolean</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Boolean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Boolean.typename">
@@ -105,7 +110,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Counter">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Counter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Counter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Counter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Counter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Counter.typename">
@@ -116,7 +121,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Datetime">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Datetime</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Datetime" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Datetime</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.TimeBase" title="glean_parser.metrics.TimeBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.TimeBase</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Datetime.typename">
@@ -127,7 +132,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Enumeration">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Enumeration</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, values: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Enumeration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Enumeration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Enumeration</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, values: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Enumeration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Enumeration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Enumeration.typename">
@@ -138,7 +143,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Event">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, extra_keys: Dict[str, str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Event" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Event</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, extra_keys: Dict[str, str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Event.allowed_extra_keys">
@@ -153,6 +158,154 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 <dl class="staticmethod">
 <dt id="glean_parser.metrics.Event.validate_extra_keys">
 <em class="property">static </em><code class="descname">validate_extra_keys</code><span class="sig-paren">(</span><em>extra_keys</em>, <em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Event.validate_extra_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Event.validate_extra_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.Labeled">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Labeled</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Labeled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Labeled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.Labeled.labeled">
+<code class="descname">labeled</code><em class="property"> = True</em><a class="headerlink" href="#glean_parser.metrics.Labeled.labeled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.Labeled.labels">
+<code class="descname">labels</code><em class="property"> = None</em><a class="headerlink" href="#glean_parser.metrics.Labeled.labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledBoolean">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledBoolean</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledBoolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledBoolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Boolean" title="glean_parser.metrics.Boolean"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Boolean</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledBoolean.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_boolean'</em><a class="headerlink" href="#glean_parser.metrics.LabeledBoolean.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledCounter">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledCounter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Counter" title="glean_parser.metrics.Counter"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Counter</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledCounter.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_counter'</em><a class="headerlink" href="#glean_parser.metrics.LabeledCounter.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledDatetime">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledDatetime</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond', labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledDatetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledDatetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Datetime" title="glean_parser.metrics.Datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Datetime</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledDatetime.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_datetime'</em><a class="headerlink" href="#glean_parser.metrics.LabeledDatetime.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledEnumeration">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledEnumeration</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, values: List[str] = &lt;factory&gt;, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledEnumeration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledEnumeration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Enumeration" title="glean_parser.metrics.Enumeration"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Enumeration</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledEnumeration.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_enumeration'</em><a class="headerlink" href="#glean_parser.metrics.LabeledEnumeration.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledRate">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledRate</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledRate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Rate" title="glean_parser.metrics.Rate"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Rate</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledRate.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_rate'</em><a class="headerlink" href="#glean_parser.metrics.LabeledRate.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledString">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledString</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.String" title="glean_parser.metrics.String"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.String</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledString.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_string'</em><a class="headerlink" href="#glean_parser.metrics.LabeledString.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledStringList">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledStringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledStringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledStringList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.StringList" title="glean_parser.metrics.StringList"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.StringList</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledStringList.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_string_list'</em><a class="headerlink" href="#glean_parser.metrics.LabeledStringList.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledTimespan">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledTimespan</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond', labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledTimespan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledTimespan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Timespan" title="glean_parser.metrics.Timespan"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Timespan</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledTimespan.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_timespan'</em><a class="headerlink" href="#glean_parser.metrics.LabeledTimespan.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledTimingDistribution">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledTimingDistribution</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond', labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledTimingDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledTimingDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.TimingDistribution" title="glean_parser.metrics.TimingDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.TimingDistribution</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledTimingDistribution.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_timing_distribution'</em><a class="headerlink" href="#glean_parser.metrics.LabeledTimingDistribution.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledUsage">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledUsage</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledUsage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledUsage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Usage" title="glean_parser.metrics.Usage"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Usage</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledUsage.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_usage'</em><a class="headerlink" href="#glean_parser.metrics.LabeledUsage.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledUseCounter">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledUseCounter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, denominator: str = '', labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledUseCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledUseCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.UseCounter" title="glean_parser.metrics.UseCounter"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.UseCounter</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledUseCounter.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_use_counter'</em><a class="headerlink" href="#glean_parser.metrics.LabeledUseCounter.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.LabeledUuid">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledUuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledUuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledUuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Uuid" title="glean_parser.metrics.Uuid"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Uuid</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.LabeledUuid.typename">
+<code class="descname">typename</code><em class="property"> = 'labeled_uuid'</em><a class="headerlink" href="#glean_parser.metrics.LabeledUuid.typename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -181,7 +334,7 @@ generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Metric">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Metric.disabled">
@@ -209,16 +362,6 @@ metrics only use name.</p>
 <dl class="method">
 <dt id="glean_parser.metrics.Metric.is_expired">
 <code class="descname">is_expired</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric.is_expired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric.is_expired" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="glean_parser.metrics.Metric.labeled">
-<code class="descname">labeled</code><em class="property"> = False</em><a class="headerlink" href="#glean_parser.metrics.Metric.labeled" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="glean_parser.metrics.Metric.labels">
-<code class="descname">labels</code><em class="property"> = None</em><a class="headerlink" href="#glean_parser.metrics.Metric.labels" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -255,7 +398,7 @@ jsonschema validation</td>
 
 <dl class="attribute">
 <dt id="glean_parser.metrics.Metric.metric_types">
-<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'labeled_boolean': &lt;class 'glean_parser.metrics.LabeledBoolean'&gt;, 'labeled_counter': &lt;class 'glean_parser.metrics.LabeledCounter'&gt;, 'labeled_datetime': &lt;class 'glean_parser.metrics.LabeledDatetime'&gt;, 'labeled_enumeration': &lt;class 'glean_parser.metrics.LabeledEnumeration'&gt;, 'labeled_rate': &lt;class 'glean_parser.metrics.LabeledRate'&gt;, 'labeled_string': &lt;class 'glean_parser.metrics.LabeledString'&gt;, 'labeled_string_list': &lt;class 'glean_parser.metrics.LabeledStringList'&gt;, 'labeled_timespan': &lt;class 'glean_parser.metrics.LabeledTimespan'&gt;, 'labeled_timing_distribution': &lt;class 'glean_parser.metrics.LabeledTimingDistribution'&gt;, 'labeled_usage': &lt;class 'glean_parser.metrics.LabeledUsage'&gt;, 'labeled_use_counter': &lt;class 'glean_parser.metrics.LabeledUseCounter'&gt;, 'labeled_uuid': &lt;class 'glean_parser.metrics.LabeledUuid'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -278,7 +421,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Rate">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Rate</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Rate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Rate</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Rate.typename">
@@ -289,7 +432,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.String">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">String</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.String" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">String</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.String" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.String.typename">
@@ -300,7 +443,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.StringList">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">StringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#StringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.StringList" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">StringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#StringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.StringList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.StringList.typename">
@@ -311,7 +454,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.TimeBase">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">TimeBase</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#TimeBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.TimeBase" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">TimeBase</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#TimeBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.TimeBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.TimeBase.time_unit">
@@ -364,7 +507,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Timespan">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Timespan</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Timespan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Timespan" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Timespan</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Timespan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Timespan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.TimeBase" title="glean_parser.metrics.TimeBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.TimeBase</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Timespan.typename">
@@ -375,7 +518,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.TimingDistribution">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">TimingDistribution</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#TimingDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.TimingDistribution" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">TimingDistribution</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#TimingDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.TimingDistribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.TimeBase" title="glean_parser.metrics.TimeBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.TimeBase</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.TimingDistribution.typename">
@@ -386,7 +529,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Usage">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Usage</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Usage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Usage</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Usage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Usage.typename">
@@ -397,7 +540,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.UseCounter">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">UseCounter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, denominator: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#UseCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.UseCounter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">UseCounter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, denominator: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#UseCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.UseCounter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.UseCounter.denominator">
@@ -413,7 +556,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Uuid">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Uuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, labeled: bool = False, labels: Set[str] = None, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Uuid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Uuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Uuid.typename">

@@ -113,7 +113,13 @@
             <span class="n">enumeration</span> <span class="o">=</span> <span class="s1">&#39;NoExtraKeys&#39;</span>
         <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;EventMetricType&lt;</span><span class="si">{enumeration}</span><span class="s1">&gt;&#39;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;{util.Camelize(metric.type)}MetricType&#39;</span></div>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;{util.Camelize(metric_type_class(metric.type))}MetricType&#39;</span></div>
+
+
+<div class="viewcode-block" id="metric_type_class"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.metric_type_class">[docs]</a><span class="k">def</span> <span class="nf">metric_type_class</span><span class="p">(</span><span class="n">metric_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">metric_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;labeled_&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">metric_type</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">metric_type</span></div>
 
 
 <div class="viewcode-block" id="output_kotlin"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.output_kotlin">[docs]</a><span class="k">def</span> <span class="nf">output_kotlin</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
@@ -131,7 +137,8 @@
         <span class="s1">&#39;kotlin.jinja2&#39;</span><span class="p">,</span>
         <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;kotlin&#39;</span><span class="p">,</span> <span class="n">kotlin_datatypes_filter</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">&#39;metric_type_name&#39;</span><span class="p">,</span> <span class="n">metric_type_name</span><span class="p">)</span>
+            <span class="p">(</span><span class="s1">&#39;metric_type_name&#39;</span><span class="p">,</span> <span class="n">metric_type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;metric_type_class&#39;</span><span class="p">,</span> <span class="n">metric_type_class</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
@@ -156,7 +163,8 @@
             <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)))</span>
         <span class="n">has_labeled_metrics</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="n">metric</span><span class="o">.</span><span class="n">labeled</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;labeled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>

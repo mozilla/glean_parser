@@ -176,10 +176,6 @@
     <span class="n">lifetime</span><span class="p">:</span> <span class="n">Lifetime</span> <span class="o">=</span> <span class="s1">&#39;ping&#39;</span>
     <span class="n">send_in_pings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
 
-    <span class="c1"># Labeled metrics</span>
-    <span class="n">labeled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">labels</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-
     <span class="c1"># Implementation detail -- these are parameters to the constructor that</span>
     <span class="c1"># aren&#39;t stored in the dataclass object.</span>
     <span class="n">_config</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -316,6 +312,72 @@
 <div class="viewcode-block" id="Uuid"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Uuid">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Uuid</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;uuid&#39;</span></div>
+
+
+<div class="viewcode-block" id="Labeled"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Labeled">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Labeled</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">labeled</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="LabeledBoolean"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledBoolean">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledBoolean</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Boolean</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_boolean&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledString"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledString">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledString</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">String</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_string&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledStringList"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledStringList">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledStringList</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">StringList</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_string_list&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledEnumeration"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledEnumeration">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledEnumeration</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Enumeration</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_enumeration&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledCounter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledCounter">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledCounter</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_counter&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledTimespan"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledTimespan">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledTimespan</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Timespan</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_timespan&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledTimingDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledTimingDistribution">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledTimingDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">TimingDistribution</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_timing_distribution&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledDatetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledDatetime">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledDatetime</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Datetime</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_datetime&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledUseCounter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledUseCounter">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledUseCounter</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">UseCounter</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_use_counter&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledUsage"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledUsage">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledUsage</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Usage</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_usage&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledRate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledRate">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledRate</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Rate</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_rate&#39;</span></div>
+
+
+<div class="viewcode-block" id="LabeledUuid"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledUuid">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LabeledUuid</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Uuid</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;labeled_uuid&#39;</span></div>
 </pre></div>
 
           </div>

@@ -58,33 +58,58 @@ an object with the following parameters described below.</p>
 which operations are valid for the metric, how it is stored and how
 data analysis tooling displays it.</p>
 <p>The supported types are:</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">event</span></code>: Record a specific event (with optional metadata).
-Additional properties: <code class="docutils literal notranslate"><span class="pre">extra_keys</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">boolean</span></code>: A metric storing values of true or false.</li>
-<li><code class="docutils literal notranslate"><span class="pre">string</span></code>: A metric storing Unicode string values.</li>
-<li><code class="docutils literal notranslate"><span class="pre">string_list</span></code>: a list of Unicode strings.</li>
-<li><cite>enumeration</cite>: a string with a fixed set of values. Additional properties:
-<a class="reference internal" href="#values">values</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</li>
-<li><cite>timespan</cite>: Represents a time interval. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple timings.
-Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: A date/time value.  Represented as an ISO datetime in UTC.
-Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">use_counter</span></code>: Records the value of one of more values in relation
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">event</span></code>: Record a specific event (with optional metadata).
+Additional properties: <code class="docutils literal notranslate"><span class="pre">extra_keys</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">boolean</span></code>: A metric storing values of true or false.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">string</span></code>: A metric storing Unicode string values.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">string_list</span></code>: a list of Unicode strings.</p>
+</li>
+<li><p class="first"><cite>enumeration</cite>: a string with a fixed set of values. Additional properties:
+<a class="reference internal" href="#values">values</a>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</p>
+</li>
+<li><p class="first"><cite>timespan</cite>: Represents a time interval. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple timings.
+Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: A date/time value.  Represented as an ISO datetime in UTC.
+Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">use_counter</span></code>: Records the value of one of more values in relation
 to another value. Represented internally as a list of numerators
 and denominator, all of which can be incremented separately.
-Additional properties: <a class="reference internal" href="#labels">labels</a>, <a class="reference internal" href="#denominator">denominator</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">usage</span></code>: Record whether a feature is used. This is functionally
+Additional properties: <a class="reference internal" href="#labels">labels</a>, <a class="reference internal" href="#denominator">denominator</a>.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">usage</span></code>: Record whether a feature is used. This is functionally
 equivalent to a boolean metric type, except the analysis and
 visualization side may present it differently, knowing that it
-indicates the usage of a feature.</li>
-<li><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Record the rate of an event over time. This is functionally
+indicates the usage of a feature.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Record the rate of an event over time. This is functionally
 equivalent to a counter, except the analysis and visualization
 will tie it to the duration of the ping to display it as a rate
-over time.</li>
-<li><code class="docutils literal notranslate"><span class="pre">uuid</span></code>: Record a UUID v4.</li>
+over time.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">uuid</span></code>: Record a UUID v4.</p>
+</li>
+<li><p class="first">Additionally, labeled versions of many metric types are
+supported.  These support the <a class="reference internal" href="#labels">labels</a> parameter, allowing multiple
+instances of the metric to be stored at a given set of labels.  The
+labeled metric types include:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">labeled_boolean</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_string</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_string_list</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_enumeration</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_counter</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_timespan</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_timing_distribution</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_datetime</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_use_counter</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_usage</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_rate</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_uuid</span></code>.</p>
+</div></blockquote>
+</li>
 </ul>
 </div>
 <div class="section" id="description">
@@ -171,24 +196,22 @@ not rounded, to the nearest time unit. For example, a measurement of 25 ns
 will be returned as 0 ms if <code class="docutils literal notranslate"><span class="pre">time_unit</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;millisecond&quot;</span></code>.</p>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">timespan</span></code>, <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code> or <code class="docutils literal notranslate"><span class="pre">datetime</span></code>.</p>
 </div>
-<div class="section" id="labeled">
-<span id="id13"></span><h3>labeled<a class="headerlink" href="#labeled" title="Permalink to this headline">¶</a></h3>
-<p>Record multiple separate metrics under different labels.
-The labels may be known ahead of time (provided in the <a class="reference internal" href="#labels">labels</a>
-property) or be dynamic at runtime.</p>
-</div>
 <div class="section" id="labels">
-<span id="id14"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
-<p>A list of labels for a labeled metric or use counter.</p>
-<p>Valid when <a class="reference internal" href="#labeled">labeled</a> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<span id="id13"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
+<p>A list of labels for a labeled metric.  If provided, the labels are
+enforced at run time, and recording to an unknown label is recorded
+to the special label <code class="docutils literal notranslate"><span class="pre">__other\</span> <span class="pre">**\</span> <span class="pre">``.</span>&#160; <span class="pre">If</span> <span class="pre">not</span> <span class="pre">provided,</span> <span class="pre">the</span> <span class="pre">labels</span>
+<span class="pre">may</span> <span class="pre">be</span> <span class="pre">anything,</span> <span class="pre">but</span> <span class="pre">using</span> <span class="pre">too</span> <span class="pre">many</span> <span class="pre">unique</span> <span class="pre">labels</span> <span class="pre">will</span> <span class="pre">put</span> <span class="pre">some</span>
+<span class="pre">labels</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">special</span> <span class="pre">label</span></code><a href="#id14"><span class="problematic" id="id15">**</span></a>other__``.</p>
+<p>Valid with any of the labeled metric types.</p>
 </div>
 <div class="section" id="denominator">
-<span id="id15"></span><h3>denominator<a class="headerlink" href="#denominator" title="Permalink to this headline">¶</a></h3>
+<span id="id16"></span><h3>denominator<a class="headerlink" href="#denominator" title="Permalink to this headline">¶</a></h3>
 <p>The name of the denominator value for a use counter.</p>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">use_counter</span></code>.</p>
 </div>
 <div class="section" id="extra-keys">
-<span id="id16"></span><h3>extra_keys<a class="headerlink" href="#extra-keys" title="Permalink to this headline">¶</a></h3>
+<span id="id17"></span><h3>extra_keys<a class="headerlink" href="#extra-keys" title="Permalink to this headline">¶</a></h3>
 <p>The acceptable keys on the “extra” object sent with events. This is an
 object mapping the key to an object containing metadata about the key.
 This metadata object has the following keys:</p>
@@ -301,8 +324,20 @@ entirety below:</p>
               <span class="no">over time.</span>
 
             <span class="no">- `uuid`: Record a UUID v4.</span>
+
+            <span class="no">- Additionally, labeled versions of many metric types are</span>
+              <span class="no">supported.  These support the `labels`_ parameter, allowing multiple</span>
+              <span class="no">instances of the metric to be stored at a given set of labels.  The</span>
+              <span class="no">labeled metric types include:</span>
+
+                <span class="no">`labeled_boolean`, `labeled_string`, `labeled_string_list`,</span>
+                <span class="no">`labeled_enumeration`, `labeled_counter`, `labeled_timespan`,</span>
+                <span class="no">`labeled_timing_distribution`, `labeled_datetime`,</span>
+                <span class="no">`labeled_use_counter`, `labeled_usage`, `labeled_rate`,</span>
+                <span class="no">`labeled_uuid`.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
         <span class="nt">enum</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">event</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string_list</span>
@@ -314,8 +349,19 @@ entirety below:</p>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">use_counter</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">usage</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rate</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">event</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">uuid</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_boolean</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_string</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_string_list</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_enumeration</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_counter</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_timespan</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_timing_distribution</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_datetime</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_use_counter</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_usage</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_rate</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_uuid</span>
 
       <span class="nt">description</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Description</span>
@@ -461,20 +507,16 @@ entirety below:</p>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hour</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">day</span>
 
-      <span class="nt">labeled</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Labeled metric</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Record multiple separate metrics under different labels.</span>
-          <span class="no">The labels may be known ahead of time (provided in the `labels`_</span>
-          <span class="no">property) or be dynamic at runtime.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
-
       <span class="nt">labels</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Labels</span>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">A list of labels for a labeled metric or use counter.</span>
+          <span class="no">A list of labels for a labeled metric.  If provided, the labels are</span>
+          <span class="no">enforced at run time, and recording to an unknown label is recorded</span>
+          <span class="no">to the special label ``__other__``.  If not provided, the labels</span>
+          <span class="no">may be anything, but using too many unique labels will put some</span>
+          <span class="no">labels in the special label ``__other__``.</span>
 
-          <span class="no">Valid when `labeled`_ is `true`.</span>
+          <span class="no">Valid with any of the labeled metric types.</span>
         <span class="nt">anyOf</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
             <span class="nt">items</span><span class="p">:</span>
