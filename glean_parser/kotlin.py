@@ -115,7 +115,8 @@ def output_kotlin(metrics, output_dir, options={}):
         'lifetime',
         'values',
         'denominator',
-        'time_unit'
+        'time_unit',
+        'allowed_extra_keys'
     ]
 
     namespace = options.get('namespace', 'GleanMetrics')
