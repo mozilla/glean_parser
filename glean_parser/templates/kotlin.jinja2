@@ -33,9 +33,9 @@ import mozilla.components.service.glean.private.LabeledMetricType
 internal object {{ category_name|Camelize }} {
 {% for metric in metrics.values() %}
     {% if metric.extra_keys|length %}
-    enum class {{ metric.name|camelize }}Keys(val value: String) {
+    enum class {{ metric.name|camelize }}Keys {
     {% for key in metric.allowed_extra_keys %}
-        {{ key|camelize }}({{ key|kotlin }}){{ "," if not loop.last }}
+        {{ key|camelize }}{{ "," if not loop.last }}
     {% endfor %}
     }
     {% endif %}
