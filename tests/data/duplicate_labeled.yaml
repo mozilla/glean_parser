@@ -1,0 +1,32 @@
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+category:
+  counter:
+    type: counter
+    lifetime: user
+    description: >
+      Foo
+    bugs:
+      - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
+    notification_emails:
+      - CHANGE-ME@test-only.com
+    send_in_pings:
+      - core
+    expires: 2100-01-01
+
+  labeled_counter:
+    type: labeled_counter
+    lifetime: user
+    description: >
+      Foo
+    bugs:
+      - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
+    notification_emails:
+      - CHANGE-ME@test-only.com
+    send_in_pings:
+      - core
+    expires: 2100-01-01

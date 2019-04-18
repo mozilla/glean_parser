@@ -107,3 +107,34 @@ def test_metric_type_name():
     )
 
     assert kotlin.metric_type_name(boolean) == 'BooleanMetricType'
+
+
+def test_duplicate(tmpdir):
+    """
+    Test that there aren't duplicate imports when using a labeled and
+    non-labeled version of the same metric.
+
+    https://github.com/mozilla-mobile/android-components/issues/2793
+    """
+
+    tmpdir = Path(tmpdir)
+
+    translate.translate(
+        ROOT / "data" / "duplicate_labeled.yaml",
+        'kotlin',
+        tmpdir,
+        {'namespace': 'Foo'},
+    )
+
+    assert (
+        set(x.name for x in tmpdir.iterdir()) ==
+        set([
+            'Category.kt',
+        ])
+    )
+
+    with open(tmpdir / 'Category.kt', 'r', encoding='utf-8') as fd:
+        content = fd.read()
+        assert content.count(
+            "import mozilla.components.service.glean.private.CounterMetricType"
+        ) == 1
