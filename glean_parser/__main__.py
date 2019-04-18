@@ -20,7 +20,7 @@ from . import validate_ping
 @click.argument(
     'input',
     type=click.Path(
-        exists=True,
+        exists=False,
         dir_okay=False,
         file_okay=True,
         readable=True,
@@ -62,7 +62,7 @@ from . import validate_ping
 )
 def translate(input, format, output, option, allow_reserved):
     """
-    Translate metrics.yaml files to other formats.
+    Translate metrics.yaml and pings.yaml files to other formats.
     """
     option_dict = {}
     for opt in option:

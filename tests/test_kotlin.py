@@ -9,6 +9,7 @@ import subprocess
 
 from glean_parser import kotlin
 from glean_parser import metrics
+from glean_parser import pings
 from glean_parser import translate
 
 
@@ -82,7 +83,7 @@ def test_metric_type_name():
         extra_keys={'my_extra': {'description': 'an extra'}},
     )
 
-    assert kotlin.metric_type_name(event) == 'EventMetricType<metricKeys>'
+    assert kotlin.type_name(event) == 'EventMetricType<metricKeys>'
 
     event = metrics.Event(
         type='event',
@@ -94,7 +95,7 @@ def test_metric_type_name():
         expires='never',
     )
 
-    assert kotlin.metric_type_name(event) == 'EventMetricType<NoExtraKeys>'
+    assert kotlin.type_name(event) == 'EventMetricType<NoExtraKeys>'
 
     boolean = metrics.Boolean(
         type='boolean',
@@ -105,8 +106,14 @@ def test_metric_type_name():
         description='description...',
         expires='never'
     )
+    assert kotlin.type_name(boolean) == 'BooleanMetricType'
 
-    assert kotlin.metric_type_name(boolean) == 'BooleanMetricType'
+    ping = pings.Ping(
+        name="custom",
+        description="description...",
+        include_client_id=True
+    )
+    assert kotlin.type_name(ping) == 'PingType'
 
 
 def test_duplicate(tmpdir):

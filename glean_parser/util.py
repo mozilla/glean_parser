@@ -64,6 +64,9 @@ def load_yaml_or_json(path):
     if TESTING_MODE and isinstance(path, dict):
         return path
 
+    if not path.is_file():
+        return {}
+
     if path.suffix == '.json':
         with open(path, 'r') as fd:
             return json.load(fd)

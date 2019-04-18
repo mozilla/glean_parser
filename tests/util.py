@@ -22,6 +22,6 @@ def add_required(chunk):
                 if default_name not in metric:
                     metric[default_name] = default_val
 
-    chunk['$schema'] = parser._get_metrics_schema()[0]['$id']
+    chunk['$schema'] = parser.METRICS_ID
 
     return chunk

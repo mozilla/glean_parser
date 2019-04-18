@@ -14,6 +14,7 @@ from jsonschema.exceptions import ValidationError
 import yaml
 
 from .metrics import Metric
+from .pings import Ping, RESERVED_PING_NAMES
 from . import util
 
 
@@ -22,6 +23,16 @@ SCHEMAS_DIR = ROOT_DIR / 'schemas'
 
 
 _unset = _utils.Unset()
+
+
+METRICS_ID = 'moz://mozilla.org/schemas/glean/metrics/1-0-0'
+PINGS_ID = 'moz://mozilla.org/schemas/glean/pings/1-0-0'
+
+
+FILE_TYPES = {
+    METRICS_ID: 'metrics',
+    PINGS_ID: 'pings'
+}
 
 
 def _pprint_validation_error(error):
@@ -106,130 +117,192 @@ def _update_validator(validator):
     validator.VALIDATORS['required'] = required
 
 
-@functools.lru_cache(maxsize=1)
-def _get_metrics_schema():
-    schema = util.load_yaml_or_json(SCHEMAS_DIR / 'metrics.1-0-0.schema.yaml')
-    resolver = util.get_null_resolver(schema)
+def _load_file(filepath):
+    """
+    Load a metrics.yaml or pings.yaml format file.
+    """
+    try:
+        content = util.load_yaml_or_json(filepath)
+    except Exception as e:
+        yield _format_error(filepath, '', textwrap.fill(str(e)))
+        return {}, None
 
-    validator_class = jsonschema.validators.validator_for(schema)
-    _update_validator(validator_class)
-    validator_class.check_schema(schema)
-    validator = validator_class(schema, resolver=resolver)
-    return schema, validator
+    if content is None:
+        yield _format_error(
+            filepath,
+            '',
+            f"'{filepath}' file can not be empty.",
+        )
+        return {}, None
+
+    if content == {}:
+        return {}, None
+
+    filetype = FILE_TYPES.get(content.get('$schema'))
+
+    for error in validate(content, filepath):
+        content = {}
+        yield error
+
+    return content, filetype
+
+
+@functools.lru_cache(maxsize=1)
+def _load_schemas():
+    """
+    Load all of the known schemas from disk, and put them in a map based on the
+    schema's $id.
+    """
+    schemas = {}
+    for schema_path in SCHEMAS_DIR.glob('*.yaml'):
+        schema = util.load_yaml_or_json(schema_path)
+        resolver = util.get_null_resolver(schema)
+        validator_class = jsonschema.validators.validator_for(schema)
+        _update_validator(validator_class)
+        validator_class.check_schema(schema)
+        validator = validator_class(schema, resolver=resolver)
+        schemas[schema['$id']] = (schema, validator)
+    return schemas
+
+
+def _get_schema(schema_id, filepath="<input>"):
+    """
+    Get the schema for the given schema $id.
+    """
+    schemas = _load_schemas()
+    if schema_id not in schemas:
+        raise ValueError(
+            _format_error(
+                filepath,
+                '',
+                f"$schema key must be one of {', '.join(schemas.keys())}"
+            )
+        )
+    return schemas[schema_id]
+
+
+def _get_schema_for_content(content, filepath):
+    """
+    Get the appropriate schema for the given JSON content.
+    """
+    return _get_schema(content.get('$schema'), filepath)
 
 
 def get_parameter_doc(key):
     """
     Returns documentation about a specific metric parameter.
     """
-    schema, _ = _get_metrics_schema()
+    schema, _ = _get_schema(METRICS_ID)
     return schema['definitions']['metric']['properties'][key]['description']
 
 
 def validate(content, filepath='<input>'):
     """
-    Validate the given content against the metrics.schema.yaml schema.
-    """
-    schema, validator = _get_metrics_schema()
-
-    if '$schema' in content and content.get('$schema') != schema.get('$id'):
-        yield _format_error(
-            filepath,
-            '',
-            f"$schema key must be set to {schema.get('$id')}'"
-        )
-
-    yield from (
-        _format_error(filepath, '', _pprint_validation_error(e))
-        for e in validator.iter_errors(content)
-    )
-
-
-def _load_metrics_file(filepath):
-    """
-    Load a metrics.yaml format file.
+    Validate the given content against the appropriate schema.
     """
     try:
-        metrics_content = util.load_yaml_or_json(filepath)
-    except Exception as e:
-        yield _format_error(filepath, '', textwrap.fill(str(e)))
-        return {}
-
-    if metrics_content is None:
-        yield _format_error(filepath, '', 'metrics file can not be empty.')
-        return {}
-
-    has_error = False
-    for error in validate(metrics_content, filepath):
-        has_error = True
-        yield error
-
-    if has_error:
-        return {}
+        schema, validator = _get_schema_for_content(content, filepath)
+    except ValueError as e:
+        yield str(e)
     else:
-        return metrics_content
+        yield from (
+            _format_error(filepath, '', _pprint_validation_error(e))
+            for e in validator.iter_errors(content)
+        )
 
 
-def _merge_and_instantiate_metrics(filepaths, config):
+def _instantiate_metrics(all_objects, sources, content, filepath, config):
     """
     Load a list of metrics.yaml files, convert the JSON information into Metric
     objects, and merge them into a single tree.
     """
-    output_metrics = {}
-    # Keep track of where each metric came from to provide a better error
-    # message
-    sources = {}
-
-    for filepath in filepaths:
-        metrics_content = yield from _load_metrics_file(filepath)
-        for category_key, category_val in metrics_content.items():
-            if category_key.startswith('$'):
-                continue
-            if (not config.get('allow_reserved') and
-                    category_key.split('.')[0] == 'glean'):
+    for category_key, category_val in content.items():
+        if category_key.startswith('$'):
+            continue
+        if (not config.get('allow_reserved') and
+                category_key.split('.')[0] == 'glean'):
+            yield _format_error(
+                filepath,
+                f"For category '{category_key}'",
+                f"Categories beginning with 'glean' are reserved for "
+                f"glean internal use."
+            )
+            continue
+        all_objects.setdefault(category_key, {})
+        for metric_key, metric_val in category_val.items():
+            try:
+                metric_obj = Metric.make_metric(
+                    category_key, metric_key, metric_val,
+                    validated=True, config=config
+                )
+            except Exception as e:
                 yield _format_error(
                     filepath,
-                    f"For category '{category_key}'",
-                    f"Categories beginning with 'glean' are reserved for "
-                    f"glean internal use."
+                    f'On instance {category_key}.{metric_key}',
+                    str(e)
+                )
+                metric_obj = None
+
+            already_seen = sources.get((category_key, metric_key))
+            if already_seen is not None:
+                # We've seen this metric name already
+                yield _format_error(
+                    filepath,
+                    "",
+                    f"Duplicate metric name '{category_key}.{metric_key}'"
+                    f"already defined in '{already_seen}'"
+                )
+            else:
+                all_objects[category_key][metric_key] = metric_obj
+                sources[(category_key, metric_key)] = filepath
+
+
+def _instantiate_pings(all_objects, sources, content, filepath, config):
+    """
+    Load a list of pings.yaml files, convert the JSON information into Ping
+    objects.
+    """
+    for ping_key, ping_val in content.items():
+        if ping_key.startswith('$'):
+            continue
+        if not config.get('allow_reserved'):
+            if ping_key in RESERVED_PING_NAMES:
+                yield _format_error(
+                    filepath,
+                    f"For ping '{ping_key}'",
+                    f"Ping uses a reserved name ({RESERVED_PING_NAMES})"
                 )
                 continue
-            output_metrics.setdefault(category_key, {})
-            for metric_key, metric_val in category_val.items():
-                try:
-                    metric_obj = Metric.make_metric(
-                        category_key, metric_key, metric_val,
-                        validated=True, config=config
-                    )
-                except Exception as e:
-                    yield _format_error(
-                        filepath,
-                        f'On instance {category_key}.{metric_key}',
-                        str(e)
-                    )
-                    metric_obj = None
+        ping_val['name'] = ping_key
+        try:
+            ping_obj = Ping(**ping_val)
+        except Exception as e:
+            yield _format_error(
+                filepath,
+                f'On instance {ping_key}',
+                str(e)
+            )
+            ping_obj = None
 
-                already_seen = sources.get((category_key, metric_key))
-                if already_seen is not None:
-                    # We've seen this metric name already
-                    yield _format_error(
-                        filepath,
-                        "",
-                        f"Duplicate metric name '{category_key}.{metric_key}'"
-                        f"already defined in '{already_seen}'"
-                    )
-                else:
-                    output_metrics[category_key][metric_key] = metric_obj
-                    sources[(category_key, metric_key)] = filepath
-
-    return output_metrics
+        already_seen = sources.get(ping_key)
+        if already_seen is not None:
+            # We've seen this ping name already
+            yield _format_error(
+                filepath,
+                "",
+                f"Duplicate ping name '{ping_key}'"
+                f"already defined in '{already_seen}'"
+            )
+        else:
+            all_objects.setdefault('pings', {})[ping_key] = ping_obj
+            sources[ping_key] = filepath
 
 
 @util.keep_value
-def parse_metrics(filepaths, config={}):
+def parse_objects(filepaths, config={}):
     """
-    Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`
-    instances.
+    Parse one or more metrics.yaml and/or pings.yaml files, returning a tree of
+    `metrics.Metric` and `pings.Ping` instances.
 
     The result is a generator over any errors.  If there are no errors, the
     actual metrics can be obtained from `result.value`.  For example::
@@ -241,13 +314,34 @@ def parse_metrics(filepaths, config={}):
 
     The result value is a dictionary of category names to categories, where
     each category is a dictionary from metric name to `metrics.Metric`
-    instances.
+    instances.  There is also the special category `pings` containing all
+    of the `pings.Ping` instances.
 
-    :param filepaths: list of Path objects to metrics.yaml files
+    :param filepaths: list of Path objects to metrics.yaml and/or pings.yaml
+    files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
         - `allow_reserved`: Allow values reserved for internal Glean use.
     """
+    all_objects = {}
+    sources = {}
     filepaths = util.ensure_list(filepaths)
-    all_metrics = yield from _merge_and_instantiate_metrics(filepaths, config)
-    return all_metrics
+    for filepath in filepaths:
+        content, filetype = yield from _load_file(filepath)
+        if filetype == 'metrics':
+            yield from _instantiate_metrics(
+                all_objects,
+                sources,
+                content,
+                filepath,
+                config
+            )
+        elif filetype == 'pings':
+            yield from _instantiate_pings(
+                all_objects,
+                sources,
+                content,
+                filepath,
+                config
+            )
+    return all_objects

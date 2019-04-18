@@ -1,3 +1,4 @@
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
 gleantest.foo:
     a: b
 gleantest:

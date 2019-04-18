@@ -1,0 +1,9 @@
+customPing:
+    description:
+        This is a custom ping
+    include_client_id: false
+
+reallyCustomPing:
+    description:
+        This is another custom ping
+    include_client_id: true

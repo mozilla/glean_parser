@@ -16,7 +16,7 @@ def test_metrics_match_schema():
     Make sure the supported set of metric types in the schema matches the set
     in `metrics.py`
     """
-    schema, validator = parser._get_metrics_schema()
+    schema, validator = parser._get_schema(parser.METRICS_ID)
 
     assert (set(metrics.Metric.metric_types.keys()) ==
             set(schema['definitions']['metric']['properties']['type']['enum']))
