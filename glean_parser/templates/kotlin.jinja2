@@ -24,7 +24,7 @@ import mozilla.components.service.glean.private.Lifetime
 import mozilla.components.service.glean.private.TimeUnit // ktlint-disable no-unused-imports
 import mozilla.components.service.glean.private.NoExtraKeys // ktlint-disable no-unused-imports
 {% for metric_type in metric_types %}
-import mozilla.components.service.glean.private.{{ metric_type|metric_type_class|Camelize }}MetricType
+import mozilla.components.service.glean.private.{{ metric_type|Camelize }}MetricType
 {% endfor %}
 {% if has_labeled_metrics %}
 import mozilla.components.service.glean.private.LabeledMetricType

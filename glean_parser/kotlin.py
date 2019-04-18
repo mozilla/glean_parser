@@ -126,7 +126,7 @@ def output_kotlin(metrics, output_dir, options={}):
         filepath = output_dir / filename
 
         metric_types = sorted(list(set(
-            metric.type for metric in category_val.values()
+            metric_type_class(metric.type) for metric in category_val.values()
         )))
         has_labeled_metrics = any(
             getattr(metric, 'labeled', False)
