@@ -161,7 +161,7 @@
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
 
         <span class="n">metric_types</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span>
-            <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">metric_type_class</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)))</span>
         <span class="n">has_labeled_metrics</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;labeled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
