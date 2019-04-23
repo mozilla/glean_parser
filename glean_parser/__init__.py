@@ -8,4 +8,4 @@
 
 __author__ = """Michael Droettboom"""
 __email__ = 'mdroettboom@mozilla.com'
-__version__ = '0.23.2'
+__version__ = '0.24.0'
