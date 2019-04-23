@@ -28,6 +28,14 @@ glean\_parser.parser module
     :undoc-members:
     :show-inheritance:
 
+glean\_parser.pings module
+--------------------------
+
+.. automodule:: glean_parser.pings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 glean\_parser.translate module
 ------------------------------
 

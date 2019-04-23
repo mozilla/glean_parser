@@ -49,6 +49,7 @@
 <span class="kn">import</span> <span class="nn">yaml</span>
 
 <span class="kn">from</span> <span class="nn">.metrics</span> <span class="k">import</span> <span class="n">Metric</span>
+<span class="kn">from</span> <span class="nn">.pings</span> <span class="k">import</span> <span class="n">Ping</span><span class="p">,</span> <span class="n">RESERVED_PING_NAMES</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
 
 
@@ -57,6 +58,16 @@
 
 
 <span class="n">_unset</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">Unset</span><span class="p">()</span>
+
+
+<span class="n">METRICS_ID</span> <span class="o">=</span> <span class="s1">&#39;moz://mozilla.org/schemas/glean/metrics/1-0-0&#39;</span>
+<span class="n">PINGS_ID</span> <span class="o">=</span> <span class="s1">&#39;moz://mozilla.org/schemas/glean/pings/1-0-0&#39;</span>
+
+
+<span class="n">FILE_TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">METRICS_ID</span><span class="p">:</span> <span class="s1">&#39;metrics&#39;</span><span class="p">,</span>
+    <span class="n">PINGS_ID</span><span class="p">:</span> <span class="s1">&#39;pings&#39;</span>
+<span class="p">}</span>
 
 
 <span class="k">def</span> <span class="nf">_pprint_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
@@ -141,130 +152,192 @@
     <span class="n">validator</span><span class="o">.</span><span class="n">VALIDATORS</span><span class="p">[</span><span class="s1">&#39;required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
 
 
-<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_get_metrics_schema</span><span class="p">():</span>
-    <span class="n">schema</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">SCHEMAS_DIR</span> <span class="o">/</span> <span class="s1">&#39;metrics.1-0-0.schema.yaml&#39;</span><span class="p">)</span>
-    <span class="n">resolver</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_null_resolver</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_load_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a metrics.yaml or pings.yaml format file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="kc">None</span>
 
-    <span class="n">validator_class</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-    <span class="n">_update_validator</span><span class="p">(</span><span class="n">validator_class</span><span class="p">)</span>
-    <span class="n">validator_class</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-    <span class="n">validator</span> <span class="o">=</span> <span class="n">validator_class</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">schema</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+            <span class="n">filepath</span><span class="p">,</span>
+            <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{filepath}</span><span class="s2">&#39; file can not be empty.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">content</span> <span class="o">==</span> <span class="p">{}:</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="kc">None</span>
+
+    <span class="n">filetype</span> <span class="o">=</span> <span class="n">FILE_TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$schema&#39;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">validate</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">yield</span> <span class="n">error</span>
+
+    <span class="k">return</span> <span class="n">content</span><span class="p">,</span> <span class="n">filetype</span>
+
+
+<span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_load_schemas</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load all of the known schemas from disk, and put them in a map based on the</span>
+<span class="sd">    schema&#39;s $id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schemas</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">schema_path</span> <span class="ow">in</span> <span class="n">SCHEMAS_DIR</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.yaml&#39;</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">schema_path</span><span class="p">)</span>
+        <span class="n">resolver</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_null_resolver</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">validator_class</span> <span class="o">=</span> <span class="n">jsonschema</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">validator_for</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">_update_validator</span><span class="p">(</span><span class="n">validator_class</span><span class="p">)</span>
+        <span class="n">validator_class</span><span class="o">.</span><span class="n">check_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">validator</span> <span class="o">=</span> <span class="n">validator_class</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">resolver</span><span class="o">=</span><span class="n">resolver</span><span class="p">)</span>
+        <span class="n">schemas</span><span class="p">[</span><span class="n">schema</span><span class="p">[</span><span class="s1">&#39;$id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">validator</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">schemas</span>
+
+
+<span class="k">def</span> <span class="nf">_get_schema</span><span class="p">(</span><span class="n">schema_id</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;&lt;input&gt;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the schema for the given schema $id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schemas</span> <span class="o">=</span> <span class="n">_load_schemas</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">schema_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schemas</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">_format_error</span><span class="p">(</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="n">f</span><span class="s2">&quot;$schema key must be one of {&#39;, &#39;.join(schemas.keys())}&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">schemas</span><span class="p">[</span><span class="n">schema_id</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_get_schema_for_content</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the appropriate schema for the given JSON content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_get_schema</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$schema&#39;</span><span class="p">),</span> <span class="n">filepath</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_parameter_doc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.get_parameter_doc">[docs]</a><span class="k">def</span> <span class="nf">get_parameter_doc</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns documentation about a specific metric parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">schema</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_metrics_schema</span><span class="p">()</span>
+    <span class="n">schema</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_schema</span><span class="p">(</span><span class="n">METRICS_ID</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">schema</span><span class="p">[</span><span class="s1">&#39;definitions&#39;</span><span class="p">][</span><span class="s1">&#39;metric&#39;</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="validate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.validate">[docs]</a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s1">&#39;&lt;input&gt;&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Validate the given content against the metrics.schema.yaml schema.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">schema</span><span class="p">,</span> <span class="n">validator</span> <span class="o">=</span> <span class="n">_get_metrics_schema</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="s1">&#39;$schema&#39;</span> <span class="ow">in</span> <span class="n">content</span> <span class="ow">and</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$schema&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;$id&#39;</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
-            <span class="n">filepath</span><span class="p">,</span>
-            <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="n">f</span><span class="s2">&quot;$schema key must be set to {schema.get(&#39;$id&#39;)}&#39;&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">yield from</span> <span class="p">(</span>
-        <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">_pprint_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">validator</span><span class="o">.</span><span class="n">iter_errors</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-    <span class="p">)</span></div>
-
-
-<span class="k">def</span> <span class="nf">_load_metrics_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load a metrics.yaml format file.</span>
+<span class="sd">    Validate the given content against the appropriate schema.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">metrics_content</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">load_yaml_or_json</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="p">{}</span>
-
-    <span class="k">if</span> <span class="n">metrics_content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;metrics file can not be empty.&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{}</span>
-
-    <span class="n">has_error</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">validate</span><span class="p">(</span><span class="n">metrics_content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="n">has_error</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">yield</span> <span class="n">error</span>
-
-    <span class="k">if</span> <span class="n">has_error</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{}</span>
+        <span class="n">schema</span><span class="p">,</span> <span class="n">validator</span> <span class="o">=</span> <span class="n">_get_schema_for_content</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">metrics_content</span>
+        <span class="k">yield from</span> <span class="p">(</span>
+            <span class="n">_format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">_pprint_validation_error</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">validator</span><span class="o">.</span><span class="n">iter_errors</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_merge_and_instantiate_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_instantiate_metrics</span><span class="p">(</span><span class="n">all_objects</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a list of metrics.yaml files, convert the JSON information into Metric</span>
 <span class="sd">    objects, and merge them into a single tree.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">output_metrics</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1"># Keep track of where each metric came from to provide a better error</span>
-    <span class="c1"># message</span>
-    <span class="n">sources</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
-        <span class="n">metrics_content</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">_load_metrics_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">metrics_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">category_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allow_reserved&#39;</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="n">category_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;glean&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">category_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allow_reserved&#39;</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">category_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;glean&#39;</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="n">f</span><span class="s2">&quot;For category &#39;</span><span class="si">{category_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                <span class="n">f</span><span class="s2">&quot;Categories beginning with &#39;glean&#39; are reserved for &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;glean internal use.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">all_objects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category_key</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metric_obj</span> <span class="o">=</span> <span class="n">Metric</span><span class="o">.</span><span class="n">make_metric</span><span class="p">(</span>
+                    <span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span><span class="p">,</span>
+                    <span class="n">validated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
                     <span class="n">filepath</span><span class="p">,</span>
-                    <span class="n">f</span><span class="s2">&quot;For category &#39;</span><span class="si">{category_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
-                    <span class="n">f</span><span class="s2">&quot;Categories beginning with &#39;glean&#39; are reserved for &quot;</span>
-                    <span class="n">f</span><span class="s2">&quot;glean internal use.&quot;</span>
+                    <span class="n">f</span><span class="s1">&#39;On instance </span><span class="si">{category_key}</span><span class="s1">.</span><span class="si">{metric_key}</span><span class="s1">&#39;</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># We&#39;ve seen this metric name already</span>
+                <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                    <span class="n">filepath</span><span class="p">,</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">f</span><span class="s2">&quot;Duplicate metric name &#39;</span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&#39;&quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_objects</span><span class="p">[</span><span class="n">category_key</span><span class="p">][</span><span class="n">metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_obj</span>
+                <span class="n">sources</span><span class="p">[(</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">filepath</span>
+
+
+<span class="k">def</span> <span class="nf">_instantiate_pings</span><span class="p">(</span><span class="n">all_objects</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a list of pings.yaml files, convert the JSON information into Ping</span>
+<span class="sd">    objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ping_key</span><span class="p">,</span> <span class="n">ping_val</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">ping_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allow_reserved&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ping_key</span> <span class="ow">in</span> <span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                    <span class="n">filepath</span><span class="p">,</span>
+                    <span class="n">f</span><span class="s2">&quot;For ping &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="n">f</span><span class="s2">&quot;Ping uses a reserved name (</span><span class="si">{RESERVED_PING_NAMES}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
-            <span class="n">output_metrics</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category_key</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">metric_obj</span> <span class="o">=</span> <span class="n">Metric</span><span class="o">.</span><span class="n">make_metric</span><span class="p">(</span>
-                        <span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span><span class="p">,</span>
-                        <span class="n">validated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
-                    <span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
-                        <span class="n">filepath</span><span class="p">,</span>
-                        <span class="n">f</span><span class="s1">&#39;On instance </span><span class="si">{category_key}</span><span class="s1">.</span><span class="si">{metric_key}</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                    <span class="p">)</span>
-                    <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">ping_val</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ping_key</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ping_obj</span> <span class="o">=</span> <span class="n">Ping</span><span class="p">(</span><span class="o">**</span><span class="n">ping_val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="n">f</span><span class="s1">&#39;On instance </span><span class="si">{ping_key}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">ping_obj</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">))</span>
-                <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="c1"># We&#39;ve seen this metric name already</span>
-                    <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
-                        <span class="n">filepath</span><span class="p">,</span>
-                        <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                        <span class="n">f</span><span class="s2">&quot;Duplicate metric name &#39;</span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&#39;&quot;</span>
-                        <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">output_metrics</span><span class="p">[</span><span class="n">category_key</span><span class="p">][</span><span class="n">metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_obj</span>
-                    <span class="n">sources</span><span class="p">[(</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">filepath</span>
-
-    <span class="k">return</span> <span class="n">output_metrics</span>
+        <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># We&#39;ve seen this ping name already</span>
+            <span class="k">yield</span> <span class="n">_format_error</span><span class="p">(</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">f</span><span class="s2">&quot;Duplicate ping name &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span>
+                <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">all_objects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;pings&#39;</span><span class="p">,</span> <span class="p">{})[</span><span class="n">ping_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ping_obj</span>
+            <span class="n">sources</span><span class="p">[</span><span class="n">ping_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">filepath</span>
 
 
-<div class="viewcode-block" id="parse_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.parse_metrics">[docs]</a><span class="nd">@util</span><span class="o">.</span><span class="n">keep_value</span>
-<span class="k">def</span> <span class="nf">parse_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="parse_objects"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.parse_objects">[docs]</a><span class="nd">@util</span><span class="o">.</span><span class="n">keep_value</span>
+<span class="k">def</span> <span class="nf">parse_objects</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parse one or more metrics.yaml files, returning a tree of `metrics.Metric`</span>
-<span class="sd">    instances.</span>
+<span class="sd">    Parse one or more metrics.yaml and/or pings.yaml files, returning a tree of</span>
+<span class="sd">    `metrics.Metric` and `pings.Ping` instances.</span>
 
 <span class="sd">    The result is a generator over any errors.  If there are no errors, the</span>
 <span class="sd">    actual metrics can be obtained from `result.value`.  For example::</span>
@@ -276,16 +349,37 @@
 
 <span class="sd">    The result value is a dictionary of category names to categories, where</span>
 <span class="sd">    each category is a dictionary from metric name to `metrics.Metric`</span>
-<span class="sd">    instances.</span>
+<span class="sd">    instances.  There is also the special category `pings` containing all</span>
+<span class="sd">    of the `pings.Ping` instances.</span>
 
-<span class="sd">    :param filepaths: list of Path objects to metrics.yaml files</span>
+<span class="sd">    :param filepaths: list of Path objects to metrics.yaml and/or pings.yaml</span>
+<span class="sd">    files</span>
 <span class="sd">    :param config: A dictionary of options that change parsing behavior.</span>
 <span class="sd">        Supported keys are:</span>
 <span class="sd">        - `allow_reserved`: Allow values reserved for internal Glean use.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_objects</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">filepaths</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span>
-    <span class="n">all_metrics</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">_merge_and_instantiate_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">all_metrics</span></div>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">content</span><span class="p">,</span> <span class="n">filetype</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">_load_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;metrics&#39;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_instantiate_metrics</span><span class="p">(</span>
+                <span class="n">all_objects</span><span class="p">,</span>
+                <span class="n">sources</span><span class="p">,</span>
+                <span class="n">content</span><span class="p">,</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="n">config</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;pings&#39;</span><span class="p">:</span>
+            <span class="k">yield from</span> <span class="n">_instantiate_pings</span><span class="p">(</span>
+                <span class="n">all_objects</span><span class="p">,</span>
+                <span class="n">sources</span><span class="p">,</span>
+                <span class="n">content</span><span class="p">,</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="n">config</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_objects</span></div>
 </pre></div>
 
           </div>

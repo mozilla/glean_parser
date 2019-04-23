@@ -567,7 +567,11 @@ entirety below:</p>
 
 <span class="nt">propertyNames</span><span class="p">:</span>
   <span class="nt">anyOf</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/dotted_snake_case&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">allOf</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/dotted_snake_case&quot;</span>
+        <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
+            <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;&#39;pings&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span>
+            <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pings</span>
     <span class="p p-Indicator">-</span> <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">]</span>
 
 <span class="nt">properties</span><span class="p">:</span>

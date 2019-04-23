@@ -43,6 +43,12 @@
 <span id="glean-parser-kotlin-module"></span><h2>glean_parser.kotlin module<a class="headerlink" href="#module-glean_parser.kotlin" title="Permalink to this headline">¶</a></h2>
 <p>Outputter to generate Kotlin code for metrics.</p>
 <dl class="function">
+<dt id="glean_parser.kotlin.class_name">
+<code class="descclassname">glean_parser.kotlin.</code><code class="descname">class_name</code><span class="sig-paren">(</span><em>obj_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#class_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.class_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Kotlin class name for a given metric or ping type.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="glean_parser.kotlin.kotlin_datatypes_filter">
 <code class="descclassname">glean_parser.kotlin.</code><code class="descname">kotlin_datatypes_filter</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#kotlin_datatypes_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.kotlin_datatypes_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Jinja2 filter that renders Kotlin literals.</p>
@@ -59,38 +65,32 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="glean_parser.kotlin.metric_type_class">
-<code class="descclassname">glean_parser.kotlin.</code><code class="descname">metric_type_class</code><span class="sig-paren">(</span><em>metric_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#metric_type_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.metric_type_class" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="glean_parser.kotlin.metric_type_name">
-<code class="descclassname">glean_parser.kotlin.</code><code class="descname">metric_type_name</code><span class="sig-paren">(</span><em>metric</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#metric_type_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.metric_type_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the Kotlin class name to use for a given metric.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="glean_parser.kotlin.output_kotlin">
-<code class="descclassname">glean_parser.kotlin.</code><code class="descname">output_kotlin</code><span class="sig-paren">(</span><em>metrics</em>, <em>output_dir</em>, <em>options={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#output_kotlin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.output_kotlin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a tree of <cite>metrics</cite>, output Kotlin code to <cite>output_dir</cite>.</p>
+<code class="descclassname">glean_parser.kotlin.</code><code class="descname">output_kotlin</code><span class="sig-paren">(</span><em>objs</em>, <em>output_dir</em>, <em>options={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#output_kotlin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.output_kotlin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Kotlin code to <cite>output_dir</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>metrics</strong> – A tree of metrics, as returned from <cite>parser.parse_metrics</cite>.</li>
-<li><strong>output_dir</strong> – Path to an output directory to write to.</li>
-<li><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
-<ul>
-<li><cite>namespace</cite>: The package namespace to declare at the top of the
-generated files. Defaults to <cite>GleanMetrics</cite>.</li>
-</ul>
-</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
 </tr>
 </tbody>
 </table>
+<p><cite>parser.parse_objects</cite>.
+:param output_dir: Path to an output directory to write to.
+:param options: options dictionary, with the following optional keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>namespace</cite>: The package namespace to declare at the top of the
+generated files. Defaults to <cite>GleanMetrics</cite>.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.kotlin.type_name">
+<code class="descclassname">glean_parser.kotlin.</code><code class="descname">type_name</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#type_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.type_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Kotlin type to use for a given metric or ping object.</p>
 </dd></dl>
 
 </div>
@@ -576,10 +576,10 @@ jsonschema validation</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="glean_parser.parser.parse_metrics">
-<code class="descclassname">glean_parser.parser.</code><code class="descname">parse_metrics</code><span class="sig-paren">(</span><em>filepaths</em>, <em>config={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/parser.html#parse_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.parser.parse_metrics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse one or more metrics.yaml files, returning a tree of <cite>metrics.Metric</cite>
-instances.</p>
+<dt id="glean_parser.parser.parse_objects">
+<code class="descclassname">glean_parser.parser.</code><code class="descname">parse_objects</code><span class="sig-paren">(</span><em>filepaths</em>, <em>config={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/parser.html#parse_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.parser.parse_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse one or more metrics.yaml and/or pings.yaml files, returning a tree of
+<cite>metrics.Metric</cite> and <cite>pings.Ping</cite> instances.</p>
 <p>The result is a generator over any errors.  If there are no errors, the
 actual metrics can be obtained from <cite>result.value</cite>.  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">parse_metrics</span><span class="p">(</span><span class="n">filepaths</span><span class="p">)</span>
@@ -590,27 +590,47 @@ actual metrics can be obtained from <cite>result.value</cite>.  For example:</p>
 </div>
 <p>The result value is a dictionary of category names to categories, where
 each category is a dictionary from metric name to <cite>metrics.Metric</cite>
-instances.</p>
+instances.  There is also the special category <cite>pings</cite> containing all
+of the <cite>pings.Ping</cite> instances.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>filepaths</strong> – list of Path objects to metrics.yaml files</li>
-<li><strong>config</strong> – A dictionary of options that change parsing behavior.
-Supported keys are:
-- <cite>allow_reserved</cite>: Allow values reserved for internal Glean use.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepaths</strong> – list of Path objects to metrics.yaml and/or pings.yaml</td>
 </tr>
 </tbody>
 </table>
+<p>files
+:param config: A dictionary of options that change parsing behavior.</p>
+<blockquote>
+<div>Supported keys are:
+- <cite>allow_reserved</cite>: Allow values reserved for internal Glean use.</div></blockquote>
 </dd></dl>
 
 <dl class="function">
 <dt id="glean_parser.parser.validate">
 <code class="descclassname">glean_parser.parser.</code><code class="descname">validate</code><span class="sig-paren">(</span><em>content</em>, <em>filepath='&lt;input&gt;'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/parser.html#validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.parser.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate the given content against the metrics.schema.yaml schema.</p>
+<dd><p>Validate the given content against the appropriate schema.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-glean_parser.pings">
+<span id="glean-parser-pings-module"></span><h2>glean_parser.pings module<a class="headerlink" href="#module-glean_parser.pings" title="Permalink to this headline">¶</a></h2>
+<p>Classes for managing the description of pings.</p>
+<dl class="class">
+<dt id="glean_parser.pings.Ping">
+<em class="property">class </em><code class="descclassname">glean_parser.pings.</code><code class="descname">Ping</code><span class="sig-paren">(</span><em>name: str</em>, <em>description: str</em>, <em>include_client_id: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="glean_parser.pings.Ping.include_client_id">
+<code class="descname">include_client_id</code><em class="property"> = False</em><a class="headerlink" href="#glean_parser.pings.Ping.include_client_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.pings.Ping.type">
+<code class="descname">type</code><em class="property"> = 'ping'</em><a class="headerlink" href="#glean_parser.pings.Ping.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>

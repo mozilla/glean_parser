@@ -102,31 +102,36 @@
     <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">KotlinEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="metric_type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.metric_type_name">[docs]</a><span class="k">def</span> <span class="nf">metric_type_name</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+<div class="viewcode-block" id="type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.type_name">[docs]</a><span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the Kotlin class name to use for a given metric.</span>
+<span class="sd">    Returns the Kotlin type to use for a given metric or ping object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">):</span>
-            <span class="n">enumeration</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{util.camelize(metric.name)}Keys&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">):</span>
+            <span class="n">enumeration</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;{util.camelize(obj.name)}Keys&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">enumeration</span> <span class="o">=</span> <span class="s1">&#39;NoExtraKeys&#39;</span>
         <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;EventMetricType&lt;</span><span class="si">{enumeration}</span><span class="s1">&gt;&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;{util.Camelize(metric_type_class(metric.type))}MetricType&#39;</span></div>
+    <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="metric_type_class"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.metric_type_class">[docs]</a><span class="k">def</span> <span class="nf">metric_type_class</span><span class="p">(</span><span class="n">metric_type</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">metric_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;labeled_&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">metric_type</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">metric_type</span></div>
-
-
-<div class="viewcode-block" id="output_kotlin"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.output_kotlin">[docs]</a><span class="k">def</span> <span class="nf">output_kotlin</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.class_name">[docs]</a><span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given a tree of `metrics`, output Kotlin code to `output_dir`.</span>
+<span class="sd">    Returns the Kotlin class name for a given metric or ping type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s1">&#39;ping&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;PingType&#39;</span>
+    <span class="k">if</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;labeled_&#39;</span><span class="p">):</span>
+        <span class="n">obj_type</span> <span class="o">=</span> <span class="n">obj_type</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;{util.Camelize(obj_type)}MetricType&#39;</span></div>
 
-<span class="sd">    :param metrics: A tree of metrics, as returned from `parser.parse_metrics`.</span>
+
+<div class="viewcode-block" id="output_kotlin"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.output_kotlin">[docs]</a><span class="k">def</span> <span class="nf">output_kotlin</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Kotlin code to `output_dir`.</span>
+
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">    `parser.parse_objects`.</span>
 <span class="sd">    :param output_dir: Path to an output directory to write to.</span>
 <span class="sd">    :param options: options dictionary, with the following optional keys:</span>
 
@@ -137,12 +142,12 @@
         <span class="s1">&#39;kotlin.jinja2&#39;</span><span class="p">,</span>
         <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;kotlin&#39;</span><span class="p">,</span> <span class="n">kotlin_datatypes_filter</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">&#39;metric_type_name&#39;</span><span class="p">,</span> <span class="n">metric_type_name</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">&#39;metric_type_class&#39;</span><span class="p">,</span> <span class="n">metric_type_class</span><span class="p">)</span>
+            <span class="p">(</span><span class="s1">&#39;type_name&#39;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;class_name&#39;</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="c1"># The metric parameters to pass to constructors</span>
+    <span class="c1"># The object parameters to pass to constructors</span>
     <span class="n">extra_args</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s1">&#39;name&#39;</span><span class="p">,</span>
         <span class="s1">&#39;category&#39;</span><span class="p">,</span>
@@ -151,17 +156,19 @@
         <span class="s1">&#39;values&#39;</span><span class="p">,</span>
         <span class="s1">&#39;denominator&#39;</span><span class="p">,</span>
         <span class="s1">&#39;time_unit&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;allowed_extra_keys&#39;</span>
+        <span class="s1">&#39;allowed_extra_keys&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;disabled&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;include_client_id&#39;</span>
     <span class="p">]</span>
 
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">,</span> <span class="s1">&#39;GleanMetrics&#39;</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">category_key</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.kt&#39;</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
 
-        <span class="n">metric_types</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span>
-            <span class="n">metric_type_class</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="n">obj_types</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span>
+            <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)))</span>
         <span class="n">has_labeled_metrics</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;labeled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -172,8 +179,8 @@
             <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                 <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
                     <span class="n">category_name</span><span class="o">=</span><span class="n">category_key</span><span class="p">,</span>
-                    <span class="n">metrics</span><span class="o">=</span><span class="n">category_val</span><span class="p">,</span>
-                    <span class="n">metric_types</span><span class="o">=</span><span class="n">metric_types</span><span class="p">,</span>
+                    <span class="n">objs</span><span class="o">=</span><span class="n">category_val</span><span class="p">,</span>
+                    <span class="n">obj_types</span><span class="o">=</span><span class="n">obj_types</span><span class="p">,</span>
                     <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span>
                     <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
                     <span class="n">has_labeled_metrics</span><span class="o">=</span><span class="n">has_labeled_metrics</span><span class="p">,</span>

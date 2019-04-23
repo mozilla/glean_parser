@@ -147,6 +147,7 @@
         <span class="c1"># validated (but not any of the Python-level validation).</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_validated</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;$schema&#39;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">METRICS_ID</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="p">:</span> <span class="p">{</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
                 <span class="p">}</span>
