@@ -52,3 +52,16 @@ def test_reserved_metrics_category():
     errors = list(parser.parse_objects(content))
     assert len(errors) == 1
     assert 'reserved as a category name' in errors[0]
+
+
+def test_snake_case_ping_names():
+    content = {
+        '$schema': parser.PINGS_ID,
+        'camelCasePingName': {
+            'description': 'Description',
+            'include_client_id': True
+        }
+    }
+    errors = list(parser.parse_objects([content]))
+    assert len(errors) == 1
+    assert 'camelCasePingName' in errors[0]

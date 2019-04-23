@@ -23,22 +23,25 @@ def test_parser():
     all_metrics = parser.parse_objects([
         ROOT / "data" / "core.yaml",
         ROOT / "data" / "pings.yaml"
-    ])
-    for err in all_metrics:
-        pass
+    ], config={'allow_reserved': True})
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
     for category_key, category_val in all_metrics.value.items():
         if category_key == 'pings':
-            for ping in category_val:
-                if ping.name == 'customPing':
-                    assert ping.include_client_id is False
-                elif ping.name == 'reallyCustomPing':
-                    assert ping.include_client_id is True
-        else:
-            for metric_key, metric_val in category_val.items():
-                assert isinstance(metric_val, metrics.Metric)
-                assert isinstance(metric_val.lifetime, metrics.Lifetime)
-                if getattr(metric_val, 'labels', None) is not None:
-                    assert isinstance(metric_val.labels, set)
+            continue
+        for metric_key, metric_val in category_val.items():
+            assert isinstance(metric_val, metrics.Metric)
+            assert isinstance(metric_val.lifetime, metrics.Lifetime)
+            if getattr(metric_val, 'labels', None) is not None:
+                assert isinstance(metric_val.labels, set)
+
+    pings = all_metrics.value['pings']
+    assert pings['custom_ping'].name == 'custom_ping'
+    assert pings['custom_ping'].include_client_id is False
+    assert pings['really_custom_ping'].name == 'really_custom_ping'
+    assert pings['really_custom_ping'].include_client_id is True
 
 
 def test_parser_invalid():
