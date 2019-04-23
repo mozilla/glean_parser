@@ -112,6 +112,7 @@ class Metric:
         # validated (but not any of the Python-level validation).
         if not _validated:
             data = {
+                '$schema': parser.METRICS_ID,
                 self.category: {
                     self.name: self.serialize()
                 }

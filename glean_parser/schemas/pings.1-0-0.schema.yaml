@@ -1,0 +1,53 @@
+$schema: http://json-schema.org/draft-07/schema#
+title: Pings
+description: |
+  Schema for the pings.yaml files for Mozilla's glean telemetry SDK.
+
+  The top-level of the `pings.yaml` file has a key defining the name of each
+  ping. The values contain metadata about that ping. Ping names must be
+  snake_case, though they may also have dots `.` to define subcategories.
+
+$id: moz://mozilla.org/schemas/glean/pings/1-0-0
+
+definitions:
+  dotted_snake_case:
+    type: string
+    pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
+    maxLength: 40
+
+type: object
+
+propertyNames:
+  anyOf:
+    - $ref: "#/definitions/dotted_snake_case"
+    - enum: ['$schema']
+
+properties:
+  $schema:
+    type: string
+    format: url
+
+additionalProperties:
+  type: object
+  properties:
+    description:
+      title: Description
+      description: |
+        **Required.**
+
+        A textual description of the purpose of this ping and what it contains.
+      type: string
+
+    include_client_id:
+      title: Include client id
+      description: |
+        **Required.**
+
+        When `true`, include the `client_id` value in the ping.
+      type: boolean
+
+  required:
+    - description
+    - include_client_id
+
+  additionalProperties: false

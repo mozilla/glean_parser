@@ -7,61 +7,61 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-{% macro metric_declaration(metric, suffix='', access='') %}
-{{ access }}val {{ metric.name|camelize }}{{ suffix }}: {{ metric|metric_type_name }} by lazy {
-        {{ metric|metric_type_name }}(
-            {% for arg_name in extra_args if metric[arg_name] is defined %}
-            {{ arg_name|camelize }} = {{ metric[arg_name]|kotlin }},
+{% macro obj_declaration(obj, suffix='', access='', lazy=False) %}
+{{ access }}val {{ obj.name|camelize }}{{ suffix }}: {{ obj|type_name }}{% if lazy %} by lazy { {%- else %} ={% endif %}
+
+        {{ obj|type_name }}(
+            {% for arg_name in extra_args if obj[arg_name] is defined %}
+            {{ arg_name|camelize }} = {{ obj[arg_name]|kotlin }}{{ "," if not loop.last }}
             {% endfor %}
-            disabled = {{ metric.is_disabled()|kotlin }}
         )
-    }{% endmacro %}
+{% if lazy %}    }{% endif %}{% endmacro %}
 
 @file:Suppress("PackageNaming")
 package {{ namespace }}
 
-import mozilla.components.service.glean.private.Lifetime
+import mozilla.components.service.glean.private.Lifetime // ktlint-disable no-unused-imports
 import mozilla.components.service.glean.private.TimeUnit // ktlint-disable no-unused-imports
 import mozilla.components.service.glean.private.NoExtraKeys // ktlint-disable no-unused-imports
-{% for metric_type in metric_types %}
-import mozilla.components.service.glean.private.{{ metric_type|Camelize }}MetricType
+{% for obj_type in obj_types %}
+import mozilla.components.service.glean.private.{{ obj_type }}
 {% endfor %}
 {% if has_labeled_metrics %}
 import mozilla.components.service.glean.private.LabeledMetricType
 {% endif %}
 
 internal object {{ category_name|Camelize }} {
-{% for metric in metrics.values() %}
-    {% if metric.extra_keys|length %}
-    enum class {{ metric.name|camelize }}Keys {
-    {% for key in metric.allowed_extra_keys %}
+{% for obj in objs.values() %}
+    {% if obj.extra_keys|length %}
+    enum class {{ obj.name|camelize }}Keys {
+    {% for key in obj.allowed_extra_keys %}
         {{ key|camelize }}{{ "," if not loop.last }}
     {% endfor %}
     }
     {% endif %}
 {% endfor %}
-{% for metric in metrics.values() %}
-    {% if metric.labeled %}
-    {{ metric_declaration(metric, 'Label', 'private ') }}
+{% for obj in objs.values() %}
+    {% if obj.labeled %}
+    {{ obj_declaration(obj, 'Label', 'private ') }}
     /**
-     * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
+     * {{ obj.description|wordwrap(wrapstring='\n     * ') }}
      */
-    val {{ metric.name|camelize }}: LabeledMetricType<{{ metric|metric_type_name }}> by lazy {
+    val {{ obj.name|camelize }}: LabeledMetricType<{{ obj|type_name }}> by lazy {
         LabeledMetricType(
-            category = {{ metric.category|kotlin }},
-            name = {{ metric.name|kotlin }},
-            subMetric = {{ metric.name|camelize }}Label,
-            disabled = {{ metric.is_disabled()|kotlin }},
-            lifetime = {{ metric.lifetime|kotlin }},
-            sendInPings = {{ metric.send_in_pings|kotlin }},
-            labels = {{ metric.labels|kotlin }}
+            category = {{ obj.category|kotlin }},
+            name = {{ obj.name|kotlin }},
+            subMetric = {{ obj.name|camelize }}Label,
+            disabled = {{ obj.is_disabled()|kotlin }},
+            lifetime = {{ obj.lifetime|kotlin }},
+            sendInPings = {{ obj.send_in_pings|kotlin }},
+            labels = {{ obj.labels|kotlin }}
         )
     }
     {% else %}
     /**
-     * {{ metric.description|wordwrap(wrapstring='\n     * ') }}
+     * {{ obj.description|wordwrap(wrapstring='\n     * ') }}
      */
-    {{ metric_declaration(metric) }}
+    {{ obj_declaration(obj, lazy=obj.type != 'ping') }}
     {% endif %}
 {%- endfor %}
 }

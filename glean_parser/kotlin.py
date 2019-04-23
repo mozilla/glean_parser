@@ -67,31 +67,36 @@ def kotlin_datatypes_filter(value):
     return ''.join(KotlinEncoder().iterencode(value))
 
 
-def metric_type_name(metric):
+def type_name(obj):
     """
-    Returns the Kotlin class name to use for a given metric.
+    Returns the Kotlin type to use for a given metric or ping object.
     """
-    if isinstance(metric, metrics.Event):
-        if len(metric.extra_keys):
-            enumeration = f'{util.camelize(metric.name)}Keys'
+    if isinstance(obj, metrics.Event):
+        if len(obj.extra_keys):
+            enumeration = f'{util.camelize(obj.name)}Keys'
         else:
             enumeration = 'NoExtraKeys'
         return f'EventMetricType<{enumeration}>'
-    else:
-        return f'{util.Camelize(metric_type_class(metric.type))}MetricType'
+    return class_name(obj.type)
 
 
-def metric_type_class(metric_type):
-    if metric_type.startswith('labeled_'):
-        return metric_type[8:]
-    return metric_type
-
-
-def output_kotlin(metrics, output_dir, options={}):
+def class_name(obj_type):
     """
-    Given a tree of `metrics`, output Kotlin code to `output_dir`.
+    Returns the Kotlin class name for a given metric or ping type.
+    """
+    if obj_type == 'ping':
+        return 'PingType'
+    if obj_type.startswith('labeled_'):
+        obj_type = obj_type[8:]
+    return f'{util.Camelize(obj_type)}MetricType'
 
-    :param metrics: A tree of metrics, as returned from `parser.parse_metrics`.
+
+def output_kotlin(objs, output_dir, options={}):
+    """
+    Given a tree of objects, output Kotlin code to `output_dir`.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+    `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 
@@ -102,12 +107,12 @@ def output_kotlin(metrics, output_dir, options={}):
         'kotlin.jinja2',
         filters=(
             ('kotlin', kotlin_datatypes_filter),
-            ('metric_type_name', metric_type_name),
-            ('metric_type_class', metric_type_class)
+            ('type_name', type_name),
+            ('class_name', class_name)
         )
     )
 
-    # The metric parameters to pass to constructors
+    # The object parameters to pass to constructors
     extra_args = [
         'name',
         'category',
@@ -116,17 +121,19 @@ def output_kotlin(metrics, output_dir, options={}):
         'values',
         'denominator',
         'time_unit',
-        'allowed_extra_keys'
+        'allowed_extra_keys',
+        'disabled',
+        'include_client_id'
     ]
 
     namespace = options.get('namespace', 'GleanMetrics')
 
-    for category_key, category_val in metrics.items():
+    for category_key, category_val in objs.items():
         filename = util.Camelize(category_key) + '.kt'
         filepath = output_dir / filename
 
-        metric_types = sorted(list(set(
-            metric_type_class(metric.type) for metric in category_val.values()
+        obj_types = sorted(list(set(
+            class_name(obj.type) for obj in category_val.values()
         )))
         has_labeled_metrics = any(
             getattr(metric, 'labeled', False)
@@ -137,8 +144,8 @@ def output_kotlin(metrics, output_dir, options={}):
             fd.write(
                 template.render(
                     category_name=category_key,
-                    metrics=category_val,
-                    metric_types=metric_types,
+                    objs=category_val,
+                    obj_types=obj_types,
                     extra_args=extra_args,
                     namespace=namespace,
                     has_labeled_metrics=has_labeled_metrics,

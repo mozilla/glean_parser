@@ -340,7 +340,11 @@ type: object
 
 propertyNames:
   anyOf:
-    - $ref: "#/definitions/dotted_snake_case"
+    - allOf:
+        - $ref: "#/definitions/dotted_snake_case"
+        - not:
+            description: "'pings' is reserved as a category name."
+            const: pings
     - enum: ['$schema']
 
 properties:

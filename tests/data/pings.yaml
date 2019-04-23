@@ -1,0 +1,11 @@
+$schema: moz://mozilla.org/schemas/glean/pings/1-0-0
+
+custom_ping:
+    description:
+        This is a custom ping
+    include_client_id: false
+
+really_custom_ping:
+    description:
+        This is another custom ping
+    include_client_id: true

@@ -20,21 +20,33 @@ ROOT = Path(__file__).parent
 
 def test_parser():
     """Test the basics of parsing a single file."""
-    all_metrics = parser.parse_metrics(ROOT / "data" / "core.yaml")
-    for err in all_metrics:
-        pass
+    all_metrics = parser.parse_objects([
+        ROOT / "data" / "core.yaml",
+        ROOT / "data" / "pings.yaml"
+    ], config={'allow_reserved': True})
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
     for category_key, category_val in all_metrics.value.items():
+        if category_key == 'pings':
+            continue
         for metric_key, metric_val in category_val.items():
             assert isinstance(metric_val, metrics.Metric)
-            assert isinstance(metric_val.lifetime,
-                              metrics.Lifetime)
+            assert isinstance(metric_val.lifetime, metrics.Lifetime)
             if getattr(metric_val, 'labels', None) is not None:
                 assert isinstance(metric_val.labels, set)
+
+    pings = all_metrics.value['pings']
+    assert pings['custom_ping'].name == 'custom_ping'
+    assert pings['custom_ping'].include_client_id is False
+    assert pings['really_custom_ping'].name == 'really_custom_ping'
+    assert pings['really_custom_ping'].include_client_id is True
 
 
 def test_parser_invalid():
     """Test the basics of parsing a single file."""
-    all_metrics = parser.parse_metrics(ROOT / "data" / "invalid.yaml")
+    all_metrics = parser.parse_objects(ROOT / "data" / "invalid.yaml")
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'could not determine a constructor for the tag' in errors[0]
@@ -42,7 +54,7 @@ def test_parser_invalid():
 
 def test_parser_schema_violation():
     """1507792"""
-    all_metrics = parser.parse_metrics(ROOT / "data" / "schema-violation.yaml")
+    all_metrics = parser.parse_objects(ROOT / "data" / "schema-violation.yaml")
     errors = list(all_metrics)
 
     found_errors = set(
@@ -111,18 +123,19 @@ def test_parser_schema_violation():
 
 def test_parser_empty():
     """1507792: Get a good error message if the metrics.yaml file is empty."""
-    all_metrics = parser.parse_metrics(ROOT / "data" / "empty.yaml")
+    all_metrics = parser.parse_objects(ROOT / "data" / "empty.yaml")
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert 'metrics file can not be empty' in errors[0]
+    assert 'file can not be empty' in errors[0]
 
 
 def test_invalid_schema():
-    all_metrics = parser.parse_metrics([{
+    all_metrics = parser.parse_objects([{
         "$schema": "This is wrong"
     }])
     errors = list(all_metrics)
-    assert any('key must be set to' in str(e) for e in errors)
+    print(errors)
+    assert any('key must be one of' in str(e) for e in errors)
 
 
 def test_merge_metrics():
@@ -148,7 +161,7 @@ def test_merge_metrics():
     ]
     contents = [util.add_required(x) for x in contents]
 
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     list(all_metrics)
     all_metrics = all_metrics.value
 
@@ -175,7 +188,7 @@ def test_merge_metrics_clash():
     ]
     contents = [util.add_required(x) for x in contents]
 
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'Duplicate metric name' in errors[0]
@@ -198,8 +211,7 @@ def test_snake_case_enforcement():
 
     for content in contents:
         util.add_required(content)
-        metrics = parser._load_metrics_file(content)
-        errors = list(metrics)
+        errors = list(parser._load_file(content))
         assert len(errors) == 1
 
 
@@ -216,7 +228,7 @@ def test_multiple_errors():
     ]
 
     contents = [util.add_required(x) for x in contents]
-    metrics = parser.parse_metrics(contents)
+    metrics = parser.parse_objects(contents)
     errors = list(metrics)
     assert len(errors) == 2
 
@@ -234,7 +246,7 @@ def test_required_denominator():
     ]
 
     contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
     assert 'denominator is required' in errors[0]
@@ -253,7 +265,7 @@ def test_event_must_be_ping_lifetime():
     ]
 
     contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "Event metrics must have ping lifetime" in errors[0]
@@ -271,12 +283,12 @@ def test_parser_reserved():
     ]
 
     contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "For category 'glean.baseline'" in errors[0]
 
-    all_metrics = parser.parse_metrics(contents, {'allow_reserved': True})
+    all_metrics = parser.parse_objects(contents, {'allow_reserved': True})
     errors = list(all_metrics)
     assert len(errors) == 0
 
@@ -332,7 +344,7 @@ def invalid_in_label(name):
 def test_invalid_names(location, name):
     contents = location(name)
     contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_metrics(contents)
+    all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
     assert name in errors[0]
