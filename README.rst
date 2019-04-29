@@ -2,12 +2,12 @@
 Glean Parser
 ============
 
-Parser tools for Mozilla's glean telemetry.
+Parser tools for Mozilla's Glean telemetry.
 
 Features
 --------
 
-Parses the ``metrics.yaml`` files for the glean telemetry SDK and produces
+Parses the ``metrics.yaml`` files for the Glean telemetry SDK and produces
 output for various integrations.
 
 Documentation
@@ -44,7 +44,7 @@ Read in `metrics.yaml`, translate to kotlin format, and output to `output_dir`:
 
   $ glean_parser translate -o output_dir -f kotlin metrics.yaml
 
-Check a glean ping against the ping schema:
+Check a Glean ping against the ping schema:
 
 .. code-block:: console
 

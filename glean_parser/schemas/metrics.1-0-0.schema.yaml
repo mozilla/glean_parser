@@ -1,7 +1,7 @@
 $schema: http://json-schema.org/draft-07/schema#
 title: Metrics
 description: |
-  Schema for the metrics.yaml files for Mozilla's glean telemetry SDK.
+  Schema for the metrics.yaml files for Mozilla's Glean telemetry SDK.
 
   The top-level of the `metrics.yaml` file has a key defining each category of
   metrics. Categories must be snake_case, and they may also have dots `.` to

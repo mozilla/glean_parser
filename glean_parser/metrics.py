@@ -83,7 +83,7 @@ class Metric:
     def identifier(self):
         """
         Create an identifier unique for this metric.
-        Generally, category.name; however, glean internal
+        Generally, category.name; however, Glean internal
         metrics only use name.
         """
         if not self.category:
@@ -271,7 +271,7 @@ class Event(Metric):
         ):
             raise ValueError(
                 "Extra keys beginning with 'glean.' are reserved for "
-                "glean internal use."
+                "Glean internal use."
             )
 
 

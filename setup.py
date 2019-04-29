@@ -50,7 +50,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
     ],
-    description="Parser tools for Mozilla's glean telemetry",
+    description="Parser tools for Mozilla's Glean telemetry",
     entry_points={
         'console_scripts': [
             'glean_parser=glean_parser.__main__:main',

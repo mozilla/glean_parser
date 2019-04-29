@@ -1,7 +1,7 @@
 $schema: http://json-schema.org/draft-07/schema#
 title: Pings
 description: |
-  Schema for the pings.yaml files for Mozilla's glean telemetry SDK.
+  Schema for the pings.yaml files for Mozilla's Glean telemetry SDK.
 
   The top-level of the `pings.yaml` file has a key defining the name of each
   ping. The values contain metadata about that ping. Ping names must be

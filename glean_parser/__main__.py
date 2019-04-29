@@ -89,13 +89,13 @@ def translate(input, format, output, option, allow_reserved):
     nargs=1,
     required=False,
     help=(
-        "HTTP url or file path to glean ping schema. "
+        "HTTP url or file path to Glean ping schema. "
         "If remote, will cache to disk."
     )
 )
 def check(schema):
     """
-    Validate the contents of a glean ping.
+    Validate the contents of a Glean ping.
 
     The ping contents are read from stdin, and the validation errors are
     written to stdout.

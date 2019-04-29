@@ -225,7 +225,7 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                 filepath,
                 f"For category '{category_key}'",
                 f"Categories beginning with 'glean' are reserved for "
-                f"glean internal use."
+                f"Glean internal use."
             )
             continue
         all_objects.setdefault(category_key, {})

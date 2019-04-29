@@ -1,4 +1,4 @@
-glean parser
+Glean parser
 ============
 
 .. image:: _static/glean.jpeg
