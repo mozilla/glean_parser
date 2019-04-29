@@ -40,7 +40,7 @@
 <span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Validates the contents of a glean ping against the schema.</span>
+<span class="sd">Validates the contents of a Glean ping against the schema.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -94,11 +94,11 @@
 
 <div class="viewcode-block" id="validate_ping"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.validate_ping.validate_ping">[docs]</a><span class="k">def</span> <span class="nf">validate_ping</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">outs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">schema_url</span><span class="o">=</span><span class="n">PING_SCHEMA_DEFAULT_URL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Validates the contents of a glean ping.</span>
+<span class="sd">    Validates the contents of a Glean ping.</span>
 
 <span class="sd">    :param ins: Input stream or file path to the ping contents to validate</span>
 <span class="sd">    :param outs: Output stream to write errors to. (Defaults to stdout)</span>
-<span class="sd">    :param schema_url: HTTP URL or local filesystem path to glean ping schema.</span>
+<span class="sd">    :param schema_url: HTTP URL or local filesystem path to Glean ping schema.</span>
 <span class="sd">        Defaults to the current version of the schema in</span>
 <span class="sd">        mozilla-pipeline-schemas.</span>
 <span class="sd">    :rtype: int 1 if any errors occurred, otherwise 0.</span>
