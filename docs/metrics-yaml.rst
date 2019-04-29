@@ -5,7 +5,7 @@ The ``metrics.yaml`` file defines what metrics and events your application will
 collect.
 
 The top-level of the file must contain the following key-value pair to indicate
-that it is a glean ``metrics.yaml`` file::
+that it is a Glean ``metrics.yaml`` file::
 
    $schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
 

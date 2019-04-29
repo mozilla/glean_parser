@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-Validates the contents of a glean ping against the schema.
+Validates the contents of a Glean ping against the schema.
 """
 
 import functools
@@ -59,11 +59,11 @@ def _validate_ping(ins, outs, schema_url):
 
 def validate_ping(ins, outs=None, schema_url=PING_SCHEMA_DEFAULT_URL):
     """
-    Validates the contents of a glean ping.
+    Validates the contents of a Glean ping.
 
     :param ins: Input stream or file path to the ping contents to validate
     :param outs: Output stream to write errors to. (Defaults to stdout)
-    :param schema_url: HTTP URL or local filesystem path to glean ping schema.
+    :param schema_url: HTTP URL or local filesystem path to Glean ping schema.
         Defaults to the current version of the schema in
         mozilla-pipeline-schemas.
     :rtype: int 1 if any errors occurred, otherwise 0.
