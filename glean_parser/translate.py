@@ -27,7 +27,7 @@ def _preprocess_objects(objs):
     Preprocess the object tree before passing to the language generator.
     """
     for category in objs.values():
-        for obj in category:
+        for obj in category.values():
             if hasattr(obj, 'is_disabled'):
                 obj.disabled = obj.is_disabled()
 
