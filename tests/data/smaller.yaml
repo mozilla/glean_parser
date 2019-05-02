@@ -11,9 +11,9 @@ telemetry:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01

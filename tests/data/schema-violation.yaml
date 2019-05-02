@@ -11,6 +11,6 @@ gleantest.lifetime:
         lifetime: user2
         type: boolean
         bugs: [123456789]
-        notification_emails: ['nobody@nowhere.com']
+        notification_emails: ['nobody@example.com']
         expires: never
-        data_reviews: ['http://zomobocom.com']
+        data_reviews: ['http://example.com']

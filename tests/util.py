@@ -11,8 +11,8 @@ def add_required(chunk):
         'type': 'string',
         'bugs': [0],
         'description': 'DESCRIPTION...',
-        'notification_emails': ['nobody@nowhere.com'],
-        'data_reviews': ['https://nowhere.com/review/'],
+        'notification_emails': ['nobody@example.com'],
+        'data_reviews': ['https://example.com/review/'],
         'expires': 'never',
     }
 
