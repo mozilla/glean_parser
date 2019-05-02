@@ -62,6 +62,7 @@
 <span class="k">class</span> <span class="nc">Metric</span><span class="p">:</span>
     <span class="n">glean_internal_metric_cat</span> <span class="o">=</span> <span class="s1">&#39;glean.internal.metrics&#39;</span>
     <span class="n">metric_types</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">default_store_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;metrics&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Create a mapping of all of the subclasses of this class</span>
@@ -290,6 +291,7 @@
 <div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Event">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;event&#39;</span>
+    <span class="n">default_store_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;events&#39;</span><span class="p">]</span>
 
     <span class="n">extra_keys</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
