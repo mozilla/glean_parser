@@ -27,6 +27,7 @@ class Lifetime(enum.Enum):
 class Metric:
     glean_internal_metric_cat = 'glean.internal.metrics'
     metric_types = {}
+    default_store_names = ['metrics']
 
     def __init_subclass__(cls, **kwargs):
         # Create a mapping of all of the subclasses of this class
@@ -255,6 +256,7 @@ class Rate(Metric):
 @dataclass
 class Event(Metric):
     typename = 'event'
+    default_store_names = ['events']
 
     extra_keys: Dict[str, str] = field(default_factory=dict)
 

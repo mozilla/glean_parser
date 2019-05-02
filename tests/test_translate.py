@@ -88,3 +88,33 @@ def test_translate_expires():
     assert objs['metrics']['b'].disabled is True
     assert objs['metrics']['c'].disabled is True
     assert objs['metrics']['d'].disabled is False
+
+
+def test_translate_send_in_pings(tmpdir):
+    contents = [
+        {
+            'baseline': {
+                'counter': {
+                    'type': 'counter'
+                },
+                'event': {
+                    'type': 'event'
+                },
+                'c': {
+                    'type': 'counter',
+                    'send_in_pings': ['default', 'custom']
+                }
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    objs = parser.parse_objects(contents)
+    assert len(list(objs)) == 0
+    objs = objs.value
+
+    translate._preprocess_objects(objs)
+
+    assert objs['baseline']['counter'].send_in_pings == ['metrics']
+    assert objs['baseline']['event'].send_in_pings == ['events']
+    assert objs['baseline']['c'].send_in_pings == ['metrics', 'custom']

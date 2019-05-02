@@ -31,6 +31,12 @@ def _preprocess_objects(objs):
             if hasattr(obj, 'is_disabled'):
                 obj.disabled = obj.is_disabled()
 
+            if hasattr(obj, 'send_in_pings'):
+                if 'default' in obj.send_in_pings:
+                    obj.send_in_pings = obj.default_store_names + [
+                        x for x in obj.send_in_pings if x != 'default'
+                    ]
+
 
 def translate(
         input_filepaths,
