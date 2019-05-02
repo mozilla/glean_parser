@@ -38,7 +38,7 @@ def test_enforcement():
             name='metric',
             bugs=[42],
             description=42,
-            notification_emails=['nobody@nowhere.com'],
+            notification_emails=['nobody@example.com'],
             expires='never'
         )
 
@@ -58,7 +58,7 @@ def test_expires():
             name='metric',
             bugs=[42],
             expires=date,
-            notification_emails=['nobody@nowhere.com'],
+            notification_emails=['nobody@example.com'],
             description='description...',
         )
         assert m.is_expired() == expired
@@ -70,7 +70,7 @@ def test_expires():
             name='metric',
             bugs=[42],
             expires='foo',
-            notification_emails=['nobody@nowhere.com'],
+            notification_emails=['nobody@example.com'],
             description='description...',
         )
 
@@ -85,7 +85,7 @@ def test_timespan_time_unit():
         name='metric',
         bugs=[42],
         time_unit='day',
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
     )
@@ -99,7 +99,7 @@ def test_timespan_time_unit():
             name='metric',
             bugs=[42],
             time_unit='foo',
-            notification_emails=['nobody@nowhere.com'],
+            notification_emails=['nobody@example.com'],
             description='description...',
             expires='never',
         )
@@ -115,7 +115,7 @@ def test_identifier():
         name='metric',
         bugs=[42],
         time_unit='day',
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
     )
@@ -133,7 +133,7 @@ def test_identifier_glean_category():
         name='metric',
         bugs=[42],
         time_unit='day',
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
     )
@@ -152,7 +152,7 @@ def test_reserved_extra_keys():
             category='category',
             name='metric',
             bugs=[42],
-            notification_emails=['nobody@nowhere.com'],
+            notification_emails=['nobody@example.com'],
             description='description...',
             expires='never',
             extra_keys={'glean.internal': {'description': 'foo'}}
@@ -163,7 +163,7 @@ def test_reserved_extra_keys():
         category='category',
         name='metric',
         bugs=[42],
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
         extra_keys={'glean.internal': {'description': 'foo'}},

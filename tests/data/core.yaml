@@ -11,9 +11,9 @@ telemetry:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -28,9 +28,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -43,9 +43,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -57,9 +57,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -73,9 +73,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -88,9 +88,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -103,9 +103,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -117,9 +117,9 @@ core_ping:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -132,9 +132,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -150,9 +150,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -164,9 +164,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -181,9 +181,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -198,9 +198,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     expires: 2100-01-01
 
   profile_date:
@@ -211,9 +211,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -226,9 +226,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -241,9 +241,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -256,9 +256,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -271,9 +271,9 @@ environment:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     send_in_pings:
       - core
     expires: 2100-01-01
@@ -285,9 +285,9 @@ environment:
     bugs:
       - 123456789
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     extra_keys:
       key1:
         description: "This is key one"
@@ -302,9 +302,9 @@ environment:
     bugs:
       - 123456789
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     expires: 2100-01-01
 
 dotted.category:
@@ -316,9 +316,9 @@ dotted.category:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     expires: 2100-01-01
 
 glean.internal.metrics:
@@ -330,7 +330,7 @@ glean.internal.metrics:
     bugs:
       - 1137353
     data_reviews:
-      - http://nowhere.com/reviews
+      - http://example.com/reviews
     notification_emails:
-      - CHANGE-ME@test-only.com
+      - CHANGE-ME@example.com
     expires: 2100-01-01

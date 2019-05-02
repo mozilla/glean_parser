@@ -77,7 +77,7 @@ def test_metric_type_name():
         category='category',
         name='metric',
         bugs=[42],
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
         extra_keys={'my_extra': {'description': 'an extra'}},
@@ -90,7 +90,7 @@ def test_metric_type_name():
         category='category',
         name='metric',
         bugs=[42],
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never',
     )
@@ -102,7 +102,7 @@ def test_metric_type_name():
         category='category',
         name='metric',
         bugs=[42],
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=['nobody@example.com'],
         description='description...',
         expires='never'
     )
