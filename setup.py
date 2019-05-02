@@ -66,6 +66,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/mozilla/glean_parser',
-    version='0.24.1',
+    version='0.25.0',
     zip_safe=False,
 )
