@@ -51,7 +51,16 @@ def _validate_ping(ins, outs, schema_url):
 
     has_error = 0
     for error in validator.iter_errors(document):
-        outs.write(str(error))
+        outs.write('=' * 76)
+        outs.write('\n')
+        outs.write(
+            util.format_error(
+                '',
+                '',
+                util.pprint_validation_error(error)
+            )
+        )
+        outs.write('\n')
         has_error = 1
 
     return has_error
