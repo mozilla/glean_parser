@@ -9,9 +9,7 @@ from pathlib import Path
 import textwrap
 
 import jsonschema
-from jsonschema import _utils
 from jsonschema.exceptions import ValidationError
-import yaml
 
 from .metrics import Metric
 from .pings import Ping, RESERVED_PING_NAMES
@@ -21,81 +19,13 @@ from . import util
 ROOT_DIR = Path(__file__).parent
 SCHEMAS_DIR = ROOT_DIR / 'schemas'
 
-
-_unset = _utils.Unset()
-
-
 METRICS_ID = 'moz://mozilla.org/schemas/glean/metrics/1-0-0'
 PINGS_ID = 'moz://mozilla.org/schemas/glean/pings/1-0-0'
-
 
 FILE_TYPES = {
     METRICS_ID: 'metrics',
     PINGS_ID: 'pings'
 }
-
-
-def _pprint_validation_error(error):
-    """
-    A version of jsonschema's ValidationError __str__ method that doesn't
-    include the schema fragment that failed.  This makes the error messages
-    much more succinct.
-
-    It also shows any subschemas of anyOf/allOf that failed, if any (what
-    jsonschema calls "context").
-    """
-    essential_for_verbose = (
-        error.validator, error.validator_value, error.instance, error.schema,
-    )
-    if any(m is _unset for m in essential_for_verbose):
-        return textwrap.fill(error.message)
-
-    instance = error.instance
-    for path in list(error.relative_path)[::-1]:
-        if isinstance(path, str):
-            instance = {path: instance}
-        else:
-            instance = [instance]
-
-    yaml_instance = yaml.dump(instance, width=72, default_flow_style=False)
-
-    parts = [
-        '```',
-        yaml_instance.rstrip(),
-        '```',
-        '',
-        textwrap.fill(error.message)
-    ]
-    if error.context:
-        parts.extend(
-            textwrap.fill(
-                x.message,
-                initial_indent='    ',
-                subsequent_indent='    '
-            )
-            for x in error.context
-        )
-
-    description = error.schema.get('description')
-    if description:
-        parts.extend([
-            "",
-            "Documentation for this node:",
-            _utils.indent(description)
-        ])
-
-    return '\n'.join(parts)
-
-
-def _format_error(filepath, header, content):
-    if isinstance(filepath, Path):
-        filepath = filepath.resolve()
-    else:
-        filepath = '<string>'
-    if header:
-        return f'{filepath}: {header}:\n{_utils.indent(content)}'
-    else:
-        return f'{filepath}:\n{_utils.indent(content)}'
 
 
 def _update_validator(validator):
@@ -124,11 +54,11 @@ def _load_file(filepath):
     try:
         content = util.load_yaml_or_json(filepath)
     except Exception as e:
-        yield _format_error(filepath, '', textwrap.fill(str(e)))
+        yield util.format_error(filepath, '', textwrap.fill(str(e)))
         return {}, None
 
     if content is None:
-        yield _format_error(
+        yield util.format_error(
             filepath,
             '',
             f"'{filepath}' file can not be empty.",
@@ -172,7 +102,7 @@ def _get_schema(schema_id, filepath="<input>"):
     schemas = _load_schemas()
     if schema_id not in schemas:
         raise ValueError(
-            _format_error(
+            util.format_error(
                 filepath,
                 '',
                 f"$schema key must be one of {', '.join(schemas.keys())}"
@@ -206,7 +136,7 @@ def validate(content, filepath='<input>'):
         yield str(e)
     else:
         yield from (
-            _format_error(filepath, '', _pprint_validation_error(e))
+            util.format_error(filepath, '', util.pprint_validation_error(e))
             for e in validator.iter_errors(content)
         )
 
@@ -221,7 +151,7 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
             continue
         if (not config.get('allow_reserved') and
                 category_key.split('.')[0] == 'glean'):
-            yield _format_error(
+            yield util.format_error(
                 filepath,
                 f"For category '{category_key}'",
                 f"Categories beginning with 'glean' are reserved for "
@@ -236,7 +166,7 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                     validated=True, config=config
                 )
             except Exception as e:
-                yield _format_error(
+                yield util.format_error(
                     filepath,
                     f'On instance {category_key}.{metric_key}',
                     str(e)
@@ -246,7 +176,7 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
             already_seen = sources.get((category_key, metric_key))
             if already_seen is not None:
                 # We've seen this metric name already
-                yield _format_error(
+                yield util.format_error(
                     filepath,
                     "",
                     f"Duplicate metric name '{category_key}.{metric_key}'"
@@ -267,7 +197,7 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
             continue
         if not config.get('allow_reserved'):
             if ping_key in RESERVED_PING_NAMES:
-                yield _format_error(
+                yield util.format_error(
                     filepath,
                     f"For ping '{ping_key}'",
                     f"Ping uses a reserved name ({RESERVED_PING_NAMES})"
@@ -277,7 +207,7 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
         try:
             ping_obj = Ping(**ping_val)
         except Exception as e:
-            yield _format_error(
+            yield util.format_error(
                 filepath,
                 f'On instance {ping_key}',
                 str(e)
@@ -287,7 +217,7 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
         already_seen = sources.get(ping_key)
         if already_seen is not None:
             # We've seen this ping name already
-            yield _format_error(
+            yield util.format_error(
                 filepath,
                 "",
                 f"Duplicate ping name '{ping_key}'"

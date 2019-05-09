@@ -6,7 +6,9 @@
 
 import functools
 import json
+from pathlib import Path
 import sys
+import textwrap
 import urllib.request
 
 import appdirs
@@ -14,6 +16,7 @@ import diskcache
 import inflection
 import jinja2
 import jsonschema
+from jsonschema import _utils
 import yaml
 
 
@@ -193,3 +196,72 @@ def fetch_remote_url(url, cache=True):
             dc[url] = contents
 
     return contents
+
+
+_unset = _utils.Unset()
+
+
+def pprint_validation_error(error):
+    """
+    A version of jsonschema's ValidationError __str__ method that doesn't
+    include the schema fragment that failed.  This makes the error messages
+    much more succinct.
+
+    It also shows any subschemas of anyOf/allOf that failed, if any (what
+    jsonschema calls "context").
+    """
+    essential_for_verbose = (
+        error.validator, error.validator_value, error.instance, error.schema,
+    )
+    if any(m is _unset for m in essential_for_verbose):
+        return textwrap.fill(error.message)
+
+    instance = error.instance
+    for path in list(error.relative_path)[::-1]:
+        if isinstance(path, str):
+            instance = {path: instance}
+        else:
+            instance = [instance]
+
+    yaml_instance = yaml.dump(instance, width=72, default_flow_style=False)
+
+    parts = [
+        '```',
+        yaml_instance.rstrip(),
+        '```',
+        '',
+        textwrap.fill(error.message)
+    ]
+    if error.context:
+        parts.extend(
+            textwrap.fill(
+                x.message,
+                initial_indent='    ',
+                subsequent_indent='    '
+            )
+            for x in error.context
+        )
+
+    description = error.schema.get('description')
+    if description:
+        parts.extend([
+            "",
+            "Documentation for this node:",
+            _utils.indent(description)
+        ])
+
+    return '\n'.join(parts)
+
+
+def format_error(filepath, header, content):
+    """
+    Format a jsonshema validation error.
+    """
+    if isinstance(filepath, Path):
+        filepath = filepath.resolve()
+    else:
+        filepath = '<string>'
+    if header:
+        return f'{filepath}: {header}:\n{_utils.indent(content)}'
+    else:
+        return f'{filepath}:\n{_utils.indent(content)}'
