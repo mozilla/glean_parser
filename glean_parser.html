@@ -704,6 +704,12 @@ list with a single element containing only value is returned.</p>
 caches it to disk.</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="glean_parser.util.format_error">
+<code class="descclassname">glean_parser.util.</code><code class="descname">format_error</code><span class="sig-paren">(</span><em>filepath</em>, <em>header</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#format_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.format_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a jsonshema validation error.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="glean_parser.util.get_jinja2_template">
 <code class="descclassname">glean_parser.util.</code><code class="descname">get_jinja2_template</code><a class="reference internal" href="_modules/glean_parser/util.html#get_jinja2_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.get_jinja2_template" title="Permalink to this definition">¶</a></dt>
@@ -755,6 +761,16 @@ extension.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.util.pprint_validation_error">
+<code class="descclassname">glean_parser.util.</code><code class="descname">pprint_validation_error</code><span class="sig-paren">(</span><em>error</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#pprint_validation_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.pprint_validation_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of jsonschema’s ValidationError __str__ method that doesn’t
+include the schema fragment that failed.  This makes the error messages
+much more succinct.</p>
+<p>It also shows any subschemas of anyOf/allOf that failed, if any (what
+jsonschema calls “context”).</p>
 </dd></dl>
 
 </div>
