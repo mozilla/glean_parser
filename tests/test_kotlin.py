@@ -111,7 +111,9 @@ def test_metric_type_name():
     ping = pings.Ping(
         name="custom",
         description="description...",
-        include_client_id=True
+        include_client_id=True,
+        bugs=[42],
+        notification_emails=['nobody@nowhere.com'],
     )
     assert kotlin.type_name(ping) == 'PingType'
 

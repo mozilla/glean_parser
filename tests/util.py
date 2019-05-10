@@ -25,3 +25,21 @@ def add_required(chunk):
     chunk['$schema'] = parser.METRICS_ID
 
     return chunk
+
+
+def add_required_ping(chunk):
+    DEFAULTS = {
+        'bugs': [0],
+        'description': 'DESCRIPTION...',
+        'notification_emails': ['nobody@nowhere.com'],
+        'data_reviews': ['https://nowhere.com/review/'],
+    }
+
+    for ping in chunk.values():
+        for default_name, default_val in DEFAULTS.items():
+            if default_name not in ping:
+                ping[default_name] = default_val
+
+    chunk['$schema'] = parser.PINGS_ID
+
+    return chunk

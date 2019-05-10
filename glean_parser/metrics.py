@@ -10,11 +10,11 @@ Classes for each of the high-level metric types.
 
 import dataclasses
 from dataclasses import dataclass, field, InitVar
-import datetime
 import enum
 from typing import Dict, List, Set, Union
 
 from . import parser
+from . import util
 
 
 class Lifetime(enum.Enum):
@@ -152,25 +152,11 @@ class Metric:
         return self.disabled or self.is_expired()
 
     def is_expired(self):
-        if self.expires == 'never':
-            return False
-        elif self.expires == 'expired':
-            return True
-        else:
-            try:
-                date = datetime.date.fromisoformat(self.expires)
-            except ValueError:
-                raise ValueError(
-                    f"Invalid expiration date '{self.expires}'. "
-                    "Must be of the form yyyy-mm-dd in UTC."
-                )
-            return date <= datetime.datetime.utcnow().date()
+        return util.is_expired(self.expires)
 
     @staticmethod
     def validate_expires(expires):
-        if expires in ('never', 'expired'):
-            return
-        datetime.date.fromisoformat(expires)
+        return util.validate_expires(expires)
 
 
 @dataclass
