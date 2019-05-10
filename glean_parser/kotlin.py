@@ -102,6 +102,9 @@ def output_kotlin(objs, output_dir, options={}):
 
         - `namespace`: The package namespace to declare at the top of the
           generated files. Defaults to `GleanMetrics`.
+        - `glean_namespace`: The package namespace of the glean library itself.
+          This is where glean objects will be imported from in the generated
+          code.
     """
     template = util.get_jinja2_template(
         'kotlin.jinja2',
@@ -127,6 +130,10 @@ def output_kotlin(objs, output_dir, options={}):
     ]
 
     namespace = options.get('namespace', 'GleanMetrics')
+    glean_namespace = options.get(
+        'glean_namespace',
+        'mozilla.components.service.glean'
+    )
 
     for category_key, category_val in objs.items():
         filename = util.Camelize(category_key) + '.kt'
@@ -149,6 +156,7 @@ def output_kotlin(objs, output_dir, options={}):
                     extra_args=extra_args,
                     namespace=namespace,
                     has_labeled_metrics=has_labeled_metrics,
+                    glean_namespace=glean_namespace,
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it

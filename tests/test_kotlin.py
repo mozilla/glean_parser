@@ -145,3 +145,30 @@ def test_duplicate(tmpdir):
         assert content.count(
             "import mozilla.components.service.glean.private.CounterMetricType"
         ) == 1
+
+
+def test_glean_namespace(tmpdir):
+    """
+    Test that setting the glean namespace works.
+    """
+    tmpdir = Path(tmpdir)
+
+    translate.translate(
+        ROOT / "data" / "duplicate_labeled.yaml",
+        'kotlin',
+        tmpdir,
+        {'namespace': 'Foo', 'glean_namespace': 'Bar'},
+    )
+
+    assert (
+        set(x.name for x in tmpdir.iterdir()) ==
+        set([
+            'Category.kt',
+        ])
+    )
+
+    with open(tmpdir / 'Category.kt', 'r', encoding='utf-8') as fd:
+        content = fd.read()
+        assert content.count(
+            "import Bar.private.CounterMetricType"
+        ) == 1
