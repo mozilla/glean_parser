@@ -45,11 +45,11 @@
 
 <span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="k">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">InitVar</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
 
 
 <div class="viewcode-block" id="Lifetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Lifetime">[docs]</a><span class="k">class</span> <span class="nc">Lifetime</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
@@ -187,25 +187,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_expired</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Metric.is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_expired">[docs]</a>    <span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expires</span> <span class="o">==</span> <span class="s1">&#39;never&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">expires</span> <span class="o">==</span> <span class="s1">&#39;expired&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="n">f</span><span class="s2">&quot;Invalid expiration date &#39;</span><span class="si">{self.expires}</span><span class="s2">&#39;. &quot;</span>
-                    <span class="s2">&quot;Must be of the form yyyy-mm-dd in UTC.&quot;</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Metric.validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.validate_expires">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">expires</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;never&#39;</span><span class="p">,</span> <span class="s1">&#39;expired&#39;</span><span class="p">):</span>
-            <span class="k">return</span>
-        <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Boolean"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Boolean">[docs]</a><span class="nd">@dataclass</span>

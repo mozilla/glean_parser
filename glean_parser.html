@@ -632,12 +632,18 @@ of the <cite>pings.Ping</cite> instances.</p>
 <p>Classes for managing the description of pings.</p>
 <dl class="class">
 <dt id="glean_parser.pings.Ping">
-<em class="property">class </em><code class="descclassname">glean_parser.pings.</code><code class="descname">Ping</code><span class="sig-paren">(</span><em>name: str</em>, <em>description: str</em>, <em>include_client_id: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.pings.</code><code class="descname">Ping</code><span class="sig-paren">(</span><em>name: str, description: str, bugs: List[Union[int, str]], notification_emails: List[str], data_reviews: List[str] = &lt;factory&gt;, include_client_id: bool = False, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="glean_parser.pings.Ping.include_client_id">
 <code class="descname">include_client_id</code><em class="property"> = False</em><a class="headerlink" href="#glean_parser.pings.Ping.include_client_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="glean_parser.pings.Ping.serialize">
+<code class="descname">serialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping.serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the metric back to JSON object model.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="glean_parser.pings.Ping.type">
@@ -741,6 +747,13 @@ additional filters.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="glean_parser.util.is_expired">
+<code class="descclassname">glean_parser.util.</code><code class="descname">is_expired</code><span class="sig-paren">(</span><em>expires</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#is_expired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.is_expired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the <cite>expires</cite> field in a metric or ping and returns whether
+the object should be considered expired.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="glean_parser.util.keep_value">
 <code class="descclassname">glean_parser.util.</code><code class="descname">keep_value</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#keep_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.keep_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap a generator so the value it returns (rather than yields), will be
@@ -774,6 +787,12 @@ include the schema fragment that failed.  This makes the error messages
 much more succinct.</p>
 <p>It also shows any subschemas of anyOf/allOf that failed, if any (what
 jsonschema calls “context”).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.util.validate_expires">
+<code class="descclassname">glean_parser.util.</code><code class="descname">validate_expires</code><span class="sig-paren">(</span><em>expires</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#validate_expires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.validate_expires" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises ValueError if <cite>expires</cite> is not valid.</p>
 </dd></dl>
 
 </div>
