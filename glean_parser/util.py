@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import datetime
 import functools
 import json
 from pathlib import Path
@@ -265,3 +266,32 @@ def format_error(filepath, header, content):
         return f'{filepath}: {header}:\n{_utils.indent(content)}'
     else:
         return f'{filepath}:\n{_utils.indent(content)}'
+
+
+def is_expired(expires):
+    """
+    Parses the `expires` field in a metric or ping and returns whether
+    the object should be considered expired.
+    """
+    if expires == 'never':
+        return False
+    elif expires == 'expired':
+        return True
+    else:
+        try:
+            date = datetime.date.fromisoformat(expires)
+        except ValueError:
+            raise ValueError(
+                f"Invalid expiration date '{expires}'. "
+                "Must be of the form yyyy-mm-dd in UTC."
+            )
+        return date <= datetime.datetime.utcnow().date()
+
+
+def validate_expires(expires):
+    """
+    Raises ValueError if `expires` is not valid.
+    """
+    if expires in ('never', 'expired'):
+        return
+    datetime.date.fromisoformat(expires)

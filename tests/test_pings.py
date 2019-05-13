@@ -13,13 +13,12 @@ def test_reserved_ping_name():
     Make sure external users can't use a reserved ping name.
     """
     content = {
-        '$schema': parser.PINGS_ID,
         'baseline': {
-            'description': 'Description',
             'include_client_id': True
         }
     }
 
+    util.add_required_ping(content)
     errors = list(parser._instantiate_pings({}, {}, content, '', {}))
     assert len(errors) == 1
     assert 'Ping uses a reserved name' in errors[0]
@@ -56,12 +55,12 @@ def test_reserved_metrics_category():
 
 def test_snake_case_ping_names():
     content = {
-        '$schema': parser.PINGS_ID,
         'camelCasePingName': {
-            'description': 'Description',
             'include_client_id': True
         }
     }
+
+    util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))
     assert len(errors) == 1
     assert 'camelCasePingName' in errors[0]

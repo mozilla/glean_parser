@@ -4,8 +4,20 @@ custom_ping:
     description:
         This is a custom ping
     include_client_id: false
+    bugs:
+      - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
+    notification_emails:
+      - CHANGE-ME@test-only.com
 
 really_custom_ping:
     description:
         This is another custom ping
     include_client_id: true
+    bugs:
+      - 1137353
+    data_reviews:
+      - http://nowhere.com/reviews
+    notification_emails:
+      - CHANGE-ME@test-only.com
