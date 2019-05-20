@@ -22,22 +22,6 @@ OUTPUTTERS = {
 }
 
 
-def _preprocess_objects(objs):
-    """
-    Preprocess the object tree before passing to the language generator.
-    """
-    for category in objs.values():
-        for obj in category.values():
-            if hasattr(obj, 'is_disabled'):
-                obj.disabled = obj.is_disabled()
-
-            if hasattr(obj, 'send_in_pings'):
-                if 'default' in obj.send_in_pings:
-                    obj.send_in_pings = obj.default_store_names + [
-                        x for x in obj.send_in_pings if x != 'default'
-                    ]
-
-
 def translate(
         input_filepaths,
         output_format,
@@ -68,8 +52,6 @@ def translate(
         print(error, file=sys.stderr)
     if found_error:
         return 1
-
-    _preprocess_objects(all_objects.value)
 
     # Write everything out to a temporary directory, and then move it to the
     # real directory, for transactional integrity.

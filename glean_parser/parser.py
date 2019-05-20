@@ -228,6 +228,23 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
             sources[ping_key] = filepath
 
 
+def _preprocess_objects(objs):
+    """
+    Preprocess the object tree to better set defaults.
+    """
+    for category in objs.values():
+        for obj in category.values():
+            if hasattr(obj, 'is_disabled'):
+                obj.disabled = obj.is_disabled()
+
+            if hasattr(obj, 'send_in_pings'):
+                if 'default' in obj.send_in_pings:
+                    obj.send_in_pings = obj.default_store_names + [
+                        x for x in obj.send_in_pings if x != 'default'
+                    ]
+    return objs
+
+
 @util.keep_value
 def parse_objects(filepaths, config={}):
     """
@@ -274,4 +291,5 @@ def parse_objects(filepaths, config={}):
                 filepath,
                 config
             )
-    return all_objects
+
+    return _preprocess_objects(all_objects)
