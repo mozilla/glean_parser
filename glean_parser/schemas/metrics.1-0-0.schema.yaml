@@ -38,6 +38,11 @@ definitions:
       - $ref: "#/definitions/snake_case"
       - maxLength: 20
 
+  labeled_metric_id:
+    type: string
+    pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z0-9_]{0,29})*$"
+    maxLength: 30
+
   metric:
     description: |
       Describes a single metric.
@@ -293,7 +298,7 @@ definitions:
         anyOf:
           - type: array
             items:
-              $ref: "#/definitions/long_id"
+              $ref: "#/definitions/labeled_metric_id"
             maxItems: 16
           - type: "null"
 
