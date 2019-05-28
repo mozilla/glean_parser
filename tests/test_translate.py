@@ -82,8 +82,6 @@ def test_translate_expires():
     assert len(list(objs)) == 0
     objs = objs.value
 
-    translate._preprocess_objects(objs)
-
     assert objs['metrics']['a'].disabled is False
     assert objs['metrics']['b'].disabled is True
     assert objs['metrics']['c'].disabled is True
@@ -112,8 +110,6 @@ def test_translate_send_in_pings(tmpdir):
     objs = parser.parse_objects(contents)
     assert len(list(objs)) == 0
     objs = objs.value
-
-    translate._preprocess_objects(objs)
 
     assert objs['baseline']['counter'].send_in_pings == ['metrics']
     assert objs['baseline']['event'].send_in_pings == ['events']
