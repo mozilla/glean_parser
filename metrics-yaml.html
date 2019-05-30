@@ -265,6 +265,11 @@ entirety below:</p>
       <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>
       <span class="p p-Indicator">-</span> <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
 
+  <span class="nt">labeled_metric_id</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_]{0,29}(\\.[a-z0-9_]{0,29})*$&quot;</span>
+    <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+
   <span class="nt">metric</span><span class="p">:</span>
     <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
       <span class="no">Describes a single metric.</span>
@@ -520,7 +525,7 @@ entirety below:</p>
         <span class="nt">anyOf</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
             <span class="nt">items</span><span class="p">:</span>
-              <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/long_id&quot;</span>
+              <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/labeled_metric_id&quot;</span>
             <span class="nt">maxItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">16</span>
           <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&quot;null&quot;</span>
 
