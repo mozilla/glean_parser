@@ -94,10 +94,8 @@ additionalProperties:
   required:
     - description
     - include_client_id
-    # Reinstate these as required once all downstream users have updated their
-    # pings.yaml
-    # - bugs
-    # - notification_emails
-    # - data_reviews
+    - bugs
+    - notification_emails
+    - data_reviews
 
   additionalProperties: false
