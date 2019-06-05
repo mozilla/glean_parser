@@ -41,7 +41,7 @@ definitions:
   labeled_metric_id:
     type: string
     pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z0-9_]{0,29})*$"
-    maxLength: 30
+    maxLength: 61
 
   metric:
     description: |
