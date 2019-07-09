@@ -1,0 +1,18 @@
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+telemetry:
+  test:
+    type: counter
+    lifetime: user
+    description: duplicate send in ping test
+    bugs:
+      - 1137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    send_in_pings:
+      - core
+      - metrics
+      - default
+    expires: 2100-01-01

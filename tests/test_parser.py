@@ -348,3 +348,16 @@ def test_invalid_names(location, name):
     errors = list(all_metrics)
     assert len(errors) == 1
     assert name in errors[0]
+
+
+def test_duplicate_send_in_pings():
+    """Test the basics of parsing a single file."""
+    all_metrics = parser.parse_objects([
+        ROOT / "data" / "duplicate_send_in_ping.yaml",
+    ], config={'allow_reserved': True})
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    metric = all_metrics.value['telemetry']['test']
+    assert metric.send_in_pings == ['core', 'metrics']

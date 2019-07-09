@@ -242,6 +242,7 @@ def _preprocess_objects(objs):
                     obj.send_in_pings = obj.default_store_names + [
                         x for x in obj.send_in_pings if x != 'default'
                     ]
+                obj.send_in_pings = sorted(list(set(obj.send_in_pings)))
     return objs
 
 

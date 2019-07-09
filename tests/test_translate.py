@@ -113,4 +113,4 @@ def test_translate_send_in_pings(tmpdir):
 
     assert objs['baseline']['counter'].send_in_pings == ['metrics']
     assert objs['baseline']['event'].send_in_pings == ['events']
-    assert objs['baseline']['c'].send_in_pings == ['metrics', 'custom']
+    assert objs['baseline']['c'].send_in_pings == ['custom', 'metrics']
