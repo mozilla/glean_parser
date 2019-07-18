@@ -85,6 +85,15 @@ core_ping:
     description: >
       The search use counts for each search source and engine
       combination, e.g. “engine.source” = 3.
+    labels:
+      - this.is.fine
+      - this_is_fine_too
+      - this.is_still_fine
+      - thisisfine
+      - this.is_fine.2
+      - _.is_fine
+      - this.is-fine
+      - this-is-fine
     bugs:
       - 1137353
     data_reviews:
