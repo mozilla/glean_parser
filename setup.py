@@ -36,7 +36,7 @@ requirements = [
     'appdirs>=1.4.3'
 ]
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = ['pytest-runner', 'setuptools-scm']
 
 test_requirements = ['pytest', ]
 
@@ -66,6 +66,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/mozilla/glean_parser',
-    version='0.30.0',
     zip_safe=False,
+    use_scm_version=True
 )
