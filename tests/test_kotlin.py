@@ -206,8 +206,8 @@ def test_gecko_datapoints(tmpdir):
 
         # Validate the generated Gecko metric mapper Kotlin operator.
         # NOTE: Indentation, whitespaces  and text formatting of the block
-        # below are important. Do not change them unless the file format changes,
-        # otherwise validation will fail.
+        # below are important. Do not change them unless the file format
+        # changes, otherwise validation will fail.
         expected_operator = """    operator fun get(geckoMetricName: String): HistogramBase? {
         return when(geckoMetricName) {
             "FX_PAGE_LOAD_MS_2" -> pageLoadTime
