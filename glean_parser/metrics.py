@@ -208,6 +208,9 @@ class Timespan(TimeBase):
 @dataclass
 class TimingDistribution(TimeBase):
     typename = 'timing_distribution'
+    # The following is a Gecko-specific property for using the Glean SDK
+    # with GeckoView metrics. See bug 1566356 for more context.
+    gecko_datapoint: str = ''
 
 
 @dataclass

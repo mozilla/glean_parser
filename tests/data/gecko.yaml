@@ -1,0 +1,47 @@
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+gecko.imports:
+  page_load_time:
+    type: timing_distribution
+    gecko_datapoint: FX_PAGE_LOAD_MS_2
+    time_unit: millisecond
+    lifetime: application
+    description: >
+      A sample timing distribution metric exported from Gecko.
+    bugs:
+      - 1566356
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
+  startup_runtime:
+    type: timing_distribution
+    gecko_datapoint: GV_STARTUP_RUNTIME_MS
+    time_unit: millisecond
+    lifetime: application
+    description: >
+      Another sample timing distribution metric exported from Gecko.
+    bugs:
+      - 1566356
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
+non.gecko.metrics:
+  app_load_time:
+    type: timing_distribution
+    time_unit: millisecond
+    lifetime: application
+    description: >
+      A sample timing distribution that is not tied to a Gecko datapoint.
+    bugs:
+      - 1566356
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01

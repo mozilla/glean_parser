@@ -333,6 +333,17 @@ definitions:
             - description
         default: {}
 
+      gecko_datapoint:
+        title: Gecko Datapoint
+        description: |
+          This is a Gecko-specific property. It is the name of the Gecko histogram to
+          accumulate the data from, when using the Glean SDK in a product using GeckoView.
+          See bug 1566356 for more context.
+
+          This is valid when `type`_ is `timing_distribution`.
+
+        type: string
+
     required:
       - type
       - bugs

@@ -20,9 +20,12 @@
 @file:Suppress("PackageNaming")
 package {{ namespace }}
 
+{% if has_gecko_datapoints %}
+import {{ glean_namespace }}.private.HistogramBase
+{% endif %}
 import {{ glean_namespace }}.private.Lifetime // ktlint-disable no-unused-imports
-import {{ glean_namespace }}.private.TimeUnit // ktlint-disable no-unused-imports
 import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable no-unused-imports
+import {{ glean_namespace }}.private.TimeUnit // ktlint-disable no-unused-imports
 {% for obj_type in obj_types %}
 import {{ glean_namespace }}.private.{{ obj_type }}
 {% endfor %}
@@ -64,4 +67,18 @@ internal object {{ category_name|Camelize }} {
     {{ obj_declaration(obj, lazy=obj.type != 'ping') }}
     {% endif %}
 {%- endfor %}
+{% if has_gecko_datapoints %}
+    // Support exfiltration of Gecko metrics from products using both the
+    // Glean SDK and GeckoView. See bug 1566356 for more context.
+    operator fun get(geckoMetricName: String): HistogramBase? {
+        return when (geckoMetricName) {
+        {% for obj in objs.values() %}
+            {% if obj.gecko_datapoint %}
+            "{{ obj.gecko_datapoint }}" -> {{ obj.name|camelize }}
+            {% endif %}
+        {%- endfor %}
+            else -> null
+        }
+    }
+{% endif %}
 }

@@ -174,3 +174,55 @@ def test_glean_namespace(tmpdir):
         assert content.count(
             "import Bar.private.CounterMetricType"
         ) == 1
+
+
+def test_gecko_datapoints(tmpdir):
+    """Test translating metrics to Kotlin files."""
+    tmpdir = Path(tmpdir)
+
+    translate.translate(
+        ROOT / "data" / "gecko.yaml",
+        'kotlin',
+        tmpdir,
+        {'glean_namespace': 'Bar'},
+        {'allow_reserved': True}
+    )
+
+    assert (
+        set(x.name for x in tmpdir.iterdir()) ==
+        set([
+            'GeckoImports.kt',
+            'NonGeckoMetrics.kt'
+        ])
+    )
+
+    # Make sure descriptions made it in
+    with open(tmpdir / 'GeckoImports.kt', 'r', encoding='utf-8') as fd:
+        content = fd.read()
+        # Make sure we're adding the relevant Glean SDK import, once.
+        assert content.count(
+            "import Bar.private.HistogramBase"
+        ) == 1
+
+        # Validate the generated Gecko metric mapper Kotlin operator.
+        # NOTE: Indentation, whitespaces  and text formatting of the block
+        # below are important. Do not change them unless the file format
+        # changes, otherwise validation will fail.
+        expected_operator = """    operator fun get(geckoMetricName: String): HistogramBase? {
+        return when (geckoMetricName) {
+            "FX_PAGE_LOAD_MS_2" -> pageLoadTime
+            "GV_STARTUP_RUNTIME_MS" -> startupRuntime
+            else -> null
+        }
+    }"""
+
+        assert expected_operator in content
+
+    with open(tmpdir / 'NonGeckoMetrics.kt', 'r', encoding='utf-8') as fd:
+        content = fd.read()
+        assert 'HistogramBase' not in content
+
+    # Only run this test if ktlint is on the path
+    if shutil.which('ktlint'):
+        for filepath in tmpdir.glob('*.kt'):
+            subprocess.check_call(['ktlint', filepath])
