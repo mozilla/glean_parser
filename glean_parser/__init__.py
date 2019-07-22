@@ -6,6 +6,12 @@
 
 """Top-level package for Glean parser."""
 
+from pkg_resources import get_distribution, DistributionNotFound
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    # package is not installed
+    pass
+
 __author__ = """Michael Droettboom"""
 __email__ = 'mdroettboom@mozilla.com'
-__version__ = '0.30.0'
