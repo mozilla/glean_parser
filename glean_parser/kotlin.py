@@ -126,8 +126,7 @@ def output_kotlin(objs, output_dir, options={}):
         'time_unit',
         'allowed_extra_keys',
         'disabled',
-        'include_client_id',
-        'gecko_datapoint'
+        'include_client_id'
     ]
 
     namespace = options.get('namespace', 'GleanMetrics')
@@ -148,6 +147,13 @@ def output_kotlin(objs, output_dir, options={}):
             for metric in category_val.values()
         )
 
+        # Support exfiltration of Gecko metrics from products using both the
+        # Glean SDK and GeckoView. See bug 1566356 for more context.
+        has_gecko_datapoints = any(
+            getattr(metric, 'gecko_datapoint', False)
+            for metric in category_val.values()
+        )
+
         with open(filepath, 'w', encoding='utf-8') as fd:
             fd.write(
                 template.render(
@@ -157,6 +163,7 @@ def output_kotlin(objs, output_dir, options={}):
                     extra_args=extra_args,
                     namespace=namespace,
                     has_labeled_metrics=has_labeled_metrics,
+                    has_gecko_datapoints=has_gecko_datapoints,
                     glean_namespace=glean_namespace,
                 )
             )
