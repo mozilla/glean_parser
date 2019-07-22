@@ -242,7 +242,10 @@
 
 <div class="viewcode-block" id="TimingDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimingDistribution">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TimingDistribution</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;timing_distribution&#39;</span></div>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;timing_distribution&#39;</span>
+    <span class="c1"># The following is a Gecko-specific property for using the Glean SDK</span>
+    <span class="c1"># with GeckoView metrics. See bug 1566356 for more context.</span>
+    <span class="n">gecko_datapoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></div>
 
 
 <div class="viewcode-block" id="Datetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Datetime">[docs]</a><span class="nd">@dataclass</span>

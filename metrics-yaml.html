@@ -220,6 +220,13 @@ This metadata object has the following keys:</p>
 </ul>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">event</span></code>.</p>
 </div>
+<div class="section" id="gecko-datapoint">
+<span id="id18"></span><h3>gecko_datapoint<a class="headerlink" href="#gecko-datapoint" title="Permalink to this headline">¶</a></h3>
+<p>This is a Gecko-specific property. It is the name of the Gecko histogram to
+accumulate the data from, when using the Glean SDK in a product using GeckoView.
+See bug 1566356 for more context.</p>
+<p>This is valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>.</p>
+</div>
 </div>
 <div class="section" id="json-schema">
 <h2>JSON Schema<a class="headerlink" href="#json-schema" title="Permalink to this headline">¶</a></h2>
@@ -559,6 +566,17 @@ entirety below:</p>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
         <span class="nt">default</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
+
+      <span class="nt">gecko_datapoint</span><span class="p">:</span>
+        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Gecko Datapoint</span>
+        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+          <span class="no">This is a Gecko-specific property. It is the name of the Gecko histogram to</span>
+          <span class="no">accumulate the data from, when using the Glean SDK in a product using GeckoView.</span>
+          <span class="no">See bug 1566356 for more context.</span>
+
+          <span class="no">This is valid when `type`_ is `timing_distribution`.</span>
+
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
     <span class="nt">required</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">type</span>
