@@ -209,7 +209,7 @@ def test_gecko_datapoints(tmpdir):
         # below are important. Do not change them unless the file format
         # changes, otherwise validation will fail.
         expected_operator = """    operator fun get(geckoMetricName: String): HistogramBase? {
-        return when(geckoMetricName) {
+        return when (geckoMetricName) {
             "FX_PAGE_LOAD_MS_2" -> pageLoadTime
             "GV_STARTUP_RUNTIME_MS" -> startupRuntime
             else -> null
