@@ -361,3 +361,36 @@ def test_duplicate_send_in_pings():
 
     metric = all_metrics.value['telemetry']['test']
     assert metric.send_in_pings == ['core', 'metrics']
+
+
+def test_geckoview_only_on_valid_metrics():
+    contents = [
+        {
+            'category1': {
+                'metric1': {
+                    "type": "timing_distribution",
+                    "gecko_datapoint": "FOO"
+                },
+            },
+        },
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+    errs = list(all_metrics)
+
+    contents = [
+        {
+            'category1': {
+                'metric1': {
+                    "type": "event",
+                    "gecko_datapoint": "FOO"
+                },
+            },
+        },
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+    errs = list(all_metrics)
+    assert len(errs) == 1

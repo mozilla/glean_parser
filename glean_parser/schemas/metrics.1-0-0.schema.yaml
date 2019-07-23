@@ -387,3 +387,12 @@ additionalProperties:
               description: |
                 Event metrics must have ping lifetime.
               const: ping
+      -
+        if:
+          required:
+            - gecko_datapoint
+        then:
+          properties:
+            type:
+              enum:
+                - timing_distribution
