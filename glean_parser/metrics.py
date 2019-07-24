@@ -170,8 +170,8 @@ class String(Metric):
 
 
 @dataclass
-class StringList(Metric):
-    typename = 'string_list'
+class StringSet(Metric):
+    typename = 'string_set'
 
 
 @dataclass
@@ -288,8 +288,8 @@ class LabeledString(Labeled, String):
 
 
 @dataclass
-class LabeledStringList(Labeled, StringList):
-    typename = 'labeled_string_list'
+class LabeledStringSet(Labeled, StringSet):
+    typename = 'labeled_string_set'
 
 
 @dataclass
