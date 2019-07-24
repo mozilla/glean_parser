@@ -71,7 +71,7 @@ definitions:
 
             - `string`: A metric storing Unicode string values.
 
-            - `string_list`: a list of Unicode strings.
+            - `string_set`: a list of unique Unicode strings.
 
             - `enumeration`: a string with a fixed set of values. Additional properties:
               `values`_.
@@ -108,7 +108,7 @@ definitions:
               instances of the metric to be stored at a given set of labels.  The
               labeled metric types include:
 
-                `labeled_boolean`, `labeled_string`, `labeled_string_list`,
+                `labeled_boolean`, `labeled_string`, `labeled_string_set`,
                 `labeled_enumeration`, `labeled_counter`, `labeled_timespan`,
                 `labeled_timing_distribution`, `labeled_datetime`,
                 `labeled_use_counter`, `labeled_usage`, `labeled_rate`,
@@ -118,7 +118,7 @@ definitions:
           - event
           - boolean
           - string
-          - string_list
+          - string_set
           - enumeration
           - counter
           - timespan
@@ -130,7 +130,7 @@ definitions:
           - uuid
           - labeled_boolean
           - labeled_string
-          - labeled_string_list
+          - labeled_string_set
           - labeled_enumeration
           - labeled_counter
           - labeled_timespan

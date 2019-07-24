@@ -23,9 +23,9 @@ package {{ namespace }}
 {% if has_gecko_datapoints %}
 import {{ glean_namespace }}.private.HistogramBase
 {% endif %}
-import {{ glean_namespace }}.private.Lifetime // ktlint-disable no-unused-imports
-import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable no-unused-imports
-import {{ glean_namespace }}.private.TimeUnit // ktlint-disable no-unused-imports
+import {{ glean_namespace }}.private.Lifetime // ktlint-disable import-ordering no-unused-imports
+import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable import-ordering no-unused-imports
+import {{ glean_namespace }}.private.TimeUnit // ktlint-disable import-ordering no-unused-imports
 {% for obj_type in obj_types %}
 import {{ glean_namespace }}.private.{{ obj_type }}
 {% endfor %}
