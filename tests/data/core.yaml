@@ -316,20 +316,6 @@ environment:
       - CHANGE-ME@example.com
     expires: 2100-01-01
 
-  video_drivers:
-    type: string_set
-    description: >
-      A set of drivers for the Gfx adapter.
-    bugs:
-      - 1557353
-    data_reviews:
-      - http://example.com/reviews
-    notification_emails:
-      - CHANGE-ME@example.com
-    send_in_pings:
-      - core
-    expires: 2100-01-01
-
 dotted.category:
   metric:
     type: string
