@@ -188,16 +188,22 @@ def test_gecko_datapoints(tmpdir):
         {'allow_reserved': True}
     )
 
+    metrics_files = [
+        'GfxContentCheckerboard.kt',
+        'PagePerf.kt',
+        'NonGeckoMetrics.kt'
+    ]
     assert (
         set(x.name for x in tmpdir.iterdir()) ==
-        set([
-            'GeckoImports.kt',
-            'NonGeckoMetrics.kt'
-        ])
+        set(['GleanGeckoHistogramMapping.kt'] + metrics_files)
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / 'GeckoImports.kt', 'r', encoding='utf-8') as fd:
+    with open(
+        tmpdir / 'GleanGeckoHistogramMapping.kt',
+        'r',
+        encoding='utf-8'
+    ) as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count(
@@ -210,17 +216,21 @@ def test_gecko_datapoints(tmpdir):
         # changes, otherwise validation will fail.
         expected_operator = """    operator fun get(geckoMetricName: String): HistogramBase? {
         return when (geckoMetricName) {
-            "FX_PAGE_LOAD_MS_2" -> pageLoadTime
-            "GV_STARTUP_RUNTIME_MS" -> startupRuntime
+            // From GfxContentCheckerboard.kt
+            "CHECKERBOARD_DURATION" -> GfxContentCheckerboard.duration
+            // From PagePerf.kt
+            "GV_PAGE_LOAD_MS" -> PagePerf.loadTime
+            "GV_PAGE_RELOAD_MS" -> PagePerf.reloadTime
             else -> null
         }
     }"""
 
         assert expected_operator in content
 
-    with open(tmpdir / 'NonGeckoMetrics.kt', 'r', encoding='utf-8') as fd:
-        content = fd.read()
-        assert 'HistogramBase' not in content
+    for file_name in metrics_files:
+        with open(tmpdir / file_name, 'r', encoding='utf-8') as fd:
+            content = fd.read()
+            assert 'HistogramBase' not in content
 
     # Only run this test if ktlint is on the path
     if shutil.which('ktlint'):
