@@ -15,6 +15,7 @@ from . import metrics
 from . import util
 from collections import defaultdict
 
+
 def kotlin_datatypes_filter(value):
     """
     A Jinja2 filter that renders Kotlin literals.

@@ -15,6 +15,7 @@ from glean_parser import translate
 
 ROOT = Path(__file__).parent
 
+
 def test_parser(tmpdir):
     """Test translating metrics to Kotlin files."""
     tmpdir = Path(tmpdir)
@@ -187,18 +188,22 @@ def test_gecko_datapoints(tmpdir):
         {'allow_reserved': True}
     )
 
+    metrics_files = [
+        'GfxContentCheckerboard.kt',
+        'PagePerf.kt',
+        'NonGeckoMetrics.kt'
+    ]
     assert (
         set(x.name for x in tmpdir.iterdir()) ==
-        set([
-            'GleanGeckoHistogramMapping.kt',
-            'GfxContentCheckerboard.kt',
-            'PagePerf.kt',
-            'NonGeckoMetrics.kt'
-        ])
+        set(['GleanGeckoHistogramMapping.kt'] + metrics_files)
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / 'GleanGeckoHistogramMapping.kt', 'r', encoding='utf-8') as fd:
+    with open(
+        tmpdir / 'GleanGeckoHistogramMapping.kt',
+        'r',
+        encoding='utf-8'
+    ) as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count(
@@ -222,7 +227,7 @@ def test_gecko_datapoints(tmpdir):
 
         assert expected_operator in content
 
-    for file_name in ['GfxContentCheckerboard.kt', 'PagePerf.kt', 'NonGeckoMetrics.kt']:
+    for file_name in metrics_files:
         with open(tmpdir / file_name, 'r', encoding='utf-8') as fd:
             content = fd.read()
             assert 'HistogramBase' not in content
