@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.kotlin &#8212; Glean Parser 0.32.1.dev2+gfe5185c documentation</title>
+    <title>glean_parser.kotlin &#8212; Glean Parser 0.33.1.dev1+g3879143 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -48,6 +48,7 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">metrics</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 
 
 <div class="viewcode-block" id="kotlin_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.kotlin_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">kotlin_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -126,6 +127,77 @@
     <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;{util.Camelize(obj_type)}MetricType&#39;</span></div>
 
 
+<div class="viewcode-block" id="output_gecko_lookup"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.output_gecko_lookup">[docs]</a><span class="k">def</span> <span class="nf">output_gecko_lookup</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, generate a Kotlin map between Gecko histograms and</span>
+<span class="sd">    Glean SDK metric types.</span>
+
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">    `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    :param options: options dictionary, with the following optional keys:</span>
+
+<span class="sd">        - `namespace`: The package namespace to declare at the top of the</span>
+<span class="sd">          generated files. Defaults to `GleanMetrics`.</span>
+<span class="sd">        - `glean_namespace`: The package namespace of the glean library itself.</span>
+<span class="sd">          This is where glean objects will be imported from in the generated</span>
+<span class="sd">          code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
+        <span class="s1">&#39;kotlin.geckoview.jinja2&#39;</span><span class="p">,</span>
+        <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
+            <span class="p">(</span><span class="s1">&#39;kotlin&#39;</span><span class="p">,</span> <span class="n">kotlin_datatypes_filter</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;type_name&#39;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;class_name&#39;</span><span class="p">,</span> <span class="n">class_name</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">,</span> <span class="s1">&#39;GleanMetrics&#39;</span><span class="p">)</span>
+    <span class="n">glean_namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;glean_namespace&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mozilla.components.service.glean&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Build a dictionary that contains data for metrics that are</span>
+    <span class="c1"># histogram-like and contain a gecko_datapoint, with this format:</span>
+    <span class="c1">#</span>
+    <span class="c1"># {</span>
+    <span class="c1">#  &quot;category&quot;: [</span>
+    <span class="c1">#    {&quot;gecko_datapoint&quot;: &quot;the-datapoint&quot;, &quot;name&quot;: &quot;the-metric-name&quot;},</span>
+    <span class="c1">#    ...</span>
+    <span class="c1">#  ],</span>
+    <span class="c1">#  ...</span>
+    <span class="c1"># }</span>
+    <span class="n">gecko_metrics</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Support exfiltration of Gecko metrics from products using both the</span>
+        <span class="c1"># Glean SDK and GeckoView. See bug 1566356 for more context.</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;gecko_datapoint&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">gecko_metrics</span><span class="p">[</span><span class="n">category_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;gecko_datapoint&#39;</span><span class="p">:</span> <span class="n">metric</span><span class="o">.</span><span class="n">gecko_datapoint</span><span class="p">,</span>
+                        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span>
+                    <span class="p">})</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gecko_metrics</span><span class="p">:</span>
+        <span class="c1"># Bail out and don&#39;t create a file if no gecko metrics</span>
+        <span class="c1"># are found.</span>
+        <span class="k">return</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="s2">&quot;GleanGeckoHistogramMapping.kt&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                <span class="n">gecko_metrics</span><span class="o">=</span><span class="n">gecko_metrics</span><span class="p">,</span>
+                <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+                <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="output_kotlin"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.output_kotlin">[docs]</a><span class="k">def</span> <span class="nf">output_kotlin</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Kotlin code to `output_dir`.</span>
@@ -182,13 +254,6 @@
             <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="c1"># Support exfiltration of Gecko metrics from products using both the</span>
-        <span class="c1"># Glean SDK and GeckoView. See bug 1566356 for more context.</span>
-        <span class="n">has_gecko_datapoints</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;gecko_datapoint&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="p">)</span>
-
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
             <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                 <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
@@ -198,12 +263,14 @@
                     <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span>
                     <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
                     <span class="n">has_labeled_metrics</span><span class="o">=</span><span class="n">has_labeled_metrics</span><span class="p">,</span>
-                    <span class="n">has_gecko_datapoints</span><span class="o">=</span><span class="n">has_gecko_datapoints</span><span class="p">,</span>
                     <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>
-            <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Maybe this should just be a separate outputter?</span>
+    <span class="n">output_gecko_lookup</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

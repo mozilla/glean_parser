@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 0.32.1.dev2+gfe5185c documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 0.33.1.dev1+g3879143 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -62,6 +62,33 @@
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.kotlin.output_gecko_lookup">
+<code class="descclassname">glean_parser.kotlin.</code><code class="descname">output_gecko_lookup</code><span class="sig-paren">(</span><em>objs</em>, <em>output_dir</em>, <em>options={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/kotlin.html#output_gecko_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.kotlin.output_gecko_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, generate a Kotlin map between Gecko histograms and
+Glean SDK metric types.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
+</tr>
+</tbody>
+</table>
+<p><cite>parser.parse_objects</cite>.
+:param output_dir: Path to an output directory to write to.
+:param options: options dictionary, with the following optional keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>namespace</cite>: The package namespace to declare at the top of the
+generated files. Defaults to <cite>GleanMetrics</cite>.</li>
+<li><cite>glean_namespace</cite>: The package namespace of the glean library itself.
+This is where glean objects will be imported from in the generated
+code.</li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="function">
