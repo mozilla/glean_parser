@@ -394,3 +394,42 @@ def test_geckoview_only_on_valid_metrics():
     all_metrics = parser.parse_objects(contents)
     errs = list(all_metrics)
     assert len(errs) == 1
+
+
+def test_all_pings_reserved():
+    # send_in_pings: [all_pings] is only allowed for internal metrics
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'string',
+                    'send_in_pings': ['all_pings']
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "On instance category.metric" in errors[0]
+    assert "Only internal metrics" in errors[0]
+
+    all_metrics = parser.parse_objects(contents, {'allow_reserved': True})
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    # A custom ping called "all_pings" is not allowed
+    contents = [
+        {
+            'all_pings': {
+                'include_client_id': True
+            },
+        },
+    ]
+    contents = [util.add_required_ping(x) for x in contents]
+    all_pings = parser.parse_objects(contents)
+    errors = list(all_pings)
+    assert len(errors) == 1
+    assert "is not allowed for 'all_pings'"

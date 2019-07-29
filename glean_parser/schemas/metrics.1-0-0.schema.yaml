@@ -175,6 +175,10 @@ definitions:
           is sent on the "default ping", which is the `events` ping for events,
           and the `metrics` ping for everything else. Most metrics don't need to
           specify this.
+
+          (There is an additional special value of `all_pings` for internal
+          Glean metrics only that is used to indicate that a metric may appear
+          in any ping.)
         type: array
         items:
           $ref: "#/definitions/snake_case"

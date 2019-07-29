@@ -172,6 +172,16 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                     str(e)
                 )
                 metric_obj = None
+            else:
+                if (not config.get('allow_reserved') and
+                        'all_pings' in metric_obj.send_in_pings):
+                    yield util.format_error(
+                        filepath,
+                        f'On instance {category_key}.{metric_key}',
+                        f'Only internal metrics may specify "all_pings" '
+                        f'in "send_in_pings"'
+                    )
+                    metric_obj = None
 
             already_seen = sources.get((category_key, metric_key))
             if already_seen is not None:
