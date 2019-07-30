@@ -303,11 +303,6 @@ class LabeledCounter(Labeled, Counter):
 
 
 @dataclass
-class LabeledTimespan(Labeled, Timespan):
-    typename = 'labeled_timespan'
-
-
-@dataclass
 class LabeledTimingDistribution(Labeled, TimingDistribution):
     typename = 'labeled_timing_distribution'
 

@@ -133,7 +133,6 @@ definitions:
           - labeled_string_list
           - labeled_enumeration
           - labeled_counter
-          - labeled_timespan
           - labeled_timing_distribution
           - labeled_datetime
           - labeled_use_counter
