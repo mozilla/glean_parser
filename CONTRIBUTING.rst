@@ -109,6 +109,7 @@ Before you submit a pull request, check that it meets these guidelines:
    feature to the list in README.rst.
 3. The pull request should work for Python 3.7. Check TODO and make sure that
    the tests pass for all supported Python versions.
+4. The pull request should update the changelog in `HISTORY.rst`.
 
 Tips
 ----
