@@ -134,4 +134,4 @@ $ git push upstream master --tags
 
 Alternatively, the above tasks can be performed through the `Github new release UI <https://github.com/mozilla/glean_parser/releases/new>`__.
 
-Travis will then deploy to PyPI if tests pass.
+The continuous integration system will then deploy to PyPI if tests pass.
