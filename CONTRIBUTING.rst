@@ -109,6 +109,7 @@ Before you submit a pull request, check that it meets these guidelines:
    feature to the list in README.rst.
 3. The pull request should work for Python 3.7. Check TODO and make sure that
    the tests pass for all supported Python versions.
+4. The pull request should update the changelog in `HISTORY.rst`.
 
 Tips
 ----
@@ -122,7 +123,13 @@ Deploying
 ---------
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
+
+- Update the header with the new version and date in HISTORY.rst.
+
+- (By using the setuptools-scm package, there is no need to update the version anywhere else).
+
+- Make sure all your changes are committed.
+
 Then run (assuming the main fork is in a git remote called `upstream`)::
 
 $ git checkout master
@@ -131,6 +138,4 @@ $ git rebase upstream/master
 $ git tag vX.X.X
 $ git push upstream master --tags
 
-Alternatively, the above tasks can be performed through the `Github new release UI <https://github.com/mozilla/glean_parser/releases/new>`__.
-
-Travis will then deploy to PyPI if tests pass.
+The continuous integration system will then deploy to PyPI if tests pass.
