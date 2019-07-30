@@ -123,7 +123,13 @@ Deploying
 ---------
 
 A reminder for the maintainers on how to deploy.
-Make sure all your changes are committed (including an entry in HISTORY.rst).
+
+- Update the header with the new version and date in HISTORY.rst.
+
+- (By using the setuptools-scm package, there is no need to update the version anywhere else).
+
+- Make sure all your changes are committed.
+
 Then run (assuming the main fork is in a git remote called `upstream`)::
 
 $ git checkout master
@@ -131,7 +137,5 @@ $ git fetch upstream
 $ git rebase upstream/master
 $ git tag vX.X.X
 $ git push upstream master --tags
-
-Alternatively, the above tasks can be performed through the `Github new release UI <https://github.com/mozilla/glean_parser/releases/new>`__.
 
 The continuous integration system will then deploy to PyPI if tests pass.
