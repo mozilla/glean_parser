@@ -2,6 +2,9 @@
 History
 =======
 
+Unreleased
+----------
+
 * `labeled_timespan` is no longer an allowed metric type.
 
 1.0.0 (2019-07-29)
