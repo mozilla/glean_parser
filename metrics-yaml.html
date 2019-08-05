@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.0.1.dev7+gb94861f documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.0.1.dev9+g69c9549 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -157,6 +157,9 @@ application, and is reset only at application restarts.</li>
 is sent on the “default ping”, which is the <code class="docutils literal notranslate"><span class="pre">events</span></code> ping for events,
 and the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> ping for everything else. Most metrics don’t need to
 specify this.</p>
+<p>(There is an additional special value of <code class="docutils literal notranslate"><span class="pre">all_pings</span></code> for internal
+Glean metrics only that is used to indicate that a metric may appear
+in any ping.)</p>
 </div>
 <div class="section" id="disabled">
 <span id="id8"></span><h3>disabled<a class="headerlink" href="#disabled" title="Permalink to this headline">¶</a></h3>
@@ -408,6 +411,10 @@ entirety below:</p>
           <span class="no">is sent on the &quot;default ping&quot;, which is the `events` ping for events,</span>
           <span class="no">and the `metrics` ping for everything else. Most metrics don&#39;t need to</span>
           <span class="no">specify this.</span>
+
+          <span class="no">(There is an additional special value of `all_pings` for internal</span>
+          <span class="no">Glean metrics only that is used to indicate that a metric may appear</span>
+          <span class="no">in any ping.)</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
         <span class="nt">items</span><span class="p">:</span>
           <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>

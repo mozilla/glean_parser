@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.0.1.dev7+gb94861f documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.0.1.dev9+g69c9549 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -207,6 +207,16 @@
                     <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;allow_reserved&#39;</span><span class="p">)</span> <span class="ow">and</span>
+                        <span class="s1">&#39;all_pings&#39;</span> <span class="ow">in</span> <span class="n">metric_obj</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
+                        <span class="n">filepath</span><span class="p">,</span>
+                        <span class="n">f</span><span class="s1">&#39;On instance </span><span class="si">{category_key}</span><span class="s1">.</span><span class="si">{metric_key}</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="n">f</span><span class="s1">&#39;Only internal metrics may specify &quot;all_pings&quot; &#39;</span>
+                        <span class="n">f</span><span class="s1">&#39;in &quot;send_in_pings&quot;&#39;</span>
+                    <span class="p">)</span>
+                    <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">category_key</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
