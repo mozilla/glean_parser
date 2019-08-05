@@ -18,9 +18,12 @@ definitions:
 type: object
 
 propertyNames:
-  anyOf:
-    - $ref: "#/definitions/dotted_snake_case"
-    - enum: ['$schema']
+  allOf:
+    - anyOf:
+      - $ref: "#/definitions/dotted_snake_case"
+      - enum: ['$schema']
+    - not:
+        enum: ['all_pings']
 
 properties:
   $schema:
