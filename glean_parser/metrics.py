@@ -11,7 +11,7 @@ Classes for each of the high-level metric types.
 import dataclasses
 from dataclasses import dataclass, field, InitVar
 import enum
-from typing import Dict, List, Set, Union
+from typing import Dict, List, Set, Tuple, Union
 
 from . import parser
 from . import util
@@ -143,6 +143,12 @@ class Metric:
     lifetime: Lifetime = 'ping'
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
 
+    unit: str = ''
+
+    # The following is a Gecko-specific property for using the Glean SDK
+    # with GeckoView metrics. See bug 1566356 for more context.
+    gecko_datapoint: str = ''
+
     # Implementation detail -- these are parameters to the constructor that
     # aren't stored in the dataclass object.
     _config: InitVar[dict] = {}
@@ -208,9 +214,20 @@ class Timespan(TimeBase):
 @dataclass
 class TimingDistribution(TimeBase):
     typename = 'timing_distribution'
-    # The following is a Gecko-specific property for using the Glean SDK
-    # with GeckoView metrics. See bug 1566356 for more context.
-    gecko_datapoint: str = ''
+
+
+class HistogramType(enum.Enum):
+    linear = 0
+    exponential = 1
+
+
+@dataclass
+class CustomDistribution(Metric):
+    typename = 'custom_distribution'
+
+    range: Tuple[int, int] = field(default_factory=lambda: [0, 60000])
+    bucket_count: int = 100
+    histogram_type: HistogramType = 'exponential'
 
 
 @dataclass

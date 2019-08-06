@@ -433,3 +433,43 @@ def test_all_pings_reserved():
     errors = list(all_pings)
     assert len(errors) == 1
     assert "is not allowed for 'all_pings'"
+
+
+def test_custom_distribution():
+    # Test that custom_distribution isn't allowed on non-Gecko metric
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'custom_distribution',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "custom_distribution is only allowed for Gecko metrics" in errors[0]
+
+    # Test that defaults are filled in correctly
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'custom_distribution',
+                    'gecko_datapoint': 'FROM_GECKO'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    distribution = all_metrics.value['category']['metric']
+    assert distribution.range == [0, 60000]
+    assert distribution.bucket_count == 100
+    assert distribution.histogram_type == metrics.HistogramType.exponential
