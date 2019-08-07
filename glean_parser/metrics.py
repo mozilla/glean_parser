@@ -11,7 +11,7 @@ Classes for each of the high-level metric types.
 import dataclasses
 from dataclasses import dataclass, field, InitVar
 import enum
-from typing import Dict, List, Set, Tuple, Union
+from typing import Dict, List, Set, Union
 
 from . import parser
 from . import util
