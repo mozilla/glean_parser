@@ -225,10 +225,10 @@ class HistogramType(enum.Enum):
 class CustomDistribution(Metric):
     typename = 'custom_distribution'
 
+    range_min: int = 1
     # The defaults must be provided here to work with Python's @dataclass,
     # however, in practice, these parameters are required by the schema,
     # so they will never be used.
-    range_min: int = -1
     range_max: int = -1
     bucket_count: int = -1
     histogram_type: HistogramType = HistogramType.exponential

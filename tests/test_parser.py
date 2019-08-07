@@ -482,7 +482,6 @@ def test_custom_distribution():
                 'metric': {
                     'type': 'custom_distribution',
                     'gecko_datapoint': 'FROM_GECKO',
-                    'range_min': 0,
                     'range_max': 60000,
                     'bucket_count': 100,
                     'histogram_type': 'exponential'
@@ -496,7 +495,7 @@ def test_custom_distribution():
     errors = list(all_metrics)
     assert len(errors) == 0
     distribution = all_metrics.value['category']['metric']
-    assert distribution.range_min == 0
+    assert distribution.range_min == 1
     assert distribution.range_max == 60000
     assert distribution.bucket_count == 100
     assert distribution.histogram_type == metrics.HistogramType.exponential

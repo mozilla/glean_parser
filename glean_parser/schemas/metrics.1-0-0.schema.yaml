@@ -356,8 +356,9 @@ definitions:
         description: |
           The minimum value of a custom distribution.
 
-          Required when `type`_ is `custom_distribution`.
+          Valid when `type`_ is `custom_distribution`.
         type: number
+        default: 1
 
       range_max:
         title: Range maximum
@@ -469,7 +470,6 @@ additionalProperties:
               const: custom_distribution
         then:
           required:
-            - range_min
             - range_max
             - bucket_count
             - histogram_type
