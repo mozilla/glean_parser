@@ -199,7 +199,8 @@ def output_kotlin(objs, output_dir, options={}):
         'allowed_extra_keys',
         'disabled',
         'include_client_id'
-        'range',
+        'range_min',
+        'range_max',
         'bucket_count',
         'histogram_type'
     ]

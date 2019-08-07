@@ -442,6 +442,10 @@ def test_custom_distribution():
             'category': {
                 'metric': {
                     'type': 'custom_distribution',
+                    'range_min': 0,
+                    'range_max': 60000,
+                    'bucket_count': 100,
+                    'histogram_type': 'exponential'
                 },
             },
         },
@@ -453,13 +457,35 @@ def test_custom_distribution():
     assert len(errors) == 1
     assert "custom_distribution is only allowed for Gecko metrics" in errors[0]
 
-    # Test that defaults are filled in correctly
+    # Test that custom_distribution has required parameters
     contents = [
         {
             'category': {
                 'metric': {
                     'type': 'custom_distribution',
-                    'gecko_datapoint': 'FROM_GECKO'
+                    'gecko_datapoint': 'FROM_GECKO',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "custom_distribution is missing required parameters" in errors[0]
+
+    # Test that correct usage
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'custom_distribution',
+                    'gecko_datapoint': 'FROM_GECKO',
+                    'range_min': 0,
+                    'range_max': 60000,
+                    'bucket_count': 100,
+                    'histogram_type': 'exponential'
                 },
             },
         },
@@ -470,6 +496,7 @@ def test_custom_distribution():
     errors = list(all_metrics)
     assert len(errors) == 0
     distribution = all_metrics.value['category']['metric']
-    assert distribution.range == [0, 60000]
+    assert distribution.range_min == 0
+    assert distribution.range_max == 60000
     assert distribution.bucket_count == 100
     assert distribution.histogram_type == metrics.HistogramType.exponential

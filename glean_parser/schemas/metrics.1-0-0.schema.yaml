@@ -106,7 +106,7 @@ definitions:
             - `custom_distribution`: A histogram with a custom range and number of buckets.
               This metric type is for legacy support only and is only allowed for
               metrics coming from GeckoView.
-              Additional properties: `range`_, `bucket_count`_, `histogram_type`_.
+              Additional properties: `range_min`_, `range_max`_, `bucket_count`_, `histogram_type`_.
 
             - Additionally, labeled versions of many metric types are
               supported.  These support the `labels`_ parameter, allowing multiple
@@ -351,27 +351,30 @@ definitions:
 
         type: string
 
-      range:
-        title: Range
+      range_min:
+        title: Range minimum
         description: |
-          The range of a custom distribution. A pair of numbers (min, max).
+          The minimum value of a custom distribution.
 
-          Valid then `type`_ is `custom_distribution`.
-        type: array
-        items:
-          - type: number
-          - type: number
-        default: [0, 60000]
+          Required when `type`_ is `custom_distribution`.
+        type: number
+
+      range_max:
+        title: Range maximum
+        description: |
+          The maximum value of a custom distribution.
+
+          Required when `type`_ is `custom_distribution`.
+        type: number
 
       bucket_count:
         title: Bucket count
         description: |
           The number of buckets to include in a custom distribution.
 
-          Valid then `type`_ is `custom_distribution`.
+          Required when `type`_ is `custom_distribution`.
         type: number
         minimum: 1
-        default: 100
 
       histogram_type:
         title: Histogram type
@@ -381,11 +384,10 @@ definitions:
             - `exponential`: The buckets use the natural logarithmic so the smaller-valued
               buckets are smaller in size than the higher-valued buckets.
 
-          Valid then `type`_ is `custom_distribution`.
+          Required when `type`_ is `custom_distribution`.
         enum:
           - linear
           - exponential
-        default: exponential
 
       unit:
         title: Unit
@@ -460,3 +462,16 @@ additionalProperties:
             - gecko_datapoint
           description: |
             custom_distribution is only allowed for Gecko metrics.
+      -
+        if:
+          properties:
+            type:
+              const: custom_distribution
+        then:
+          required:
+            - range_min
+            - range_max
+            - bucket_count
+            - histogram_type
+          description: |
+            custom_distribution is missing required parameters
