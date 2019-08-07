@@ -475,6 +475,27 @@ def test_custom_distribution():
     assert len(errors) == 1
     assert "custom_distribution is missing required parameters" in errors[0]
 
+    # Test maximum bucket_count is enforced
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'custom_distribution',
+                    'gecko_datapoint': 'FROM_GECKO',
+                    'range_max': 60000,
+                    'bucket_count': 101,
+                    'histogram_type': 'exponential'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "101 is greater than" in errors[0]
+
     # Test that correct usage
     contents = [
         {
