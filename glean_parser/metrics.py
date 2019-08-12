@@ -143,6 +143,12 @@ class Metric:
     lifetime: Lifetime = 'ping'
     send_in_pings: List[str] = field(default_factory=lambda: ['default'])
 
+    unit: str = ''
+
+    # The following is a Gecko-specific property for using the Glean SDK
+    # with GeckoView metrics. See bug 1566356 for more context.
+    gecko_datapoint: str = ''
+
     # Implementation detail -- these are parameters to the constructor that
     # aren't stored in the dataclass object.
     _config: InitVar[dict] = {}
@@ -208,9 +214,24 @@ class Timespan(TimeBase):
 @dataclass
 class TimingDistribution(TimeBase):
     typename = 'timing_distribution'
-    # The following is a Gecko-specific property for using the Glean SDK
-    # with GeckoView metrics. See bug 1566356 for more context.
-    gecko_datapoint: str = ''
+
+
+class HistogramType(enum.Enum):
+    linear = 0
+    exponential = 1
+
+
+@dataclass
+class CustomDistribution(Metric):
+    typename = 'custom_distribution'
+
+    range_min: int = 1
+    # The defaults must be provided here to work with Python's @dataclass,
+    # however, in practice, these parameters are required by the schema,
+    # so they will never be used.
+    range_max: int = -1
+    bucket_count: int = -1
+    histogram_type: HistogramType = HistogramType.exponential
 
 
 @dataclass

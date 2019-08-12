@@ -103,6 +103,11 @@ definitions:
 
             - `uuid`: Record a UUID v4.
 
+            - `custom_distribution`: A histogram with a custom range and number of buckets.
+              This metric type is for legacy support only and is only allowed for
+              metrics coming from GeckoView.
+              Additional properties: `range_min`_, `range_max`_, `bucket_count`_, `histogram_type`_.
+
             - Additionally, labeled versions of many metric types are
               supported.  These support the `labels`_ parameter, allowing multiple
               instances of the metric to be stored at a given set of labels.  The
@@ -123,6 +128,7 @@ definitions:
           - counter
           - timespan
           - timing_distribution
+          - custom_distribution
           - datetime
           - use_counter
           - usage
@@ -343,8 +349,55 @@ definitions:
           accumulate the data from, when using the Glean SDK in a product using GeckoView.
           See bug 1566356 for more context.
 
-          This is valid when `type`_ is `timing_distribution`.
+        type: string
 
+      range_min:
+        title: Range minimum
+        description: |
+          The minimum value of a custom distribution.
+
+          Valid when `type`_ is `custom_distribution`.
+        type: number
+        default: 1
+
+      range_max:
+        title: Range maximum
+        description: |
+          The maximum value of a custom distribution.
+
+          Required when `type`_ is `custom_distribution`.
+        type: number
+
+      bucket_count:
+        title: Bucket count
+        description: |
+          The number of buckets to include in a custom distribution.
+
+          Required when `type`_ is `custom_distribution`.
+        type: number
+        minimum: 1
+        maximum: 100
+
+      histogram_type:
+        title: Histogram type
+        description: |
+          The type of histogram bucketing to use:
+            - `linear`: The buckets are linearly spaced within the range.
+            - `exponential`: The buckets use the natural logarithmic so the smaller-valued
+              buckets are smaller in size than the higher-valued buckets.
+
+          Required when `type`_ is `custom_distribution`.
+        enum:
+          - linear
+          - exponential
+
+      unit:
+        title: Unit
+        description: |
+          The unit of the metric, for metrics that don't already require a
+          meaningful unit, such as `time_unit`.
+          This is provided for informational purposes only and doesn't have any
+          effect on data collection.
         type: string
 
     required:
@@ -390,12 +443,36 @@ additionalProperties:
               description: |
                 Event metrics must have ping lifetime.
               const: ping
-      -
-        if:
-          required:
-            - gecko_datapoint
+      - if:
+          not:
+            properties:
+              type:
+                enum:
+                  - timing_distribution
+                  - custom_distribution
         then:
           properties:
+            gecko_datapoint:
+              maxLength: 0
+      -
+        if:
+          properties:
             type:
-              enum:
-                - timing_distribution
+              const: custom_distribution
+        then:
+          required:
+            - gecko_datapoint
+          description: |
+            custom_distribution is only allowed for Gecko metrics.
+      -
+        if:
+          properties:
+            type:
+              const: custom_distribution
+        then:
+          required:
+            - range_max
+            - bucket_count
+            - histogram_type
+          description: |
+            custom_distribution is missing required parameters
