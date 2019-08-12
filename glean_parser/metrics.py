@@ -320,8 +320,3 @@ class LabeledUsage(Labeled, Usage):
 @dataclass
 class LabeledRate(Labeled, Rate):
     typename = 'labeled_rate'
-
-
-@dataclass
-class LabeledUuid(Labeled, Uuid):
-    typename = 'labeled_uuid'
