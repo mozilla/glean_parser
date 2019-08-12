@@ -303,11 +303,13 @@ definitions:
         description: |
           The unit that the incoming memory size values are recorded in.
 
-          The units are the power-of-2 units, so "kilobyte" is pedantically a "kibibyte".
+          The units are the power-of-2 units, so "kilobyte" is correctly a "kibibyte".
 
           - kilobyte == 2^10 ==         1,024 bytes
           - megabyte == 2^20 ==     1,048,576 bytes
           - gigabyte == 2^30 == 1,073,741,824 bytes
+
+          Values are automatically converted to and transmitted as bytes.
 
           Valid when `type`_ is `memory_distribution`.
         enum:
