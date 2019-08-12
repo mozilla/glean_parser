@@ -520,3 +520,45 @@ def test_custom_distribution():
     assert distribution.range_max == 60000
     assert distribution.bucket_count == 100
     assert distribution.histogram_type == metrics.HistogramType.exponential
+
+
+def test_memory_distribution():
+    # Test that we get an error for a missing unit
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'memory_distribution',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert (
+        'memory_distribution is missing required memory_unit parameter'
+        in errors[0]
+    )
+
+    # Test that memory_distribution works
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'memory_distribution',
+                    'memory_unit': 'megabyte'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert len(all_metrics.value) == 1
+    all_metrics.value['category']['metric'].memory_unit == \
+        metrics.MemoryUnit.megabyte
