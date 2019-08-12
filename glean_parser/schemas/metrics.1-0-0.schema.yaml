@@ -109,7 +109,7 @@ definitions:
               labeled metric types include:
 
                 `labeled_boolean`, `labeled_string`, `labeled_string_list`,
-                `labeled_enumeration`, `labeled_counter`, `labeled_timespan`,
+                `labeled_enumeration`, `labeled_counter`,
                 `labeled_timing_distribution`, `labeled_datetime`,
                 `labeled_use_counter`, `labeled_usage`, `labeled_rate`,
                 `labeled_uuid`.
