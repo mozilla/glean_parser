@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.0.1.dev9+g69c9549 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.1.1.dev6+g9329840 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -178,6 +178,12 @@
     <span class="n">lifetime</span><span class="p">:</span> <span class="n">Lifetime</span> <span class="o">=</span> <span class="s1">&#39;ping&#39;</span>
     <span class="n">send_in_pings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
 
+    <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># The following is a Gecko-specific property for using the Glean SDK</span>
+    <span class="c1"># with GeckoView metrics. See bug 1566356 for more context.</span>
+    <span class="n">gecko_datapoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
     <span class="c1"># Implementation detail -- these are parameters to the constructor that</span>
     <span class="c1"># aren&#39;t stored in the dataclass object.</span>
     <span class="n">_config</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -242,10 +248,25 @@
 
 <div class="viewcode-block" id="TimingDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimingDistribution">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TimingDistribution</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;timing_distribution&#39;</span>
-    <span class="c1"># The following is a Gecko-specific property for using the Glean SDK</span>
-    <span class="c1"># with GeckoView metrics. See bug 1566356 for more context.</span>
-    <span class="n">gecko_datapoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></div>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;timing_distribution&#39;</span></div>
+
+
+<div class="viewcode-block" id="HistogramType"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.HistogramType">[docs]</a><span class="k">class</span> <span class="nc">HistogramType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">linear</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">exponential</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="CustomDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.CustomDistribution">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CustomDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;custom_distribution&#39;</span>
+
+    <span class="n">range_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># The defaults must be provided here to work with Python&#39;s @dataclass,</span>
+    <span class="c1"># however, in practice, these parameters are required by the schema,</span>
+    <span class="c1"># so they will never be used.</span>
+    <span class="n">range_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">bucket_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">histogram_type</span><span class="p">:</span> <span class="n">HistogramType</span> <span class="o">=</span> <span class="n">HistogramType</span><span class="o">.</span><span class="n">exponential</span></div>
 
 
 <div class="viewcode-block" id="Datetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Datetime">[docs]</a><span class="nd">@dataclass</span>
