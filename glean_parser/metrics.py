@@ -288,11 +288,6 @@ class LabeledString(Labeled, String):
 
 
 @dataclass
-class LabeledStringList(Labeled, StringList):
-    typename = 'labeled_string_list'
-
-
-@dataclass
 class LabeledEnumeration(Labeled, Enumeration):
     typename = 'labeled_enumeration'
 
