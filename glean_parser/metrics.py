@@ -309,11 +309,6 @@ class LabeledString(Labeled, String):
 
 
 @dataclass
-class LabeledStringList(Labeled, StringList):
-    typename = 'labeled_string_list'
-
-
-@dataclass
 class LabeledEnumeration(Labeled, Enumeration):
     typename = 'labeled_enumeration'
 
@@ -346,8 +341,3 @@ class LabeledUsage(Labeled, Usage):
 @dataclass
 class LabeledRate(Labeled, Rate):
     typename = 'labeled_rate'
-
-
-@dataclass
-class LabeledUuid(Labeled, Uuid):
-    typename = 'labeled_uuid'
