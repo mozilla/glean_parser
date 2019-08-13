@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.2.1 (2019-08-13)
+------------------
+
+* BUGFIX: `includeClientId` was not being output for PingType.
+
 1.2.0 (2019-08-13)
 ------------------
 

@@ -198,7 +198,7 @@ def output_kotlin(objs, output_dir, options={}):
         'time_unit',
         'allowed_extra_keys',
         'disabled',
-        'include_client_id'
+        'include_client_id',
         'range_min',
         'range_max',
         'bucket_count',
