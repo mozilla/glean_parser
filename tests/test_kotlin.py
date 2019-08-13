@@ -207,14 +207,14 @@ def test_gecko_datapoints(tmpdir):
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count(
-            "import Bar.private.HistogramBase"
+            "import Bar.private.HistogramMetricBase"
         ) == 1
 
         # Validate the generated Gecko metric mapper Kotlin operator.
         # NOTE: Indentation, whitespaces  and text formatting of the block
         # below are important. Do not change them unless the file format
         # changes, otherwise validation will fail.
-        expected_operator = """    operator fun get(geckoMetricName: String): HistogramBase? {
+        expected_operator = """    operator fun get(geckoMetricName: String): HistogramMetricBase? {
         return when (geckoMetricName) {
             // From GfxContentCheckerboard.kt
             "CHECKERBOARD_DURATION" -> GfxContentCheckerboard.duration
@@ -230,7 +230,7 @@ def test_gecko_datapoints(tmpdir):
     for file_name in metrics_files:
         with open(tmpdir / file_name, 'r', encoding='utf-8') as fd:
             content = fd.read()
-            assert 'HistogramBase' not in content
+            assert 'HistogramMetricBase' not in content
 
     # Only run this test if ktlint is on the path
     if shutil.which('ktlint'):

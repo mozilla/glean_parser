@@ -11,7 +11,7 @@
 @file:Suppress("PackageNaming")
 package {{ namespace }}
 
-import {{ glean_namespace }}.private.HistogramBase // ktlint-disable import-ordering no-unused-imports
+import {{ glean_namespace }}.private.HistogramMetricBase // ktlint-disable import-ordering no-unused-imports
 
 /*
  * This class performs the mapping between Gecko Histograms and Glean SDK
@@ -20,7 +20,7 @@ import {{ glean_namespace }}.private.HistogramBase // ktlint-disable import-orde
 internal object GleanGeckoHistogramMapping {
     // Support exfiltration of Gecko metrics from products using both the
     // Glean SDK and GeckoView. See bug 1566356 for more context.
-    operator fun get(geckoMetricName: String): HistogramBase? {
+    operator fun get(geckoMetricName: String): HistogramMetricBase? {
         return when (geckoMetricName) {
         {% for category in gecko_metrics.keys()|sort %}
             // From {{ category|Camelize }}.kt
