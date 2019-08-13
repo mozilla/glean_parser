@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.1.1.dev6+g9329840 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.1.1.dev10+gca78ef8 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -328,17 +328,6 @@ code.</li>
 </dd></dl>
 
 <dl class="class">
-<dt id="glean_parser.metrics.LabeledStringList">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledStringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, unit: str = '', gecko_datapoint: str = '', _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledStringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledStringList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.StringList" title="glean_parser.metrics.StringList"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.StringList</span></code></a></p>
-<dl class="attribute">
-<dt id="glean_parser.metrics.LabeledStringList.typename">
-<code class="descname">typename</code><em class="property"> = 'labeled_string_list'</em><a class="headerlink" href="#glean_parser.metrics.LabeledStringList.typename" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="glean_parser.metrics.LabeledTimingDistribution">
 <em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledTimingDistribution</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, unit: str = '', gecko_datapoint: str = '', _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, time_unit: glean_parser.metrics.TimeUnit = 'millisecond', labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledTimingDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledTimingDistribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.TimingDistribution" title="glean_parser.metrics.TimingDistribution"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.TimingDistribution</span></code></a></p>
@@ -367,17 +356,6 @@ code.</li>
 <dl class="attribute">
 <dt id="glean_parser.metrics.LabeledUseCounter.typename">
 <code class="descname">typename</code><em class="property"> = 'labeled_use_counter'</em><a class="headerlink" href="#glean_parser.metrics.LabeledUseCounter.typename" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="glean_parser.metrics.LabeledUuid">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">LabeledUuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, unit: str = '', gecko_datapoint: str = '', _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, labels: Set[str] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#LabeledUuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.LabeledUuid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Labeled" title="glean_parser.metrics.Labeled"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Labeled</span></code></a>, <a class="reference internal" href="#glean_parser.metrics.Uuid" title="glean_parser.metrics.Uuid"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Uuid</span></code></a></p>
-<dl class="attribute">
-<dt id="glean_parser.metrics.LabeledUuid.typename">
-<code class="descname">typename</code><em class="property"> = 'labeled_uuid'</em><a class="headerlink" href="#glean_parser.metrics.LabeledUuid.typename" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -480,7 +458,7 @@ jsonschema validation</td>
 
 <dl class="attribute">
 <dt id="glean_parser.metrics.Metric.metric_types">
-<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'custom_distribution': &lt;class 'glean_parser.metrics.CustomDistribution'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'labeled_boolean': &lt;class 'glean_parser.metrics.LabeledBoolean'&gt;, 'labeled_counter': &lt;class 'glean_parser.metrics.LabeledCounter'&gt;, 'labeled_datetime': &lt;class 'glean_parser.metrics.LabeledDatetime'&gt;, 'labeled_enumeration': &lt;class 'glean_parser.metrics.LabeledEnumeration'&gt;, 'labeled_rate': &lt;class 'glean_parser.metrics.LabeledRate'&gt;, 'labeled_string': &lt;class 'glean_parser.metrics.LabeledString'&gt;, 'labeled_string_list': &lt;class 'glean_parser.metrics.LabeledStringList'&gt;, 'labeled_timing_distribution': &lt;class 'glean_parser.metrics.LabeledTimingDistribution'&gt;, 'labeled_usage': &lt;class 'glean_parser.metrics.LabeledUsage'&gt;, 'labeled_use_counter': &lt;class 'glean_parser.metrics.LabeledUseCounter'&gt;, 'labeled_uuid': &lt;class 'glean_parser.metrics.LabeledUuid'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'custom_distribution': &lt;class 'glean_parser.metrics.CustomDistribution'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'labeled_boolean': &lt;class 'glean_parser.metrics.LabeledBoolean'&gt;, 'labeled_counter': &lt;class 'glean_parser.metrics.LabeledCounter'&gt;, 'labeled_datetime': &lt;class 'glean_parser.metrics.LabeledDatetime'&gt;, 'labeled_enumeration': &lt;class 'glean_parser.metrics.LabeledEnumeration'&gt;, 'labeled_rate': &lt;class 'glean_parser.metrics.LabeledRate'&gt;, 'labeled_string': &lt;class 'glean_parser.metrics.LabeledString'&gt;, 'labeled_timing_distribution': &lt;class 'glean_parser.metrics.LabeledTimingDistribution'&gt;, 'labeled_usage': &lt;class 'glean_parser.metrics.LabeledUsage'&gt;, 'labeled_use_counter': &lt;class 'glean_parser.metrics.LabeledUseCounter'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
