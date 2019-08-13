@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.1.1.dev10+gca78ef8 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.1.1.dev14+g3a36ed6 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -383,6 +383,49 @@ code.</li>
 </dd></dl>
 
 <dl class="class">
+<dt id="glean_parser.metrics.MemoryDistribution">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">MemoryDistribution</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, unit: str = '', gecko_datapoint: str = '', _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False, memory_unit: glean_parser.metrics.MemoryUnit = 'byte'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#MemoryDistribution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.MemoryDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryDistribution.memory_unit">
+<code class="descname">memory_unit</code><em class="property"> = 'byte'</em><a class="headerlink" href="#glean_parser.metrics.MemoryDistribution.memory_unit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryDistribution.typename">
+<code class="descname">typename</code><em class="property"> = 'memory_distribution'</em><a class="headerlink" href="#glean_parser.metrics.MemoryDistribution.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.MemoryUnit">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">MemoryUnit</code><a class="reference internal" href="_modules/glean_parser/metrics.html#MemoryUnit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.MemoryUnit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryUnit.byte">
+<code class="descname">byte</code><em class="property"> = 0</em><a class="headerlink" href="#glean_parser.metrics.MemoryUnit.byte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryUnit.gigabyte">
+<code class="descname">gigabyte</code><em class="property"> = 3</em><a class="headerlink" href="#glean_parser.metrics.MemoryUnit.gigabyte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryUnit.kilobyte">
+<code class="descname">kilobyte</code><em class="property"> = 1</em><a class="headerlink" href="#glean_parser.metrics.MemoryUnit.kilobyte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.MemoryUnit.megabyte">
+<code class="descname">megabyte</code><em class="property"> = 2</em><a class="headerlink" href="#glean_parser.metrics.MemoryUnit.megabyte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="glean_parser.metrics.Metric">
 <em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[Union[int, str]], description: str, notification_emails: List[str], expires: str, data_reviews: List[str] = &lt;factory&gt;, version: int = 0, disabled: bool = False, lifetime: glean_parser.metrics.Lifetime = 'ping', send_in_pings: List[str] = &lt;factory&gt;, unit: str = '', gecko_datapoint: str = '', _config: dataclasses.InitVar = {}, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -458,7 +501,7 @@ jsonschema validation</td>
 
 <dl class="attribute">
 <dt id="glean_parser.metrics.Metric.metric_types">
-<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'custom_distribution': &lt;class 'glean_parser.metrics.CustomDistribution'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'labeled_boolean': &lt;class 'glean_parser.metrics.LabeledBoolean'&gt;, 'labeled_counter': &lt;class 'glean_parser.metrics.LabeledCounter'&gt;, 'labeled_datetime': &lt;class 'glean_parser.metrics.LabeledDatetime'&gt;, 'labeled_enumeration': &lt;class 'glean_parser.metrics.LabeledEnumeration'&gt;, 'labeled_rate': &lt;class 'glean_parser.metrics.LabeledRate'&gt;, 'labeled_string': &lt;class 'glean_parser.metrics.LabeledString'&gt;, 'labeled_timing_distribution': &lt;class 'glean_parser.metrics.LabeledTimingDistribution'&gt;, 'labeled_usage': &lt;class 'glean_parser.metrics.LabeledUsage'&gt;, 'labeled_use_counter': &lt;class 'glean_parser.metrics.LabeledUseCounter'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
+<code class="descname">metric_types</code><em class="property"> = {'boolean': &lt;class 'glean_parser.metrics.Boolean'&gt;, 'counter': &lt;class 'glean_parser.metrics.Counter'&gt;, 'custom_distribution': &lt;class 'glean_parser.metrics.CustomDistribution'&gt;, 'datetime': &lt;class 'glean_parser.metrics.Datetime'&gt;, 'enumeration': &lt;class 'glean_parser.metrics.Enumeration'&gt;, 'event': &lt;class 'glean_parser.metrics.Event'&gt;, 'labeled_boolean': &lt;class 'glean_parser.metrics.LabeledBoolean'&gt;, 'labeled_counter': &lt;class 'glean_parser.metrics.LabeledCounter'&gt;, 'labeled_datetime': &lt;class 'glean_parser.metrics.LabeledDatetime'&gt;, 'labeled_enumeration': &lt;class 'glean_parser.metrics.LabeledEnumeration'&gt;, 'labeled_rate': &lt;class 'glean_parser.metrics.LabeledRate'&gt;, 'labeled_string': &lt;class 'glean_parser.metrics.LabeledString'&gt;, 'labeled_timing_distribution': &lt;class 'glean_parser.metrics.LabeledTimingDistribution'&gt;, 'labeled_usage': &lt;class 'glean_parser.metrics.LabeledUsage'&gt;, 'labeled_use_counter': &lt;class 'glean_parser.metrics.LabeledUseCounter'&gt;, 'memory_distribution': &lt;class 'glean_parser.metrics.MemoryDistribution'&gt;, 'rate': &lt;class 'glean_parser.metrics.Rate'&gt;, 'string': &lt;class 'glean_parser.metrics.String'&gt;, 'string_list': &lt;class 'glean_parser.metrics.StringList'&gt;, 'timespan': &lt;class 'glean_parser.metrics.Timespan'&gt;, 'timing_distribution': &lt;class 'glean_parser.metrics.TimingDistribution'&gt;, 'usage': &lt;class 'glean_parser.metrics.Usage'&gt;, 'use_counter': &lt;class 'glean_parser.metrics.UseCounter'&gt;, 'uuid': &lt;class 'glean_parser.metrics.Uuid'&gt;}</em><a class="headerlink" href="#glean_parser.metrics.Metric.metric_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

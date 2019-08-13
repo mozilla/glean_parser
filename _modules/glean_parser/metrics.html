@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.1.1.dev10+gca78ef8 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.1.1.dev14+g3a36ed6 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -249,6 +249,20 @@
 <div class="viewcode-block" id="TimingDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimingDistribution">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TimingDistribution</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;timing_distribution&#39;</span></div>
+
+
+<div class="viewcode-block" id="MemoryUnit"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.MemoryUnit">[docs]</a><span class="k">class</span> <span class="nc">MemoryUnit</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">kilobyte</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">megabyte</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">gigabyte</span> <span class="o">=</span> <span class="mi">3</span></div>
+
+
+<div class="viewcode-block" id="MemoryDistribution"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.MemoryDistribution">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MemoryDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s1">&#39;memory_distribution&#39;</span>
+
+    <span class="n">memory_unit</span><span class="p">:</span> <span class="n">MemoryUnit</span> <span class="o">=</span> <span class="s1">&#39;byte&#39;</span></div>
 
 
 <div class="viewcode-block" id="HistogramType"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.HistogramType">[docs]</a><span class="k">class</span> <span class="nc">HistogramType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
