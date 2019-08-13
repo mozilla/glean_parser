@@ -364,20 +364,25 @@ def test_duplicate_send_in_pings():
 
 
 def test_geckoview_only_on_valid_metrics():
-    contents = [
-        {
-            'category1': {
-                'metric1': {
-                    "type": "timing_distribution",
-                    "gecko_datapoint": "FOO"
+    for metric in [
+            'timing_distribution',
+            'custom_distributiuon',
+            'memory_distribution'
+    ]:
+        contents = [
+            {
+                'category1': {
+                    'metric1': {
+                        "type": metric,
+                        "gecko_datapoint": "FOO"
+                    },
                 },
             },
-        },
-    ]
-    contents = [util.add_required(x) for x in contents]
+        ]
+        contents = [util.add_required(x) for x in contents]
 
-    all_metrics = parser.parse_objects(contents)
-    errs = list(all_metrics)
+        all_metrics = parser.parse_objects(contents)
+        errs = list(all_metrics)
 
     contents = [
         {
@@ -520,3 +525,45 @@ def test_custom_distribution():
     assert distribution.range_max == 60000
     assert distribution.bucket_count == 100
     assert distribution.histogram_type == metrics.HistogramType.exponential
+
+
+def test_memory_distribution():
+    # Test that we get an error for a missing unit
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'memory_distribution',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert (
+        'memory_distribution is missing required memory_unit parameter'
+        in errors[0]
+    )
+
+    # Test that memory_distribution works
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'memory_distribution',
+                    'memory_unit': 'megabyte'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert len(all_metrics.value) == 1
+    all_metrics.value['category']['metric'].memory_unit == \
+        metrics.MemoryUnit.megabyte

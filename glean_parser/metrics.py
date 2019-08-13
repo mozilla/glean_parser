@@ -216,6 +216,20 @@ class TimingDistribution(TimeBase):
     typename = 'timing_distribution'
 
 
+class MemoryUnit(enum.Enum):
+    byte = 0
+    kilobyte = 1
+    megabyte = 2
+    gigabyte = 3
+
+
+@dataclass
+class MemoryDistribution(Metric):
+    typename = 'memory_distribution'
+
+    memory_unit: MemoryUnit = 'byte'
+
+
 class HistogramType(enum.Enum):
     linear = 0
     exponential = 1

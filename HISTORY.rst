@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* `memory_distribution` metric type has been added.
+
 * `custom_distribution` metric type has been added.
 
 * `labeled_timespan` is no longer an allowed metric type.

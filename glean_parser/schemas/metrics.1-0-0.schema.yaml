@@ -103,6 +103,9 @@ definitions:
 
             - `uuid`: Record a UUID v4.
 
+            - `memory_distribution`: A histogram for recording memory usage values.
+              Additional properties: `memory_unit`_.
+
             - `custom_distribution`: A histogram with a custom range and number of buckets.
               This metric type is for legacy support only and is only allowed for
               metrics coming from GeckoView.
@@ -128,6 +131,7 @@ definitions:
           - timespan
           - timing_distribution
           - custom_distribution
+          - memory_distribution
           - datetime
           - use_counter
           - usage
@@ -291,6 +295,26 @@ definitions:
           - hour
           - day
 
+      memory_unit:
+        title: Memory unit
+        description: |
+          The unit that the incoming memory size values are recorded in.
+
+          The units are the power-of-2 units, so "kilobyte" is correctly a "kibibyte".
+
+          - kilobyte == 2^10 ==         1,024 bytes
+          - megabyte == 2^20 ==     1,048,576 bytes
+          - gigabyte == 2^30 == 1,073,741,824 bytes
+
+          Values are automatically converted to and transmitted as bytes.
+
+          Valid when `type`_ is `memory_distribution`.
+        enum:
+          - byte
+          - kilobyte
+          - megabyte
+          - gigabyte
+
       labels:
         title: Labels
         description: |
@@ -447,7 +471,11 @@ additionalProperties:
                 enum:
                   - timing_distribution
                   - custom_distribution
+                  - memory_distribution
         then:
+          description: |
+            gecko_datapoint is only allowed for timing_distribution, custom_distribution and
+            memory_distribution.
           properties:
             gecko_datapoint:
               maxLength: 0
@@ -473,3 +501,13 @@ additionalProperties:
             - histogram_type
           description: |
             custom_distribution is missing required parameters
+      -
+        if:
+          properties:
+            type:
+              const: memory_distribution
+        then:
+          required:
+            - memory_unit
+          description: |
+            memory_distribution is missing required memory_unit parameter
