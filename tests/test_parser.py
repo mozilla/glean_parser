@@ -364,20 +364,25 @@ def test_duplicate_send_in_pings():
 
 
 def test_geckoview_only_on_valid_metrics():
-    contents = [
-        {
-            'category1': {
-                'metric1': {
-                    "type": "timing_distribution",
-                    "gecko_datapoint": "FOO"
+    for metric in [
+            'timing_distribution',
+            'custom_distributiuon',
+            'memory_distribution'
+    ]:
+        contents = [
+            {
+                'category1': {
+                    'metric1': {
+                        "type": metric,
+                        "gecko_datapoint": "FOO"
+                    },
                 },
             },
-        },
-    ]
-    contents = [util.add_required(x) for x in contents]
+        ]
+        contents = [util.add_required(x) for x in contents]
 
-    all_metrics = parser.parse_objects(contents)
-    errs = list(all_metrics)
+        all_metrics = parser.parse_objects(contents)
+        errs = list(all_metrics)
 
     contents = [
         {
