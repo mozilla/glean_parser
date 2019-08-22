@@ -507,7 +507,7 @@ additionalProperties:
             - bucket_count
             - histogram_type
           description: |
-            `custom_distribution` is missing one or more required parameters: `range_max`, `bucket_count` or
+            `custom_distribution` is missing required parameters `range_max`, `bucket_count` and
             `histogram_type`.
       -
         if:

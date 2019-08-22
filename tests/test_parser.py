@@ -570,7 +570,7 @@ def test_memory_distribution():
 
 
 def test_quantity():
-    # Test that we get an error for a missing unit
+    # Test that we get an error for a missing unit and gecko_datapoint
     contents = [
         {
             'category': {
