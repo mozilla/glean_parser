@@ -460,7 +460,7 @@ def test_custom_distribution():
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "custom_distribution is only allowed for Gecko metrics" in errors[0]
+    assert "is only allowed for Gecko metrics" in errors[0]
 
     # Test that custom_distribution has required parameters
     contents = [
@@ -478,7 +478,7 @@ def test_custom_distribution():
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "custom_distribution is missing required parameters" in errors[0]
+    assert "`custom_distribution` is missing required parameters" in errors[0]
 
     # Test maximum bucket_count is enforced
     contents = [
@@ -544,7 +544,7 @@ def test_memory_distribution():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert (
-        'memory_distribution is missing required memory_unit parameter'
+        '`memory_distribution` is missing required parameter `memory_unit`'
         in errors[0]
     )
 
@@ -567,3 +567,49 @@ def test_memory_distribution():
     assert len(all_metrics.value) == 1
     all_metrics.value['category']['metric'].memory_unit == \
         metrics.MemoryUnit.megabyte
+
+
+def test_quantity():
+    # Test that we get an error for a missing unit
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'quantity',
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 2
+    assert any(
+        '`quantity` is missing required parameter `unit`'
+        in err for err in errors
+    )
+    assert any(
+        'is only allowed for Gecko metrics'
+        in err for err in errors
+    )
+
+    # Test that quantity works
+    contents = [
+        {
+            'category': {
+                'metric': {
+                    'type': 'quantity',
+                    'unit': 'pixel',
+                    'gecko_datapoint': 'FOO'
+                },
+            },
+        },
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert len(all_metrics.value) == 1
+    all_metrics.value['category']['metric'].unit == 'pixel'

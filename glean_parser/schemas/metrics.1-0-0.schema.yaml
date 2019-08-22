@@ -78,6 +78,9 @@ definitions:
 
             - `counter`: A numeric value that can only be incremented.
 
+            - `quantity`: A numeric value that is set directly. Only allowed for metrics
+              coming from GeckoView.
+
             - `timespan`: Represents a time interval. Additional properties: `time_unit`_.
 
             - `timing_distribution`: Record the distribution of multiple timings.
@@ -128,6 +131,7 @@ definitions:
           - string_list
           - enumeration
           - counter
+          - quantity
           - timespan
           - timing_distribution
           - custom_distribution
@@ -472,10 +476,11 @@ additionalProperties:
                   - timing_distribution
                   - custom_distribution
                   - memory_distribution
+                  - quantity
         then:
           description: |
-            gecko_datapoint is only allowed for timing_distribution, custom_distribution and
-            memory_distribution.
+            `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
+            `memory_distribution` and `quantity`.
           properties:
             gecko_datapoint:
               maxLength: 0
@@ -483,12 +488,14 @@ additionalProperties:
         if:
           properties:
             type:
-              const: custom_distribution
+              enum:
+                - custom_distribution
+                - quantity
         then:
           required:
             - gecko_datapoint
           description: |
-            custom_distribution is only allowed for Gecko metrics.
+            `custom_distribution` and `quantity` is only allowed for Gecko metrics.
       -
         if:
           properties:
@@ -500,7 +507,8 @@ additionalProperties:
             - bucket_count
             - histogram_type
           description: |
-            custom_distribution is missing required parameters
+            `custom_distribution` is missing required parameters `range_max`, `bucket_count` and
+            `histogram_type`.
       -
         if:
           properties:
@@ -510,4 +518,14 @@ additionalProperties:
           required:
             - memory_unit
           description: |
-            memory_distribution is missing required memory_unit parameter
+            `memory_distribution` is missing required parameter `memory_unit`.
+      -
+        if:
+          properties:
+            type:
+              const: quantity
+        then:
+          required:
+            - unit
+          description: |
+            `quantity` is missing required parameter `unit`.

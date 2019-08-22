@@ -191,6 +191,11 @@ class Counter(Metric):
     typename = 'counter'
 
 
+@dataclass
+class Quantity(Metric):
+    typename = 'quantity'
+
+
 class TimeUnit(enum.Enum):
     nanosecond = 0
     microsecond = 1
