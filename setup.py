@@ -27,12 +27,12 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'Click>=6.0',
+    'Click>=7.0',
     'PyYAML>=3.13',
-    'jsonschema>=3.0.0',
+    'jsonschema>=3.0.2',
     'inflection>=0.3.1',
-    'Jinja2>=2.10',
-    'diskcache>=3.1.0',
+    'Jinja2>=2.10.1',
+    'diskcache>=4.0.0',
     'appdirs>=1.4.3'
 ]
 
