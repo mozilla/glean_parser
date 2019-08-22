@@ -20,21 +20,20 @@ from . import util
 
 
 ROOT_DIR = Path(__file__).parent
-SCHEMAS_DIR = ROOT_DIR / 'schemas'
+SCHEMAS_DIR = ROOT_DIR / "schemas"
 
 
 PING_SCHEMA_DEFAULT_URL = (
-    'https://raw.githubusercontent.com/mozilla-services/'
-    'mozilla-pipeline-schemas/dev/schemas/glean/baseline/'
-    'baseline.1.schema.json'
+    "https://raw.githubusercontent.com/mozilla-services/"
+    "mozilla-pipeline-schemas/dev/schemas/glean/baseline/"
+    "baseline.1.schema.json"
 )
 
 
 @functools.lru_cache(maxsize=1)
 def _get_ping_schema(schema_url):
     contents = util.fetch_remote_url(
-        schema_url,
-        cache=(schema_url != PING_SCHEMA_DEFAULT_URL)
+        schema_url, cache=(schema_url != PING_SCHEMA_DEFAULT_URL)
     )
     return json.loads(contents)
 
@@ -51,16 +50,10 @@ def _validate_ping(ins, outs, schema_url):
 
     has_error = 0
     for error in validator.iter_errors(document):
-        outs.write('=' * 76)
-        outs.write('\n')
-        outs.write(
-            util.format_error(
-                '',
-                '',
-                util.pprint_validation_error(error)
-            )
-        )
-        outs.write('\n')
+        outs.write("=" * 76)
+        outs.write("\n")
+        outs.write(util.format_error("", "", util.pprint_validation_error(error)))
+        outs.write("\n")
         has_error = 1
 
     return has_error
@@ -78,10 +71,10 @@ def validate_ping(ins, outs=None, schema_url=PING_SCHEMA_DEFAULT_URL):
     :rtype: int 1 if any errors occurred, otherwise 0.
     """
     if outs is None:
-        outs = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        outs = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
     if isinstance(ins, (str, bytes, Path)):
-        with open(ins, 'r') as fd:
+        with open(ins, "r") as fd:
             return _validate_ping(fd, outs, schema_url=schema_url)
     else:
         return _validate_ping(ins, outs, schema_url=schema_url)

@@ -22,43 +22,41 @@ def test_parser(tmpdir):
 
     translate.translate(
         ROOT / "data" / "core.yaml",
-        'kotlin',
+        "kotlin",
         tmpdir,
-        {'namespace': 'Foo'},
-        {'allow_reserved': True}
+        {"namespace": "Foo"},
+        {"allow_reserved": True},
     )
 
-    assert (
-        set(x.name for x in tmpdir.iterdir()) ==
-        set([
-            'CorePing.kt',
-            'Telemetry.kt',
-            'Environment.kt',
-            'DottedCategory.kt',
-            'GleanInternalMetrics.kt'
-        ])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        [
+            "CorePing.kt",
+            "Telemetry.kt",
+            "Environment.kt",
+            "DottedCategory.kt",
+            "GleanInternalMetrics.kt",
+        ]
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / 'CorePing.kt', 'r', encoding='utf-8') as fd:
+    with open(tmpdir / "CorePing.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
-        assert ('True if the user has set Firefox as the default browser.'
-                in content)
+        assert "True if the user has set Firefox as the default browser." in content
         # Make sure the namespace option is in effect
-        assert 'package Foo' in content
+        assert "package Foo" in content
 
-    with open(tmpdir / 'Telemetry.kt', 'r', encoding='utf-8') as fd:
+    with open(tmpdir / "Telemetry.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
-        assert 'جمع 搜集' in content
+        assert "جمع 搜集" in content
 
-    with open(tmpdir / 'GleanInternalMetrics.kt', 'r', encoding='utf-8') as fd:
+    with open(tmpdir / "GleanInternalMetrics.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
         assert 'category = ""' in content
 
     # Only run this test if ktlint is on the path
-    if shutil.which('ktlint'):
-        for filepath in tmpdir.glob('*.kt'):
-            subprocess.check_call(['ktlint', filepath])
+    if shutil.which("ktlint"):
+        for filepath in tmpdir.glob("*.kt"):
+            subprocess.check_call(["ktlint", filepath])
 
 
 def test_kotlin_generator():
@@ -66,56 +64,58 @@ def test_kotlin_generator():
 
     assert kdf("\n") == r'"\n"'
     assert kdf([42, "\n"]) == r'listOf(42, "\n")'
-    assert kdf({'key': 'value', 'key2': 'value2'}) == \
-        r'mapOf("key" to "value", "key2" to "value2")'
-    assert kdf(metrics.Lifetime.ping) == 'Lifetime.Ping'
+    assert (
+        kdf({"key": "value", "key2": "value2"})
+        == r'mapOf("key" to "value", "key2" to "value2")'
+    )
+    assert kdf(metrics.Lifetime.ping) == "Lifetime.Ping"
 
 
 def test_metric_type_name():
     event = metrics.Event(
-        type='event',
-        category='category',
-        name='metric',
+        type="event",
+        category="category",
+        name="metric",
         bugs=[42],
-        notification_emails=['nobody@example.com'],
-        description='description...',
-        expires='never',
-        extra_keys={'my_extra': {'description': 'an extra'}},
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    assert kotlin.type_name(event) == 'EventMetricType<metricKeys>'
+    assert kotlin.type_name(event) == "EventMetricType<metricKeys>"
 
     event = metrics.Event(
-        type='event',
-        category='category',
-        name='metric',
+        type="event",
+        category="category",
+        name="metric",
         bugs=[42],
-        notification_emails=['nobody@example.com'],
-        description='description...',
-        expires='never',
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
     )
 
-    assert kotlin.type_name(event) == 'EventMetricType<NoExtraKeys>'
+    assert kotlin.type_name(event) == "EventMetricType<NoExtraKeys>"
 
     boolean = metrics.Boolean(
-        type='boolean',
-        category='category',
-        name='metric',
+        type="boolean",
+        category="category",
+        name="metric",
         bugs=[42],
-        notification_emails=['nobody@example.com'],
-        description='description...',
-        expires='never'
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
     )
-    assert kotlin.type_name(boolean) == 'BooleanMetricType'
+    assert kotlin.type_name(boolean) == "BooleanMetricType"
 
     ping = pings.Ping(
         name="custom",
         description="description...",
         include_client_id=True,
         bugs=[42],
-        notification_emails=['nobody@nowhere.com'],
+        notification_emails=["nobody@nowhere.com"],
     )
-    assert kotlin.type_name(ping) == 'PingType'
+    assert kotlin.type_name(ping) == "PingType"
 
 
 def test_duplicate(tmpdir):
@@ -129,24 +129,19 @@ def test_duplicate(tmpdir):
     tmpdir = Path(tmpdir)
 
     translate.translate(
-        ROOT / "data" / "duplicate_labeled.yaml",
-        'kotlin',
-        tmpdir,
-        {'namespace': 'Foo'},
+        ROOT / "data" / "duplicate_labeled.yaml", "kotlin", tmpdir, {"namespace": "Foo"}
     )
 
-    assert (
-        set(x.name for x in tmpdir.iterdir()) ==
-        set([
-            'Category.kt',
-        ])
-    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
 
-    with open(tmpdir / 'Category.kt', 'r', encoding='utf-8') as fd:
+    with open(tmpdir / "Category.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
-        assert content.count(
-            "import mozilla.components.service.glean.private.CounterMetricType"
-        ) == 1
+        assert (
+            content.count(
+                "import mozilla.components.service.glean.private.CounterMetricType"
+            )
+            == 1
+        )
 
 
 def test_glean_namespace(tmpdir):
@@ -157,23 +152,16 @@ def test_glean_namespace(tmpdir):
 
     translate.translate(
         ROOT / "data" / "duplicate_labeled.yaml",
-        'kotlin',
+        "kotlin",
         tmpdir,
-        {'namespace': 'Foo', 'glean_namespace': 'Bar'},
+        {"namespace": "Foo", "glean_namespace": "Bar"},
     )
 
-    assert (
-        set(x.name for x in tmpdir.iterdir()) ==
-        set([
-            'Category.kt',
-        ])
-    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
 
-    with open(tmpdir / 'Category.kt', 'r', encoding='utf-8') as fd:
+    with open(tmpdir / "Category.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
-        assert content.count(
-            "import Bar.private.CounterMetricType"
-        ) == 1
+        assert content.count("import Bar.private.CounterMetricType") == 1
 
 
 def test_gecko_datapoints(tmpdir):
@@ -182,33 +170,22 @@ def test_gecko_datapoints(tmpdir):
 
     translate.translate(
         ROOT / "data" / "gecko.yaml",
-        'kotlin',
+        "kotlin",
         tmpdir,
-        {'glean_namespace': 'Bar'},
-        {'allow_reserved': True}
+        {"glean_namespace": "Bar"},
+        {"allow_reserved": True},
     )
 
-    metrics_files = [
-        'GfxContentCheckerboard.kt',
-        'PagePerf.kt',
-        'NonGeckoMetrics.kt'
-    ]
-    assert (
-        set(x.name for x in tmpdir.iterdir()) ==
-        set(['GleanGeckoHistogramMapping.kt'] + metrics_files)
+    metrics_files = ["GfxContentCheckerboard.kt", "PagePerf.kt", "NonGeckoMetrics.kt"]
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["GleanGeckoHistogramMapping.kt"] + metrics_files
     )
 
     # Make sure descriptions made it in
-    with open(
-        tmpdir / 'GleanGeckoHistogramMapping.kt',
-        'r',
-        encoding='utf-8'
-    ) as fd:
+    with open(tmpdir / "GleanGeckoHistogramMapping.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
-        assert content.count(
-            "import Bar.private.HistogramMetricBase"
-        ) == 1
+        assert content.count("import Bar.private.HistogramMetricBase") == 1
 
         # Validate the generated Gecko metric mapper Kotlin operator.
         # NOTE: Indentation, whitespaces  and text formatting of the block
@@ -228,11 +205,11 @@ def test_gecko_datapoints(tmpdir):
         assert expected_operator in content
 
     for file_name in metrics_files:
-        with open(tmpdir / file_name, 'r', encoding='utf-8') as fd:
+        with open(tmpdir / file_name, "r", encoding="utf-8") as fd:
             content = fd.read()
-            assert 'HistogramMetricBase' not in content
+            assert "HistogramMetricBase" not in content
 
     # Only run this test if ktlint is on the path
-    if shutil.which('ktlint'):
-        for filepath in tmpdir.glob('*.kt'):
-            subprocess.check_call(['ktlint', filepath])
+    if shutil.which("ktlint"):
+        for filepath in tmpdir.glob("*.kt"):
+            subprocess.check_call(["ktlint", filepath])

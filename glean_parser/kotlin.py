@@ -26,46 +26,44 @@ def kotlin_datatypes_filter(value):
       - sets to use setOf
       - enums to use the like-named Kotlin enum
     """
+
     class KotlinEncoder(json.JSONEncoder):
         def iterencode(self, value):
             if isinstance(value, list):
-                yield 'listOf('
+                yield "listOf("
                 first = True
                 for subvalue in value:
                     if not first:
-                        yield ', '
+                        yield ", "
                     yield from self.iterencode(subvalue)
                     first = False
-                yield ')'
+                yield ")"
             elif isinstance(value, dict):
-                yield 'mapOf('
+                yield "mapOf("
                 first = True
                 for key, subvalue in value.items():
                     if not first:
-                        yield ', '
+                        yield ", "
                     yield from self.iterencode(key)
-                    yield ' to '
+                    yield " to "
                     yield from self.iterencode(subvalue)
                     first = False
-                yield ')'
+                yield ")"
             elif isinstance(value, enum.Enum):
-                yield (
-                    f'{value.__class__.__name__}.'
-                    f'{util.Camelize(value.name)}'
-                )
+                yield (f"{value.__class__.__name__}.{util.Camelize(value.name)}")
             elif isinstance(value, set):
-                yield 'setOf('
+                yield "setOf("
                 first = True
                 for subvalue in sorted(list(value)):
                     if not first:
-                        yield ', '
+                        yield ", "
                     yield from self.iterencode(subvalue)
                     first = False
-                yield ')'
+                yield ")"
             else:
                 yield from super().iterencode(value)
 
-    return ''.join(KotlinEncoder().iterencode(value))
+    return "".join(KotlinEncoder().iterencode(value))
 
 
 def type_name(obj):
@@ -74,10 +72,10 @@ def type_name(obj):
     """
     if isinstance(obj, metrics.Event):
         if len(obj.extra_keys):
-            enumeration = f'{util.camelize(obj.name)}Keys'
+            enumeration = f"{util.camelize(obj.name)}Keys"
         else:
-            enumeration = 'NoExtraKeys'
-        return f'EventMetricType<{enumeration}>'
+            enumeration = "NoExtraKeys"
+        return f"EventMetricType<{enumeration}>"
     return class_name(obj.type)
 
 
@@ -85,11 +83,11 @@ def class_name(obj_type):
     """
     Returns the Kotlin class name for a given metric or ping type.
     """
-    if obj_type == 'ping':
-        return 'PingType'
-    if obj_type.startswith('labeled_'):
+    if obj_type == "ping":
+        return "PingType"
+    if obj_type.startswith("labeled_"):
         obj_type = obj_type[8:]
-    return f'{util.Camelize(obj_type)}MetricType'
+    return f"{util.Camelize(obj_type)}MetricType"
 
 
 def output_gecko_lookup(objs, output_dir, options={}):
@@ -109,19 +107,16 @@ def output_gecko_lookup(objs, output_dir, options={}):
           code.
     """
     template = util.get_jinja2_template(
-        'kotlin.geckoview.jinja2',
+        "kotlin.geckoview.jinja2",
         filters=(
-            ('kotlin', kotlin_datatypes_filter),
-            ('type_name', type_name),
-            ('class_name', class_name)
-        )
+            ("kotlin", kotlin_datatypes_filter),
+            ("type_name", type_name),
+            ("class_name", class_name),
+        ),
     )
 
-    namespace = options.get('namespace', 'GleanMetrics')
-    glean_namespace = options.get(
-        'glean_namespace',
-        'mozilla.components.service.glean'
-    )
+    namespace = options.get("namespace", "GleanMetrics")
+    glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
 
     # Build a dictionary that contains data for metrics that are
     # histogram-like and contain a gecko_datapoint, with this format:
@@ -139,11 +134,10 @@ def output_gecko_lookup(objs, output_dir, options={}):
         # Support exfiltration of Gecko metrics from products using both the
         # Glean SDK and GeckoView. See bug 1566356 for more context.
         for metric in category_val.values():
-            if getattr(metric, 'gecko_datapoint', False):
-                gecko_metrics[category_key].append({
-                        'gecko_datapoint': metric.gecko_datapoint,
-                        'name': metric.name
-                    })
+            if getattr(metric, "gecko_datapoint", False):
+                gecko_metrics[category_key].append(
+                    {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
+                )
 
     if not gecko_metrics:
         # Bail out and don't create a file if no gecko metrics
@@ -151,7 +145,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
         return
 
     filepath = output_dir / "GleanGeckoHistogramMapping.kt"
-    with open(filepath, 'w', encoding='utf-8') as fd:
+    with open(filepath, "w", encoding="utf-8") as fd:
         fd.write(
             template.render(
                 gecko_metrics=gecko_metrics,
@@ -160,7 +154,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
             )
         )
         # Jinja2 squashes the final newline, so we explicitly add it
-        fd.write('\n')
+        fd.write("\n")
 
 
 def output_kotlin(objs, output_dir, options={}):
@@ -179,51 +173,47 @@ def output_kotlin(objs, output_dir, options={}):
           code.
     """
     template = util.get_jinja2_template(
-        'kotlin.jinja2',
+        "kotlin.jinja2",
         filters=(
-            ('kotlin', kotlin_datatypes_filter),
-            ('type_name', type_name),
-            ('class_name', class_name)
-        )
+            ("kotlin", kotlin_datatypes_filter),
+            ("type_name", type_name),
+            ("class_name", class_name),
+        ),
     )
 
     # The object parameters to pass to constructors
     extra_args = [
-        'name',
-        'category',
-        'send_in_pings',
-        'lifetime',
-        'values',
-        'denominator',
-        'time_unit',
-        'allowed_extra_keys',
-        'disabled',
-        'include_client_id',
-        'range_min',
-        'range_max',
-        'bucket_count',
-        'histogram_type'
+        "allowed_extra_keys",
+        "bucket_count",
+        "category",
+        "denominator",
+        "disabled",
+        "histogram_type",
+        "include_client_id",
+        "lifetime",
+        "name",
+        "range_max",
+        "range_min",
+        "send_in_pings",
+        "time_unit",
+        "values",
     ]
 
-    namespace = options.get('namespace', 'GleanMetrics')
-    glean_namespace = options.get(
-        'glean_namespace',
-        'mozilla.components.service.glean'
-    )
+    namespace = options.get("namespace", "GleanMetrics")
+    glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
 
     for category_key, category_val in objs.items():
-        filename = util.Camelize(category_key) + '.kt'
+        filename = util.Camelize(category_key) + ".kt"
         filepath = output_dir / filename
 
-        obj_types = sorted(list(set(
-            class_name(obj.type) for obj in category_val.values()
-        )))
+        obj_types = sorted(
+            list(set(class_name(obj.type) for obj in category_val.values()))
+        )
         has_labeled_metrics = any(
-            getattr(metric, 'labeled', False)
-            for metric in category_val.values()
+            getattr(metric, "labeled", False) for metric in category_val.values()
         )
 
-        with open(filepath, 'w', encoding='utf-8') as fd:
+        with open(filepath, "w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
                     category_name=category_key,
@@ -236,7 +226,7 @@ def output_kotlin(objs, output_dir, options={}):
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
-            fd.write('\n')
+            fd.write("\n")
 
     # TODO: Maybe this should just be a separate outputter?
     output_gecko_lookup(objs, output_dir, options)

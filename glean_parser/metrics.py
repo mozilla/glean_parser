@@ -25,25 +25,18 @@ class Lifetime(enum.Enum):
 
 @dataclass
 class Metric:
-    glean_internal_metric_cat = 'glean.internal.metrics'
+    glean_internal_metric_cat = "glean.internal.metrics"
     metric_types = {}
-    default_store_names = ['metrics']
+    default_store_names = ["metrics"]
 
     def __init_subclass__(cls, **kwargs):
         # Create a mapping of all of the subclasses of this class
-        if cls not in Metric.metric_types and hasattr(cls, 'typename'):
+        if cls not in Metric.metric_types and hasattr(cls, "typename"):
             Metric.metric_types[cls.typename] = cls
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(
-            cls,
-            category,
-            name,
-            metric_info,
-            config={},
-            validated=False
-    ):
+    def make_metric(cls, category, name, metric_info, config={}, validated=False):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
@@ -57,7 +50,7 @@ class Metric:
             jsonschema validation
         :return: A new Metric instance.
         """
-        metric_type = metric_info['type']
+        metric_type = metric_info["type"]
         return cls.metric_types[metric_type](
             category=category,
             name=name,
@@ -77,8 +70,8 @@ class Metric:
                 d[key] = d[key].name
             if isinstance(val, set):
                 d[key] = sorted(list(val))
-        del d['name']
-        del d['category']
+        del d["name"]
+        del d["category"]
         return d
 
     def identifier(self):
@@ -89,34 +82,28 @@ class Metric:
         """
         if not self.category:
             return self.name
-        return '.'.join((self.category, self.name))
+        return ".".join((self.category, self.name))
 
     def __post_init__(self, _config, _validated):
         # Convert enum fields to Python enums
         for f in dataclasses.fields(self):
             if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
-                setattr(
-                    self,
-                    f.name,
-                    getattr(f.type, getattr(self, f.name))
-                )
+                setattr(self, f.name, getattr(f.type, getattr(self, f.name)))
             if f.type == Set[str]:
                 value = getattr(self, f.name)
                 if isinstance(value, list):
                     setattr(self, f.name, set(value))
 
         self.validate_expires(self.expires)
-        if hasattr(self, 'extra_keys'):
+        if hasattr(self, "extra_keys"):
             self.validate_extra_keys(self.extra_keys, _config)
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
         if not _validated:
             data = {
-                '$schema': parser.METRICS_ID,
-                self.category: {
-                    self.name: self.serialize()
-                }
+                "$schema": parser.METRICS_ID,
+                self.category: {self.name: self.serialize()},
             }
             for error in parser.validate(data):
                 raise ValueError(error)
@@ -124,7 +111,7 @@ class Metric:
         # Metrics in the special category "glean.internal.metrics" need to have
         # an empty category string when identifying the metrics in the ping.
         if self.category == Metric.glean_internal_metric_cat:
-            self.category = ''
+            self.category = ""
 
     type: str
 
@@ -140,14 +127,14 @@ class Metric:
     disabled: bool = False
 
     # Ping-related properties
-    lifetime: Lifetime = 'ping'
-    send_in_pings: List[str] = field(default_factory=lambda: ['default'])
+    lifetime: Lifetime = "ping"
+    send_in_pings: List[str] = field(default_factory=lambda: ["default"])
 
-    unit: str = ''
+    unit: str = ""
 
     # The following is a Gecko-specific property for using the Glean SDK
     # with GeckoView metrics. See bug 1566356 for more context.
-    gecko_datapoint: str = ''
+    gecko_datapoint: str = ""
 
     # Implementation detail -- these are parameters to the constructor that
     # aren't stored in the dataclass object.
@@ -167,33 +154,33 @@ class Metric:
 
 @dataclass
 class Boolean(Metric):
-    typename = 'boolean'
+    typename = "boolean"
 
 
 @dataclass
 class String(Metric):
-    typename = 'string'
+    typename = "string"
 
 
 @dataclass
 class StringList(Metric):
-    typename = 'string_list'
+    typename = "string_list"
 
 
 @dataclass
 class Enumeration(Metric):
-    typename = 'enumeration'
+    typename = "enumeration"
     values: List[str] = field(default_factory=list)
 
 
 @dataclass
 class Counter(Metric):
-    typename = 'counter'
+    typename = "counter"
 
 
 @dataclass
 class Quantity(Metric):
-    typename = 'quantity'
+    typename = "quantity"
 
 
 class TimeUnit(enum.Enum):
@@ -208,17 +195,17 @@ class TimeUnit(enum.Enum):
 
 @dataclass
 class TimeBase(Metric):
-    time_unit: TimeUnit = 'millisecond'
+    time_unit: TimeUnit = "millisecond"
 
 
 @dataclass
 class Timespan(TimeBase):
-    typename = 'timespan'
+    typename = "timespan"
 
 
 @dataclass
 class TimingDistribution(TimeBase):
-    typename = 'timing_distribution'
+    typename = "timing_distribution"
 
 
 class MemoryUnit(enum.Enum):
@@ -230,9 +217,9 @@ class MemoryUnit(enum.Enum):
 
 @dataclass
 class MemoryDistribution(Metric):
-    typename = 'memory_distribution'
+    typename = "memory_distribution"
 
-    memory_unit: MemoryUnit = 'byte'
+    memory_unit: MemoryUnit = "byte"
 
 
 class HistogramType(enum.Enum):
@@ -242,7 +229,7 @@ class HistogramType(enum.Enum):
 
 @dataclass
 class CustomDistribution(Metric):
-    typename = 'custom_distribution'
+    typename = "custom_distribution"
 
     range_min: int = 1
     # The defaults must be provided here to work with Python's @dataclass,
@@ -255,37 +242,35 @@ class CustomDistribution(Metric):
 
 @dataclass
 class Datetime(TimeBase):
-    typename = 'datetime'
+    typename = "datetime"
 
 
 @dataclass
 class UseCounter(Metric):
-    typename = 'use_counter'
-    denominator: str = ''
+    typename = "use_counter"
+    denominator: str = ""
 
     def __post_init__(self, *args):
         super().__post_init__(*args)
 
         if not self.denominator:
-            raise ValueError(
-                "denominator is required on all use_counter metrics"
-            )
+            raise ValueError("denominator is required on all use_counter metrics")
 
 
 @dataclass
 class Usage(Metric):
-    typename = 'usage'
+    typename = "usage"
 
 
 @dataclass
 class Rate(Metric):
-    typename = 'rate'
+    typename = "rate"
 
 
 @dataclass
 class Event(Metric):
-    typename = 'event'
-    default_store_names = ['events']
+    typename = "event"
+    default_store_names = ["events"]
 
     extra_keys: Dict[str, str] = field(default_factory=dict)
 
@@ -296,9 +281,8 @@ class Event(Metric):
 
     @staticmethod
     def validate_extra_keys(extra_keys, config):
-        if (
-                not config.get('allow_reserved') and
-                any(k.startswith('glean.') for k in extra_keys.keys())
+        if not config.get("allow_reserved") and any(
+            k.startswith("glean.") for k in extra_keys.keys()
         ):
             raise ValueError(
                 "Extra keys beginning with 'glean.' are reserved for "
@@ -308,7 +292,7 @@ class Event(Metric):
 
 @dataclass
 class Uuid(Metric):
-    typename = 'uuid'
+    typename = "uuid"
 
 
 @dataclass
@@ -319,44 +303,44 @@ class Labeled(Metric):
 
 @dataclass
 class LabeledBoolean(Labeled, Boolean):
-    typename = 'labeled_boolean'
+    typename = "labeled_boolean"
 
 
 @dataclass
 class LabeledString(Labeled, String):
-    typename = 'labeled_string'
+    typename = "labeled_string"
 
 
 @dataclass
 class LabeledEnumeration(Labeled, Enumeration):
-    typename = 'labeled_enumeration'
+    typename = "labeled_enumeration"
 
 
 @dataclass
 class LabeledCounter(Labeled, Counter):
-    typename = 'labeled_counter'
+    typename = "labeled_counter"
 
 
 @dataclass
 class LabeledTimingDistribution(Labeled, TimingDistribution):
-    typename = 'labeled_timing_distribution'
+    typename = "labeled_timing_distribution"
 
 
 @dataclass
 class LabeledDatetime(Labeled, Datetime):
-    typename = 'labeled_datetime'
+    typename = "labeled_datetime"
 
 
 @dataclass
 class LabeledUseCounter(Labeled, UseCounter):
-    typename = 'labeled_use_counter'
+    typename = "labeled_use_counter"
 
 
 @dataclass
 class LabeledUsage(Labeled, Usage):
-    typename = 'labeled_usage'
+    typename = "labeled_usage"
 
 
 @dataclass
 class LabeledRate(Labeled, Rate):
-    typename = 'labeled_rate'
+    typename = "labeled_rate"
