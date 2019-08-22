@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.3.0 (2019-08-22)
+------------------
+
 * `quantity` metric type has been added.
 
 1.2.1 (2019-08-13)
