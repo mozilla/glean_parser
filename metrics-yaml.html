@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.2.2.dev2+g60a99f8 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.3.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -72,6 +72,9 @@ Additional properties: <code class="docutils literal notranslate"><span class="p
 <a class="reference internal" href="#values">values</a>.</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly. Only allowed for metrics
+coming from GeckoView.</p>
 </li>
 <li><p class="first"><cite>timespan</cite>: Represents a time interval. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
 </li>
@@ -321,6 +324,9 @@ entirety below:</p>
 
             <span class="no">- `counter`: A numeric value that can only be incremented.</span>
 
+            <span class="no">- `quantity`: A numeric value that is set directly. Only allowed for metrics</span>
+              <span class="no">coming from GeckoView.</span>
+
             <span class="no">- `timespan`: Represents a time interval. Additional properties: `time_unit`_.</span>
 
             <span class="no">- `timing_distribution`: Record the distribution of multiple timings.</span>
@@ -371,6 +377,7 @@ entirety below:</p>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string_list</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">enumeration</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">counter</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timespan</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timing_distribution</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
@@ -715,10 +722,11 @@ entirety below:</p>
                   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timing_distribution</span>
                   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
                   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">memory_distribution</span>
+                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
         <span class="nt">then</span><span class="p">:</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">gecko_datapoint is only allowed for timing_distribution, custom_distribution and</span>
-            <span class="no">memory_distribution.</span>
+            <span class="no">`gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,</span>
+            <span class="no">`memory_distribution` and `quantity`.</span>
           <span class="nt">properties</span><span class="p">:</span>
             <span class="nt">gecko_datapoint</span><span class="p">:</span>
               <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
@@ -726,12 +734,14 @@ entirety below:</p>
         <span class="nt">if</span><span class="p">:</span>
           <span class="nt">properties</span><span class="p">:</span>
             <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
+              <span class="nt">enum</span><span class="p">:</span>
+                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
+                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
         <span class="nt">then</span><span class="p">:</span>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gecko_datapoint</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">custom_distribution is only allowed for Gecko metrics.</span>
+            <span class="no">`custom_distribution` and `quantity` is only allowed for Gecko metrics.</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
           <span class="nt">properties</span><span class="p">:</span>
@@ -743,7 +753,8 @@ entirety below:</p>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bucket_count</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">histogram_type</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">custom_distribution is missing required parameters</span>
+            <span class="no">`custom_distribution` is missing required parameters `range_max`, `bucket_count` and</span>
+            <span class="no">`histogram_type`.</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
           <span class="nt">properties</span><span class="p">:</span>
@@ -753,7 +764,17 @@ entirety below:</p>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">memory_unit</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">memory_distribution is missing required memory_unit parameter</span>
+            <span class="no">`memory_distribution` is missing required parameter `memory_unit`.</span>
+      <span class="p p-Indicator">-</span>
+        <span class="nt">if</span><span class="p">:</span>
+          <span class="nt">properties</span><span class="p">:</span>
+            <span class="nt">type</span><span class="p">:</span>
+              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
+        <span class="nt">then</span><span class="p">:</span>
+          <span class="nt">required</span><span class="p">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">unit</span>
+          <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+            <span class="no">`quantity` is missing required parameter `unit`.</span>
 </pre></div>
 </div>
 </div>
