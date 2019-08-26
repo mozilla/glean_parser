@@ -21,7 +21,7 @@ from jsonschema import _utils
 import yaml
 
 
-TESTING_MODE = 'pytest' in sys.modules
+TESTING_MODE = "pytest" in sys.modules
 
 
 # Adapted from
@@ -38,21 +38,19 @@ class _NoDatesSafeLoader(yaml.SafeLoader):
         go on to serialise as json which doesn't have the advanced types
         of yaml, and leads to incompatibilities down the track.
         """
-        if 'yaml_implicit_resolvers' not in cls.__dict__:
+        if "yaml_implicit_resolvers" not in cls.__dict__:
             cls.yaml_implicit_resolvers = cls.yaml_implicit_resolvers.copy()
 
         for first_letter, mappings in cls.yaml_implicit_resolvers.items():
             cls.yaml_implicit_resolvers[first_letter] = [
-                (tag, regexp)
-                for tag, regexp in mappings
-                if tag != tag_to_remove
+                (tag, regexp) for tag, regexp in mappings if tag != tag_to_remove
             ]
 
 
 # Since we use JSON schema to validate, and JSON schema doesn't support
 # datetimes, we don't want the YAML loader to give us datetimes -- just
 # strings.
-_NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
+_NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
 def load_yaml_or_json(path):
@@ -71,14 +69,14 @@ def load_yaml_or_json(path):
     if not path.is_file():
         return {}
 
-    if path.suffix == '.json':
-        with open(path, 'r') as fd:
+    if path.suffix == ".json":
+        with open(path, "r") as fd:
             return json.load(fd)
-    elif path.suffix in ('.yml', '.yaml'):
-        with open(path, 'r') as fd:
+    elif path.suffix in (".yml", ".yaml"):
+        with open(path, "r") as fd:
             return yaml.load(fd, Loader=_NoDatesSafeLoader)
     else:
-        raise ValueError(f'Unknown file extension {path.suffix}')
+        raise ValueError(f"Unknown file extension {path.suffix}")
 
 
 def ensure_list(value):
@@ -98,7 +96,7 @@ def camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace('.', '_'), False)
+    return inflection.camelize(value.replace(".", "_"), False)
 
 
 def Camelize(value):
@@ -108,7 +106,7 @@ def Camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace('.', '_'), True)
+    return inflection.camelize(value.replace(".", "_"), True)
 
 
 @functools.lru_cache()
@@ -123,13 +121,13 @@ def get_jinja2_template(template_name, filters=()):
         additional filters.
     """
     env = jinja2.Environment(
-        loader=jinja2.PackageLoader('glean_parser', 'templates'),
+        loader=jinja2.PackageLoader("glean_parser", "templates"),
         trim_blocks=True,
         lstrip_blocks=True,
     )
 
-    env.filters['camelize'] = camelize
-    env.filters['Camelize'] = Camelize
+    env.filters["camelize"] = camelize
+    env.filters["Camelize"] = Camelize
     for filter_name, filter_func in filters:
         env.filters[filter_name] = filter_func
 
@@ -141,6 +139,7 @@ def keep_value(f):
     Wrap a generator so the value it returns (rather than yields), will be
     accessible on the .value attribute when the generator is exhausted.
     """
+
     class ValueKeepingGenerator(object):
         def __init__(self, g):
             self.g = g
@@ -162,11 +161,12 @@ def get_null_resolver(schema):
 
     This lets us handle the moz: URLs in our schemas.
     """
+
     class NullResolver(jsonschema.RefResolver):
         def resolve_remote(self, uri):
             if uri in self.store:
                 return self.store[uri]
-            if uri == '':
+            if uri == "":
                 return self.referrer
 
     return NullResolver.from_schema(schema)
@@ -177,15 +177,15 @@ def fetch_remote_url(url, cache=True):
     Fetches the contents from an HTTP url or local file path, and optionally
     caches it to disk.
     """
-    is_http = url.startswith('http')
+    is_http = url.startswith("http")
 
     if not is_http:
-        with open(url, 'r', encoding='utf-8') as fd:
+        with open(url, "r", encoding="utf-8") as fd:
             contents = fd.read()
         return contents
 
     if cache:
-        cache_dir = appdirs.user_cache_dir('glean_parser', 'mozilla')
+        cache_dir = appdirs.user_cache_dir("glean_parser", "mozilla")
         with diskcache.Cache(cache_dir) as dc:
             if url in dc:
                 return dc[url]
@@ -212,7 +212,10 @@ def pprint_validation_error(error):
     jsonschema calls "context").
     """
     essential_for_verbose = (
-        error.validator, error.validator_value, error.instance, error.schema,
+        error.validator,
+        error.validator_value,
+        error.instance,
+        error.schema,
     )
     if any(m is _unset for m in essential_for_verbose):
         return textwrap.fill(error.message)
@@ -226,32 +229,18 @@ def pprint_validation_error(error):
 
     yaml_instance = yaml.dump(instance, width=72, default_flow_style=False)
 
-    parts = [
-        '```',
-        yaml_instance.rstrip(),
-        '```',
-        '',
-        textwrap.fill(error.message)
-    ]
+    parts = ["```", yaml_instance.rstrip(), "```", "", textwrap.fill(error.message)]
     if error.context:
         parts.extend(
-            textwrap.fill(
-                x.message,
-                initial_indent='    ',
-                subsequent_indent='    '
-            )
+            textwrap.fill(x.message, initial_indent="    ", subsequent_indent="    ")
             for x in error.context
         )
 
-    description = error.schema.get('description')
+    description = error.schema.get("description")
     if description:
-        parts.extend([
-            "",
-            "Documentation for this node:",
-            _utils.indent(description)
-        ])
+        parts.extend(["", "Documentation for this node:", _utils.indent(description)])
 
-    return '\n'.join(parts)
+    return "\n".join(parts)
 
 
 def format_error(filepath, header, content):
@@ -261,11 +250,11 @@ def format_error(filepath, header, content):
     if isinstance(filepath, Path):
         filepath = filepath.resolve()
     else:
-        filepath = '<string>'
+        filepath = "<string>"
     if header:
-        return f'{filepath}: {header}:\n{_utils.indent(content)}'
+        return f"{filepath}: {header}:\n{_utils.indent(content)}"
     else:
-        return f'{filepath}:\n{_utils.indent(content)}'
+        return f"{filepath}:\n{_utils.indent(content)}"
 
 
 def is_expired(expires):
@@ -273,9 +262,9 @@ def is_expired(expires):
     Parses the `expires` field in a metric or ping and returns whether
     the object should be considered expired.
     """
-    if expires == 'never':
+    if expires == "never":
         return False
-    elif expires == 'expired':
+    elif expires == "expired":
         return True
     else:
         try:
@@ -292,6 +281,6 @@ def validate_expires(expires):
     """
     Raises ValueError if `expires` is not valid.
     """
-    if expires in ('never', 'expired'):
+    if expires in ("never", "expired"):
         return
     datetime.date.fromisoformat(expires)

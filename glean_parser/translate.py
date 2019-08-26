@@ -17,18 +17,10 @@ from . import parser
 from . import kotlin
 
 
-OUTPUTTERS = {
-    'kotlin': kotlin.output_kotlin
-}
+OUTPUTTERS = {"kotlin": kotlin.output_kotlin}
 
 
-def translate(
-        input_filepaths,
-        output_format,
-        output_dir,
-        options={},
-        parser_config={}
-):
+def translate(input_filepaths, output_format, output_dir, options={}, parser_config={}):
     """
     Translate the files in `input_filepaths` to the given `output_format` and
     put the results in `output_dir`.
@@ -48,7 +40,7 @@ def translate(
     found_error = False
     for error in all_objects:
         found_error = True
-        print('=' * 78, file=sys.stderr)
+        print("=" * 78, file=sys.stderr)
         print(error, file=sys.stderr)
     if found_error:
         return 1

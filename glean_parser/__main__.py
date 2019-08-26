@@ -18,47 +18,35 @@ from . import validate_ping
 
 @click.command()
 @click.argument(
-    'input',
-    type=click.Path(
-        exists=False,
-        dir_okay=False,
-        file_okay=True,
-        readable=True,
-    ),
-    nargs=-1
+    "input",
+    type=click.Path(exists=False, dir_okay=False, file_okay=True, readable=True),
+    nargs=-1,
 )
 @click.option(
-    '--output',
-    '-o',
-    type=click.Path(
-        dir_okay=True,
-        file_okay=False,
-        writable=True,
-    ),
+    "--output",
+    "-o",
+    type=click.Path(dir_okay=True, file_okay=False, writable=True),
     nargs=1,
     required=True,
 )
 @click.option(
-    '--format',
-    '-f',
-    type=click.Choice(mod_translate.OUTPUTTERS.keys()),
-    required=True,
+    "--format", "-f", type=click.Choice(mod_translate.OUTPUTTERS.keys()), required=True
 )
 @click.option(
-    '--option',
-    '-s',
-    help='backend-specific option. Must be of the form key=value',
+    "--option",
+    "-s",
+    help="backend-specific option. Must be of the form key=value",
     type=str,
     multiple=True,
     required=False,
 )
 @click.option(
-    '--allow-reserved',
+    "--allow-reserved",
     is_flag=True,
     help=(
         "If provided, allow the use of reserved fields. "
         "Should only be set when building the Glean library itself."
-    )
+    ),
 )
 def translate(input, format, output, option, allow_reserved):
     """
@@ -66,7 +54,7 @@ def translate(input, format, output, option, allow_reserved):
     """
     option_dict = {}
     for opt in option:
-        key, val = opt.split('=', 1)
+        key, val = opt.split("=", 1)
         option_dict[key] = val
 
     sys.exit(
@@ -75,23 +63,20 @@ def translate(input, format, output, option, allow_reserved):
             format,
             Path(output),
             option_dict,
-            {'allow_reserved': allow_reserved}
+            {"allow_reserved": allow_reserved},
         )
     )
 
 
 @click.command()
 @click.option(
-    '--schema',
-    '-s',
+    "--schema",
+    "-s",
     type=str,
     default=validate_ping.PING_SCHEMA_DEFAULT_URL,
     nargs=1,
     required=False,
-    help=(
-        "HTTP url or file path to Glean ping schema. "
-        "If remote, will cache to disk."
-    )
+    help=("HTTP url or file path to Glean ping schema. If remote, will cache to disk."),
 )
 def check(schema):
     """
@@ -102,9 +87,9 @@ def check(schema):
     """
     sys.exit(
         validate_ping.validate_ping(
-            io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8'),
-            io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8'),
-            schema_url=schema
+            io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8"),
+            io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8"),
+            schema_url=schema,
         )
     )
 

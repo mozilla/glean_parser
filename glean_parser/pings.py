@@ -15,9 +15,7 @@ from typing import List, Union
 from . import parser
 
 
-RESERVED_PING_NAMES = [
-    'baseline', 'metrics', 'events'
-]
+RESERVED_PING_NAMES = ["baseline", "metrics", "events"]
 
 
 @dataclass
@@ -26,14 +24,11 @@ class Ping:
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
         if not _validated:
-            data = {
-                '$schema': parser.PINGS_ID,
-                self.name: self.serialize()
-            }
+            data = {"$schema": parser.PINGS_ID, self.name: self.serialize()}
             for error in parser.validate(data):
                 raise ValueError(error)
 
-    type = 'ping'
+    type = "ping"
     name: str
     description: str
     bugs: List[Union[int, str]]
@@ -49,5 +44,5 @@ class Ping:
         Serialize the metric back to JSON object model.
         """
         d = dataclasses.asdict(self)
-        del d['name']
+        del d["name"]
         return d
