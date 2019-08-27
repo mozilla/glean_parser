@@ -8,13 +8,11 @@
 Outputter to generate Markdown documentation for metrics.
 """
 
-import enum
-import json
-
 from . import metrics
 from . import pings
 from . import util
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
+
 
 def extra_info(obj):
     """
@@ -55,7 +53,7 @@ def metrics_docs(obj_name):
     # We need to fixup labeled stuff, as types are singular and docs refer
     # to them as plural.
     fixedup_name = obj_name
-    if (obj_name == "labeled_counter" or obj_name == "labeled_string"):
+    if obj_name == "labeled_counter" or obj_name == "labeled_string":
         fixedup_name += "s"
 
     return base_url.format(fixedup_name)
@@ -120,8 +118,9 @@ def output_markdown(objs, output_dir, options={}):
     # Sort the metrics by their identifier, to make them show up nicely
     # in the docs.
     for ping_name in metrics_by_pings:
-        metrics_by_pings[ping_name] =\
-            sorted(metrics_by_pings[ping_name], key=lambda x: x.identifier())
+        metrics_by_pings[ping_name] = sorted(
+            metrics_by_pings[ping_name], key=lambda x: x.identifier()
+        )
 
     # The object parameters to pass to constructors
     extra_args = [

@@ -4,8 +4,6 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
-import shutil
-import subprocess
 
 from glean_parser import markdown
 from glean_parser import metrics
@@ -35,7 +33,10 @@ def test_parser(tmpdir):
         content = fd.read()
         assert "is assembled out of the box by the Glean SDK." in content
         # Make sure the table structure is in place
-        assert "| Name | Type | Description | Data reviews | Extras | Expiration |" in content
+        assert (
+            "| Name | Type | Description | Data reviews | Extras | Expiration |"
+            in content
+        )
         # Make sure non ASCII characters are there
         assert "جمع 搜集" in content
 
@@ -90,6 +91,15 @@ def test_ping_docs():
 
 
 def test_metrics_docs():
-    assert markdown.metrics_docs("boolean") == "https://mozilla.github.io/glean/book/user/metrics/boolean.html"
-    assert markdown.metrics_docs("labeled_counter") == "https://mozilla.github.io/glean/book/user/metrics/labeled_counters.html"
-    assert markdown.metrics_docs("labeled_string") == "https://mozilla.github.io/glean/book/user/metrics/labeled_strings.html"
+    assert (
+        markdown.metrics_docs("boolean")
+        == "https://mozilla.github.io/glean/book/user/metrics/boolean.html"
+    )
+    assert (
+        markdown.metrics_docs("labeled_counter")
+        == "https://mozilla.github.io/glean/book/user/metrics/labeled_counters.html"
+    )
+    assert (
+        markdown.metrics_docs("labeled_string")
+        == "https://mozilla.github.io/glean/book/user/metrics/labeled_strings.html"
+    )
