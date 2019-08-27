@@ -28,9 +28,10 @@ def extra_info(obj):
     return extra_info
 
 
-def ping_desc(ping_name):
+def ping_desc(ping_name, custom_pings_cache={}):
     """
-    Return a text description of the ping.
+    Return a text description of the ping. If a custom_pings_cache
+    is available, look in there for non-reserved ping names description.
     """
     desc = ""
 
@@ -39,6 +40,8 @@ def ping_desc(ping_name):
             "This is a built-in ping that is assembled out of the "
             "box by the Glean SDK."
         )
+    elif ping_name in custom_pings_cache:
+        desc = custom_pings_cache[ping_name].description
 
     return desc
 
@@ -86,15 +89,6 @@ def output_markdown(objs, output_dir, options={}):
           This is where glean objects will be imported from in the generated
           code.
     """
-    template = util.get_jinja2_template(
-        "markdown.jinja2",
-        filters=(
-            ("extra_info", extra_info),
-            ("metrics_docs", metrics_docs),
-            ("ping_desc", ping_desc),
-            ("ping_docs", ping_docs),
-        ),
-    )
 
     # Build a dictionary that associates pings with their metrics.
     #
@@ -109,11 +103,21 @@ def output_markdown(objs, output_dir, options={}):
     #  ],
     #  ...
     # }
+    #
+    # This also builds a dictionary of custom pings, if available.
+    custom_pings_cache = defaultdict()
     metrics_by_pings = defaultdict(list)
     for category_key, category_val in objs.items():
-        for metric in category_val.values():
-            for ping_name in metric.send_in_pings:
-                metrics_by_pings[ping_name].append(metric)
+        for obj in category_val.values():
+            # Filter out custom pings. We will need them for extracting
+            # the description
+            if isinstance(obj, pings.Ping):
+                custom_pings_cache[obj.name] = obj
+                continue
+
+            # If we get here, obj is definitely a metric
+            for ping_name in obj.send_in_pings:
+                metrics_by_pings[ping_name].append(obj)
 
     # Sort the metrics by their identifier, to make them show up nicely
     # in the docs.
@@ -139,6 +143,16 @@ def output_markdown(objs, output_dir, options={}):
         "time_unit",
         "values",
     ]
+
+    template = util.get_jinja2_template(
+        "markdown.jinja2",
+        filters=(
+            ("extra_info", extra_info),
+            ("metrics_docs", metrics_docs),
+            ("ping_desc", lambda x: ping_desc(x, custom_pings_cache)),
+            ("ping_docs", ping_docs),
+        ),
+    )
 
     filename = "metrics.md"
     filepath = output_dir / filename

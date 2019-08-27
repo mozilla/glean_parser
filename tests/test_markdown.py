@@ -78,6 +78,26 @@ def test_ping_desc():
     # We don't expect nothing for unknown pings.
     assert len(markdown.ping_desc("unknown-ping")) == 0
 
+    # If we have a custom ping cache, try look up the
+    # description there.
+    cache = {}
+    cache["cached_ping"] = pings.Ping(
+        name="cached_ping",
+        description="the description for the custom ping\n with a surprise",
+        bugs=["1234"],
+        notification_emails=["email@example.com"],
+        data_reviews=["https://www.example.com/review"],
+        include_client_id=False,
+    )
+
+    assert (
+        markdown.ping_desc("cached_ping", cache)
+        == "the description for the custom ping\n with a surprise"
+    )
+
+    # We don't expect nothing for unknown pings, even with caches.
+    assert len(markdown.ping_desc("unknown-ping", cache)) == 0
+
 
 def test_ping_docs():
     # Make sure to return something for built-in pings.
