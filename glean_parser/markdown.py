@@ -56,7 +56,7 @@ def metrics_docs(obj_name):
     # We need to fixup labeled stuff, as types are singular and docs refer
     # to them as plural.
     fixedup_name = obj_name
-    if obj_name == "labeled_counter" or obj_name == "labeled_string":
+    if obj_name.startswith("labeled_"):
         fixedup_name += "s"
 
     return base_url.format(fixedup_name)
@@ -67,27 +67,24 @@ def ping_docs(ping_name):
     Return a link to the documentation entry for the requested Glean SDK
     built-in ping.
     """
-    base_url = "https://mozilla.github.io/glean/book/user/pings/{}.html"
     if ping_name not in pings.RESERVED_PING_NAMES:
         return ""
 
-    return base_url.format(ping_name)
+    return f"https://mozilla.github.io/glean/book/user/pings/{ping_name}.html"
 
 
 def output_markdown(objs, output_dir, options={}):
     """
     Given a tree of objects, output Markdown docs to `output_dir`.
 
+    This produces a single `metrics.md`. The file contains a table of
+    contents and a section for each ping metrics are collected for.
+
     :param objects: A tree of objects (metrics and pings) as returned from
     `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
-    :param options: options dictionary, with the following optional keys:
-
-        - `namespace`: The package namespace to declare at the top of the
-          generated files. Defaults to `GleanMetrics`.
-        - `glean_namespace`: The package namespace of the glean library itself.
-          This is where glean objects will be imported from in the generated
-          code.
+    :param options: options dictionary. No option currently supported, stays for
+    signature compatibility with the other outputters.
     """
 
     # Build a dictionary that associates pings with their metrics.
@@ -113,36 +110,17 @@ def output_markdown(objs, output_dir, options={}):
             # the description
             if isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
-                continue
-
-            # If we get here, obj is definitely a metric
-            for ping_name in obj.send_in_pings:
-                metrics_by_pings[ping_name].append(obj)
+            else:
+                # If we get here, obj is definitely a metric
+                for ping_name in obj.send_in_pings:
+                    metrics_by_pings[ping_name].append(obj)
 
     # Sort the metrics by their identifier, to make them show up nicely
-    # in the docs.
+    # in the docs and to make generated docs reproducible.
     for ping_name in metrics_by_pings:
         metrics_by_pings[ping_name] = sorted(
             metrics_by_pings[ping_name], key=lambda x: x.identifier()
         )
-
-    # The object parameters to pass to constructors
-    extra_args = [
-        "allowed_extra_keys",
-        "bucket_count",
-        "category",
-        "denominator",
-        "disabled",
-        "histogram_type",
-        "include_client_id",
-        "lifetime",
-        "name",
-        "range_max",
-        "range_min",
-        "send_in_pings",
-        "time_unit",
-        "values",
-    ]
 
     template = util.get_jinja2_template(
         "markdown.jinja2",
@@ -158,13 +136,6 @@ def output_markdown(objs, output_dir, options={}):
     filepath = output_dir / filename
 
     with open(filepath, "w", encoding="utf-8") as fd:
-        fd.write(
-            template.render(
-                category_name=category_key,
-                objs=category_val,
-                metrics_by_pings=metrics_by_pings,
-                extra_args=extra_args,
-            )
-        )
+        fd.write(template.render(metrics_by_pings=metrics_by_pings))
         # Jinja2 squashes the final newline, so we explicitly add it
         fd.write("\n")
