@@ -15,9 +15,10 @@ import tempfile
 
 from . import parser
 from . import kotlin
+from . import markdown
 
 
-OUTPUTTERS = {"kotlin": kotlin.output_kotlin}
+OUTPUTTERS = {"kotlin": kotlin.output_kotlin, "markdown": markdown.output_markdown}
 
 
 def translate(input_filepaths, output_format, output_dir, options={}, parser_config={}):

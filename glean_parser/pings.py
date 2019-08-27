@@ -32,7 +32,6 @@ class Ping:
     name: str
     description: str
     bugs: List[Union[int, str]]
-    description: str
     notification_emails: List[str]
     data_reviews: List[str] = field(default_factory=list)
     include_client_id: bool = False
