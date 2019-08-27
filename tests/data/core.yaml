@@ -12,6 +12,7 @@ telemetry:
       - 1137353
     data_reviews:
       - http://example.com/reviews
+      - http://example.com/other_reviews
     notification_emails:
       - CHANGE-ME@example.com
     send_in_pings:
