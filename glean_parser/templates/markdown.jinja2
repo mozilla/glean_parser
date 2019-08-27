@@ -10,7 +10,7 @@
 {% if ping_name|ping_desc and ping_name|ping_desc|length > 0 %}
 {{ ping_name|ping_desc }}
 {% if ping_name|ping_docs|length > 0 %}
-See the Glean SDK documentation for the [`{{ ping_name }}`]({{ ping_name|ping_docs }})
+See the Glean SDK documentation for the [`{{ ping_name }}` ping]({{ ping_name|ping_docs }}).
 {% endif %}
 {% endif %}
 The following metrics are added to the ping:
@@ -20,14 +20,14 @@ The following metrics are added to the ping:
 {% for metric in metrics_by_pings[ping_name] %}
 | {{ metric.identifier() }} |
 {{- '['}}{{ metric.type }}]({{ metric.type|metrics_docs }}) |
-{{- metric.description|replace("\n", "") }} |
+{{- metric.description|replace("\n", " ") }} |
 {%- for data_review in metric.data_reviews %}
 [{{ loop.index }}]({{ data_review }}){{ ", " if not loop.last }}
 {%- endfor -%} |
 {%- if metric|extra_info -%}
 <ul>
 {%- for property, desc in metric|extra_info %}
-<li>{{ property }}: {{ desc }}</li>
+<li>{{ property }}: {{ desc|replace("\n", " ") }}</li>
 {%- endfor -%}
 </ul>
 {%- endif -%} |
