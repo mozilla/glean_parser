@@ -1,0 +1,252 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>glean_parser.markdown &#8212; Glean Parser 1.3.1.dev4+g3ed199f documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for glean_parser.markdown</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Outputter to generate Markdown documentation for metrics.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">pings</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+
+
+<div class="viewcode-block" id="extra_info"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.extra_info">[docs]</a><span class="k">def</span> <span class="nf">extra_info</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of string to string tuples with extra information for the type</span>
+<span class="sd">    (e.g. extra keys for events) or an empty list if nothing is available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">extra_info</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">allowed_extra_keys</span><span class="p">:</span>
+            <span class="n">extra_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">extra_info</span></div>
+
+
+<div class="viewcode-block" id="ping_desc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_desc">[docs]</a><span class="k">def</span> <span class="nf">ping_desc</span><span class="p">(</span><span class="n">ping_name</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a text description of the ping. If a custom_pings_cache</span>
+<span class="sd">    is available, look in there for non-reserved ping names description.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;This is a built-in ping that is assembled out of the &quot;</span>
+            <span class="s2">&quot;box by the Glean SDK.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+        <span class="n">desc</span> <span class="o">=</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+
+    <span class="k">return</span> <span class="n">desc</span></div>
+
+
+<div class="viewcode-block" id="metrics_docs"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.metrics_docs">[docs]</a><span class="k">def</span> <span class="nf">metrics_docs</span><span class="p">(</span><span class="n">obj_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a link to the documentation entry for the Glean SDK metric of the</span>
+<span class="sd">    requested type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://mozilla.github.io/glean/book/user/metrics/</span><span class="si">{}</span><span class="s2">.html&quot;</span>
+
+    <span class="c1"># We need to fixup labeled stuff, as types are singular and docs refer</span>
+    <span class="c1"># to them as plural.</span>
+    <span class="n">fixedup_name</span> <span class="o">=</span> <span class="n">obj_name</span>
+    <span class="k">if</span> <span class="n">obj_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;labeled_&quot;</span><span class="p">):</span>
+        <span class="n">fixedup_name</span> <span class="o">+=</span> <span class="s2">&quot;s&quot;</span>
+
+    <span class="k">return</span> <span class="n">base_url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fixedup_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ping_docs"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_docs">[docs]</a><span class="k">def</span> <span class="nf">ping_docs</span><span class="p">(</span><span class="n">ping_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a link to the documentation entry for the requested Glean SDK</span>
+<span class="sd">    built-in ping.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;https://mozilla.github.io/glean/book/user/pings/</span><span class="si">{ping_name}</span><span class="s2">.html&quot;</span></div>
+
+
+<div class="viewcode-block" id="output_markdown"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.output_markdown">[docs]</a><span class="k">def</span> <span class="nf">output_markdown</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Markdown docs to `output_dir`.</span>
+
+<span class="sd">    This produces a single `metrics.md`. The file contains a table of</span>
+<span class="sd">    contents and a section for each ping metrics are collected for.</span>
+
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">    `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    :param options: options dictionary. No option currently supported, stays for</span>
+<span class="sd">    signature compatibility with the other outputters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Build a dictionary that associates pings with their metrics.</span>
+    <span class="c1">#</span>
+    <span class="c1"># {</span>
+    <span class="c1">#  &quot;baseline&quot;: [</span>
+    <span class="c1">#    { ... metric data ... },</span>
+    <span class="c1">#    ...</span>
+    <span class="c1">#  ],</span>
+    <span class="c1">#  &quot;metrics&quot;: [</span>
+    <span class="c1">#    { ... metric data ... },</span>
+    <span class="c1">#    ...</span>
+    <span class="c1">#  ],</span>
+    <span class="c1">#  ...</span>
+    <span class="c1"># }</span>
+    <span class="c1">#</span>
+    <span class="c1"># This also builds a dictionary of custom pings, if available.</span>
+    <span class="n">custom_pings_cache</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">()</span>
+    <span class="n">metrics_by_pings</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="c1"># Filter out custom pings. We will need them for extracting</span>
+            <span class="c1"># the description</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
+                <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If we get here, obj is definitely a metric</span>
+                <span class="k">for</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
+                    <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1"># Sort the metrics by their identifier, to make them show up nicely</span>
+    <span class="c1"># in the docs and to make generated docs reproducible.</span>
+    <span class="k">for</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">metrics_by_pings</span><span class="p">:</span>
+        <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">ping_name</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">identifier</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
+        <span class="s2">&quot;markdown.jinja2&quot;</span><span class="p">,</span>
+        <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;extra_info&quot;</span><span class="p">,</span> <span class="n">extra_info</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;metrics_docs&quot;</span><span class="p">,</span> <span class="n">metrics_docs</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ping_desc&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ping_desc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;ping_docs&quot;</span><span class="p">,</span> <span class="n">ping_docs</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;metrics.md&quot;</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">metrics_by_pings</span><span class="o">=</span><span class="n">metrics_by_pings</span><span class="p">))</span>
+        <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Glean Parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Michael Droettboom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
