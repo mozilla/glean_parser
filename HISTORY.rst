@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.4.0 (2019-08-27)
+------------------
+
+* Added support for generating markdown documentation from `metrics.yaml` files.
+
 1.3.0 (2019-08-22)
 ------------------
 
