@@ -164,12 +164,12 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
             else:
                 if (
                     not config.get("allow_reserved")
-                    and "all_pings" in metric_obj.send_in_pings
+                    and "all-pings" in metric_obj.send_in_pings
                 ):
                     yield util.format_error(
                         filepath,
                         f"On instance {category_key}.{metric_key}",
-                        f'Only internal metrics may specify "all_pings" '
+                        f'Only internal metrics may specify "all-pings" '
                         f'in "send_in_pings"',
                     )
                     metric_obj = None
