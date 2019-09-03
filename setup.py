@@ -33,7 +33,8 @@ requirements = [
     'inflection>=0.3.1',
     'Jinja2>=2.10.1',
     'diskcache>=4.0.0',
-    'appdirs>=1.4.3'
+    'appdirs>=1.4.3',
+    'androguard>=3.3.5'
 ]
 
 setup_requirements = ['pytest-runner', 'setuptools-scm']

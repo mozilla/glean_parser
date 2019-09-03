@@ -12,6 +12,7 @@ import sys
 
 import click
 
+from . import check_apk as mod_check_apk
 from . import translate as mod_translate
 from . import validate_ping
 
@@ -94,6 +95,19 @@ def check(schema):
     )
 
 
+@click.command()
+@click.argument(
+    "apk",
+    type=click.Path(exists=True, dir_okay=False, file_okay=True, readable=True),
+    nargs=1,
+)
+def check_apk(apk):
+    """
+    Checks an APK for duplicate Glean metrics.
+    """
+    sys.exit(mod_check_apk.check_apk(apk))
+
+
 @click.group()
 def main(args=None):
     """Command line utility for glean_parser."""
@@ -102,6 +116,7 @@ def main(args=None):
 
 main.add_command(translate)
 main.add_command(check)
+main.add_command(check_apk)
 
 
 if __name__ == "__main__":
