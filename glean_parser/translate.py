@@ -9,6 +9,7 @@ High-level interface for translating `metrics.yaml` into other formats.
 """
 
 from pathlib import Path
+import os
 import shutil
 import sys
 import tempfile
@@ -18,7 +19,15 @@ from . import kotlin
 from . import markdown
 
 
-OUTPUTTERS = {"kotlin": kotlin.output_kotlin, "markdown": markdown.output_markdown}
+# Each outputter in the table has the following keys:
+# - "output_func": the main function of the outputter, the one which
+#   does the actual translation.
+# - "clear_output_dir": a flag to clear the target directory before moving there
+#   the generated files.
+OUTPUTTERS = {
+    "kotlin": {"output_func": kotlin.output_kotlin, "clear_output_dir": True},
+    "markdown": {"output_func": markdown.output_markdown, "clear_output_dir": False},
+}
 
 
 def translate(input_filepaths, output_format, output_dir, options={}, parser_config={}):
@@ -49,13 +58,24 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
     # Write everything out to a temporary directory, and then move it to the
     # real directory, for transactional integrity.
     with tempfile.TemporaryDirectory() as tempdir:
-        OUTPUTTERS[output_format](all_objects.value, Path(tempdir), options)
+        tempdir_path = Path(tempdir)
+        OUTPUTTERS[output_format]["output_func"](
+            all_objects.value, tempdir_path, options
+        )
 
-        if output_dir.is_file():
-            output_dir.unlink()
-        elif output_dir.is_dir():
-            shutil.rmtree(output_dir)
+        if OUTPUTTERS[output_format]["clear_output_dir"]:
+            if output_dir.is_file():
+                output_dir.unlink()
+            elif output_dir.is_dir():
+                shutil.rmtree(output_dir)
 
-        shutil.copytree(tempdir, output_dir)
+            shutil.copytree(tempdir, output_dir)
+        else:
+            # We can't use shutil.copytree alone if the directory already exists.
+            # However, if it doesn't exist, make sure to create one otherwise
+            # shutil.copy will fail.
+            os.makedirs(output_dir, exist_ok=True)
+            for filename in tempdir_path.glob("*"):
+                shutil.copy(filename, output_dir)
 
     return 0
