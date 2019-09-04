@@ -5,8 +5,6 @@ History
 Unreleased
 ----------
 
-* Restrict ping names to be kebab-case and change `all_pings` to `all-pings`
-
 1.4.1 (2019-08-28)
 ------------------
 
