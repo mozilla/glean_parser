@@ -73,7 +73,7 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
         else:
             # We can't use shutil.copytree alone if the directory already exists.
             # However, if it doesn't exist, make sure to create one otherwise
-            # shutile.copy will fail.
+            # shutil.copy will fail.
             os.makedirs(output_dir, exist_ok=True)
             for filename in tempdir_path.glob("*"):
                 shutil.copy(filename, output_dir)
