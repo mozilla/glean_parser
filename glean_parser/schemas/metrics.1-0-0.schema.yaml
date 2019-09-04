@@ -23,10 +23,6 @@ definitions:
     pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
     maxLength: 40
 
-  kebab_case:
-    type: string
-    pattern: "^[a-z][a-z0-9-]{0,29}$"
-
   long_id:
     allOf:
       - $ref: "#/definitions/snake_case"
@@ -190,12 +186,12 @@ definitions:
           and the `metrics` ping for everything else. Most metrics don't need to
           specify this.
 
-          (There is an additional special value of `all-pings` for internal
+          (There is an additional special value of `all_pings` for internal
           Glean metrics only that is used to indicate that a metric may appear
           in any ping.)
         type: array
         items:
-          $ref: "#/definitions/kebab_case"
+          $ref: "#/definitions/snake_case"
         default:
           - default
 

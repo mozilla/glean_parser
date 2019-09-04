@@ -81,8 +81,8 @@ def test_ping_desc():
     # If we have a custom ping cache, try look up the
     # description there.
     cache = {}
-    cache["cached-ping"] = pings.Ping(
-        name="cached-ping",
+    cache["cached_ping"] = pings.Ping(
+        name="cached_ping",
         description="the description for the custom ping\n with a surprise",
         bugs=["1234"],
         notification_emails=["email@example.com"],
@@ -91,7 +91,7 @@ def test_ping_desc():
     )
 
     assert (
-        markdown.ping_desc("cached-ping", cache)
+        markdown.ping_desc("cached_ping", cache)
         == "the description for the custom ping\n with a surprise"
     )
 
