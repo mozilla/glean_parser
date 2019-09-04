@@ -6,6 +6,7 @@
 from pathlib import Path
 
 import pytest
+import shutil
 
 from glean_parser import parser
 from glean_parser import translate
@@ -62,6 +63,10 @@ def test_translate_retains_existing_markdown_files(tmpdir):
         output,
         parser_config={"allow_reserved": True},
     )
+
+    # Move the file to a different location, translate always writes to
+    # metrics.md.
+    shutil.move(output / "metrics.md", output / "old.md")
 
     assert len(list(output.iterdir())) == 1
 
