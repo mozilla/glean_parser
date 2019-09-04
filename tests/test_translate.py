@@ -36,7 +36,7 @@ def test_translate_missing_directory(tmpdir):
     assert len(list(output.iterdir())) == 5
 
 
-def test_translate_remove_obsolete_files(tmpdir):
+def test_translate_remove_obsolete_kotlin_files(tmpdir):
     output = Path(tmpdir) / "foo"
 
     translate.translate(
@@ -51,6 +51,23 @@ def test_translate_remove_obsolete_files(tmpdir):
     translate.translate(ROOT / "data" / "smaller.yaml", "kotlin", output)
 
     assert len(list(output.iterdir())) == 1
+
+
+def test_translate_retains_existing_markdown_files(tmpdir):
+    output = Path(tmpdir) / "foo"
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "markdown",
+        output,
+        parser_config={"allow_reserved": True},
+    )
+
+    assert len(list(output.iterdir())) == 1
+
+    translate.translate(ROOT / "data" / "smaller.yaml", "markdown", output)
+
+    assert len(list(output.iterdir())) == 2
 
 
 def test_translate_expires():
