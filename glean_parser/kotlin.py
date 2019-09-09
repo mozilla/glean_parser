@@ -134,7 +134,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
     gecko_metrics = defaultdict(lambda: defaultdict(list))
 
     # Define scalar-like types.
-    SCALAR_LIKE_TYPES = [ "boolean", "string", "quantity" ]
+    SCALAR_LIKE_TYPES = ["boolean", "string", "quantity"]
 
     for category_key, category_val in objs.items():
         # Support exfiltration of Gecko metrics from products using both the
@@ -145,7 +145,9 @@ def output_gecko_lookup(objs, output_dir, options={}):
                 continue
 
             # Put scalars in their own categories, histogram-like in "histograms".
-            type_category = "histograms" if metric.type not in SCALAR_LIKE_TYPES else metric.type
+            type_category = (
+                "histograms" if metric.type not in SCALAR_LIKE_TYPES else metric.type
+            )
 
             gecko_metrics[type_category][category_key].append(
                 {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
