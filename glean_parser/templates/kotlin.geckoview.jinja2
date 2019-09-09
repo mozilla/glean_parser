@@ -20,17 +20,19 @@ import {{ glean_namespace }}.private.HistogramMetricBase // ktlint-disable impor
  * metric types.
  */
 internal object GleanGeckoMetricsMapping {
+{% if 'histograms' in gecko_metrics %}
     // Support exfiltration of Gecko histograms from products using both the
     // Glean SDK and GeckoView. See bug 1566356 for more context.
     operator fun getHistogram(geckoMetricName: String): HistogramMetricBase? {
         return when (geckoMetricName) {
-        {% for category in gecko_metrics.keys()|sort %}
+        {% for category in gecko_metrics['histograms'].keys()|sort %}
             // From {{ category|Camelize }}.kt
-            {% for metric in gecko_metrics[category] %}
+            {% for metric in gecko_metrics['histograms'][category] %}
             "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
             {% endfor %}
         {%- endfor %}
             else -> null
         }
     }
+{% endif %}
 }
