@@ -47,6 +47,50 @@ gfx.content.checkerboard:
       - CHANGE-ME@example.com
     expires: 2100-01-01
 
+gfx.info.adapter:
+  vendor_id:
+    type: string
+    gecko_datapoint: gfx_adapter.vendor_id
+    lifetime: application
+    description: >
+      A sample string metric. It's a string scalar exported from Gecko.
+    bugs:
+      - 1579365
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
+  stand_alone:
+    type: boolean
+    gecko_datapoint: gfx_adapter.stand_alone
+    lifetime: application
+    description: >
+      A sample boolean metric. It's a boolean scalar exported from Gecko.
+    bugs:
+      - 1579365
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
+  screen_width:
+    type: quantity
+    gecko_datapoint: gfx_adapter.width
+    unit: pixel
+    lifetime: application
+    description: >
+      A sample quantity metric. It's a uint scalar exported from Gecko.
+    bugs:
+      - 1579365
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
 non.gecko.metrics:
   app_load_time:
     type: timing_distribution

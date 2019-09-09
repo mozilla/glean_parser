@@ -176,7 +176,9 @@ def test_gecko_datapoints(tmpdir):
         {"allow_reserved": True},
     )
 
-    metrics_files = ["GfxContentCheckerboard.kt", "PagePerf.kt", "NonGeckoMetrics.kt"]
+    metrics_files = [
+        "GfxContentCheckerboard.kt", "GfxInfoAdapter.kt", "PagePerf.kt", "NonGeckoMetrics.kt"
+    ]
     assert set(x.name for x in tmpdir.iterdir()) == set(
         ["GleanGeckoMetricsMapping.kt"] + metrics_files
     )
@@ -187,11 +189,11 @@ def test_gecko_datapoints(tmpdir):
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count("import Bar.private.HistogramMetricBase") == 1
 
-        # Validate the generated Gecko metric mapper Kotlin operator.
+        # Validate the generated Gecko metric mapper Kotlin functions.
         # NOTE: Indentation, whitespaces  and text formatting of the block
         # below are important. Do not change them unless the file format
         # changes, otherwise validation will fail.
-        expected_operator = """    operator fun get(geckoMetricName: String): HistogramMetricBase? {
+        expected_func = """    fun getHistogram(geckoMetricName: String): HistogramMetricBase? {
         return when (geckoMetricName) {
             // From GfxContentCheckerboard.kt
             "CHECKERBOARD_DURATION" -> GfxContentCheckerboard.duration
@@ -202,7 +204,37 @@ def test_gecko_datapoints(tmpdir):
         }
     }"""
 
-        assert expected_operator in content
+        assert expected_func in content
+
+        expected_func = """    fun getBooleanScalar(geckoMetricName: String): BooleanMetricType? {
+        return when (geckoMetricName) {
+            // From GfxInfoAdapter.kt
+            "gfx_adapter.stand_alone" -> GfxInfoAdapter.standAlone
+            else -> null
+        }
+    }"""
+
+        assert expected_func in content
+
+        expected_func = """    fun getStringScalar(geckoMetricName: String): StringMetricType? {
+        return when (geckoMetricName) {
+            // From GfxInfoAdapter.kt
+            "gfx_adapter.vendor_id" -> GfxInfoAdapter.vendorId
+            else -> null
+        }
+    }"""
+
+        assert expected_func in content
+
+        expected_func = """    fun getQuantityScalar(geckoMetricName: String): QuantityMetricType? {
+        return when (geckoMetricName) {
+            // From GfxInfoAdapter.kt
+            "gfx_adapter.width" -> GfxInfoAdapter.screenWidth
+            else -> null
+        }
+    }"""
+
+        assert expected_func in content
 
     for file_name in metrics_files:
         with open(tmpdir / file_name, "r", encoding="utf-8") as fd:
