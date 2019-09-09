@@ -19,10 +19,10 @@ import {{ glean_namespace }}.private.HistogramMetricBase // ktlint-disable impor
  * This class performs the mapping between Gecko Histograms and Glean SDK
  * metric types.
  */
-internal object GleanGeckoHistogramMapping {
-    // Support exfiltration of Gecko metrics from products using both the
+internal object GleanGeckoMetricsMapping {
+    // Support exfiltration of Gecko histograms from products using both the
     // Glean SDK and GeckoView. See bug 1566356 for more context.
-    operator fun get(geckoMetricName: String): HistogramMetricBase? {
+    operator fun getHistogram(geckoMetricName: String): HistogramMetricBase? {
         return when (geckoMetricName) {
         {% for category in gecko_metrics.keys()|sort %}
             // From {{ category|Camelize }}.kt

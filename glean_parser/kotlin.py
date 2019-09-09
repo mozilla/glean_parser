@@ -144,7 +144,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
         # are found.
         return
 
-    filepath = output_dir / "GleanGeckoHistogramMapping.kt"
+    filepath = output_dir / "GleanGeckoMetricsMapping.kt"
     with open(filepath, "w", encoding="utf-8") as fd:
         fd.write(
             template.render(

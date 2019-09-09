@@ -178,11 +178,11 @@ def test_gecko_datapoints(tmpdir):
 
     metrics_files = ["GfxContentCheckerboard.kt", "PagePerf.kt", "NonGeckoMetrics.kt"]
     assert set(x.name for x in tmpdir.iterdir()) == set(
-        ["GleanGeckoHistogramMapping.kt"] + metrics_files
+        ["GleanGeckoMetricsMapping.kt"] + metrics_files
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / "GleanGeckoHistogramMapping.kt", "r", encoding="utf-8") as fd:
+    with open(tmpdir / "GleanGeckoMetricsMapping.kt", "r", encoding="utf-8") as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count("import Bar.private.HistogramMetricBase") == 1
