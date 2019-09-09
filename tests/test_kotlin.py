@@ -177,7 +177,8 @@ def test_gecko_datapoints(tmpdir):
     )
 
     metrics_files = [
-        "GfxContentCheckerboard.kt", "GfxInfoAdapter.kt", "PagePerf.kt", "NonGeckoMetrics.kt"
+        "GfxContentCheckerboard.kt", "GfxInfoAdapter.kt", "PagePerf.kt",
+        "NonGeckoMetrics.kt"
     ]
     assert set(x.name for x in tmpdir.iterdir()) == set(
         ["GleanGeckoMetricsMapping.kt"] + metrics_files
