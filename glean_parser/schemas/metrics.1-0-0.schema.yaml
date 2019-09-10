@@ -370,7 +370,7 @@ definitions:
       gecko_datapoint:
         title: Gecko Datapoint
         description: |
-          This is a Gecko-specific property. It is the name of the Gecko histogram to
+          This is a Gecko-specific property. It is the name of the Gecko metric to
           accumulate the data from, when using the Glean SDK in a product using GeckoView.
           See bug 1566356 for more context.
 
@@ -477,10 +477,12 @@ additionalProperties:
                   - custom_distribution
                   - memory_distribution
                   - quantity
+                  - boolean
+                  - string
         then:
           description: |
             `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
-            `memory_distribution` and `quantity`.
+            `memory_distribution`, `quantity`, `boolean` and `string`.
           properties:
             gecko_datapoint:
               maxLength: 0

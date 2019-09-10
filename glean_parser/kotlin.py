@@ -119,32 +119,46 @@ def output_gecko_lookup(objs, output_dir, options={}):
     glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
 
     # Build a dictionary that contains data for metrics that are
-    # histogram-like and contain a gecko_datapoint, with this format:
+    # histogram-like/scalar-like and contain a gecko_datapoint, with this format:
     #
     # {
-    #  "category": [
-    #    {"gecko_datapoint": "the-datapoint", "name": "the-metric-name"},
-    #    ...
-    #  ],
-    #  ...
+    #   "histograms": {
+    #     "category": [
+    #       {"gecko_datapoint": "the-datapoint", "name": "the-metric-name"},
+    #       ...
+    #     ],
+    #     ...
+    #   },
+    #   "boolean": {}
     # }
-    gecko_metrics = defaultdict(list)
+    gecko_metrics = defaultdict(lambda: defaultdict(list))
+
+    # Define scalar-like types.
+    SCALAR_LIKE_TYPES = ["boolean", "string", "quantity"]
 
     for category_key, category_val in objs.items():
         # Support exfiltration of Gecko metrics from products using both the
         # Glean SDK and GeckoView. See bug 1566356 for more context.
         for metric in category_val.values():
-            if getattr(metric, "gecko_datapoint", False):
-                gecko_metrics[category_key].append(
-                    {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
-                )
+            # This is not a Gecko metric, skip it.
+            if not getattr(metric, "gecko_datapoint", False):
+                continue
+
+            # Put scalars in their own categories, histogram-like in "histograms".
+            type_category = (
+                "histograms" if metric.type not in SCALAR_LIKE_TYPES else metric.type
+            )
+
+            gecko_metrics[type_category][category_key].append(
+                {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
+            )
 
     if not gecko_metrics:
         # Bail out and don't create a file if no gecko metrics
         # are found.
         return
 
-    filepath = output_dir / "GleanGeckoHistogramMapping.kt"
+    filepath = output_dir / "GleanGeckoMetricsMapping.kt"
     with open(filepath, "w", encoding="utf-8") as fd:
         fd.write(
             template.render(
