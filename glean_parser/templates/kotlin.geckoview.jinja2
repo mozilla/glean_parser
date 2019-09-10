@@ -19,71 +19,83 @@ import {{ glean_namespace }}.private.StringMetricType // ktlint-disable import-o
 import {{ glean_namespace }}.private.QuantityMetricType // ktlint-disable import-ordering no-unused-imports
 
 /*
- * This class performs the mapping between Gecko Histograms and Glean SDK
+ * This class performs the mapping between Gecko metrics and Glean SDK
  * metric types.
  */
 internal object GleanGeckoMetricsMapping {
     // Support exfiltration of Gecko histograms from products using both the
     // Glean SDK and GeckoView. See bug 1566356 for more context.
+    @Suppress("UNUSED_PARAMETER")
     fun getHistogram(geckoMetricName: String): HistogramMetricBase? {
-        return when (geckoMetricName) {
     {% if 'histograms' in gecko_metrics %}
+        return when (geckoMetricName) {
         {% for category in gecko_metrics['histograms'].keys()|sort %}
             // From {{ category|Camelize }}.kt
             {% for metric in gecko_metrics['histograms'][category] %}
             "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
             {% endfor %}
         {%- endfor %}
-    {% endif %}
             else -> null
         }
+    {% else %}
+        return null
+    {% endif %}
     }
 
     // Support exfiltration of Gecko boolean scalars from products using both the
     // Glean SDK and GeckoView. See bug 1579365 for more context.
+    @Suppress("UNUSED_PARAMETER")
     fun getBooleanScalar(geckoMetricName: String): BooleanMetricType? {
-        return when (geckoMetricName) {
     {% if 'boolean' in gecko_metrics %}
+        return when (geckoMetricName) {
         {% for category in gecko_metrics['boolean'].keys()|sort %}
             // From {{ category|Camelize }}.kt
             {% for metric in gecko_metrics['boolean'][category] %}
             "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
             {% endfor %}
         {%- endfor %}
-    {% endif %}
             else -> null
         }
+    {% else %}
+        return null
+    {% endif %}
     }
 
     // Support exfiltration of Gecko string scalars from products using both the
     // Glean SDK and GeckoView. See bug 1579365 for more context.
+    @Suppress("UNUSED_PARAMETER")
     fun getStringScalar(geckoMetricName: String): StringMetricType? {
-        return when (geckoMetricName) {
     {% if 'string' in gecko_metrics %}
+        return when (geckoMetricName) {
         {% for category in gecko_metrics['string'].keys()|sort %}
             // From {{ category|Camelize }}.kt
             {% for metric in gecko_metrics['string'][category] %}
             "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
             {% endfor %}
         {%- endfor %}
-    {% endif %}
             else -> null
         }
+    {% else %}
+        return null
+    {% endif %}
     }
 
     // Support exfiltration of Gecko quantity scalars from products using both the
     // Glean SDK and GeckoView. See bug 1579365 for more context.
+    @Suppress("UNUSED_PARAMETER")
     fun getQuantityScalar(geckoMetricName: String): QuantityMetricType? {
-        return when (geckoMetricName) {
     {% if 'quantity' in gecko_metrics %}
+        return when (geckoMetricName) {
         {% for category in gecko_metrics['quantity'].keys()|sort %}
             // From {{ category|Camelize }}.kt
             {% for metric in gecko_metrics['quantity'][category] %}
             "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
             {% endfor %}
         {%- endfor %}
-    {% endif %}
             else -> null
         }
+    {% else %}
+        return null
+    {% endif %}
     }
 }
