@@ -11,13 +11,14 @@ High-level interface for translating `metrics.yaml` into other formats.
 from pathlib import Path
 import os
 import shutil
-import sys
 import tempfile
 
+from . import lint
 from . import parser
 from . import kotlin
 from . import markdown
 from . import swift
+from . import util
 
 
 # Each outputter in the table has the following keys:
@@ -49,12 +50,11 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
         raise ValueError(f"Unknown output format '{output_format}'")
 
     all_objects = parser.parse_objects(input_filepaths, parser_config)
-    found_error = False
-    for error in all_objects:
-        found_error = True
-        print("=" * 78, file=sys.stderr)
-        print(error, file=sys.stderr)
-    if found_error:
+
+    if util.report_validation_errors(all_objects):
+        return 1
+
+    if lint.lint_metrics(all_objects.value):
         return 1
 
     # Write everything out to a temporary directory, and then move it to the

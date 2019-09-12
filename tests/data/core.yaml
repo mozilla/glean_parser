@@ -18,6 +18,8 @@ telemetry:
     send_in_pings:
       - core
     expires: 2100-01-01
+    no_lint:
+      - TYPE_IN_NAME
 
 core_ping:
   seq:
@@ -227,6 +229,8 @@ environment:
     send_in_pings:
       - core
     expires: 2100-01-01
+    no_lint:
+    - TYPE_IN_NAME
 
   default_search:
     type: string
@@ -304,6 +308,8 @@ environment:
       key2:
         description: "This is key two"
     expires: 2100-01-01
+    no_lint:
+    - TYPE_IN_NAME
 
   event_no_keys:
     type: event
@@ -316,6 +322,8 @@ environment:
     notification_emails:
       - CHANGE-ME@example.com
     expires: 2100-01-01
+    no_lint:
+    - TYPE_IN_NAME
 
 dotted.category:
   metric:
