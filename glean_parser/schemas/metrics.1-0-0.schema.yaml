@@ -480,11 +480,11 @@ additionalProperties:
                   - boolean
                   - string
         then:
-          description: |
-            `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
-            `memory_distribution`, `quantity`, `boolean` and `string`.
           properties:
             gecko_datapoint:
+              description: |
+                `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
+                `memory_distribution`, `quantity`, `boolean` and `string`.
               maxLength: 0
       -
         if:
