@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Provides a helpful error message when `geckoview_datapoint` is used on an metric type that doesn't support GeckoView exfiltration.
+
 1.4.1 (2019-08-28)
 ------------------
 

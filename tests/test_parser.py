@@ -289,6 +289,7 @@ def test_geckoview_only_on_valid_metrics():
     all_metrics = parser.parse_objects(contents)
     errs = list(all_metrics)
     assert len(errs) == 1
+    assert "is only allowed for" in str(errs[0])
 
 
 def test_all_pings_reserved():
