@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import re
 import sys
 
 
@@ -10,12 +11,16 @@ from . import parser
 from . import util
 
 
+def _split_words(name):
+    return re.split("[._]", name)
+
+
 def check_category_in_name(metric):
     """
     The same word appears in both the category and the name.
     """
-    category_words = metric.category.split("_")
-    name_words = metric.name.split("_")
+    category_words = _split_words(metric.category)
+    name_words = _split_words(metric.name)
 
     for word in category_words:
         if word in name_words:
@@ -43,7 +48,7 @@ def check_unit_in_name(metric):
         "gigabyte": "gb",
     }
 
-    name_words = metric.name.split("_")
+    name_words = _split_words(metric.name)
     unit_in_name = name_words[-1]
 
     if hasattr(metric, "time_unit"):
@@ -121,7 +126,7 @@ def check_type_in_name(metric):
         "custom_distribution": ["histogram", "distribution", "hist", "dist"],
     }
 
-    name_words = metric.name.split("_")
+    name_words = _split_words(metric.name)
     disallowed_words = [metric.type] + SYNONYMS.get(metric.type, [])
     if metric.type.startswith("labeled_"):
         prefix_length = len("labeled_")
@@ -140,7 +145,7 @@ def check_geckoview_in_name(metric):
     """
     The metric includes 'gv' when it's a GeckoView metric.
     """
-    name_words = metric.name.split("_")
+    name_words = _split_words(metric.name)
     if getattr(metric, "gecko_datapoint", False) and "gv" in name_words:
         yield f"Name contains 'gv' which is redundant with gecko_datapoint param."
 
