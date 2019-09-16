@@ -110,6 +110,27 @@ def test_parser_schema_violation():
 
             See https://mozilla.github.io/glean_parser/metrics-yaml.html
         """,
+        """
+        ```
+        gleantest.with.way.too.long.category.name
+        ...
+        ```
+
+        'gleantest.with.way.too.long.category.name' is not valid under any of
+        the given schemas
+        'gleantest.with.way.too.long.category.name' is too long
+        'gleantest.with.way.too.long.category.name' is not one of
+        ['$schema']
+        """,
+        """
+        ```
+        gleantest.short.category:very_long_metric_name_this_is_too_long_s_well
+        ```
+
+        'very_long_metric_name_this_is_too_long_s_well' is not valid under any
+        of the given schemas
+        'very_long_metric_name_this_is_too_long_s_well' is too long
+        """,
     ]
 
     expected_errors = set(
