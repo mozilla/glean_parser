@@ -31,6 +31,26 @@ page.perf:
       - CHANGE-ME@example.com
     expires: 2100-01-01
 
+  dom_script_preload:
+    type: labeled_counter
+    gecko_datapoint: DOM_SCRIPT_PRELOAD_RESULT
+    labels:
+      - used
+      - rejected_by_policy
+      - request_mismatch
+      - load_error
+      - not_used
+    lifetime: application
+    description: >
+      A sample categorical metric exported from Gecko.
+    bugs:
+      - 1571740
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+
 gfx.content.checkerboard:
   duration:
     type: timing_distribution

@@ -209,6 +209,18 @@ def test_gecko_datapoints(tmpdir):
 
         assert expected_func in content
 
+        expected_func = """    fun getCategoricalMetric(
+        geckoMetricName: String
+    ): LabeledMetricType<CounterMetricType>? {
+        return when (geckoMetricName) {
+            // From PagePerf.kt
+            "DOM_SCRIPT_PRELOAD_RESULT" -> PagePerf.domScriptPreload
+            else -> null
+        }
+    }"""
+
+        assert expected_func in content
+
         expected_func = """    fun getBooleanScalar(geckoMetricName: String): BooleanMetricType? {
         return when (geckoMetricName) {
             // From GfxInfoAdapter.kt

@@ -42,6 +42,27 @@ internal object GleanGeckoMetricsMapping {
     {% endif %}
     }
 
+    // Support exfiltration of Gecko categorical histograms from products using
+    // both the Glean SDK and GeckoView. See bug 1571740 for more context.
+    @Suppress("UNUSED_PARAMETER")
+    fun getCategoricalMetric(
+        geckoMetricName: String
+    ): LabeledMetricType<CounterMetricType>? {
+    {% if 'categoricals' in gecko_metrics %}
+        return when (geckoMetricName) {
+        {% for category in gecko_metrics['categoricals'].keys()|sort %}
+            // From {{ category|Camelize }}.kt
+            {% for metric in gecko_metrics['categoricals'][category] %}
+            "{{ metric.gecko_datapoint }}" -> {{ category|Camelize }}.{{ metric.name|camelize }}
+            {% endfor %}
+        {%- endfor %}
+            else -> null
+        }
+    {% else %}
+        return null
+    {% endif %}
+    }
+
     // Support exfiltration of Gecko boolean scalars from products using both the
     // Glean SDK and GeckoView. See bug 1579365 for more context.
     @Suppress("UNUSED_PARAMETER")

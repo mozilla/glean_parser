@@ -474,12 +474,13 @@ additionalProperties:
                   - quantity
                   - boolean
                   - string
+                  - labeled_counter
         then:
           properties:
             gecko_datapoint:
               description: |
                 `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
-                `memory_distribution`, `quantity`, `boolean` and `string`.
+                `memory_distribution`, `quantity`, `boolean`, `string` and `labeled_counter`.
               maxLength: 0
       -
         if:
