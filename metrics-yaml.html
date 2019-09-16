@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.5.2.dev1+g32df6f0 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.5.2.dev2+g5607532 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -279,15 +279,10 @@ entirety below:</p>
       <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>
       <span class="p p-Indicator">-</span> <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
 
-  <span class="nt">very_short_id</span><span class="p">:</span>
-    <span class="nt">allOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
-
   <span class="nt">labeled_metric_id</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_-]{0,29}(\\.[a-z0-9_-]{0,29})*$&quot;</span>
-    <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">61</span>
+    <span class="nt">maxLength</span><span class="p">:</span> <span class="nt">71 # Note</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">this should be category + metric + 1</span>
 
   <span class="nt">metric</span><span class="p">:</span>
     <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
@@ -699,7 +694,7 @@ entirety below:</p>
   <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
   <span class="nt">propertyNames</span><span class="p">:</span>
     <span class="nt">anyOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/very_short_id&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/short_id&quot;</span>
   <span class="nt">additionalProperties</span><span class="p">:</span>
     <span class="nt">allOf</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/metric&quot;</span>
