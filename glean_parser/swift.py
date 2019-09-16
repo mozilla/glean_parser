@@ -108,15 +108,7 @@ def output_swift(objs, output_dir, options={}):
         "send_in_pings",
         "lifetime",
         "disabled",
-        "allowed_extra_keys",
-        "bucket_count",
-        "denominator",
-        "histogram_type",
-        "include_client_id",
-        "range_max",
-        "range_min",
         "time_unit",
-        "values",
     ]
 
     for category_key, category_val in objs.items():
