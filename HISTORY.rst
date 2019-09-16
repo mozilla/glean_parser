@@ -10,6 +10,8 @@ Unreleased
 1.6.0 (2019-09-17)
 ------------------
 
+* NEW: Support for outputting metrics in Swift.
+
 * BUGFIX: Provides a helpful error message when `geckoview_datapoint` is used on an metric type that doesn't support GeckoView exfiltration.
 
 * Generate a lookup table for Gecko categorical histograms in `GleanGeckoMetricsMapping`.
