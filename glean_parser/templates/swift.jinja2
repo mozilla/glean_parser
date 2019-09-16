@@ -21,7 +21,7 @@ import Glean
 internal class {{ category_name|Camelize }} {
   public let shared = {{ category_name|Camelize }}()
   private init() {
-    // intentionally left private, no external user can instantiate a new global object.
+    // Intentionally left private, no external user can instantiate a new global object.
   }
 
 {% for obj in objs.values() %}
