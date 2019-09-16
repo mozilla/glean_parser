@@ -12,19 +12,34 @@ from . import util
 
 
 def _split_words(name):
+    """
+    Helper function to split words on either `.` or `_`.
+    """
     return re.split("[._]", name)
 
 
-def check_category_in_name(metric):
+def check_common_prefix(category_name, metrics):
     """
-    The same word appears in both the category and the name.
+    Check if all metrics begin with a common prefix.
     """
-    category_words = _split_words(metric.category)
-    name_words = _split_words(metric.name)
+    metric_words = sorted([_split_words(metric.name) for metric in metrics])
 
-    for word in category_words:
-        if word in name_words:
-            yield f"'{word}' appears in both category and name."
+    if len(metric_words) < 2:
+        return
+
+    first = metric_words[0]
+    last = metric_words[-1]
+
+    for i in range(min(len(first), len(last))):
+        if first[i] != last[i]:
+            break
+
+    if i > 0:
+        common_prefix = "_".join(first[:i])
+        yield (
+            f"Within category '{category_name}', all metrics begin with prefix "
+            f"'{common_prefix}'. Remove prefixes and (possibly) rename category."
+        )
 
 
 def check_unit_in_name(metric):
@@ -90,131 +105,90 @@ def check_unit_in_name(metric):
     elif hasattr(metric, "unit"):
         if unit_in_name == metric.unit:
             yield (
-                f"Suffix '{unit_in_name}' is redundant with unit param."
+                f"Suffix '{unit_in_name}' is redundant with unit param. "
                 "Only include unit."
             )
 
 
-def check_type_in_name(metric):
-    """
-    The metric name contains a word relating to its type.
-    """
-    SYNONYMS = {
-        "timing_distribution": [
-            "time",
-            "timing",
-            "histogram",
-            "distribution",
-            "hist",
-            "dist",
-        ],
-        "timespan": ["time", "duration"],
-        "datetime": ["time", "date"],
-        "boolean": ["bool"],
-        "string": ["str"],
-        "string_list": ["string", "str"],
-        "counter": ["count"],
-        "uuid": ["id"],
-        "memory_distribution": [
-            "memory",
-            "mem",
-            "histogram",
-            "distribution",
-            "hist",
-            "dist",
-        ],
-        "custom_distribution": ["histogram", "distribution", "hist", "dist"],
-    }
-
-    name_words = _split_words(metric.name)
-    disallowed_words = [metric.type] + SYNONYMS.get(metric.type, [])
-    if metric.type.startswith("labeled_"):
-        prefix_length = len("labeled_")
-        base_type = metric.type[prefix_length:]
-        disallowed_words += [base_type] + SYNONYMS.get(base_type, [])
-
-    for word in name_words:
-        if word in disallowed_words:
-            yield (
-                f"Name contains word '{word}' which is too "
-                f"similar to its type '{metric.type}'"
-            )
-
-
-def check_geckoview_in_name(metric):
-    """
-    The metric includes 'gv' when it's a GeckoView metric.
-    """
-    name_words = _split_words(metric.name)
-    if getattr(metric, "gecko_datapoint", False) and "gv" in name_words:
-        yield f"Name contains 'gv' which is redundant with gecko_datapoint param."
-
-
-_seen_categories = set()
-
-
-def check_category_generic(metric):
+def check_category_generic(category_name, metrics):
     """
     The category name is too generic.
     """
     GENERIC_CATEGORIES = ["metrics", "events"]
 
-    if (
-        metric.category not in _seen_categories
-        and metric.category in GENERIC_CATEGORIES
-    ):
-        _seen_categories.add(metric.category)
-        yield f"Category '{metric.category}' is too generic."
+    if category_name in GENERIC_CATEGORIES:
+        yield f"Category '{category_name}' is too generic."
 
 
-CHECKS = {
-    "CATEGORY_IN_NAME": check_category_in_name,
-    "UNIT_IN_NAME": check_unit_in_name,
-    "TYPE_IN_NAME": check_type_in_name,
-    "GV_IN_NAME": check_geckoview_in_name,
+CATEGORY_CHECKS = {
+    "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
 }
 
 
-def lint_metrics(objs):
-    violations = []
+INDIVIDUAL_CHECKS = {"UNIT_IN_NAME": check_unit_in_name}
+
+
+def lint_metrics(objs, file=sys.stderr):
+    """
+    Performs glinter checks on a set of metrics objects.
+
+    :param objs: Tree of metric objects, as returns by `parser.parse_objects`.
+    :param file: The stream to write errors to.
+    :returns: List of nits.
+    """
+    nits = []
     for (category_name, metrics) in sorted(list(objs.items())):
+        for (check_name, check_func) in CATEGORY_CHECKS.items():
+            if any(check_name in metric.no_lint for metric in metrics.values()):
+                continue
+            nits.extend(
+                (check_name, category_name, msg)
+                for msg in check_func(category_name, metrics.values())
+            )
         for (metric_name, metric) in sorted(list(metrics.items())):
-            for check_name, check_func in CHECKS.items():
+            for (check_name, check_func) in INDIVIDUAL_CHECKS.items():
                 if check_name in metric.no_lint:
                     continue
-                violations.extend(
-                    (check_name, metric, msg) for msg in check_func(metric)
+                nits.extend(
+                    (check_name, f"{metric.category}.{metric.name}", msg)
+                    for msg in check_func(metric)
                 )
 
-    if len(violations):
-        print("Sorry, Glean found some glinter nits:", file=sys.stderr)
-        for check_name, metric, msg in violations:
-            print(
-                f"{check_name}: {metric.category}.{metric.name}: {msg}", file=sys.stderr
-            )
-        print("", file=sys.stderr)
-        print("Please fix the above nits to continue.", file=sys.stderr)
+    if len(nits):
+        print("Sorry, Glean found some glinter nits:", file=file)
+        for check_name, name, msg in nits:
+            print(f"{check_name}: {name}: {msg}", file=file)
+        print("", file=file)
+        print("Please fix the above nits to continue.", file=file)
         print(
             "To disable a check, add a `no_lint` parameter "
             "with a list of check names to disable.\n"
             "This parameter can appear with each individual metric, or at the "
             "top-level to affect the entire file.",
-            file=sys.stderr,
+            file=file,
         )
-        return True
 
-    return False
+    return nits
 
 
-def glinter(input_filepaths, parser_config={}):
+def glinter(input_filepaths, parser_config={}, file=sys.stderr):
+    """
+    Commandline helper for glinter.
+
+    :param input_filepaths: List of Path objects to load metrics from.
+    :param parser_config: Parser configuration objects, passed to
+      `parser.parse_objects`.
+    :param file: The stream to write the errors to.
+    :return: Non-zero if there were any glinter errors.
+    """
     objs = parser.parse_objects(input_filepaths, parser_config)
 
     if util.report_validation_errors(objs):
         return 1
 
-    if lint_metrics(objs.value):
+    if lint_metrics(objs.value, file=file):
         return 1
 
-    print("✨ Your metrics are Glean! ✨")
+    print("✨ Your metrics are Glean! ✨", file=file)
     return 0

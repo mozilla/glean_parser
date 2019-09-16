@@ -424,20 +424,9 @@ definitions:
         title: Lint checks to skip
         description: |
           This parameter lists any lint checks to skip for this metric only.
-          It is a list of strings, and valid values are:
-
-            - CATEGORY_IN_NAME: The same word appears in both the category and the name.
-            - UNIT_IN_NAME: A unit appears in the name.
-            - TYPE_IN_NAME: The type of the metric (or a close synonym) appears in the name.
-            - GV_IN_NAME: The name includes "gv", which is redundant with gecko_datapoint.
         type: array
         items:
           type: string
-          enum:
-            - CATEGORY_IN_NAME
-            - UNIT_IN_NAME
-            - TYPE_IN_NAME
-            - GV_IN_NAME
 
     required:
       - type
@@ -467,18 +456,9 @@ properties:
     title: Lint checks to skip globally
     description: |
       This parameter lists any lint checks to skip for this whole file.
-      It is a list of strings, and valid values are:
-
-      - CATEGORY_GENERIC: The category name is too generic.
     type: array
     items:
       type: string
-      enum:
-        - CATEGORY_GENERIC
-        - CATEGORY_IN_NAME
-        - UNIT_IN_NAME
-        - TYPE_IN_NAME
-        - GV_IN_NAME
 
 additionalProperties:
   type: object

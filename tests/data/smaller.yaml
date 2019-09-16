@@ -17,5 +17,3 @@ telemetry:
     send_in_pings:
       - core
     expires: 2100-01-01
-    no_lint:
-      - TYPE_IN_NAME

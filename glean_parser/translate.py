@@ -11,6 +11,7 @@ High-level interface for translating `metrics.yaml` into other formats.
 from pathlib import Path
 import os
 import shutil
+import sys
 import tempfile
 
 from . import lint
@@ -55,7 +56,10 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
         return 1
 
     if lint.lint_metrics(all_objects.value):
-        return 1
+        print(
+            "NOTE: These warnings will become errors in a future release of Glean.",
+            file=sys.stderr,
+        )
 
     # Write everything out to a temporary directory, and then move it to the
     # real directory, for transactional integrity.
