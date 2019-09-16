@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.5.2.dev2+g5607532 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.5.2.dev7+g591b2a5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -52,6 +52,7 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">parser</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">kotlin</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">markdown</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">swift</span>
 
 
 <span class="c1"># Each outputter in the table has the following keys:</span>
@@ -62,6 +63,7 @@
 <span class="n">OUTPUTTERS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
     <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
 <span class="p">}</span>
 
 

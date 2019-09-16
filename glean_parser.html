@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.5.2.dev2+g5607532 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.5.2.dev7+g591b2a5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -808,6 +808,54 @@ of the <cite>pings.Ping</cite> instances.</p>
 <code class="descname">type</code><em class="property"> = 'ping'</em><a class="headerlink" href="#glean_parser.pings.Ping.type" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+</div>
+<div class="section" id="module-glean_parser.swift">
+<span id="glean-parser-swift-module"></span><h2>glean_parser.swift module<a class="headerlink" href="#module-glean_parser.swift" title="Permalink to this headline">¶</a></h2>
+<p>Outputter to generate Swift code for metrics.</p>
+<dl class="function">
+<dt id="glean_parser.swift.class_name">
+<code class="descclassname">glean_parser.swift.</code><code class="descname">class_name</code><span class="sig-paren">(</span><em>obj_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/swift.html#class_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.swift.class_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Swift class name for a given metric or ping type.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.swift.output_swift">
+<code class="descclassname">glean_parser.swift.</code><code class="descname">output_swift</code><span class="sig-paren">(</span><em>objs</em>, <em>output_dir</em>, <em>options={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/swift.html#output_swift"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.swift.output_swift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Swift code to <cite>output_dir</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
+</tr>
+</tbody>
+</table>
+<p><cite>parser.parse_objects</cite>.
+:param output_dir: Path to an output directory to write to.
+:param options: options dictionary, with the following optional keys:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.swift.swift_datatypes_filter">
+<code class="descclassname">glean_parser.swift.</code><code class="descname">swift_datatypes_filter</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/swift.html#swift_datatypes_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.swift.swift_datatypes_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Jinja2 filter that renders Swift literals.</p>
+<dl class="docutils">
+<dt>Based on Python’s JSONEncoder, but overrides:</dt>
+<dd><ul class="first last simple">
+<li>dicts to use <cite>[key: value]</cite></li>
+<li>sets to use <cite>[…]</cite></li>
+<li>enums to use the like-named Swift enum</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.swift.type_name">
+<code class="descclassname">glean_parser.swift.</code><code class="descname">type_name</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/swift.html#type_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.swift.type_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Swift type to use for a given metric or ping object.</p>
 </dd></dl>
 
 </div>

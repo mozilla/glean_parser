@@ -44,6 +44,14 @@ glean\_parser.pings module
     :undoc-members:
     :show-inheritance:
 
+glean\_parser.swift module
+--------------------------
+
+.. automodule:: glean_parser.swift
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 glean\_parser.translate module
 ------------------------------
 
