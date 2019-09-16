@@ -47,10 +47,10 @@ def test_parser(tmpdir):
         content = fd.read()
         assert 'category: ""' in content
 
-    # Only run this test if ktlint is on the path
-    if shutil.which("ktlint"):
+    # Only run this test if swiftlint is on the path
+    if shutil.which("swiftlint"):
         for filepath in tmpdir.glob("*.swift"):
-            subprocess.check_call(["ktlint", filepath])
+            subprocess.check_call(["swiftlint", "lint", filepath])
 
 
 def test_swift_generator():
