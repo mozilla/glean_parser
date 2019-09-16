@@ -17,6 +17,7 @@ import tempfile
 from . import parser
 from . import kotlin
 from . import markdown
+from . import swift
 
 
 # Each outputter in the table has the following keys:
@@ -27,6 +28,7 @@ from . import markdown
 OUTPUTTERS = {
     "kotlin": {"output_func": kotlin.output_kotlin, "clear_output_dir": True},
     "markdown": {"output_func": markdown.output_markdown, "clear_output_dir": False},
+    "swift": {"output_func": swift.output_swift, "clear_output_dir": True},
 }
 
 
