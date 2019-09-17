@@ -129,7 +129,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
     #     ],
     #     ...
     #   },
-    #   "boolean": {}
+    #   "other-type": {}
     # }
     gecko_metrics = defaultdict(lambda: defaultdict(list))
 
@@ -144,10 +144,15 @@ def output_gecko_lookup(objs, output_dir, options={}):
             if not getattr(metric, "gecko_datapoint", False):
                 continue
 
-            # Put scalars in their own categories, histogram-like in "histograms".
-            type_category = (
-                "histograms" if metric.type not in SCALAR_LIKE_TYPES else metric.type
-            )
+            # Put scalars in their own categories, histogram-like in "histograms" and
+            # categorical histograms in "categoricals".
+            type_category = "histograms"
+            if metric.type in SCALAR_LIKE_TYPES:
+                type_category = metric.type
+            elif metric.type == "labeled_counter":
+                # Labeled counters with a 'gecko_datapoint' property
+                # are categorical histograms.
+                type_category = "categoricals"
 
             gecko_metrics[type_category][category_key].append(
                 {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
