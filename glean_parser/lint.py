@@ -81,7 +81,7 @@ def check_unit_in_name(metric):
         ):
             yield (
                 f"Suffix '{unit_in_name}' doesn't match time_unit. "
-                "Only include time_unit."
+                "Confirm the unit is correct and only include time_unit."
             )
 
     elif hasattr(metric, "memory_unit"):
@@ -99,7 +99,7 @@ def check_unit_in_name(metric):
         ):
             yield (
                 f"Suffix '{unit_in_name}' doesn't match memory_unit. "
-                "Only include memory_unit."
+                "Confirm the unit is correct and only include memory_unit."
             )
 
     elif hasattr(metric, "unit"):
