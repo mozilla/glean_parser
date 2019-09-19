@@ -139,6 +139,9 @@ def lint_metrics(objs, file=sys.stderr):
     """
     nits = []
     for (category_name, metrics) in sorted(list(objs.items())):
+        if category_name == "pings":
+            continue
+
         for (check_name, check_func) in CATEGORY_CHECKS.items():
             if any(check_name in metric.no_lint for metric in metrics.values()):
                 continue
