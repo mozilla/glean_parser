@@ -136,6 +136,9 @@ class Metric:
     # with GeckoView metrics. See bug 1566356 for more context.
     gecko_datapoint: str = ""
 
+    # Lint checks to disable for this metric.
+    no_lint: List[str] = field(default_factory=list)
+
     # Implementation detail -- these are parameters to the constructor that
     # aren't stored in the dataclass object.
     _config: InitVar[dict] = {}
@@ -189,7 +192,7 @@ class TimeUnit(enum.Enum):
     millisecond = 2
     second = 3
     minute = 4
-    hours = 5
+    hour = 5
     day = 6
 
 

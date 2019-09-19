@@ -12,6 +12,7 @@ import sys
 
 import click
 
+from . import lint
 from . import translate as mod_translate
 from . import validate_ping
 
@@ -94,6 +95,27 @@ def check(schema):
     )
 
 
+@click.command()
+@click.argument(
+    "input",
+    type=click.Path(exists=False, dir_okay=False, file_okay=True, readable=True),
+    nargs=-1,
+)
+@click.option(
+    "--allow-reserved",
+    is_flag=True,
+    help=(
+        "If provided, allow the use of reserved fields. "
+        "Should only be set when building the Glean library itself."
+    ),
+)
+def glinter(input, allow_reserved):
+    """
+    Runs a linter over the metrics to suggest ways that naming could be improved.
+    """
+    sys.exit(lint.glinter([Path(x) for x in input], {"allow_reserved": allow_reserved}))
+
+
 @click.group()
 def main(args=None):
     """Command line utility for glean_parser."""
@@ -102,6 +124,7 @@ def main(args=None):
 
 main.add_command(translate)
 main.add_command(check)
+main.add_command(glinter)
 
 
 if __name__ == "__main__":

@@ -139,8 +139,12 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
     Load a list of metrics.yaml files, convert the JSON information into Metric
     objects, and merge them into a single tree.
     """
+    global_no_lint = content.get("no_lint", [])
+
     for category_key, category_val in content.items():
         if category_key.startswith("$"):
+            continue
+        if category_key == "no_lint":
             continue
         if not config.get("allow_reserved") and category_key.split(".")[0] == "glean":
             yield util.format_error(
@@ -173,6 +177,9 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                         f'in "send_in_pings"',
                     )
                     metric_obj = None
+
+            if metric_obj is not None:
+                metric_obj.no_lint = list(set(metric_obj.no_lint + global_no_lint))
 
             already_seen = sources.get((category_key, metric_key))
             if already_seen is not None:

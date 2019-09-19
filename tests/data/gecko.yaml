@@ -50,6 +50,8 @@ page.perf:
     notification_emails:
       - CHANGE-ME@example.com
     expires: 2100-01-01
+    no_lint:
+      - TYPE_IN_NAME
 
 gfx.content.checkerboard:
   duration:

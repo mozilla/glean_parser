@@ -284,3 +284,15 @@ def validate_expires(expires):
     if expires in ("never", "expired"):
         return
     datetime.date.fromisoformat(expires)
+
+
+def report_validation_errors(all_objects):
+    """
+    Report any validation errors found to the console.
+    """
+    found_error = False
+    for error in all_objects:
+        found_error = True
+        print("=" * 78, file=sys.stderr)
+        print(error, file=sys.stderr)
+    return found_error

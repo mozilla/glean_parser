@@ -14,10 +14,12 @@ import shutil
 import sys
 import tempfile
 
+from . import lint
 from . import parser
 from . import kotlin
 from . import markdown
 from . import swift
+from . import util
 
 
 # Each outputter in the table has the following keys:
@@ -49,13 +51,15 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
         raise ValueError(f"Unknown output format '{output_format}'")
 
     all_objects = parser.parse_objects(input_filepaths, parser_config)
-    found_error = False
-    for error in all_objects:
-        found_error = True
-        print("=" * 78, file=sys.stderr)
-        print(error, file=sys.stderr)
-    if found_error:
+
+    if util.report_validation_errors(all_objects):
         return 1
+
+    if lint.lint_metrics(all_objects.value):
+        print(
+            "NOTE: These warnings will become errors in a future release of Glean.",
+            file=sys.stderr,
+        )
 
     # Write everything out to a temporary directory, and then move it to the
     # real directory, for transactional integrity.
