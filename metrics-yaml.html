@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.6.2.dev1+ga8f73df documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.6.2.dev7+g19b53e8 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -666,6 +666,14 @@ entirety below:</p>
           <span class="no">effect on data collection.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
+      <span class="nt">no_lint</span><span class="p">:</span>
+        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip</span>
+        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+          <span class="no">This parameter lists any lint checks to skip for this metric only.</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+        <span class="nt">items</span><span class="p">:</span>
+          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+
     <span class="nt">required</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">type</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bugs</span>
@@ -689,6 +697,14 @@ entirety below:</p>
   <span class="nt">$schema</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
+
+  <span class="nt">no_lint</span><span class="p">:</span>
+    <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip globally</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">This parameter lists any lint checks to skip for this whole file.</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+    <span class="nt">items</span><span class="p">:</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
 <span class="nt">additionalProperties</span><span class="p">:</span>
   <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>

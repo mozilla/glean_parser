@@ -12,6 +12,14 @@ glean\_parser.kotlin module
     :undoc-members:
     :show-inheritance:
 
+glean\_parser.lint module
+-------------------------
+
+.. automodule:: glean_parser.lint
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 glean\_parser.markdown module
 -----------------------------
 
