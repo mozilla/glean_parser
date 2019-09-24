@@ -5,14 +5,17 @@ History
 Unreleased
 ----------
 
-1.6.1 (2019-09-17)
+1.7.0 (2019-09-24)
 ------------------
-
-* BUGFIX: `GleanGeckoMetricsMapping` must include `LabeledMetricType` and `CounterMetricType`.
 
 * A "`glinter`" tool is now included to find common mistakes in metric naming and setup.
   This check is run during `translate` and warnings will be displayed.
   ⚠ These warnings will be treated as errors in a future revision.
+
+1.6.1 (2019-09-17)
+------------------
+
+* BUGFIX: `GleanGeckoMetricsMapping` must include `LabeledMetricType` and `CounterMetricType`.
 
 1.6.0 (2019-09-17)
 ------------------
