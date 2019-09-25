@@ -168,7 +168,8 @@ def lint_metrics(objs, file=sys.stderr):
                             (
                                 "SUPERFLUOUS_NO_LINT",
                                 f"{metric.category}.{metric.name}",
-                                f"Superfluous no_lint entry '{check_name}'",
+                                f"Superfluous no_lint entry '{check_name}'. "
+                                "Please remove it.",
                             )
                         )
 
