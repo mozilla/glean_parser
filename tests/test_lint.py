@@ -149,3 +149,28 @@ def test_combined():
     assert set(["COMMON_PREFIX", "CATEGORY_GENERIC", "UNIT_IN_NAME"]) == set(
         v[0] for v in nits
     )
+
+
+def test_superfluous():
+    contents = [
+        {
+            "telemetry": {
+                "network_latency": {
+                    "type": "timespan",
+                    "time_unit": "millisecond",
+                    "no_lint": ["UNIT_IN_NAME"],
+                }
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert all(nit[0] == "SUPERFLUOUS_NO_LINT" for nit in nits)
+    assert all("UNIT_IN_NAME" in nit[2] for nit in nits)
