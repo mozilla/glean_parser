@@ -487,3 +487,16 @@ def test_quantity():
     assert len(errors) == 0
     assert len(all_metrics.value) == 1
     all_metrics.value["category"]["metric"].unit == "pixel"
+
+
+def test_do_not_disable_expired():
+    # Test that we get an error for a missing unit and gecko_datapoint
+    contents = [{"category": {"metric": {"type": "boolean", "expires": "1900-01-01"}}}]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents, {"do_not_disable_expired": True})
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    metrics = all_metrics.value
+    assert metrics["category"]["metric"].disabled is False
