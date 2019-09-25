@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Created labeled metrics and events in Swift code and wrap it in a configured namespace
+
 1.8.1 (2019-09-27)
 ------------------
 
