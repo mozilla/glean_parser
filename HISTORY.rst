@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.8.0 (2019-09-26)
+------------------
+
 * A new parser config, `do_not_disable_expired`, was added to turn off the
   feature that expired metrics are automatically disabled. This is useful if you
   want to retain the disabled value that is explicitly in the `metrics.yaml`
