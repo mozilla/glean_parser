@@ -232,13 +232,15 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
             sources[ping_key] = filepath
 
 
-def _preprocess_objects(objs):
+def _preprocess_objects(objs, config):
     """
     Preprocess the object tree to better set defaults.
     """
     for category in objs.values():
         for obj in category.values():
-            if hasattr(obj, "is_disabled"):
+            if not config.get("do_not_disable_expired", False) and hasattr(
+                obj, "is_disabled"
+            ):
                 obj.disabled = obj.is_disabled()
 
             if hasattr(obj, "send_in_pings"):
@@ -274,6 +276,10 @@ def parse_objects(filepaths, config={}):
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
         - `allow_reserved`: Allow values reserved for internal Glean use.
+        - `do_not_disable_expired`: Don't mark expired metrics as disabled.
+          This is useful when you want to retain the original "disabled"
+          value from the `metrics.yaml`, rather than having it overridden when
+          the metric expires.
     """
     all_objects = {}
     sources = {}
@@ -289,4 +295,4 @@ def parse_objects(filepaths, config={}):
                 all_objects, sources, content, filepath, config
             )
 
-    return _preprocess_objects(all_objects)
+    return _preprocess_objects(all_objects, config)
