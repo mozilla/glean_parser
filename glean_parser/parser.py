@@ -277,6 +277,9 @@ def parse_objects(filepaths, config={}):
         Supported keys are:
         - `allow_reserved`: Allow values reserved for internal Glean use.
         - `do_not_disable_expired`: Don't mark expired metrics as disabled.
+          This is useful when you want to retain the original "disabled"
+          value from the `metrics.yaml`, rather than having it overridden when
+          the metric expires.
     """
     all_objects = {}
     sources = {}
