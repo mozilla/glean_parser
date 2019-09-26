@@ -149,14 +149,29 @@ def lint_metrics(objs, file=sys.stderr):
                 (check_name, category_name, msg)
                 for msg in check_func(category_name, metrics.values())
             )
+
         for (metric_name, metric) in sorted(list(metrics.items())):
             for (check_name, check_func) in INDIVIDUAL_CHECKS.items():
-                if check_name in metric.no_lint:
-                    continue
-                nits.extend(
-                    (check_name, f"{metric.category}.{metric.name}", msg)
-                    for msg in check_func(metric)
-                )
+                new_nits = list(check_func(metric))
+                if len(new_nits):
+                    if check_name not in metric.no_lint:
+                        nits.extend(
+                            (check_name, f"{metric.category}.{metric.name}", msg)
+                            for msg in new_nits
+                        )
+                else:
+                    if (
+                        check_name not in CATEGORY_CHECKS
+                        and check_name in metric.no_lint
+                    ):
+                        nits.append(
+                            (
+                                "SUPERFLUOUS_NO_LINT",
+                                f"{metric.category}.{metric.name}",
+                                f"Superfluous no_lint entry '{check_name}'. "
+                                "Please remove it.",
+                            )
+                        )
 
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)

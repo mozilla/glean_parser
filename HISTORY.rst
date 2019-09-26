@@ -10,6 +10,8 @@ Unreleased
   want to retain the disabled value that is explicitly in the `metrics.yaml`
   file.
 
+* `glinter` will now report about superfluous `no_lint` entries.
+
 1.7.0 (2019-09-24)
 ------------------
 
