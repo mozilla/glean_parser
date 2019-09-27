@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: `memory_unit` is now passed to the Kotlin generator.
+
 1.8.0 (2019-09-26)
 ------------------
 
