@@ -210,6 +210,7 @@ def output_kotlin(objs, output_dir, options={}):
         "histogram_type",
         "include_client_id",
         "lifetime",
+        "memory_unit",
         "name",
         "range_max",
         "range_min",
