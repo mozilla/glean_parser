@@ -51,6 +51,8 @@ def swift_datatypes_filter(value):
                     yield from self.iterencode(subvalue)
                     first = False
                 yield "]"
+            elif value is None:
+                yield "nil"
             else:
                 yield from super().iterencode(value)
 
@@ -61,13 +63,12 @@ def type_name(obj):
     """
     Returns the Swift type to use for a given metric or ping object.
     """
-    # TODO: Events are not yet supported
-    # if isinstance(obj, metrics.Event):
-    #     if len(obj.extra_keys):
-    #         enumeration = f"{util.camelize(obj.name)}Keys"
-    #     else:
-    #         enumeration = "noExtraKeys"
-    #     return f"EventMetricType<{enumeration}>"
+    if isinstance(obj, metrics.Event):
+        if len(obj.extra_keys):
+            enumeration = f"{util.Camelize(obj.name)}Keys"
+        else:
+            enumeration = "NoExtraKeys"
+        return f"EventMetricType<{enumeration}>"
     return class_name(obj.type)
 
 
@@ -109,7 +110,11 @@ def output_swift(objs, output_dir, options={}):
         "lifetime",
         "disabled",
         "time_unit",
+        "allowed_extra_keys",
     ]
+
+    namespace = options.get("namespace", "GleanMetrics")
+    glean_namespace = options.get("glean_namespace", "Glean")
 
     for category_key, category_val in objs.items():
         filename = util.Camelize(category_key) + ".swift"
@@ -119,15 +124,6 @@ def output_swift(objs, output_dir, options={}):
         for obj in category_val.values():
             if isinstance(obj, pings.Ping):
                 custom_pings[obj.name] = obj
-            elif isinstance(obj, metrics.Event):
-                print(f"WARN: Events are not yet supported: {category_key}.{obj.name}")
-
-            if getattr(obj, "labeled", False):
-                print(
-                    "WARN: Labeled metrics are not yet supported: {0}.{1}".format(
-                        category_key, obj.name
-                    )
-                )
 
         has_labeled_metrics = any(
             getattr(metric, "labeled", False) for metric in category_val.values()
@@ -139,6 +135,8 @@ def output_swift(objs, output_dir, options={}):
                     category_name=category_key,
                     objs=category_val,
                     extra_args=extra_args,
+                    namespace=namespace,
+                    glean_namespace=glean_namespace,
                     has_labeled_metrics=has_labeled_metrics,
                     is_ping_type=len(custom_pings) > 0,
                 )
