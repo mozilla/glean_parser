@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.swift &#8212; Glean Parser 1.8.1 documentation</title>
+    <title>glean_parser.swift &#8212; Glean Parser 1.8.2.dev2+g66abe79 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -86,6 +86,8 @@
                     <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">subvalue</span><span class="p">)</span>
                     <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">yield</span> <span class="s2">&quot;]&quot;</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="s2">&quot;nil&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield from</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -96,13 +98,12 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Swift type to use for a given metric or ping object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># TODO: Events are not yet supported</span>
-    <span class="c1"># if isinstance(obj, metrics.Event):</span>
-    <span class="c1">#     if len(obj.extra_keys):</span>
-    <span class="c1">#         enumeration = f&quot;{util.camelize(obj.name)}Keys&quot;</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         enumeration = &quot;noExtraKeys&quot;</span>
-    <span class="c1">#     return f&quot;EventMetricType&lt;{enumeration}&gt;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">):</span>
+            <span class="n">enumeration</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{util.Camelize(obj.name)}Keys&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">enumeration</span> <span class="o">=</span> <span class="s2">&quot;NoExtraKeys&quot;</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;EventMetricType&lt;</span><span class="si">{enumeration}</span><span class="s2">&gt;&quot;</span>
     <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
 
 
@@ -144,7 +145,11 @@
         <span class="s2">&quot;lifetime&quot;</span><span class="p">,</span>
         <span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
         <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;allowed_extra_keys&quot;</span><span class="p">,</span>
     <span class="p">]</span>
+
+    <span class="n">namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;GleanMetrics&quot;</span><span class="p">)</span>
+    <span class="n">glean_namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;glean_namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;Glean&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">category_key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.swift&quot;</span>
@@ -154,15 +159,6 @@
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
                 <span class="n">custom_pings</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;WARN: Events are not yet supported: </span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{obj.name}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;labeled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="s2">&quot;WARN: Labeled metrics are not yet supported: </span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">category_key</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
 
         <span class="n">has_labeled_metrics</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;labeled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
@@ -174,6 +170,8 @@
                     <span class="n">category_name</span><span class="o">=</span><span class="n">category_key</span><span class="p">,</span>
                     <span class="n">objs</span><span class="o">=</span><span class="n">category_val</span><span class="p">,</span>
                     <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span>
+                    <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
+                    <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
                     <span class="n">has_labeled_metrics</span><span class="o">=</span><span class="n">has_labeled_metrics</span><span class="p">,</span>
                     <span class="n">is_ping_type</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">custom_pings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
                 <span class="p">)</span>
