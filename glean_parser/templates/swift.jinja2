@@ -27,18 +27,18 @@ import {{ glean_namespace }}
 extension {{ namespace }} {
     {% if is_ping_type %}
     class {{ category_name|Camelize }} {
-      public static let shared = {{ category_name|Camelize }}()
-      private init() {
-        // Intentionally left private, no external user can instantiate a new global object.
-      }
+        public static let shared = {{ category_name|Camelize }}()
+        private init() {
+          // Intentionally left private, no external user can instantiate a new global object.
+        }
 
-    {% for obj in objs.values() %}
-      /// {{ obj.description|wordwrap(wrapstring='\n      /// ') }}
-      let {{ obj.name|camelize }} = {{obj|type_name}}(name: {{ obj.name|swift }}, includeClientId: {{obj.include_client_id|swift}})
+      {% for obj in objs.values() %}
+        /// {{ obj.description|wordwrap(wrapstring='\n      /// ') }}
+        let {{ obj.name|camelize }} = {{obj|type_name}}(name: {{ obj.name|swift }}, includeClientId: {{obj.include_client_id|swift}})
 
-    {% endfor %}
+      {% endfor %}
     }
-    {%- else %}
+    {% else %}
     enum {{ category_name|Camelize }} {
     {% for obj in objs.values() %}
         {% if obj.extra_keys|length %}
