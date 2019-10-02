@@ -29,11 +29,11 @@ extension {{ namespace }} {
     class {{ category_name|Camelize }} {
         public static let shared = {{ category_name|Camelize }}()
         private init() {
-          // Intentionally left private, no external user can instantiate a new global object.
+            // Intentionally left private, no external user can instantiate a new global object.
         }
 
       {% for obj in objs.values() %}
-        /// {{ obj.description|wordwrap(wrapstring='\n      /// ') }}
+        /// {{ obj.description|wordwrap(wrapstring='\n        /// ') }}
         let {{ obj.name|camelize }} = {{obj|type_name}}(name: {{ obj.name|swift }}, includeClientId: {{obj.include_client_id|swift}})
 
       {% endfor %}
