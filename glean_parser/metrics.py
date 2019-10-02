@@ -315,35 +315,5 @@ class LabeledString(Labeled, String):
 
 
 @dataclass
-class LabeledEnumeration(Labeled, Enumeration):
-    typename = "labeled_enumeration"
-
-
-@dataclass
 class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"
-
-
-@dataclass
-class LabeledTimingDistribution(Labeled, TimingDistribution):
-    typename = "labeled_timing_distribution"
-
-
-@dataclass
-class LabeledDatetime(Labeled, Datetime):
-    typename = "labeled_datetime"
-
-
-@dataclass
-class LabeledUseCounter(Labeled, UseCounter):
-    typename = "labeled_use_counter"
-
-
-@dataclass
-class LabeledUsage(Labeled, Usage):
-    typename = "labeled_usage"
-
-
-@dataclass
-class LabeledRate(Labeled, Rate):
-    typename = "labeled_rate"

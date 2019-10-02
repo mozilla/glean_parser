@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.8.4 (2019-10-02)
+------------------
+
+* Removed unsupported labeled metric types.
+
 1.8.3 (2019-10-02)
 ------------------
 
