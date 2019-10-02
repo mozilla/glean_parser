@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.8.3 (2019-10-02)
+------------------
+
+* Fix indentation for generated Swift code
+
 1.8.2 (2019-10-01)
 ------------------
 
