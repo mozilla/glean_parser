@@ -142,13 +142,7 @@ definitions:
           - uuid
           - labeled_boolean
           - labeled_string
-          - labeled_enumeration
           - labeled_counter
-          - labeled_timing_distribution
-          - labeled_datetime
-          - labeled_use_counter
-          - labeled_usage
-          - labeled_rate
 
       description:
         title: Description
