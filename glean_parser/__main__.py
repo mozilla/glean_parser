@@ -98,7 +98,7 @@ def check(schema):
 @click.command()
 @click.argument(
     "input",
-    type=click.Path(exists=False, dir_okay=False, file_okay=True, readable=True),
+    type=click.Path(exists=True, dir_okay=False, file_okay=True, readable=True),
     nargs=-1,
 )
 @click.option(
