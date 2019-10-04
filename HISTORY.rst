@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.9.0 (2019-10-04)
+------------------
+
 * Glinter now warns when bug numbers (rather than URLs) are used.
 
 * BUGFIX: add `HistogramType` and `MemoryUnit` imports in Kotlin generated code.
