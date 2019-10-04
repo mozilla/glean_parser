@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.8.6.dev4+g7dd0622 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.8.6.dev8+gd5ef36e documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -155,13 +155,23 @@
         <span class="k">yield</span> <span class="n">f</span><span class="s2">&quot;Category &#39;</span><span class="si">{category_name}</span><span class="s2">&#39; is too generic.&quot;</span></div>
 
 
+<div class="viewcode-block" id="check_bug_number"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_bug_number">[docs]</a><span class="k">def</span> <span class="nf">check_bug_number</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+    <span class="n">number_bugs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">bug</span><span class="p">)</span> <span class="k">for</span> <span class="n">bug</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">bugs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bug</span><span class="p">,</span> <span class="nb">int</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">number_bugs</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;For bugs {&#39;, &#39;.join(number_bugs)}: &quot;</span>
+            <span class="s2">&quot;Bug numbers are deprecated and should be changed to full URLs.&quot;</span>
+        <span class="p">)</span></div>
+
+
 <span class="n">CATEGORY_CHECKS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;COMMON_PREFIX&quot;</span><span class="p">:</span> <span class="n">check_common_prefix</span><span class="p">,</span>
     <span class="s2">&quot;CATEGORY_GENERIC&quot;</span><span class="p">:</span> <span class="n">check_category_generic</span><span class="p">,</span>
 <span class="p">}</span>
 
 
-<span class="n">INDIVIDUAL_CHECKS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;UNIT_IN_NAME&quot;</span><span class="p">:</span> <span class="n">check_unit_in_name</span><span class="p">}</span>
+<span class="n">INDIVIDUAL_CHECKS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;UNIT_IN_NAME&quot;</span><span class="p">:</span> <span class="n">check_unit_in_name</span><span class="p">,</span> <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="n">check_bug_number</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="lint_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_metrics">[docs]</a><span class="k">def</span> <span class="nf">lint_metrics</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
