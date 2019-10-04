@@ -207,13 +207,12 @@ definitions:
         description: |
           **Required.**
 
-          A list of bugs (e.g. Bugzilla and Github) that are relevant to this
+          A list of bug URLs (e.g. Bugzilla and Github) that are relevant to this
           metric, e.g., tracking its original implementation or later changes to
           it.
 
-          If a number, it is an ID to an issue in the default tracker (e.g.
-          Mozilla's Bugzilla instance). If a string, it must be a URI to a bug
-          page in a tracker.
+          Using bug numbers alone is deprecated and will be an error in the future.
+          Each entry should be a full URL to the bug in its tracker.
         type: array
         minItems: 1
         items:

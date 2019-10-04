@@ -9,7 +9,7 @@ from glean_parser import parser
 def add_required(chunk):
     DEFAULTS = {
         "type": "string",
-        "bugs": [0],
+        "bugs": ["http://bugzilla.mozilla.org/12345678"],
         "description": "DESCRIPTION...",
         "notification_emails": ["nobody@example.com"],
         "data_reviews": ["https://example.com/review/"],
