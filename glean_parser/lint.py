@@ -121,9 +121,7 @@ def check_category_generic(category_name, metrics):
 
 
 def check_bug_number(metric):
-    number_bugs = [
-        str(bug) for bug in metric.bugs if isinstance(bug, int)
-    ]
+    number_bugs = [str(bug) for bug in metric.bugs if isinstance(bug, int)]
 
     if len(number_bugs):
         yield (
@@ -138,10 +136,7 @@ CATEGORY_CHECKS = {
 }
 
 
-INDIVIDUAL_CHECKS = {
-    "UNIT_IN_NAME": check_unit_in_name,
-    "BUG_NUMBER": check_bug_number
-}
+INDIVIDUAL_CHECKS = {"UNIT_IN_NAME": check_unit_in_name, "BUG_NUMBER": check_bug_number}
 
 
 def lint_metrics(objs, file=sys.stderr):
