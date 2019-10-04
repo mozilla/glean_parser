@@ -21,7 +21,7 @@ def test_basic_help():
     runner = CliRunner()
     help_result = runner.invoke(__main__.main, ["--help"])
     assert help_result.exit_code == 0
-    assert "--help  Show this message and exit." in help_result.output
+    assert "Show this message and exit." in help_result.output
 
 
 def test_translate(tmpdir):

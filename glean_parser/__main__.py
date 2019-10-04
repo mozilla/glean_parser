@@ -111,12 +111,13 @@ def check(schema):
 )
 def glinter(input, allow_reserved):
     """
-    Runs a linter over the metrics to suggest ways that naming could be improved.
+    Runs a linter over the metrics.
     """
     sys.exit(lint.glinter([Path(x) for x in input], {"allow_reserved": allow_reserved}))
 
 
 @click.group()
+@click.version_option()
 def main(args=None):
     """Command line utility for glean_parser."""
     pass
