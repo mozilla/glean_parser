@@ -120,13 +120,28 @@ def check_category_generic(category_name, metrics):
         yield f"Category '{category_name}' is too generic."
 
 
+def check_bug_number(metric):
+    number_bugs = [
+        str(bug) for bug in metric.bugs if isinstance(bug, int)
+    ]
+
+    if len(number_bugs):
+        yield (
+            f"For bugs {', '.join(number_bugs)}: "
+            "Bug numbers are deprecated and should be changed to full URLs."
+        )
+
+
 CATEGORY_CHECKS = {
     "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
 }
 
 
-INDIVIDUAL_CHECKS = {"UNIT_IN_NAME": check_unit_in_name}
+INDIVIDUAL_CHECKS = {
+    "UNIT_IN_NAME": check_unit_in_name,
+    "BUG_NUMBER": check_bug_number
+}
 
 
 def lint_metrics(objs, file=sys.stderr):
