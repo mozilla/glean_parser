@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: add `HistogramType` and `MemoryUnit` imports in Kotlin generated code.
+
 1.8.4 (2019-10-02)
 ------------------
 

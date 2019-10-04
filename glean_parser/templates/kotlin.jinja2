@@ -22,7 +22,9 @@ Jinja2 template is not. Please file bugs! #}
 @file:Suppress("PackageNaming")
 package {{ namespace }}
 
+import {{ glean_namespace }}.private.HistogramType // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.Lifetime // ktlint-disable import-ordering no-unused-imports
+import {{ glean_namespace }}.private.MemoryUnit // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.TimeUnit // ktlint-disable import-ordering no-unused-imports
 {% for obj_type in obj_types %}
