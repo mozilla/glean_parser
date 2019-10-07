@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Don't include Glean internal metrics in the generated markdown.
+
 1.9.0 (2019-10-04)
 ------------------
 

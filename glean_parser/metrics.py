@@ -154,6 +154,9 @@ class Metric:
     def validate_expires(expires):
         return util.validate_expires(expires)
 
+    def is_internal_metric(self):
+        return self.category in (Metric.glean_internal_metric_cat, "")
+
 
 @dataclass
 class Boolean(Metric):

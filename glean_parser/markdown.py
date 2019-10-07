@@ -40,6 +40,8 @@ def ping_desc(ping_name, custom_pings_cache={}):
             "This is a built-in ping that is assembled out of the "
             "box by the Glean SDK."
         )
+    elif ping_name == "all_pings":
+        desc = "These metrics are sent in every ping."
     elif ping_name in custom_pings_cache:
         desc = custom_pings_cache[ping_name].description
 
@@ -108,7 +110,9 @@ def output_markdown(objs, output_dir, options={}):
         for obj in category_val.values():
             # Filter out custom pings. We will need them for extracting
             # the description
-            if isinstance(obj, pings.Ping):
+            if obj.is_internal_metric():
+                continue
+            elif isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
             else:
                 # If we get here, obj is definitely a metric
