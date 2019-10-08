@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.9.1.dev2+g1d1ed6e documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.9.2.dev2+g1f51cd4 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -145,12 +145,15 @@
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="c1"># Filter out custom pings. We will need them for extracting</span>
             <span class="c1"># the description</span>
-            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_internal_metric</span><span class="p">():</span>
-                <span class="k">continue</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
                 <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_internal_metric</span><span class="p">():</span>
+                <span class="c1"># This is an internal Glean metric, and we don&#39;t</span>
+                <span class="c1"># want docs for it.</span>
+                <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># If we get here, obj is definitely a metric</span>
+                <span class="c1"># If we get here, obj is definitely a metric we want</span>
+                <span class="c1"># docs for.</span>
                 <span class="k">for</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
                     <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
