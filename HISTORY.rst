@@ -5,6 +5,14 @@ History
 Unreleased
 ----------
 
+1.9.2 (2019-10-08)
+------------------
+
+* BUGFIX: Don't call `is_internal_metric` on `Ping` objects.
+
+1.9.1 (2019-10-07)
+------------------
+
 * Don't include Glean internal metrics in the generated markdown.
 
 1.9.0 (2019-10-04)
