@@ -110,12 +110,15 @@ def output_markdown(objs, output_dir, options={}):
         for obj in category_val.values():
             # Filter out custom pings. We will need them for extracting
             # the description
-            if obj.is_internal_metric():
-                continue
-            elif isinstance(obj, pings.Ping):
+            if isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
+            elif obj.is_internal_metric():
+                # This is an internal Glean metric, and we don't
+                # want docs for it.
+                continue
             else:
-                # If we get here, obj is definitely a metric
+                # If we get here, obj is definitely a metric we want
+                # docs for.
                 for ping_name in obj.send_in_pings:
                     metrics_by_pings[ping_name].append(obj)
 
