@@ -55,7 +55,20 @@ def test_extra_info_generator():
 
     assert markdown.extra_info(event) == [("my_extra", "an extra")]
 
-    # We don't currently support extra info for types other than events.
+    labeled = metrics.LabeledCounter(
+        type="labeled_counter",
+        category="category",
+        name="metric",
+        bugs=[42],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        labels={"label"},
+    )
+
+    assert markdown.extra_info(labeled) == [("label", None)]
+
+    # We currently support extra info only for events and labeled types.
     other = metrics.Timespan(
         type="timespan",
         category="category",

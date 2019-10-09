@@ -37,7 +37,7 @@ The following metrics are added to the ping:
 {%- if metric|extra_info -%}
 <ul>
 {%- for property, desc in metric|extra_info %}
-<li>{{ property }}: {{ desc|replace("\n", " ") }}</li>
+<li>{{ property }}{%- if desc is not none -%}: {{ desc|replace("\n", " ") }}{%- endif -%}</li>
 {%- endfor -%}
 </ul>
 {%- endif -%} |
