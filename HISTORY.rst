@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.9.3 (2019-10-09)
+------------------
+
+* Add labels from Labeled types to the Extra column in the Markdown template.
+
 1.9.2 (2019-10-08)
 ------------------
 
