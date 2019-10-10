@@ -55,7 +55,7 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
     if util.report_validation_errors(all_objects):
         return 1
 
-    if lint.lint_metrics(all_objects.value):
+    if lint.lint_metrics(all_objects.value, parser_config):
         print(
             "NOTE: These warnings will become errors in a future release of Glean.",
             file=sys.stderr,

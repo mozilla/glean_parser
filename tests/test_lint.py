@@ -174,3 +174,25 @@ def test_superfluous():
     assert len(nits) == 1
     assert all(nit[0] == "SUPERFLUOUS_NO_LINT" for nit in nits)
     assert all("UNIT_IN_NAME" in nit[2] for nit in nits)
+
+
+def test_baseline_restriction():
+    contents = [
+        {
+            "user_data": {
+                "counter": {"type": "counter", "send_in_pings": ["baseline"]},
+                "string": {"type": "string", "send_in_pings": ["metrics", "baseline"]},
+                "string2": {"type": "string", "send_in_pings": ["metrics"]},
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 2
+    assert set(["BASELINE_PING"]) == set(v[0] for v in nits)

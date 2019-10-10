@@ -42,7 +42,7 @@ def check_common_prefix(category_name, metrics):
         )
 
 
-def check_unit_in_name(metric):
+def check_unit_in_name(metric, parser_config={}):
     """
     The metric name ends in a unit.
     """
@@ -120,7 +120,7 @@ def check_category_generic(category_name, metrics):
         yield f"Category '{category_name}' is too generic."
 
 
-def check_bug_number(metric):
+def check_bug_number(metric, parser_config={}):
     number_bugs = [str(bug) for bug in metric.bugs if isinstance(bug, int)]
 
     if len(number_bugs):
@@ -130,16 +130,30 @@ def check_bug_number(metric):
         )
 
 
+def check_valid_in_baseline(metric, parser_config={}):
+    allow_reserved = parser_config.get("allow_reserved", False)
+
+    if not allow_reserved and "baseline" in metric.send_in_pings:
+        yield (
+            f"The baseline ping is Glean-internal. "
+            "User metrics should go into the 'metrics' ping or custom pings."
+        )
+
+
 CATEGORY_CHECKS = {
     "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
 }
 
 
-INDIVIDUAL_CHECKS = {"UNIT_IN_NAME": check_unit_in_name, "BUG_NUMBER": check_bug_number}
+INDIVIDUAL_CHECKS = {
+    "UNIT_IN_NAME": check_unit_in_name,
+    "BUG_NUMBER": check_bug_number,
+    "BASELINE_PING": check_valid_in_baseline,
+}
 
 
-def lint_metrics(objs, file=sys.stderr):
+def lint_metrics(objs, parser_config={}, file=sys.stderr):
     """
     Performs glinter checks on a set of metrics objects.
 
@@ -162,7 +176,7 @@ def lint_metrics(objs, file=sys.stderr):
 
         for (metric_name, metric) in sorted(list(metrics.items())):
             for (check_name, check_func) in INDIVIDUAL_CHECKS.items():
-                new_nits = list(check_func(metric))
+                new_nits = list(check_func(metric, parser_config))
                 if len(new_nits):
                     if check_name not in metric.no_lint:
                         nits.extend(
@@ -215,7 +229,7 @@ def glinter(input_filepaths, parser_config={}, file=sys.stderr):
     if util.report_validation_errors(objs):
         return 1
 
-    if lint_metrics(objs.value, file=file):
+    if lint_metrics(objs.value, parser_config=parser_config, file=file):
         return 1
 
     print("✨ Your metrics are Glean! ✨", file=file)
