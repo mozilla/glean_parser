@@ -196,3 +196,25 @@ def test_baseline_restriction():
 
     assert len(nits) == 2
     assert set(["BASELINE_PING"]) == set(v[0] for v in nits)
+
+
+def test_misspelling_pings():
+    contents = [
+        {
+            "user_data": {
+                "counter": {"type": "counter", "send_in_pings": ["metric"]},
+                "string": {"type": "string", "send_in_pings": ["event"]},
+                "string2": {"type": "string", "send_in_pings": ["metrics", "events"]},
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 2
+    assert set(["MISSPELLED_PING"]) == set(v[0] for v in nits)
