@@ -323,6 +323,7 @@ definitions:
           Valid with any of the labeled metric types.
         anyOf:
           - type: array
+            uniqueItems: true
             items:
               $ref: "#/definitions/labeled_metric_id"
             maxItems: 16

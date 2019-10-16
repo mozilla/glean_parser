@@ -303,7 +303,7 @@ class Uuid(Metric):
 
 @dataclass
 class Labeled(Metric):
-    labels: Set[str] = None
+    labels: List[str] = None
     labeled = True
 
 

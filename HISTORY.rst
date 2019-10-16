@@ -5,6 +5,14 @@ History
 Unreleased
 ----------
 
+1.9.4 (2019-10-16)
+------------------
+
+* Use lists instead of sets in Labeled types labels to ensure that
+  the order of the labels passed to the `metrics.yaml` is kept.
+
+* `glinter` will now check for duplicate labels and error if there are any.
+
 1.9.3 (2019-10-09)
 ------------------
 
