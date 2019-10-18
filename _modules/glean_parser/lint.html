@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.9.5.dev4+g5969c07 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.9.5.dev8+g6dc953a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -51,6 +51,24 @@
 <span class="sd">    Helper function to split words on either `.` or `_`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[._]&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_hamming_distance</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Count the # of differences between strings str1 and str2,</span>
+<span class="sd">    padding the shorter one with whitespace</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">diffs</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">):</span>
+        <span class="n">str1</span><span class="p">,</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">str2</span><span class="p">,</span> <span class="n">str1</span>
+    <span class="n">len_dist</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span>
+    <span class="n">str2</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">len_dist</span>
+
+    <span class="k">for</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ch1</span> <span class="o">!=</span> <span class="n">ch2</span><span class="p">:</span>
+            <span class="n">diffs</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">diffs</span>
 
 
 <div class="viewcode-block" id="check_common_prefix"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_common_prefix">[docs]</a><span class="k">def</span> <span class="nf">check_common_prefix</span><span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
@@ -175,6 +193,16 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="check_misspelled_pings"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_misspelled_pings">[docs]</a><span class="k">def</span> <span class="nf">check_misspelled_pings</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="n">builtin_pings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">builtin</span> <span class="ow">in</span> <span class="n">builtin_pings</span><span class="p">:</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">_hamming_distance</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="n">builtin</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">f</span><span class="s2">&quot;Ping &#39;</span><span class="si">{ping}</span><span class="s2">&#39; seems misspelled. Did you mean &#39;</span><span class="si">{builtin}</span><span class="s2">&#39;?&quot;</span><span class="p">)</span></div>
+
+
 <span class="n">CATEGORY_CHECKS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;COMMON_PREFIX&quot;</span><span class="p">:</span> <span class="n">check_common_prefix</span><span class="p">,</span>
     <span class="s2">&quot;CATEGORY_GENERIC&quot;</span><span class="p">:</span> <span class="n">check_category_generic</span><span class="p">,</span>
@@ -185,6 +213,7 @@
     <span class="s2">&quot;UNIT_IN_NAME&quot;</span><span class="p">:</span> <span class="n">check_unit_in_name</span><span class="p">,</span>
     <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="n">check_bug_number</span><span class="p">,</span>
     <span class="s2">&quot;BASELINE_PING&quot;</span><span class="p">:</span> <span class="n">check_valid_in_baseline</span><span class="p">,</span>
+    <span class="s2">&quot;MISSPELLED_PING&quot;</span><span class="p">:</span> <span class="n">check_misspelled_pings</span><span class="p">,</span>
 <span class="p">}</span>
 
 
