@@ -303,8 +303,23 @@ class Uuid(Metric):
 
 @dataclass
 class Labeled(Metric):
-    labels: List[str] = None
     labeled = True
+    # Start the labels as a List to preserve the order from `metrics.yaml`
+    labels: List[str] = None
+
+    def __post_init__(self, *args):
+        ordered_labels = self.labels
+
+        # If any, turn the labels into a Set to properly inialize the Metric object.
+        # This is important because Kotlin code needs this labels as a Set
+        if self.labels is not None:
+            self.labels = set(ordered_labels)
+        super().__post_init__(*args)
+
+        # After initializing the Metric object, add the ordered_labels to it.
+        # If we do this step before calling the __post_init__ for the Metric class,
+        # the metric schema validation will fail
+        self.ordered_labels = ordered_labels
 
 
 @dataclass
