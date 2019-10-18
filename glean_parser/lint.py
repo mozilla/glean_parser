@@ -18,6 +18,24 @@ def _split_words(name):
     return re.split("[._]", name)
 
 
+def _hamming_distance(str1, str2):
+    """
+    Count the # of differences between strings str1 and str2,
+    padding the shorter one with whitespace
+    """
+
+    diffs = 0
+    if len(str1) < len(str2):
+        str1, str2 = str2, str1
+    len_dist = len(str1) - len(str2)
+    str2 += " " * len_dist
+
+    for ch1, ch2 in zip(str1, str2):
+        if ch1 != ch2:
+            diffs += 1
+    return diffs
+
+
 def check_common_prefix(category_name, metrics):
     """
     Check if all metrics begin with a common prefix.
@@ -140,6 +158,16 @@ def check_valid_in_baseline(metric, parser_config={}):
         )
 
 
+def check_misspelled_pings(metric, parser_config={}):
+    builtin_pings = ["metrics", "events"]
+
+    for ping in metric.send_in_pings:
+        for builtin in builtin_pings:
+            distance = _hamming_distance(ping, builtin)
+            if distance == 1:
+                yield (f"Ping '{ping}' seems misspelled. Did you mean '{builtin}'?")
+
+
 CATEGORY_CHECKS = {
     "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
@@ -150,6 +178,7 @@ INDIVIDUAL_CHECKS = {
     "UNIT_IN_NAME": check_unit_in_name,
     "BUG_NUMBER": check_bug_number,
     "BASELINE_PING": check_valid_in_baseline,
+    "MISSPELLED_PING": check_misspelled_pings,
 }
 
 
