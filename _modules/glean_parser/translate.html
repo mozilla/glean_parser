@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.9.5.dev2+g348cbc2 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.9.5.dev4+g5969c07 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -90,7 +90,7 @@
     <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">report_validation_errors</span><span class="p">(</span><span class="n">all_objects</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">lint</span><span class="o">.</span><span class="n">lint_metrics</span><span class="p">(</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lint</span><span class="o">.</span><span class="n">lint_metrics</span><span class="p">(</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;NOTE: These warnings will become errors in a future release of Glean.&quot;</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.9.5.dev2+g348cbc2 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.9.5.dev4+g5969c07 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -77,7 +77,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="check_unit_in_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_unit_in_name">[docs]</a><span class="k">def</span> <span class="nf">check_unit_in_name</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+<div class="viewcode-block" id="check_unit_in_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_unit_in_name">[docs]</a><span class="k">def</span> <span class="nf">check_unit_in_name</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The metric name ends in a unit.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -155,7 +155,7 @@
         <span class="k">yield</span> <span class="n">f</span><span class="s2">&quot;Category &#39;</span><span class="si">{category_name}</span><span class="s2">&#39; is too generic.&quot;</span></div>
 
 
-<div class="viewcode-block" id="check_bug_number"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_bug_number">[docs]</a><span class="k">def</span> <span class="nf">check_bug_number</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+<div class="viewcode-block" id="check_bug_number"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_bug_number">[docs]</a><span class="k">def</span> <span class="nf">check_bug_number</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{}):</span>
     <span class="n">number_bugs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">bug</span><span class="p">)</span> <span class="k">for</span> <span class="n">bug</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">bugs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bug</span><span class="p">,</span> <span class="nb">int</span><span class="p">)]</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">number_bugs</span><span class="p">):</span>
@@ -165,16 +165,30 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="check_valid_in_baseline"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_valid_in_baseline">[docs]</a><span class="k">def</span> <span class="nf">check_valid_in_baseline</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="n">allow_reserved</span> <span class="o">=</span> <span class="n">parser_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_reserved</span> <span class="ow">and</span> <span class="s2">&quot;baseline&quot;</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;The baseline ping is Glean-internal. &quot;</span>
+            <span class="s2">&quot;User metrics should go into the &#39;metrics&#39; ping or custom pings.&quot;</span>
+        <span class="p">)</span></div>
+
+
 <span class="n">CATEGORY_CHECKS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;COMMON_PREFIX&quot;</span><span class="p">:</span> <span class="n">check_common_prefix</span><span class="p">,</span>
     <span class="s2">&quot;CATEGORY_GENERIC&quot;</span><span class="p">:</span> <span class="n">check_category_generic</span><span class="p">,</span>
 <span class="p">}</span>
 
 
-<span class="n">INDIVIDUAL_CHECKS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;UNIT_IN_NAME&quot;</span><span class="p">:</span> <span class="n">check_unit_in_name</span><span class="p">,</span> <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="n">check_bug_number</span><span class="p">}</span>
+<span class="n">INDIVIDUAL_CHECKS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;UNIT_IN_NAME&quot;</span><span class="p">:</span> <span class="n">check_unit_in_name</span><span class="p">,</span>
+    <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="n">check_bug_number</span><span class="p">,</span>
+    <span class="s2">&quot;BASELINE_PING&quot;</span><span class="p">:</span> <span class="n">check_valid_in_baseline</span><span class="p">,</span>
+<span class="p">}</span>
 
 
-<div class="viewcode-block" id="lint_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_metrics">[docs]</a><span class="k">def</span> <span class="nf">lint_metrics</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
+<div class="viewcode-block" id="lint_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_metrics">[docs]</a><span class="k">def</span> <span class="nf">lint_metrics</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs glinter checks on a set of metrics objects.</span>
 
@@ -197,7 +211,7 @@
 
         <span class="k">for</span> <span class="p">(</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">check_name</span><span class="p">,</span> <span class="n">check_func</span><span class="p">)</span> <span class="ow">in</span> <span class="n">INDIVIDUAL_CHECKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check_func</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+                <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check_func</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">))</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">check_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span><span class="p">:</span>
                         <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
@@ -250,7 +264,7 @@
     <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">report_validation_errors</span><span class="p">(</span><span class="n">objs</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">lint_metrics</span><span class="p">(</span><span class="n">objs</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">lint_metrics</span><span class="p">(</span><span class="n">objs</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="n">parser_config</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">1</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✨ Your metrics are Glean! ✨&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
