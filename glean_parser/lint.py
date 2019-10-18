@@ -26,9 +26,7 @@ def _hamming_distance(str1, str2):
 
     diffs = 0
     if len(str1) < len(str2):
-        tmp = str1
-        str1 = str2
-        str2 = tmp
+        str1, str2 = str2, str1
     len_dist = len(str1) - len(str2)
     str2 += " "*len_dist
 
