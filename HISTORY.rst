@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+*  Ignore lower-camelcase class name and enum variants in linter
+
 1.9.4 (2019-10-16)
 ------------------
 
