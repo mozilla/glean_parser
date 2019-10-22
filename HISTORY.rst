@@ -11,6 +11,8 @@ Unreleased
 
 * New lint: Warn for slight misspellings in ping names
 
+* BUGFIX: change Labeled types labels from lists to sets.
+
 1.9.4 (2019-10-16)
 ------------------
 

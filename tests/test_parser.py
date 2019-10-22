@@ -35,7 +35,7 @@ def test_parser():
             assert isinstance(metric_val, metrics.Metric)
             assert isinstance(metric_val.lifetime, metrics.Lifetime)
             if getattr(metric_val, "labels", None) is not None:
-                assert isinstance(metric_val.labels, list)
+                assert isinstance(metric_val.labels, set)
 
     pings = all_metrics.value["pings"]
     assert pings["custom_ping"].name == "custom_ping"

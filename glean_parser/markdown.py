@@ -25,8 +25,8 @@ def extra_info(obj):
         for key in obj.allowed_extra_keys:
             extra_info.append((key, obj.extra_keys[key]["description"]))
 
-    if isinstance(obj, metrics.Labeled) and obj.labels is not None:
-        for label in obj.labels:
+    if isinstance(obj, metrics.Labeled) and obj.ordered_labels is not None:
+        for label in obj.ordered_labels:
             extra_info.append((label, None))
 
     return extra_info
