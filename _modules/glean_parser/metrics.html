@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.9.5.dev10+g83d3af9 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.9.5.dev12+gb68ab6b documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -338,8 +338,23 @@
 
 <div class="viewcode-block" id="Labeled"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Labeled">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Labeled</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="n">labeled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Start the labels as a List to preserve the order from `metrics.yaml`</span>
     <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">labeled</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">ordered_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
+
+        <span class="c1"># If any, turn the labels into a Set to properly inialize the Metric object.</span>
+        <span class="c1"># This is important because Kotlin code needs this labels as a Set</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ordered_labels</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="c1"># After initializing the Metric object, add the ordered_labels to it.</span>
+        <span class="c1"># If we do this step before calling the __post_init__ for the Metric class,</span>
+        <span class="c1"># the metric schema validation will fail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ordered_labels</span> <span class="o">=</span> <span class="n">ordered_labels</span></div>
 
 
 <div class="viewcode-block" id="LabeledBoolean"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledBoolean">[docs]</a><span class="nd">@dataclass</span>
