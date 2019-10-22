@@ -21,10 +21,7 @@ DETEKT_VERSION = "1.1.1"
 
 
 def run_detekt(files):
-    detekt_exec = (
-        ROOT.parent
-        / f"detekt-cli-{DETEKT_VERSION}-all.jar"
-    )
+    detekt_exec = ROOT.parent / f"detekt-cli-{DETEKT_VERSION}-all.jar"
     if detekt_exec.is_file():
         subprocess.check_call(
             [
