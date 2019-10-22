@@ -10,14 +10,13 @@ jobs:
                     command: |
                         echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
             - run:
-                    name: install
+                    name: install dependencies
                     command: |
                         pip install --user -U -r requirements_dev.txt
                         sudo apt update
                         sudo apt upgrade
                         sudo apt install openjdk-8-jdk-headless
-                        curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint && chmod a+x ktlint
-
+                        make install-kotlin-linters
             - run:
                     name: lint
                     command: make lint

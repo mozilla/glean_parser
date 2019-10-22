@@ -4,7 +4,6 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
-import shutil
 import subprocess
 
 from glean_parser import kotlin
@@ -14,6 +13,47 @@ from glean_parser import translate
 
 
 ROOT = Path(__file__).parent
+
+
+# The version of Detekt built. Must match the version checked out in
+# Makefile
+DETEKT_VERSION = "1.1.1"
+
+
+def run_detekt(files):
+    detekt_exec = (
+        ROOT.parent
+        / "detekt"
+        / "detekt-cli"
+        / "build"
+        / "libs"
+        / f"detekt-cli-{DETEKT_VERSION}-all.jar"
+    )
+    if detekt_exec.is_file():
+        subprocess.check_call(
+            [
+                "java",
+                "-jar",
+                detekt_exec,
+                "--build-upon-default-config",
+                "--config",
+                ROOT / "detekt.yml",
+                "-i",
+                ",".join(str(x) for x in files),
+            ]
+        )
+
+
+def run_ktlint(files):
+    ktlint_exec = ROOT.parent / "ktlint" / "ktlint"
+    if ktlint_exec.is_file():
+        subprocess.check_call([ktlint_exec] + files)
+
+
+def run_linters(files):
+    files = list(files)
+    run_ktlint(files)
+    run_detekt(files)
 
 
 def test_parser(tmpdir):
@@ -53,10 +93,7 @@ def test_parser(tmpdir):
         content = fd.read()
         assert 'category = ""' in content
 
-    # Only run this test if ktlint is on the path
-    if shutil.which("ktlint"):
-        for filepath in tmpdir.glob("*.kt"):
-            subprocess.check_call(["ktlint", filepath])
+    run_linters(tmpdir.glob("*.kt"))
 
 
 def test_kotlin_generator():
@@ -256,7 +293,4 @@ def test_gecko_datapoints(tmpdir):
             content = fd.read()
             assert "HistogramMetricBase" not in content
 
-    # Only run this test if ktlint is on the path
-    if shutil.which("ktlint"):
-        for filepath in tmpdir.glob("*.kt"):
-            subprocess.check_call(["ktlint", filepath])
+    run_linters(tmpdir.glob("*.kt"))
