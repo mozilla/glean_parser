@@ -23,10 +23,6 @@ DETEKT_VERSION = "1.1.1"
 def run_detekt(files):
     detekt_exec = (
         ROOT.parent
-        / "detekt"
-        / "detekt-cli"
-        / "build"
-        / "libs"
         / f"detekt-cli-{DETEKT_VERSION}-all.jar"
     )
     if detekt_exec.is_file():
@@ -45,7 +41,7 @@ def run_detekt(files):
 
 
 def run_ktlint(files):
-    ktlint_exec = ROOT.parent / "ktlint" / "ktlint"
+    ktlint_exec = ROOT.parent / "ktlint"
     if ktlint_exec.is_file():
         subprocess.check_call([ktlint_exec] + files)
 

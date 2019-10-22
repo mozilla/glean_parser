@@ -72,15 +72,6 @@ install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
 install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
-	mkdir ktlint
-	( \
-	    cd ktlint && \
-		curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint && \
-		chmod a+x ktlint \
-	)
-	git clone https://github.com/arturbosch/detekt
-	( \
-	    cd detekt && \
-		git checkout 1.1.1 && \
-		./gradlew build detekt-cli:shadowJar \
-	)
+	curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
+	chmod a+x ktlint
+	curl -sSL --output "detekt-cli-1.1.1-all.jar" https://bintray.com/arturbosch/code-analysis/download_file?file_path=io%2Fgitlab%2Farturbosch%2Fdetekt%2Fdetekt-cli%2F1.1.1%2Fdetekt-cli-1.1.1-all.jar

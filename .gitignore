@@ -106,5 +106,5 @@ ENV/
 
 .vscode/
 
-detekt/
-ktlint/
+detekt*.jar
+ktlint
