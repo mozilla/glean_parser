@@ -3,6 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
+import os
 from pathlib import Path
 import subprocess
 
@@ -22,7 +23,9 @@ DETEKT_VERSION = "1.1.1"
 
 def run_detekt(files):
     detekt_exec = ROOT.parent / f"detekt-cli-{DETEKT_VERSION}-all.jar"
-    if detekt_exec.is_file():
+    # We want to make sure this runs on CI, but it's not required
+    # for local development
+    if detekt_exec.is_file() or "CI" in os.environ:
         subprocess.check_call(
             [
                 "java",
@@ -39,7 +42,9 @@ def run_detekt(files):
 
 def run_ktlint(files):
     ktlint_exec = ROOT.parent / "ktlint"
-    if ktlint_exec.is_file():
+    # We want to make sure this runs on CI, but it's not required
+    # for local development
+    if ktlint_exec.is_file() or "CI" in os.environ:
         subprocess.check_call([ktlint_exec] + files)
 
 
