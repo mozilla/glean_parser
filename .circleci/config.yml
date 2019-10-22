@@ -12,9 +12,9 @@ jobs:
             - run:
                     name: install dependencies
                     command: |
-                        pip install --user -U -r requirements_dev.txt
-                        sudo apt update
-                        sudo apt upgrade
+                        pip install --progress-bar off --user -U -r requirements_dev.txt
+                        sudo apt update -q
+                        sudo apt upgrade -q
                         sudo apt install openjdk-8-jdk-headless
                         make install-kotlin-linters
             - run:
