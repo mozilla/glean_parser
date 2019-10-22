@@ -85,7 +85,7 @@ Ready to contribute? Here's how to set up `glean_parser` for local development.
 
    Install the testing dependencies::
 
-     $ pip install flake8 py.test black
+    $ pip install -r requirements_dev.txt
 
    Optionally, if you want to ensure that the generated Kotlin code lints correctly, install a Java SDK, and then run::
 
@@ -94,8 +94,7 @@ Ready to contribute? Here's how to set up `glean_parser` for local development.
    Then make sure that all lints and tests are passing::
 
      $ make lint
-     $ python setup.py test or py.test
-     $ tox
+     $ make test
 
 6. Commit your changes and push your branch to GitHub::
 
