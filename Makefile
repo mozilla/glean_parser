@@ -82,5 +82,5 @@ install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
 	( \
 	    cd detekt && \
 		git checkout 1.1.1 && \
-		./gradlew build shadowJar \
+		./gradlew build detekt-cli:shadowJar \
 	)
