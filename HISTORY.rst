@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.9.5 (2019-10-22)
+------------------
+
 * Allow a Swift lint for generated code
 
 * New lint: Restrict what metric can go into the 'baseline' ping
