@@ -19,7 +19,7 @@ Jinja2 template is not. Please file bugs! #}
         )
 {% if lazy %}    }{% endif %}{% endmacro %}
 
-@file:Suppress("PackageNaming")
+@file:Suppress("PackageNaming", "MaxLineLength")
 package {{ namespace }}
 
 import {{ glean_namespace }}.private.HistogramType // ktlint-disable import-ordering no-unused-imports
@@ -37,6 +37,7 @@ import {{ glean_namespace }}.private.LabeledMetricType // ktlint-disable import-
 internal object {{ category_name|Camelize }} {
 {% for obj in objs.values() %}
     {% if obj.extra_keys|length %}
+    @Suppress("ClassNaming", "EnumNaming")
     enum class {{ obj.name|camelize }}Keys {
     {% for key in obj.allowed_extra_keys %}
         {{ key|camelize }}{{ "," if not loop.last }}

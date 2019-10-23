@@ -81,14 +81,21 @@ Ready to contribute? Here's how to set up `glean_parser` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass linting through flake8 and black.
-   Also make sure that all tests are passing, including testing all Python versions with tox::
+5. To test your changes to `glean_parser`:
 
-    $ make lint
-    $ python setup.py test or py.test
-    $ tox
+   Install the testing dependencies::
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+     $ pip install flake8 py.test black
+
+   Optionally, if you want to ensure that the generated Kotlin code lints correctly, install a Java SDK, and then run::
+
+     $ make install-kotlin-linters
+
+   Then make sure that all lints and tests are passing::
+
+     $ make lint
+     $ python setup.py test or py.test
+     $ tox
 
 6. Commit your changes and push your branch to GitHub::
 
