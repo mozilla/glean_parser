@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Contributing &#8212; Glean Parser 1.9.5.dev14+g31deaf6 documentation</title>
+    <title>Contributing &#8212; Glean Parser 1.9.6.dev7+g657ec02 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -105,14 +105,21 @@ $ python setup.py develop
 </div>
 <p>Now you can make your changes locally.</p>
 </li>
-<li><p class="first">When you’re done making changes, check that your changes pass linting through flake8 and black.
-Also make sure that all tests are passing, including testing all Python versions with tox:</p>
+<li><p class="first">To test your changes to <cite>glean_parser</cite>:</p>
+<p>Install the testing dependencies:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install flake8 py.test black
+</pre></div>
+</div>
+<p>Optionally, if you want to ensure that the generated Kotlin code lints correctly, install a Java SDK, and then run:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ make install-kotlin-linters
+</pre></div>
+</div>
+<p>Then make sure that all lints and tests are passing:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ make lint
 $ python setup.py <span class="nb">test</span> or py.test
 $ tox
 </pre></div>
 </div>
-<p>To get flake8 and tox, just pip install them into your virtualenv.</p>
 </li>
 <li><p class="first">Commit your changes and push your branch to GitHub:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git add .
