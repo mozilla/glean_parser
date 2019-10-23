@@ -8,6 +8,10 @@ Unreleased
 * The Kotlin linter `detekt` is now run during CI, and for local
   testing if installed.
 
+* Python 3.8 is now tested in CI (in addition to Python 3.7).
+  Using `tox` for this doesn't work in modern versions of CircleCI, so
+  the `tox` configuration has been removed.
+
 1.9.5 (2019-10-22)
 ------------------
 
