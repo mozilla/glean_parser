@@ -4,6 +4,7 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
+import re
 import textwrap
 
 import pytest
@@ -46,7 +47,7 @@ def test_parser():
 
 def test_parser_invalid():
     """Test the basics of parsing a single file."""
-    all_metrics = parser.parse_objects(ROOT / "data" / "invalid.yaml")
+    all_metrics = parser.parse_objects(ROOT / "data" / "invalid.yamlx")
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "could not determine a constructor for the tag" in errors[0]
@@ -58,7 +59,7 @@ def test_parser_schema_violation():
     errors = list(all_metrics)
 
     found_errors = set(
-        str(error).split("\n", 1)[1].strip().replace(" ", "") for error in errors
+        re.sub(r"\s", "", str(error).split("\n", 1)[1].strip()) for error in errors
     )
 
     expected_errors = [
@@ -80,7 +81,7 @@ def test_parser_schema_violation():
         """
         ```
         gleantest.lifetime:
-          test_event_inv_lt:
+          test_counter_inv_lt:
             lifetime: user2
         ```
 
@@ -134,7 +135,7 @@ def test_parser_schema_violation():
     ]
 
     expected_errors = set(
-        _utils.indent(textwrap.dedent(x)).strip().replace(" ", "")
+        re.sub(r"\s", "", _utils.indent(textwrap.dedent(x)).strip())
         for x in expected_errors
     )
 
@@ -359,7 +360,7 @@ def test_custom_distribution():
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "is only allowed for Gecko metrics" in errors[0]
+    assert "is only allowed for Gecko" in errors[0]
 
     # Test that custom_distribution has required parameters
     contents = [
@@ -466,7 +467,7 @@ def test_quantity():
     assert any(
         "`quantity` is missing required parameter `unit`" in err for err in errors
     )
-    assert any("is only allowed for Gecko metrics" in err for err in errors)
+    assert any("is only allowed for Gecko" in err for err in errors)
 
     # Test that quantity works
     contents = [
