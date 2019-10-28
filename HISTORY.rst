@@ -12,6 +12,8 @@ Unreleased
   Using `tox` for this doesn't work in modern versions of CircleCI, so
   the `tox` configuration has been removed.
 
+* `yamllint` has been added to test the YAML files on CI.
+
 1.9.5 (2019-10-22)
 ------------------
 

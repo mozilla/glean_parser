@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+---
 $schema: http://json-schema.org/draft-07/schema#
 title: Pings
 description: |
@@ -24,8 +25,8 @@ type: object
 propertyNames:
   allOf:
     - anyOf:
-      - $ref: "#/definitions/dotted_snake_case"
-      - enum: ['$schema']
+        - $ref: "#/definitions/dotted_snake_case"
+        - enum: ['$schema']
     - not:
         enum: ['all_pings']
 

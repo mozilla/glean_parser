@@ -65,7 +65,7 @@ def test_translate_errors(tmpdir):
         __main__.main,
         [
             "translate",
-            str(ROOT / "data" / "invalid.yaml"),
+            str(ROOT / "data" / "invalid.yamlx"),
             "-o",
             str(tmpdir),
             "-f",

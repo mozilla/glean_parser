@@ -2,6 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+---
 $schema: http://json-schema.org/draft-07/schema#
 title: Metrics
 description: |
@@ -40,7 +41,7 @@ definitions:
   labeled_metric_id:
     type: string
     pattern: "^[a-z_][a-z0-9_-]{0,29}(\\.[a-z0-9_-]{0,29})*$"
-    maxLength: 71 # Note: this should be category + metric + 1
+    maxLength: 71  # Note: this should be category + metric + 1
 
   metric:
     description: |
@@ -58,9 +59,9 @@ definitions:
         description: |
           **Required.**
 
-          Specifies the type of a metric, like "counter" or "event". This defines
-          which operations are valid for the metric, how it is stored and how
-          data analysis tooling displays it.
+          Specifies the type of a metric, like "counter" or "event". This
+          defines which operations are valid for the metric, how it is stored
+          and how data analysis tooling displays it.
 
           The supported types are:
             - `event`: Record a specific event (with optional metadata).
@@ -72,21 +73,22 @@ definitions:
 
             - `string_list`: a list of Unicode strings.
 
-            - `enumeration`: a string with a fixed set of values. Additional properties:
-              `values`_.
+            - `enumeration`: a string with a fixed set of values. Additional
+              properties: `values`_.
 
             - `counter`: A numeric value that can only be incremented.
 
-            - `quantity`: A numeric value that is set directly. Only allowed for metrics
-              coming from GeckoView.
+            - `quantity`: A numeric value that is set directly. Only allowed for
+              metrics coming from GeckoView.
 
-            - `timespan`: Represents a time interval. Additional properties: `time_unit`_.
+            - `timespan`: Represents a time interval. Additional properties:
+              `time_unit`_.
 
-            - `timing_distribution`: Record the distribution of multiple timings.
-              Additional properties: `time_unit`_.
+            - `timing_distribution`: Record the distribution of multiple
+              timings. Additional properties: `time_unit`_.
 
-            - `datetime`: A date/time value.  Represented as an ISO datetime in UTC.
-              Additional properties: `time_unit`_.
+            - `datetime`: A date/time value. Represented as an ISO datetime in
+              UTC. Additional properties: `time_unit`_.
 
             - `use_counter`: Records the value of one of more values in relation
               to another value. Represented internally as a list of numerators
@@ -98,30 +100,31 @@ definitions:
               visualization side may present it differently, knowing that it
               indicates the usage of a feature.
 
-            - `rate`: Record the rate of an event over time. This is functionally
-              equivalent to a counter, except the analysis and visualization
-              will tie it to the duration of the ping to display it as a rate
-              over time.
+            - `rate`: Record the rate of an event over time. This is
+              functionally equivalent to a counter, except the analysis and
+              visualization will tie it to the duration of the ping to display
+              it as a rate over time.
 
             - `uuid`: Record a UUID v4.
 
-            - `memory_distribution`: A histogram for recording memory usage values.
-              Additional properties: `memory_unit`_.
+            - `memory_distribution`: A histogram for recording memory usage
+              values. Additional properties: `memory_unit`_.
 
-            - `custom_distribution`: A histogram with a custom range and number of buckets.
-              This metric type is for legacy support only and is only allowed for
-              metrics coming from GeckoView.
-              Additional properties: `range_min`_, `range_max`_, `bucket_count`_, `histogram_type`_.
+            - `custom_distribution`: A histogram with a custom range and number
+              of buckets. This metric type is for legacy support only and is
+              only allowed for metrics coming from GeckoView. Additional
+              properties: `range_min`_, `range_max`_, `bucket_count`_,
+              `histogram_type`_.
 
-            - Additionally, labeled versions of many metric types are
-              supported.  These support the `labels`_ parameter, allowing multiple
-              instances of the metric to be stored at a given set of labels.  The
-              labeled metric types include:
+            - Additionally, labeled versions of many metric types are supported.
+              These support the `labels`_ parameter, allowing multiple instances
+              of the metric to be stored at a given set of labels. The labeled
+              metric types include:
 
-                `labeled_boolean`, `labeled_string`,
-                `labeled_enumeration`, `labeled_counter`,
-                `labeled_timing_distribution`, `labeled_datetime`,
-                `labeled_use_counter`, `labeled_usage`, `labeled_rate`.
+                `labeled_boolean`, `labeled_string`, `labeled_enumeration`,
+                `labeled_counter`, `labeled_timing_distribution`,
+                `labeled_datetime`, `labeled_use_counter`, `labeled_usage`,
+                `labeled_rate`.
         type: string
         enum:
           - event
@@ -156,9 +159,11 @@ definitions:
       lifetime:
         title: Lifetime
         description: |
-          Defines the lifetime of the metric.  It must be one of the following values:
+          Defines the lifetime of the metric. It must be one of the following
+          values:
 
-          - `ping` (default): The metric is reset each time it is sent in a ping.
+          - `ping` (default): The metric is reset each time it is sent in a
+            ping.
 
           - `user`: The metric contains a property that is part of the user's
             profile and is never reset.
@@ -207,12 +212,12 @@ definitions:
         description: |
           **Required.**
 
-          A list of bug URLs (e.g. Bugzilla and Github) that are relevant to this
-          metric, e.g., tracking its original implementation or later changes to
-          it.
+          A list of bug URLs (e.g. Bugzilla and Github) that are relevant to
+          this metric, e.g., tracking its original implementation or later
+          changes to it.
 
-          Using bug numbers alone is deprecated and will be an error in the future.
-          Each entry should be a full URL to the bug in its tracker.
+          Using bug numbers alone is deprecated and will be an error in the
+          future. Each entry should be a full URL to the bug in its tracker.
         type: array
         minItems: 1
         items:
@@ -235,8 +240,8 @@ definitions:
       disabled:
         title: Disabled
         description: |
-          If `true`, the metric is disabled, and any metric collection on it will
-          be silently ignored at runtime.
+          If `true`, the metric is disabled, and any metric collection on it
+          will be silently ignored at runtime.
         type: boolean
         default: false
 
@@ -276,9 +281,9 @@ definitions:
         description: |
           Specifies the unit that the metric will be stored and displayed in. If
           not provided, it defaults to milliseconds. Time values are sent to the
-          backend as integers, so `time_unit`_ determines the maximum
-          resolution at which timespans are recorded. Times are always truncated,
-          not rounded, to the nearest time unit. For example, a measurement of 25 ns
+          backend as integers, so `time_unit`_ determines the maximum resolution
+          at which timespans are recorded. Times are always truncated, not
+          rounded, to the nearest time unit. For example, a measurement of 25 ns
           will be returned as 0 ms if `time_unit` is `"millisecond"`.
 
           Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.
@@ -296,7 +301,8 @@ definitions:
         description: |
           The unit that the incoming memory size values are recorded in.
 
-          The units are the power-of-2 units, so "kilobyte" is correctly a "kibibyte".
+          The units are the power-of-2 units, so "kilobyte" is correctly a
+          "kibibyte".
 
           - kilobyte == 2^10 ==         1,024 bytes
           - megabyte == 2^20 ==     1,048,576 bytes
@@ -363,9 +369,9 @@ definitions:
       gecko_datapoint:
         title: Gecko Datapoint
         description: |
-          This is a Gecko-specific property. It is the name of the Gecko metric to
-          accumulate the data from, when using the Glean SDK in a product using GeckoView.
-          See bug 1566356 for more context.
+          This is a Gecko-specific property. It is the name of the Gecko metric
+          to accumulate the data from, when using the Glean SDK in a product
+          using GeckoView. See bug 1566356 for more context.
 
         type: string
 
@@ -401,8 +407,9 @@ definitions:
         description: |
           The type of histogram bucketing to use:
             - `linear`: The buckets are linearly spaced within the range.
-            - `exponential`: The buckets use the natural logarithmic so the smaller-valued
-              buckets are smaller in size than the higher-valued buckets.
+            - `exponential`: The buckets use the natural logarithmic so the
+              smaller-valued buckets are smaller in size than the higher-valued
+              buckets.
 
           Required when `type`_ is `custom_distribution`.
         enum:
@@ -493,8 +500,9 @@ additionalProperties:
           properties:
             gecko_datapoint:
               description: |
-                `gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,
-                `memory_distribution`, `quantity`, `boolean`, `string` and `labeled_counter`.
+                `gecko_datapoint` is only allowed for `timing_distribution`,
+                `custom_distribution`, `memory_distribution`, `quantity`,
+                `boolean`, `string` and `labeled_counter`.
               maxLength: 0
       -
         if:
@@ -507,7 +515,8 @@ additionalProperties:
           required:
             - gecko_datapoint
           description: |
-            `custom_distribution` and `quantity` is only allowed for Gecko metrics.
+            `custom_distribution` and `quantity` is only allowed for Gecko
+            metrics.
       -
         if:
           properties:
@@ -519,8 +528,8 @@ additionalProperties:
             - bucket_count
             - histogram_type
           description: |
-            `custom_distribution` is missing required parameters `range_max`, `bucket_count` and
-            `histogram_type`.
+            `custom_distribution` is missing required parameters `range_max`,
+            `bucket_count` and `histogram_type`.
       -
         if:
           properties:

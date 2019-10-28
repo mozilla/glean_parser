@@ -72,7 +72,7 @@ def load_yaml_or_json(path):
     if path.suffix == ".json":
         with open(path, "r") as fd:
             return json.load(fd)
-    elif path.suffix in (".yml", ".yaml"):
+    elif path.suffix in (".yml", ".yaml", ".yamlx"):
         with open(path, "r") as fd:
             return yaml.load(fd, Loader=_NoDatesSafeLoader)
     else:
