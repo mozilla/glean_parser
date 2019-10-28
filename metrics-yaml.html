@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.9.6.dev9+g4b6bad2 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.9.6.dev12+gc77cdde documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -54,9 +54,9 @@ an object with the following parameters described below.</p>
 <div class="section" id="type">
 <span id="id1"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
-<p>Specifies the type of a metric, like “counter” or “event”. This defines
-which operations are valid for the metric, how it is stored and how
-data analysis tooling displays it.</p>
+<p>Specifies the type of a metric, like “counter” or “event”. This
+defines which operations are valid for the metric, how it is stored
+and how data analysis tooling displays it.</p>
 <p>The supported types are:</p>
 <ul>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">event</span></code>: Record a specific event (with optional metadata).
@@ -68,21 +68,22 @@ Additional properties: <code class="docutils literal notranslate"><span class="p
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">string_list</span></code>: a list of Unicode strings.</p>
 </li>
-<li><p class="first"><cite>enumeration</cite>: a string with a fixed set of values. Additional properties:
-<a class="reference internal" href="#values">values</a>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">enumeration</span></code>: a string with a fixed set of values. Additional
+properties: <a class="reference internal" href="#values">values</a>.</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly. Only allowed for metrics
-coming from GeckoView.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly. Only allowed for
+metrics coming from GeckoView.</p>
 </li>
-<li><p class="first"><cite>timespan</cite>: Represents a time interval. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+<li><p class="first"><cite>timespan</cite>: Represents a time interval. Additional properties:
+<a class="reference internal" href="#time-unit">time_unit</a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple timings.
-Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple
+timings. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: A date/time value.  Represented as an ISO datetime in UTC.
-Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: A date/time value. Represented as an ISO datetime in
+UTC. Additional properties: <a class="reference internal" href="#time-unit">time_unit</a>.</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">use_counter</span></code>: Records the value of one of more values in relation
 to another value. Represented internally as a list of numerators
@@ -94,30 +95,31 @@ equivalent to a boolean metric type, except the analysis and
 visualization side may present it differently, knowing that it
 indicates the usage of a feature.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Record the rate of an event over time. This is functionally
-equivalent to a counter, except the analysis and visualization
-will tie it to the duration of the ping to display it as a rate
-over time.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">rate</span></code>: Record the rate of an event over time. This is
+functionally equivalent to a counter, except the analysis and
+visualization will tie it to the duration of the ping to display
+it as a rate over time.</p>
 </li>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">uuid</span></code>: Record a UUID v4.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">memory_distribution</span></code>: A histogram for recording memory usage values.
-Additional properties: <a href="#id19"><span class="problematic" id="id20">`memory_unit`_</span></a>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">memory_distribution</span></code>: A histogram for recording memory usage
+values. Additional properties: <a href="#id19"><span class="problematic" id="id20">`memory_unit`_</span></a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">custom_distribution</span></code>: A histogram with a custom range and number of buckets.
-This metric type is for legacy support only and is only allowed for
-metrics coming from GeckoView.
-Additional properties: <a href="#id21"><span class="problematic" id="id22">`range_min`_</span></a>, <a href="#id23"><span class="problematic" id="id24">`range_max`_</span></a>, <a href="#id25"><span class="problematic" id="id26">`bucket_count`_</span></a>, <a href="#id27"><span class="problematic" id="id28">`histogram_type`_</span></a>.</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">custom_distribution</span></code>: A histogram with a custom range and number
+of buckets. This metric type is for legacy support only and is
+only allowed for metrics coming from GeckoView. Additional
+properties: <a href="#id21"><span class="problematic" id="id22">`range_min`_</span></a>, <a href="#id23"><span class="problematic" id="id24">`range_max`_</span></a>, <a href="#id25"><span class="problematic" id="id26">`bucket_count`_</span></a>,
+<a href="#id27"><span class="problematic" id="id28">`histogram_type`_</span></a>.</p>
 </li>
-<li><p class="first">Additionally, labeled versions of many metric types are
-supported.  These support the <a class="reference internal" href="#labels">labels</a> parameter, allowing multiple
-instances of the metric to be stored at a given set of labels.  The
-labeled metric types include:</p>
+<li><p class="first">Additionally, labeled versions of many metric types are supported.
+These support the <a class="reference internal" href="#labels">labels</a> parameter, allowing multiple instances
+of the metric to be stored at a given set of labels. The labeled
+metric types include:</p>
 <blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">labeled_boolean</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_string</span></code>,
-<code class="docutils literal notranslate"><span class="pre">labeled_enumeration</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_counter</span></code>,
-<code class="docutils literal notranslate"><span class="pre">labeled_timing_distribution</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_datetime</span></code>,
-<code class="docutils literal notranslate"><span class="pre">labeled_use_counter</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_usage</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_rate</span></code>.</p>
+<div><p><code class="docutils literal notranslate"><span class="pre">labeled_boolean</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_string</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_enumeration</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_counter</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_timing_distribution</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_datetime</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_use_counter</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_usage</span></code>,
+<code class="docutils literal notranslate"><span class="pre">labeled_rate</span></code>.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -138,11 +140,11 @@ be contacted.</p>
 <div class="section" id="bugs">
 <span id="id4"></span><h3>bugs<a class="headerlink" href="#bugs" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
-<p>A list of bug URLs (e.g. Bugzilla and Github) that are relevant to this
-metric, e.g., tracking its original implementation or later changes to
-it.</p>
-<p>Using bug numbers alone is deprecated and will be an error in the future.
-Each entry should be a full URL to the bug in its tracker.</p>
+<p>A list of bug URLs (e.g. Bugzilla and Github) that are relevant to
+this metric, e.g., tracking its original implementation or later
+changes to it.</p>
+<p>Using bug numbers alone is deprecated and will be an error in the
+future. Each entry should be a full URL to the bug in its tracker.</p>
 </div>
 <div class="section" id="data-reviews">
 <span id="id5"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
@@ -151,9 +153,11 @@ Each entry should be a full URL to the bug in its tracker.</p>
 </div>
 <div class="section" id="lifetime">
 <span id="id6"></span><h3>lifetime<a class="headerlink" href="#lifetime" title="Permalink to this headline">¶</a></h3>
-<p>Defines the lifetime of the metric.  It must be one of the following values:</p>
+<p>Defines the lifetime of the metric. It must be one of the following
+values:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">ping</span></code> (default): The metric is reset each time it is sent in a ping.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ping</span></code> (default): The metric is reset each time it is sent in a
+ping.</li>
 <li><code class="docutils literal notranslate"><span class="pre">user</span></code>: The metric contains a property that is part of the user’s
 profile and is never reset.</li>
 <li><code class="docutils literal notranslate"><span class="pre">application</span></code>: The metric contains a property that is related to the
@@ -172,8 +176,8 @@ in any ping.)</p>
 </div>
 <div class="section" id="disabled">
 <span id="id8"></span><h3>disabled<a class="headerlink" href="#disabled" title="Permalink to this headline">¶</a></h3>
-<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metric is disabled, and any metric collection on it will
-be silently ignored at runtime.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metric is disabled, and any metric collection on it
+will be silently ignored at runtime.</p>
 </div>
 <div class="section" id="expires">
 <span id="id9"></span><h3>expires<a class="headerlink" href="#expires" title="Permalink to this headline">¶</a></h3>
@@ -202,9 +206,9 @@ provided, defaults to 0.</p>
 <span id="id12"></span><h3>time_unit<a class="headerlink" href="#time-unit" title="Permalink to this headline">¶</a></h3>
 <p>Specifies the unit that the metric will be stored and displayed in. If
 not provided, it defaults to milliseconds. Time values are sent to the
-backend as integers, so <a class="reference internal" href="#time-unit">time_unit</a> determines the maximum
-resolution at which timespans are recorded. Times are always truncated,
-not rounded, to the nearest time unit. For example, a measurement of 25 ns
+backend as integers, so <a class="reference internal" href="#time-unit">time_unit</a> determines the maximum resolution
+at which timespans are recorded. Times are always truncated, not
+rounded, to the nearest time unit. For example, a measurement of 25 ns
 will be returned as 0 ms if <code class="docutils literal notranslate"><span class="pre">time_unit</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;millisecond&quot;</span></code>.</p>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">timespan</span></code>, <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code> or <code class="docutils literal notranslate"><span class="pre">datetime</span></code>.</p>
 </div>
@@ -234,9 +238,9 @@ This metadata object has the following keys:</p>
 </div>
 <div class="section" id="gecko-datapoint">
 <span id="id18"></span><h3>gecko_datapoint<a class="headerlink" href="#gecko-datapoint" title="Permalink to this headline">¶</a></h3>
-<p>This is a Gecko-specific property. It is the name of the Gecko metric to
-accumulate the data from, when using the Glean SDK in a product using GeckoView.
-See bug 1566356 for more context.</p>
+<p>This is a Gecko-specific property. It is the name of the Gecko metric
+to accumulate the data from, when using the Glean SDK in a product
+using GeckoView. See bug 1566356 for more context.</p>
 </div>
 </div>
 <div class="section" id="json-schema">
@@ -247,6 +251,7 @@ entirety below:</p>
 <span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
 <span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
+<span class="nn">---</span>
 <span class="nt">$schema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://json-schema.org/draft-07/schema#</span>
 <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metrics</span>
 <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
@@ -285,7 +290,7 @@ entirety below:</p>
   <span class="nt">labeled_metric_id</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_-]{0,29}(\\.[a-z0-9_-]{0,29})*$&quot;</span>
-    <span class="nt">maxLength</span><span class="p">:</span> <span class="nt">71 # Note</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">this should be category + metric + 1</span>
+    <span class="nt">maxLength</span><span class="p">:</span> <span class="nt">71  # Note</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">this should be category + metric + 1</span>
 
   <span class="nt">metric</span><span class="p">:</span>
     <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
@@ -303,9 +308,9 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">**Required.**</span>
 
-          <span class="no">Specifies the type of a metric, like &quot;counter&quot; or &quot;event&quot;. This defines</span>
-          <span class="no">which operations are valid for the metric, how it is stored and how</span>
-          <span class="no">data analysis tooling displays it.</span>
+          <span class="no">Specifies the type of a metric, like &quot;counter&quot; or &quot;event&quot;. This</span>
+          <span class="no">defines which operations are valid for the metric, how it is stored</span>
+          <span class="no">and how data analysis tooling displays it.</span>
 
           <span class="no">The supported types are:</span>
             <span class="no">- `event`: Record a specific event (with optional metadata).</span>
@@ -317,21 +322,22 @@ entirety below:</p>
 
             <span class="no">- `string_list`: a list of Unicode strings.</span>
 
-            <span class="no">- `enumeration`: a string with a fixed set of values. Additional properties:</span>
-              <span class="no">`values`_.</span>
+            <span class="no">- `enumeration`: a string with a fixed set of values. Additional</span>
+              <span class="no">properties: `values`_.</span>
 
             <span class="no">- `counter`: A numeric value that can only be incremented.</span>
 
-            <span class="no">- `quantity`: A numeric value that is set directly. Only allowed for metrics</span>
-              <span class="no">coming from GeckoView.</span>
+            <span class="no">- `quantity`: A numeric value that is set directly. Only allowed for</span>
+              <span class="no">metrics coming from GeckoView.</span>
 
-            <span class="no">- `timespan`: Represents a time interval. Additional properties: `time_unit`_.</span>
+            <span class="no">- `timespan`: Represents a time interval. Additional properties:</span>
+              <span class="no">`time_unit`_.</span>
 
-            <span class="no">- `timing_distribution`: Record the distribution of multiple timings.</span>
-              <span class="no">Additional properties: `time_unit`_.</span>
+            <span class="no">- `timing_distribution`: Record the distribution of multiple</span>
+              <span class="no">timings. Additional properties: `time_unit`_.</span>
 
-            <span class="no">- `datetime`: A date/time value.  Represented as an ISO datetime in UTC.</span>
-              <span class="no">Additional properties: `time_unit`_.</span>
+            <span class="no">- `datetime`: A date/time value. Represented as an ISO datetime in</span>
+              <span class="no">UTC. Additional properties: `time_unit`_.</span>
 
             <span class="no">- `use_counter`: Records the value of one of more values in relation</span>
               <span class="no">to another value. Represented internally as a list of numerators</span>
@@ -343,30 +349,31 @@ entirety below:</p>
               <span class="no">visualization side may present it differently, knowing that it</span>
               <span class="no">indicates the usage of a feature.</span>
 
-            <span class="no">- `rate`: Record the rate of an event over time. This is functionally</span>
-              <span class="no">equivalent to a counter, except the analysis and visualization</span>
-              <span class="no">will tie it to the duration of the ping to display it as a rate</span>
-              <span class="no">over time.</span>
+            <span class="no">- `rate`: Record the rate of an event over time. This is</span>
+              <span class="no">functionally equivalent to a counter, except the analysis and</span>
+              <span class="no">visualization will tie it to the duration of the ping to display</span>
+              <span class="no">it as a rate over time.</span>
 
             <span class="no">- `uuid`: Record a UUID v4.</span>
 
-            <span class="no">- `memory_distribution`: A histogram for recording memory usage values.</span>
-              <span class="no">Additional properties: `memory_unit`_.</span>
+            <span class="no">- `memory_distribution`: A histogram for recording memory usage</span>
+              <span class="no">values. Additional properties: `memory_unit`_.</span>
 
-            <span class="no">- `custom_distribution`: A histogram with a custom range and number of buckets.</span>
-              <span class="no">This metric type is for legacy support only and is only allowed for</span>
-              <span class="no">metrics coming from GeckoView.</span>
-              <span class="no">Additional properties: `range_min`_, `range_max`_, `bucket_count`_, `histogram_type`_.</span>
+            <span class="no">- `custom_distribution`: A histogram with a custom range and number</span>
+              <span class="no">of buckets. This metric type is for legacy support only and is</span>
+              <span class="no">only allowed for metrics coming from GeckoView. Additional</span>
+              <span class="no">properties: `range_min`_, `range_max`_, `bucket_count`_,</span>
+              <span class="no">`histogram_type`_.</span>
 
-            <span class="no">- Additionally, labeled versions of many metric types are</span>
-              <span class="no">supported.  These support the `labels`_ parameter, allowing multiple</span>
-              <span class="no">instances of the metric to be stored at a given set of labels.  The</span>
-              <span class="no">labeled metric types include:</span>
+            <span class="no">- Additionally, labeled versions of many metric types are supported.</span>
+              <span class="no">These support the `labels`_ parameter, allowing multiple instances</span>
+              <span class="no">of the metric to be stored at a given set of labels. The labeled</span>
+              <span class="no">metric types include:</span>
 
-                <span class="no">`labeled_boolean`, `labeled_string`,</span>
-                <span class="no">`labeled_enumeration`, `labeled_counter`,</span>
-                <span class="no">`labeled_timing_distribution`, `labeled_datetime`,</span>
-                <span class="no">`labeled_use_counter`, `labeled_usage`, `labeled_rate`.</span>
+                <span class="no">`labeled_boolean`, `labeled_string`, `labeled_enumeration`,</span>
+                <span class="no">`labeled_counter`, `labeled_timing_distribution`,</span>
+                <span class="no">`labeled_datetime`, `labeled_use_counter`, `labeled_usage`,</span>
+                <span class="no">`labeled_rate`.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
         <span class="nt">enum</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">event</span>
@@ -401,9 +408,11 @@ entirety below:</p>
       <span class="nt">lifetime</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lifetime</span>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Defines the lifetime of the metric.  It must be one of the following values:</span>
+          <span class="no">Defines the lifetime of the metric. It must be one of the following</span>
+          <span class="no">values:</span>
 
-          <span class="no">- `ping` (default): The metric is reset each time it is sent in a ping.</span>
+          <span class="no">- `ping` (default): The metric is reset each time it is sent in a</span>
+            <span class="no">ping.</span>
 
           <span class="no">- `user`: The metric contains a property that is part of the user&#39;s</span>
             <span class="no">profile and is never reset.</span>
@@ -452,12 +461,12 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">**Required.**</span>
 
-          <span class="no">A list of bug URLs (e.g. Bugzilla and Github) that are relevant to this</span>
-          <span class="no">metric, e.g., tracking its original implementation or later changes to</span>
-          <span class="no">it.</span>
+          <span class="no">A list of bug URLs (e.g. Bugzilla and Github) that are relevant to</span>
+          <span class="no">this metric, e.g., tracking its original implementation or later</span>
+          <span class="no">changes to it.</span>
 
-          <span class="no">Using bug numbers alone is deprecated and will be an error in the future.</span>
-          <span class="no">Each entry should be a full URL to the bug in its tracker.</span>
+          <span class="no">Using bug numbers alone is deprecated and will be an error in the</span>
+          <span class="no">future. Each entry should be a full URL to the bug in its tracker.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
         <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
         <span class="nt">items</span><span class="p">:</span>
@@ -480,8 +489,8 @@ entirety below:</p>
       <span class="nt">disabled</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Disabled</span>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">If `true`, the metric is disabled, and any metric collection on it will</span>
-          <span class="no">be silently ignored at runtime.</span>
+          <span class="no">If `true`, the metric is disabled, and any metric collection on it</span>
+          <span class="no">will be silently ignored at runtime.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
         <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
@@ -521,9 +530,9 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">Specifies the unit that the metric will be stored and displayed in. If</span>
           <span class="no">not provided, it defaults to milliseconds. Time values are sent to the</span>
-          <span class="no">backend as integers, so `time_unit`_ determines the maximum</span>
-          <span class="no">resolution at which timespans are recorded. Times are always truncated,</span>
-          <span class="no">not rounded, to the nearest time unit. For example, a measurement of 25 ns</span>
+          <span class="no">backend as integers, so `time_unit`_ determines the maximum resolution</span>
+          <span class="no">at which timespans are recorded. Times are always truncated, not</span>
+          <span class="no">rounded, to the nearest time unit. For example, a measurement of 25 ns</span>
           <span class="no">will be returned as 0 ms if `time_unit` is `&quot;millisecond&quot;`.</span>
 
           <span class="no">Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.</span>
@@ -541,7 +550,8 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">The unit that the incoming memory size values are recorded in.</span>
 
-          <span class="no">The units are the power-of-2 units, so &quot;kilobyte&quot; is correctly a &quot;kibibyte&quot;.</span>
+          <span class="no">The units are the power-of-2 units, so &quot;kilobyte&quot; is correctly a</span>
+          <span class="no">&quot;kibibyte&quot;.</span>
 
           <span class="no">- kilobyte == 2^10 ==         1,024 bytes</span>
           <span class="no">- megabyte == 2^20 ==     1,048,576 bytes</span>
@@ -608,9 +618,9 @@ entirety below:</p>
       <span class="nt">gecko_datapoint</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Gecko Datapoint</span>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">This is a Gecko-specific property. It is the name of the Gecko metric to</span>
-          <span class="no">accumulate the data from, when using the Glean SDK in a product using GeckoView.</span>
-          <span class="no">See bug 1566356 for more context.</span>
+          <span class="no">This is a Gecko-specific property. It is the name of the Gecko metric</span>
+          <span class="no">to accumulate the data from, when using the Glean SDK in a product</span>
+          <span class="no">using GeckoView. See bug 1566356 for more context.</span>
 
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
@@ -646,8 +656,9 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">The type of histogram bucketing to use:</span>
             <span class="no">- `linear`: The buckets are linearly spaced within the range.</span>
-            <span class="no">- `exponential`: The buckets use the natural logarithmic so the smaller-valued</span>
-              <span class="no">buckets are smaller in size than the higher-valued buckets.</span>
+            <span class="no">- `exponential`: The buckets use the natural logarithmic so the</span>
+              <span class="no">smaller-valued buckets are smaller in size than the higher-valued</span>
+              <span class="no">buckets.</span>
 
           <span class="no">Required when `type`_ is `custom_distribution`.</span>
         <span class="nt">enum</span><span class="p">:</span>
@@ -738,8 +749,9 @@ entirety below:</p>
           <span class="nt">properties</span><span class="p">:</span>
             <span class="nt">gecko_datapoint</span><span class="p">:</span>
               <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-                <span class="no">`gecko_datapoint` is only allowed for `timing_distribution`, `custom_distribution`,</span>
-                <span class="no">`memory_distribution`, `quantity`, `boolean`, `string` and `labeled_counter`.</span>
+                <span class="no">`gecko_datapoint` is only allowed for `timing_distribution`,</span>
+                <span class="no">`custom_distribution`, `memory_distribution`, `quantity`,</span>
+                <span class="no">`boolean`, `string` and `labeled_counter`.</span>
               <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
@@ -752,7 +764,8 @@ entirety below:</p>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gecko_datapoint</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`custom_distribution` and `quantity` is only allowed for Gecko metrics.</span>
+            <span class="no">`custom_distribution` and `quantity` is only allowed for Gecko</span>
+            <span class="no">metrics.</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
           <span class="nt">properties</span><span class="p">:</span>
@@ -764,8 +777,8 @@ entirety below:</p>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bucket_count</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">histogram_type</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`custom_distribution` is missing required parameters `range_max`, `bucket_count` and</span>
-            <span class="no">`histogram_type`.</span>
+            <span class="no">`custom_distribution` is missing required parameters `range_max`,</span>
+            <span class="no">`bucket_count` and `histogram_type`.</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
           <span class="nt">properties</span><span class="p">:</span>
