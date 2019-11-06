@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.9.6.dev12+gc77cdde documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.9.6.dev14+g9effc25 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -786,21 +786,23 @@ of the <cite>pings.Ping</cite> instances.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filepaths</strong> – list of Path objects to metrics.yaml and/or pings.yaml</td>
-</tr>
-</tbody>
-</table>
-<p>files
-:param config: A dictionary of options that change parsing behavior.</p>
-<blockquote>
-<div><p>Supported keys are:
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filepaths</strong> – list of Path objects to metrics.yaml and/or pings.yaml
+files</li>
+<li><strong>config</strong> – <p>A dictionary of options that change parsing behavior.
+Supported keys are:
 - <cite>allow_reserved</cite>: Allow values reserved for internal Glean use.
 - <cite>do_not_disable_expired</cite>: Don’t mark expired metrics as disabled.</p>
 <blockquote>
 <div>This is useful when you want to retain the original “disabled”
 value from the <cite>metrics.yaml</cite>, rather than having it overridden when
 the metric expires.</div></blockquote>
-</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
