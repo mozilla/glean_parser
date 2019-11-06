@@ -14,6 +14,10 @@ Unreleased
 
 * `yamllint` has been added to test the YAML files on CI.
 
+* ⚠ Metric types that don't yet have implementations in glean-core have been
+  removed. This includes `enumeration`, `rate`, `usage`, and `use_counter`, as
+  well as many labeled metrics that don't exist.
+
 1.9.5 (2019-10-22)
 ------------------
 

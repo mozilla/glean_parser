@@ -174,12 +174,6 @@ class StringList(Metric):
 
 
 @dataclass
-class Enumeration(Metric):
-    typename = "enumeration"
-    values: List[str] = field(default_factory=list)
-
-
-@dataclass
 class Counter(Metric):
     typename = "counter"
 
@@ -249,28 +243,6 @@ class CustomDistribution(Metric):
 @dataclass
 class Datetime(TimeBase):
     typename = "datetime"
-
-
-@dataclass
-class UseCounter(Metric):
-    typename = "use_counter"
-    denominator: str = ""
-
-    def __post_init__(self, *args):
-        super().__post_init__(*args)
-
-        if not self.denominator:
-            raise ValueError("denominator is required on all use_counter metrics")
-
-
-@dataclass
-class Usage(Metric):
-    typename = "usage"
-
-
-@dataclass
-class Rate(Metric):
-    typename = "rate"
 
 
 @dataclass

@@ -210,17 +210,6 @@ def test_multiple_errors():
     assert len(errors) == 2
 
 
-def test_required_denominator():
-    """denominator is required on use_counter"""
-    contents = [{"category": {"metric": {"type": "use_counter"}}}]
-
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_objects(contents)
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert "denominator is required" in errors[0]
-
-
 def test_event_must_be_ping_lifetime():
     contents = [{"category": {"metric": {"type": "event", "lifetime": "user"}}}]
 
