@@ -205,7 +205,6 @@ def output_kotlin(objs, output_dir, options={}):
         "allowed_extra_keys",
         "bucket_count",
         "category",
-        "denominator",
         "disabled",
         "histogram_type",
         "include_client_id",
@@ -216,7 +215,6 @@ def output_kotlin(objs, output_dir, options={}):
         "range_min",
         "send_in_pings",
         "time_unit",
-        "values",
     ]
 
     namespace = options.get("namespace", "GleanMetrics")
