@@ -276,7 +276,7 @@ def parse_objects(filepaths, config={}):
     of the `pings.Ping` instances.
 
     :param filepaths: list of Path objects to metrics.yaml and/or pings.yaml
-    files
+        files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
         - `allow_reserved`: Allow values reserved for internal Glean use.
