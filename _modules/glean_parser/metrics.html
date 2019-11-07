@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.9.6.dev14+g9effc25 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.9.6.dev17+g967c6ba documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -208,12 +208,6 @@
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;string_list&quot;</span></div>
 
 
-<div class="viewcode-block" id="Enumeration"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Enumeration">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Enumeration</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;enumeration&quot;</span>
-    <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="Counter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Counter">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Counter</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;counter&quot;</span></div>
@@ -284,28 +278,6 @@
 <div class="viewcode-block" id="Datetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Datetime">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Datetime</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span></div>
-
-
-<div class="viewcode-block" id="UseCounter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.UseCounter">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">UseCounter</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;use_counter&quot;</span>
-    <span class="n">denominator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">denominator</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;denominator is required on all use_counter metrics&quot;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Usage"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Usage">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Usage</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;usage&quot;</span></div>
-
-
-<div class="viewcode-block" id="Rate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Rate">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Rate</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-    <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span></div>
 
 
 <div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Event">[docs]</a><span class="nd">@dataclass</span>

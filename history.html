@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>History &#8212; Glean Parser 1.9.6.dev14+g9effc25 documentation</title>
+    <title>History &#8212; Glean Parser 1.9.6.dev17+g967c6ba documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -44,6 +44,9 @@ testing if installed.</li>
 Using <cite>tox</cite> for this doesn’t work in modern versions of CircleCI, so
 the <cite>tox</cite> configuration has been removed.</li>
 <li><cite>yamllint</cite> has been added to test the YAML files on CI.</li>
+<li>⚠ Metric types that don’t yet have implementations in glean-core have been
+removed. This includes <cite>enumeration</cite>, <cite>rate</cite>, <cite>usage</cite>, and <cite>use_counter</cite>, as
+well as many labeled metrics that don’t exist.</li>
 </ul>
 </div>
 <div class="section" id="id1">
