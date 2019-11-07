@@ -40,13 +40,9 @@ Metric parameters
 
 .. metric_parameter:: version
 
-.. metric_parameter:: values
-
 .. metric_parameter:: time_unit
 
 .. metric_parameter:: labels
-
-.. metric_parameter:: denominator
 
 .. metric_parameter:: extra_keys
 

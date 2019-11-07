@@ -73,9 +73,6 @@ definitions:
 
             - `string_list`: a list of Unicode strings.
 
-            - `enumeration`: a string with a fixed set of values. Additional
-              properties: `values`_.
-
             - `counter`: A numeric value that can only be incremented.
 
             - `quantity`: A numeric value that is set directly. Only allowed for
@@ -89,21 +86,6 @@ definitions:
 
             - `datetime`: A date/time value. Represented as an ISO datetime in
               UTC. Additional properties: `time_unit`_.
-
-            - `use_counter`: Records the value of one of more values in relation
-              to another value. Represented internally as a list of numerators
-              and denominator, all of which can be incremented separately.
-              Additional properties: `labels`_, `denominator`_.
-
-            - `usage`: Record whether a feature is used. This is functionally
-              equivalent to a boolean metric type, except the analysis and
-              visualization side may present it differently, knowing that it
-              indicates the usage of a feature.
-
-            - `rate`: Record the rate of an event over time. This is
-              functionally equivalent to a counter, except the analysis and
-              visualization will tie it to the duration of the ping to display
-              it as a rate over time.
 
             - `uuid`: Record a UUID v4.
 
@@ -121,17 +103,14 @@ definitions:
               of the metric to be stored at a given set of labels. The labeled
               metric types include:
 
-                `labeled_boolean`, `labeled_string`, `labeled_enumeration`,
-                `labeled_counter`, `labeled_timing_distribution`,
-                `labeled_datetime`, `labeled_use_counter`, `labeled_usage`,
-                `labeled_rate`.
+                `labeled_boolean`, `labeled_string`, `labeled_counter`.
+
         type: string
         enum:
           - event
           - boolean
           - string
           - string_list
-          - enumeration
           - counter
           - quantity
           - timespan
@@ -139,9 +118,6 @@ definitions:
           - custom_distribution
           - memory_distribution
           - datetime
-          - use_counter
-          - usage
-          - rate
           - uuid
           - labeled_boolean
           - labeled_string
@@ -266,16 +242,6 @@ definitions:
           The version of the metric. A monotonically increasing value. If not
           provided, defaults to 0.
 
-      values:
-        title: Supported values
-        description: |
-          A list of the supported enumeration values.
-
-          Valid when `type`_ is `enumeration`.
-        type: array
-        items:
-          type: string
-
       time_unit:
         title: Time unit
         description: |
@@ -334,15 +300,6 @@ definitions:
               $ref: "#/definitions/labeled_metric_id"
             maxItems: 16
           - type: "null"
-
-      denominator:
-        title: Denominator
-        description: |
-          The name of the denominator value for a use counter.
-
-          Valid when `type`_ is `use_counter`.
-        allOf:
-          - $ref: "#/definitions/snake_case"
 
       extra_keys:
         title: Extra keys

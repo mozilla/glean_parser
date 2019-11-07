@@ -154,12 +154,8 @@ environment:
     expires: 2100-01-01
 
   os:
-    type: enumeration
+    type: string
     lifetime: application
-    values:
-      - linux
-      - android
-      - ios
     description: The name of the operating system.
     bugs:
       - 1137353
@@ -203,11 +199,8 @@ environment:
     expires: 2100-01-01
 
   arch:
-    type: enumeration
+    type: string
     lifetime: application
-    values:
-      - arm
-      - x86
     description: The architecture of the device.
     bugs:
       - 1137353
