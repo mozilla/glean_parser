@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.10.0 (2019-11-11)
+-------------------
+
 * The Kotlin linter `detekt` is now run during CI, and for local
   testing if installed.
 
