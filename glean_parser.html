@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.10.0 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.10.1.dev1+g074adda documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -192,6 +192,27 @@ code.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>objs</strong> – Tree of metric objects, as returns by <cite>parser.parse_objects</cite>.</li>
+<li><strong>file</strong> – The stream to write errors to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of nits.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.lint.lint_yaml_files">
+<code class="descclassname">glean_parser.lint.</code><code class="descname">lint_yaml_files</code><span class="sig-paren">(</span><em>input_filepaths</em>, <em>file=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/lint.html#lint_yaml_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.lint_yaml_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs glinter YAML lint on a set of files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>input_filepaths</strong> – List of input files to lint.</li>
 <li><strong>file</strong> – The stream to write errors to.</li>
 </ul>
 </td>

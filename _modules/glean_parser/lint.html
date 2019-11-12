@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.10.0 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.10.1.dev1+g074adda documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -44,6 +44,9 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">parser</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+
+<span class="kn">from</span> <span class="nn">yamllint.config</span> <span class="k">import</span> <span class="n">YamlLintConfig</span>
+<span class="kn">from</span> <span class="nn">yamllint</span> <span class="k">import</span> <span class="n">linter</span>
 
 
 <span class="k">def</span> <span class="nf">_split_words</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -278,6 +281,35 @@
     <span class="k">return</span> <span class="n">nits</span></div>
 
 
+<div class="viewcode-block" id="lint_yaml_files"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_yaml_files">[docs]</a><span class="k">def</span> <span class="nf">lint_yaml_files</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs glinter YAML lint on a set of files.</span>
+
+<span class="sd">    :param input_filepaths: List of input files to lint.</span>
+<span class="sd">    :param file: The stream to write errors to.</span>
+<span class="sd">    :returns: List of nits.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">input_filepaths</span><span class="p">:</span>
+        <span class="c1"># yamllint needs both the file content and the path.</span>
+        <span class="n">file_content</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="n">problems</span> <span class="o">=</span> <span class="n">linter</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">file_content</span><span class="p">,</span> <span class="n">YamlLintConfig</span><span class="p">(</span><span class="s2">&quot;extends: default&quot;</span><span class="p">),</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">problems</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nits</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sorry, Glean found some glinter nits:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">nits</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{path}</span><span class="s2"> (</span><span class="si">{p.line}</span><span class="s2">:</span><span class="si">{p.column}</span><span class="s2">) - </span><span class="si">{p.message}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please fix the above nits to continue.&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nits</span></div>
+
+
 <div class="viewcode-block" id="glinter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.glinter">[docs]</a><span class="k">def</span> <span class="nf">glinter</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">parser_config</span><span class="o">=</span><span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Commandline helper for glinter.</span>
@@ -288,6 +320,9 @@
 <span class="sd">    :param file: The stream to write the errors to.</span>
 <span class="sd">    :return: Non-zero if there were any glinter errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lint_yaml_files</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
     <span class="n">objs</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_objects</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">report_validation_errors</span><span class="p">(</span><span class="n">objs</span><span class="p">):</span>
