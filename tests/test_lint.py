@@ -218,3 +218,17 @@ def test_misspelling_pings():
 
     assert len(nits) == 2
     assert set(["MISSPELLED_PING"]) == set(v[0] for v in nits)
+
+
+def test_yaml_lint():
+    """Tests yamllint on files with nits."""
+    file_paths = [
+        ROOT / "data" / "core.yaml",
+        ROOT / "data" / "yaml_nits.yaml",
+    ]
+
+    nits = lint.lint_yaml_files(file_paths)
+
+    assert len(nits) == 3
+    # The second rule is empty because it's a syntax error.
+    assert set(["indentation", None, "trailing-spaces"]) == set(v.rule for v in nits)

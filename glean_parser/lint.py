@@ -10,6 +10,9 @@ import sys
 from . import parser
 from . import util
 
+from yamllint.config import YamlLintConfig
+from yamllint import linter
+
 
 def _split_words(name):
     """
@@ -243,6 +246,35 @@ def lint_metrics(objs, parser_config={}, file=sys.stderr):
     return nits
 
 
+def lint_yaml_files(input_filepaths, file=sys.stderr):
+    """
+    Performs glinter YAML lint on a set of files.
+
+    :param input_filepaths: List of input files to lint.
+    :param file: The stream to write errors to.
+    :returns: List of nits.
+    """
+
+    nits = []
+    for path in input_filepaths:
+        # yamllint needs both the file content and the path.
+        file_content = None
+        with open(path, "r") as fd:
+            file_content = fd.read()
+
+        problems = linter.run(file_content, YamlLintConfig("extends: default"), path)
+        nits.extend(p for p in problems)
+
+    if len(nits):
+        print("Sorry, Glean found some glinter nits:", file=file)
+        for p in nits:
+            print(f"{path} ({p.line}:{p.column}) - {p.message}", file=file)
+        print("", file=file)
+        print("Please fix the above nits to continue.", file=file)
+
+    return nits
+
+
 def glinter(input_filepaths, parser_config={}, file=sys.stderr):
     """
     Commandline helper for glinter.
@@ -253,6 +285,9 @@ def glinter(input_filepaths, parser_config={}, file=sys.stderr):
     :param file: The stream to write the errors to.
     :return: Non-zero if there were any glinter errors.
     """
+    if lint_yaml_files(input_filepaths, file=file):
+        return 1
+
     objs = parser.parse_objects(input_filepaths, parser_config)
 
     if util.report_validation_errors(objs):
