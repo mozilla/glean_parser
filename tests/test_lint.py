@@ -222,10 +222,7 @@ def test_misspelling_pings():
 
 def test_yaml_lint():
     """Tests yamllint on files with nits."""
-    file_paths = [
-        ROOT / "data" / "core.yaml",
-        ROOT / "data" / "yaml_nits.yaml",
-    ]
+    file_paths = [ROOT / "data" / "core.yaml", ROOT / "data" / "yaml_nits.yaml"]
 
     nits = lint.lint_yaml_files(file_paths)
 
