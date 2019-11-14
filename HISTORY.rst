@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.11.0 (2019-11-13)
+-------------------
+
 * The `glinter` command now performs `yamllint` validation on registry files.
 
 1.10.0 (2019-11-11)
