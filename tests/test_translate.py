@@ -117,3 +117,21 @@ def test_translate_send_in_pings(tmpdir):
     assert objs["baseline"]["counter"].send_in_pings == ["metrics"]
     assert objs["baseline"]["event"].send_in_pings == ["events"]
     assert objs["baseline"]["c"].send_in_pings == ["custom", "metrics"]
+
+
+def test_translate_dont_remove_extra_files(tmpdir):
+    output = Path(tmpdir) / "foo"
+    output.mkdir()
+
+    with open(output / "extra.txt", "w") as fd:
+        fd.write("\n")
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "kotlin",
+        output,
+        parser_config={"allow_reserved": True},
+    )
+
+    assert len(list(output.iterdir())) == 6
+    assert "extra.txt" in [str(x.name) for x in output.iterdir()]
