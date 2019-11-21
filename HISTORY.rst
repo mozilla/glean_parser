@@ -5,11 +5,13 @@ History
 Unreleased
 ----------
 
+* The `translate` command will no longer clear extra files in the output directory.
+
 1.12.0 (2019-11-27)
 -------------------
 
 * Reserve the `deletion_request` ping name
-* Added a new flag `sendIfEmpty` for pings
+* Added a new flag `send_if_empty` for pings
 
 1.11.0 (2019-11-13)
 -------------------
