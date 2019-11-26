@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Added a new flag `sendIfEmpty` for pings
+
 1.11.0 (2019-11-13)
 -------------------
 

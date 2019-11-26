@@ -54,6 +54,13 @@ additionalProperties:
         When `true`, include the `client_id` value in the ping.
       type: boolean
 
+    send_if_empty:
+      title: Send if empty
+      description: |
+        When `false` (the default) a ping is send only if it contains data.
+        When `true` a ping is send even if it contains no data.
+      type: boolean
+
     notification_emails:
       title: Notification emails
       description: |

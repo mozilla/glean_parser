@@ -44,3 +44,11 @@ def test_snake_case_ping_names():
     errors = list(parser.parse_objects([content]))
     assert len(errors) == 1
     assert "camelCasePingName" in errors[0]
+
+
+def test_send_if_empty():
+    content = {"valid_ping": {"include_client_id": True, "send_if_empty": True}}
+
+    util.add_required_ping(content)
+    errors = list(parser.parse_objects([content]))
+    assert len(errors) == 0
