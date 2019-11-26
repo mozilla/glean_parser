@@ -57,8 +57,8 @@ additionalProperties:
     send_if_empty:
       title: Send if empty
       description: |
-        When `false` (the default) a ping is send only if it contains data.
-        When `true` a ping is send even if it contains no data.
+        When `false` (the default) a ping is sent only if it contains data.
+        When `true` a ping is sent even if it contains no data.
       type: boolean
 
     notification_emails:
