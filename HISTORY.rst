@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Reserve the `deletion_request` ping name
+
 1.11.0 (2019-11-13)
 -------------------
 
