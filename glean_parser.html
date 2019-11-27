@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.10.1.dev2+gab4c2a4 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.11.1.dev4+g4942d35 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -789,11 +789,16 @@ the metric expires.</div></blockquote>
 <p>Classes for managing the description of pings.</p>
 <dl class="class">
 <dt id="glean_parser.pings.Ping">
-<em class="property">class </em><code class="descclassname">glean_parser.pings.</code><code class="descname">Ping</code><span class="sig-paren">(</span><em>name: str, description: str, bugs: List[Union[int, str]], notification_emails: List[str], data_reviews: List[str] = &lt;factory&gt;, include_client_id: bool = False, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.pings.</code><code class="descname">Ping</code><span class="sig-paren">(</span><em>name: str, description: str, bugs: List[Union[int, str]], notification_emails: List[str], data_reviews: List[str] = &lt;factory&gt;, include_client_id: bool = False, send_if_empty: bool = False, _validated: dataclasses.InitVar = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/pings.html#Ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.pings.Ping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="glean_parser.pings.Ping.include_client_id">
 <code class="descname">include_client_id</code><em class="property"> = False</em><a class="headerlink" href="#glean_parser.pings.Ping.include_client_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.pings.Ping.send_if_empty">
+<code class="descname">send_if_empty</code><em class="property"> = False</em><a class="headerlink" href="#glean_parser.pings.Ping.send_if_empty" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

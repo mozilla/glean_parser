@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.10.1.dev2+gab4c2a4 documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.11.1.dev4+g4942d35 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -44,15 +44,15 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
 
 <span class="kn">import</span> <span class="nn">jsonschema</span>
-<span class="kn">from</span> <span class="nn">jsonschema.exceptions</span> <span class="k">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">jsonschema.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 
-<span class="kn">from</span> <span class="nn">.metrics</span> <span class="k">import</span> <span class="n">Metric</span>
-<span class="kn">from</span> <span class="nn">.pings</span> <span class="k">import</span> <span class="n">Ping</span><span class="p">,</span> <span class="n">RESERVED_PING_NAMES</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">.metrics</span> <span class="kn">import</span> <span class="n">Metric</span>
+<span class="kn">from</span> <span class="nn">.pings</span> <span class="kn">import</span> <span class="n">Ping</span><span class="p">,</span> <span class="n">RESERVED_PING_NAMES</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
 <span class="n">ROOT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
@@ -79,7 +79,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_properties</span><span class="p">):</span>
             <span class="n">missing_properties</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">missing_properties</span><span class="p">))</span>
             <span class="k">yield</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;Missing required properties: {&#39;, &#39;.join(missing_properties)}&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Missing required properties: {&#39;, &#39;.join(missing_properties)}&quot;</span>
             <span class="p">)</span>
 
     <span class="n">validator</span><span class="o">.</span><span class="n">VALIDATORS</span><span class="p">[</span><span class="s2">&quot;required&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">required</span>
@@ -96,7 +96,7 @@
         <span class="k">return</span> <span class="p">{},</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;&#39;</span><span class="si">{filepath}</span><span class="s2">&#39; file can not be empty.&quot;</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{filepath}</span><span class="s2">&#39; file can not be empty.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{},</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">content</span> <span class="o">==</span> <span class="p">{}:</span>
@@ -137,7 +137,7 @@
     <span class="k">if</span> <span class="n">schema_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schemas</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
-                <span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;$schema key must be one of {&#39;, &#39;.join(schemas.keys())}&quot;</span>
+                <span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;$schema key must be one of {&#39;, &#39;.join(schemas.keys())}&quot;</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">schemas</span><span class="p">[</span><span class="n">schema_id</span><span class="p">]</span>
@@ -188,9 +188,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">category_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;glean&quot;</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
                 <span class="n">filepath</span><span class="p">,</span>
-                <span class="n">f</span><span class="s2">&quot;For category &#39;</span><span class="si">{category_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
-                <span class="n">f</span><span class="s2">&quot;Categories beginning with &#39;glean&#39; are reserved for &quot;</span>
-                <span class="n">f</span><span class="s2">&quot;Glean internal use.&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;For category &#39;</span><span class="si">{category_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Categories beginning with &#39;glean&#39; are reserved for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Glean internal use.&quot;</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">continue</span>
         <span class="n">all_objects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">category_key</span><span class="p">,</span> <span class="p">{})</span>
@@ -201,7 +201,7 @@
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
-                    <span class="n">filepath</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;On instance </span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="n">filepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;On instance </span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
@@ -211,9 +211,9 @@
                 <span class="p">):</span>
                     <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
                         <span class="n">filepath</span><span class="p">,</span>
-                        <span class="n">f</span><span class="s2">&quot;On instance </span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&quot;</span><span class="p">,</span>
-                        <span class="n">f</span><span class="s1">&#39;Only internal metrics may specify &quot;all_pings&quot; &#39;</span>
-                        <span class="n">f</span><span class="s1">&#39;in &quot;send_in_pings&quot;&#39;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;On instance </span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s1">&#39;Only internal metrics may specify &quot;all_pings&quot; &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;in &quot;send_in_pings&quot;&#39;</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -226,8 +226,8 @@
                 <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
                     <span class="n">filepath</span><span class="p">,</span>
                     <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                    <span class="n">f</span><span class="s2">&quot;Duplicate metric name &#39;</span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&#39;&quot;</span>
-                    <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;Duplicate metric name &#39;</span><span class="si">{category_key}</span><span class="s2">.</span><span class="si">{metric_key}</span><span class="s2">&#39;&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">all_objects</span><span class="p">[</span><span class="n">category_key</span><span class="p">][</span><span class="n">metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric_obj</span>
@@ -246,15 +246,15 @@
             <span class="k">if</span> <span class="n">ping_key</span> <span class="ow">in</span> <span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
                     <span class="n">filepath</span><span class="p">,</span>
-                    <span class="n">f</span><span class="s2">&quot;For ping &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
-                    <span class="n">f</span><span class="s2">&quot;Ping uses a reserved name (</span><span class="si">{RESERVED_PING_NAMES}</span><span class="s2">)&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;For ping &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;Ping uses a reserved name (</span><span class="si">{RESERVED_PING_NAMES}</span><span class="s2">)&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
         <span class="n">ping_val</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ping_key</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ping_obj</span> <span class="o">=</span> <span class="n">Ping</span><span class="p">(</span><span class="o">**</span><span class="n">ping_val</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;On instance </span><span class="si">{ping_key}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;On instance </span><span class="si">{ping_key}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="n">ping_obj</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_key</span><span class="p">)</span>
@@ -263,8 +263,8 @@
             <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
                 <span class="n">filepath</span><span class="p">,</span>
                 <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="n">f</span><span class="s2">&quot;Duplicate ping name &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span>
-                <span class="n">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;Duplicate ping name &#39;</span><span class="si">{ping_key}</span><span class="s2">&#39;&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;already defined in &#39;</span><span class="si">{already_seen}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">all_objects</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;pings&quot;</span><span class="p">,</span> <span class="p">{})[</span><span class="n">ping_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ping_obj</span>

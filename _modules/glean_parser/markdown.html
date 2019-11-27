@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.10.1.dev2+gab4c2a4 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.11.1.dev4+g4942d35 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -43,10 +43,10 @@
 <span class="sd">Outputter to generate Markdown documentation for metrics.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">pings</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">util</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 
 <div class="viewcode-block" id="extra_info"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.extra_info">[docs]</a><span class="k">def</span> <span class="nf">extra_info</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
@@ -111,7 +111,7 @@
     <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;https://mozilla.github.io/glean/book/user/pings/</span><span class="si">{ping_name}</span><span class="s2">.html&quot;</span></div>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://mozilla.github.io/glean/book/user/pings/</span><span class="si">{ping_name}</span><span class="s2">.html&quot;</span></div>
 
 
 <div class="viewcode-block" id="output_markdown"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.output_markdown">[docs]</a><span class="k">def</span> <span class="nf">output_markdown</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
