@@ -35,6 +35,7 @@ class Ping:
     notification_emails: List[str]
     data_reviews: List[str] = field(default_factory=list)
     include_client_id: bool = False
+    send_if_empty: bool = False
 
     _validated: InitVar[bool] = False
 
