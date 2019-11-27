@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.12.0 (2019-11-27)
+-------------------
+
 * Reserve the `deletion_request` ping name
 * Added a new flag `sendIfEmpty` for pings
 
