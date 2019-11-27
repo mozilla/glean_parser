@@ -208,6 +208,7 @@ def output_kotlin(objs, output_dir, options={}):
         "disabled",
         "histogram_type",
         "include_client_id",
+        "send_if_empty",
         "lifetime",
         "memory_unit",
         "name",

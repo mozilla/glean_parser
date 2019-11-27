@@ -6,6 +6,7 @@ Unreleased
 ----------
 
 * Reserve the `deletion_request` ping name
+* Added a new flag `sendIfEmpty` for pings
 
 1.11.0 (2019-11-13)
 -------------------

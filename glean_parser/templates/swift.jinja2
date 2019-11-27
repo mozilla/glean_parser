@@ -35,7 +35,11 @@ extension {{ namespace }} {
 
       {% for obj in objs.values() %}
         /// {{ obj.description|wordwrap(wrapstring='\n        /// ') }}
-        let {{ obj.name|camelize }} = {{obj|type_name}}(name: {{ obj.name|swift }}, includeClientId: {{obj.include_client_id|swift}})
+        let {{ obj.name|camelize }} = {{obj|type_name}}(
+            name: {{ obj.name|swift }},
+            includeClientId: {{obj.include_client_id|swift}},
+            sendIfEmpty: {{obj.send_if_empty|swift}}
+        )
 
       {% endfor %}
     }
