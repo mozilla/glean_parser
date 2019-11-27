@@ -15,7 +15,7 @@ from typing import List, Union
 from . import parser
 
 
-RESERVED_PING_NAMES = ["baseline", "metrics", "events"]
+RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
 
 
 @dataclass
