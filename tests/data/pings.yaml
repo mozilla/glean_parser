@@ -31,3 +31,15 @@ really_custom_ping:
     - http://nowhere.com/reviews
   notification_emails:
     - CHANGE-ME@test-only.com
+
+custom_ping_might_be_empty:
+  description:
+    This is another custom ping
+  include_client_id: true
+  send_if_empty: true
+  bugs:
+    - 1137353
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com

@@ -79,6 +79,13 @@ def ping_docs(ping_name):
     return f"https://mozilla.github.io/glean/book/user/pings/{ping_name}.html"
 
 
+def if_empty(ping_name, custom_pings_cache={}):
+    return (
+        custom_pings_cache.get(ping_name)
+        and custom_pings_cache[ping_name].send_if_empty
+    )
+
+
 def output_markdown(objs, output_dir, options={}):
     """
     Given a tree of objects, output Markdown docs to `output_dir`.
@@ -116,6 +123,8 @@ def output_markdown(objs, output_dir, options={}):
             # the description
             if isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
+                if obj.send_if_empty:
+                    metrics_by_pings[obj.name] = []
             elif obj.is_internal_metric():
                 # This is an internal Glean metric, and we don't
                 # want docs for it.
@@ -139,6 +148,7 @@ def output_markdown(objs, output_dir, options={}):
             ("extra_info", extra_info),
             ("metrics_docs", metrics_docs),
             ("ping_desc", lambda x: ping_desc(x, custom_pings_cache)),
+            ("ping_send_if_empty", lambda x: if_empty(x, custom_pings_cache)),
             ("ping_docs", ping_docs),
         ),
     )
