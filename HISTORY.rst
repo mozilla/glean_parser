@@ -6,6 +6,8 @@ Unreleased
 ----------
 
 * The `translate` command will no longer clear extra files in the output directory.
+* BUGFIX: Ensure all newlines in comments are prefixed with comment markers
+* BUGFIX: Escape Swift keywords in variable names in generated code
 
 1.12.0 (2019-11-27)
 -------------------
