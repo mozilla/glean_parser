@@ -34,7 +34,7 @@ extension {{ namespace }} {
         }
 
       {% for obj in objs.values() %}
-        /// {{ obj.description|wordwrap(wrapstring='\n        /// ') }}
+        /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
         let {{ obj.name|camelize }} = {{obj|type_name}}(
             name: {{ obj.name|swift }},
             includeClientId: {{obj.include_client_id|swift}},
@@ -62,7 +62,7 @@ extension {{ namespace }} {
     {% for obj in objs.values() %}
         {% if obj.labeled %}
         {{ obj_declaration(obj, 'Label', 'private ') }}
-        /// {{ obj.description|wordwrap(wrapstring='\n        /// ') }}
+        /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
         static let {{ obj.name|camelize }} = try! LabeledMetricType<{{ obj|type_name }}>(
             category: {{ obj.category|swift }},
             name: {{ obj.name|swift }},
@@ -74,7 +74,7 @@ extension {{ namespace }} {
         )
 
         {% else %}
-        /// {{ obj.description|wordwrap(wrapstring='\n        /// ') }}
+        /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
         {{ obj_declaration(obj) }}
         {% endif %}
     {% endfor %}

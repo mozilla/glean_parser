@@ -49,7 +49,7 @@ internal object {{ category_name|Camelize }} {
     {% if obj.labeled %}
     {{ obj_declaration(obj, 'Label', 'private ') }}
     /**
-     * {{ obj.description|wordwrap(wrapstring='\n     * ') }}
+     * {{ obj.description|wordwrap() | replace('\n', '\n        * ') }}
      */
     val {{ obj.name|camelize }}: LabeledMetricType<{{ obj|type_name }}> by lazy {
         LabeledMetricType(
@@ -64,7 +64,7 @@ internal object {{ category_name|Camelize }} {
     }
     {% else %}
     /**
-     * {{ obj.description|wordwrap(wrapstring='\n     * ') }}
+     * {{ obj.description|wordwrap() | replace('\n', '\n     * ') }}
      */
     {{ obj_declaration(obj, lazy=obj.type != 'ping') }}
     {% endif %}
