@@ -45,7 +45,7 @@ def swift_datatypes_filter(value):
                     first = False
                 yield "]"
             elif isinstance(value, enum.Enum):
-                yield (f".{util.camelize(value.name)}")
+                yield ("." + util.camelize(value.name))
             elif isinstance(value, set):
                 yield "["
                 first = True
@@ -69,10 +69,10 @@ def type_name(obj):
     """
     if isinstance(obj, metrics.Event):
         if len(obj.extra_keys):
-            enumeration = f"{util.Camelize(obj.name)}Keys"
+            enumeration = util.Camelize(obj.name) + "Keys"
         else:
             enumeration = "NoExtraKeys"
-        return f"EventMetricType<{enumeration}>"
+        return "EventMetricType<{}>".format(enumeration)
     return class_name(obj.type)
 
 
@@ -84,7 +84,7 @@ def class_name(obj_type):
         return "Ping"
     if obj_type.startswith("labeled_"):
         obj_type = obj_type[8:]
-    return f"{util.Camelize(obj_type)}MetricType"
+    return util.Camelize(obj_type) + "MetricType"
 
 
 def variable_name(var):
@@ -144,7 +144,7 @@ def output_swift(objs, output_dir, options={}):
             getattr(metric, "labeled", False) for metric in category_val.values()
         )
 
-        with open(filepath, "w", encoding="utf-8") as fd:
+        with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
                     category_name=category_key,

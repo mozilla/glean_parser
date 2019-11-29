@@ -8,19 +8,46 @@
 Classes for managing the description of pings.
 """
 
-import dataclasses
-from dataclasses import dataclass, field, InitVar
-from typing import List, Union
+import sys
 
-from . import parser
+
+# Import a backport of PEP487 to support __init_subclass__
+if sys.version_info < (3, 6):
+    import pep487
+
+    base_object = pep487.PEP487Object
+else:
+    base_object = object
 
 
 RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
 
 
-@dataclass
-class Ping:
-    def __post_init__(self, _validated):
+class Ping(base_object):
+    def __init__(
+        self,
+        name,
+        description,
+        bugs,
+        notification_emails,
+        data_reviews=None,
+        include_client_id=False,
+        send_if_empty=False,
+        _validated=False,
+    ):
+        # Avoid cyclical import
+        from . import parser
+
+        self.name = name
+        self.description = description
+        self.bugs = bugs
+        self.notification_emails = notification_emails
+        if data_reviews is None:
+            data_reviews = []
+        self.data_reviews = data_reviews
+        self.include_client_id = include_client_id
+        self.send_if_empty = send_if_empty
+
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
         if not _validated:
@@ -28,21 +55,14 @@ class Ping:
             for error in parser.validate(data):
                 raise ValueError(error)
 
-    type = "ping"
-    name: str
-    description: str
-    bugs: List[Union[int, str]]
-    notification_emails: List[str]
-    data_reviews: List[str] = field(default_factory=list)
-    include_client_id: bool = False
-    send_if_empty: bool = False
-
-    _validated: InitVar[bool] = False
+    @property
+    def type(self):
+        return "ping"
 
     def serialize(self):
         """
         Serialize the metric back to JSON object model.
         """
-        d = dataclasses.asdict(self)
+        d = self.__dict__.copy()
         del d["name"]
         return d

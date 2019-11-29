@@ -16,7 +16,7 @@ ROOT = Path(__file__).parent
 
 def test_parser(tmpdir):
     """Test translating metrics to Markdown files."""
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -29,7 +29,7 @@ def test_parser(tmpdir):
     assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
 
     # Make sure descriptions made it in
-    with open(tmpdir / "metrics.md", "r", encoding="utf-8") as fd:
+    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "is assembled out of the box by the Glean SDK." in content
         # Make sure the table structure is in place
@@ -63,7 +63,7 @@ def test_extra_info_generator():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        labels={"label"},
+        labels=["label"],
     )
 
     assert markdown.extra_info(labeled) == [("label", None)]

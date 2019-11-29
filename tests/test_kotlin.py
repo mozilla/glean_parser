@@ -3,6 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
+from collections import OrderedDict
 import os
 from pathlib import Path
 import subprocess
@@ -22,7 +23,7 @@ DETEKT_VERSION = "1.1.1"
 
 
 def run_detekt(files):
-    detekt_exec = ROOT.parent / f"detekt-cli-{DETEKT_VERSION}-all.jar"
+    detekt_exec = ROOT.parent / "detekt-cli-{}-all.jar".format(DETEKT_VERSION)
     # We want to make sure this runs on CI, but it's not required
     # for local development
     if detekt_exec.is_file() or "CI" in os.environ:
@@ -30,12 +31,12 @@ def run_detekt(files):
             [
                 "java",
                 "-jar",
-                detekt_exec,
+                str(detekt_exec),
                 "--build-upon-default-config",
                 "--config",
-                ROOT / "detekt.yml",
+                str(ROOT / "detekt.yml"),
                 "-i",
-                ",".join(str(x) for x in files),
+                ",".join(files),
             ]
         )
 
@@ -45,18 +46,18 @@ def run_ktlint(files):
     # We want to make sure this runs on CI, but it's not required
     # for local development
     if ktlint_exec.is_file() or "CI" in os.environ:
-        subprocess.check_call([ktlint_exec] + files)
+        subprocess.check_call([str(ktlint_exec)] + files)
 
 
 def run_linters(files):
-    files = list(files)
+    files = [str(x) for x in files]
     run_ktlint(files)
     run_detekt(files)
 
 
 def test_parser(tmpdir):
     """Test translating metrics to Kotlin files."""
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -77,17 +78,17 @@ def test_parser(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / "CorePing.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "CorePing.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "True if the user has set Firefox as the default browser." in content
         # Make sure the namespace option is in effect
         assert "package Foo" in content
 
-    with open(tmpdir / "Telemetry.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "Telemetry.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "جمع 搜集" in content
 
-    with open(tmpdir / "GleanInternalMetrics.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "GleanInternalMetrics.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert 'category = ""' in content
 
@@ -100,7 +101,7 @@ def test_kotlin_generator():
     assert kdf("\n") == r'"\n"'
     assert kdf([42, "\n"]) == r'listOf(42, "\n")'
     assert (
-        kdf({"key": "value", "key2": "value2"})
+        kdf(OrderedDict([("key", "value"), ("key2", "value2")]))
         == r'mapOf("key" to "value", "key2" to "value2")'
     )
     assert kdf(metrics.Lifetime.ping) == "Lifetime.Ping"
@@ -161,7 +162,7 @@ def test_duplicate(tmpdir):
     https://github.com/mozilla-mobile/android-components/issues/2793
     """
 
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "duplicate_labeled.yaml", "kotlin", tmpdir, {"namespace": "Foo"}
@@ -169,7 +170,7 @@ def test_duplicate(tmpdir):
 
     assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
 
-    with open(tmpdir / "Category.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert (
             content.count(
@@ -183,7 +184,7 @@ def test_glean_namespace(tmpdir):
     """
     Test that setting the glean namespace works.
     """
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "duplicate_labeled.yaml",
@@ -194,14 +195,14 @@ def test_glean_namespace(tmpdir):
 
     assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
 
-    with open(tmpdir / "Category.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert content.count("import Bar.private.CounterMetricType") == 1
 
 
 def test_gecko_datapoints(tmpdir):
     """Test translating metrics to Kotlin files."""
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "gecko.yaml",
@@ -222,7 +223,7 @@ def test_gecko_datapoints(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / "GleanGeckoMetricsMapping.kt", "r", encoding="utf-8") as fd:
+    with (tmpdir / "GleanGeckoMetricsMapping.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count("import Bar.private.HistogramMetricBase") == 1
@@ -287,7 +288,7 @@ def test_gecko_datapoints(tmpdir):
         assert expected_func in content
 
     for file_name in metrics_files:
-        with open(tmpdir / file_name, "r", encoding="utf-8") as fd:
+        with (tmpdir / file_name).open("r", encoding="utf-8") as fd:
             content = fd.read()
             assert "HistogramMetricBase" not in content
 

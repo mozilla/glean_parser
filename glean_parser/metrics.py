@@ -8,13 +8,22 @@
 Classes for each of the high-level metric types.
 """
 
-import dataclasses
-from dataclasses import dataclass, field, InitVar
 import enum
-from typing import Dict, List, Set, Union
+import sys
 
-from . import parser
 from . import util
+
+
+# Import a backport of PEP487 to support __init_subclass__
+if sys.version_info < (3, 6):
+    import pep487
+
+    base_object = pep487.PEP487Object
+else:
+    base_object = object
+
+
+_builtin_type = type
 
 
 class Lifetime(enum.Enum):
@@ -23,11 +32,70 @@ class Lifetime(enum.Enum):
     application = 2
 
 
-@dataclass
-class Metric:
+class Metric(base_object):
     glean_internal_metric_cat = "glean.internal.metrics"
     metric_types = {}
     default_store_names = ["metrics"]
+
+    def __init__(
+        self,
+        type,
+        category,
+        name,
+        bugs,
+        description,
+        notification_emails,
+        expires,
+        data_reviews=None,
+        version=0,
+        disabled=False,
+        lifetime="ping",
+        send_in_pings=None,
+        unit="",
+        gecko_datapoint="",
+        no_lint=None,
+        _config=None,
+        _validated=False,
+    ):
+        # Avoid cyclical import
+        from . import parser
+
+        self.type = type
+        self.category = category
+        self.name = name
+        self.bugs = bugs
+        self.description = description
+        self.notification_emails = notification_emails
+        self.expires = expires
+        if data_reviews is None:
+            data_reviews = []
+        self.data_reviews = data_reviews
+        self.version = version
+        self.disabled = disabled
+        self.lifetime = getattr(Lifetime, lifetime)
+        if send_in_pings is None:
+            send_in_pings = ["default"]
+        self.send_in_pings = send_in_pings
+        self.unit = unit
+        self.gecko_datapoint = gecko_datapoint
+        if no_lint is None:
+            no_lint = []
+        self.no_lint = no_lint
+
+        # _validated indicates whether this metric has already been jsonschema
+        # validated (but not any of the Python-level validation).
+        if not _validated:
+            data = {
+                "$schema": parser.METRICS_ID,
+                self.category: {self.name: self.serialize()},
+            }
+            for error in parser.validate(data):
+                raise ValueError(error)
+
+        # Metrics in the special category "glean.internal.metrics" need to have
+        # an empty category string when identifying the metrics in the ping.
+        if self.category == Metric.glean_internal_metric_cat:
+            self.category = ""
 
     def __init_subclass__(cls, **kwargs):
         # Create a mapping of all of the subclasses of this class
@@ -63,7 +131,7 @@ class Metric:
         """
         Serialize the metric back to JSON object model.
         """
-        d = dataclasses.asdict(self)
+        d = self.__dict__.copy()
         # Convert enum fields back to strings
         for key, val in d.items():
             if isinstance(val, enum.Enum):
@@ -84,66 +152,6 @@ class Metric:
             return self.name
         return ".".join((self.category, self.name))
 
-    def __post_init__(self, _config, _validated):
-        # Convert enum fields to Python enums
-        for f in dataclasses.fields(self):
-            if isinstance(f.type, type) and issubclass(f.type, enum.Enum):
-                setattr(self, f.name, getattr(f.type, getattr(self, f.name)))
-            if f.type == Set[str]:
-                value = getattr(self, f.name)
-                if isinstance(value, list):
-                    setattr(self, f.name, set(value))
-
-        self.validate_expires(self.expires)
-        if hasattr(self, "extra_keys"):
-            self.validate_extra_keys(self.extra_keys, _config)
-
-        # _validated indicates whether this metric has already been jsonschema
-        # validated (but not any of the Python-level validation).
-        if not _validated:
-            data = {
-                "$schema": parser.METRICS_ID,
-                self.category: {self.name: self.serialize()},
-            }
-            for error in parser.validate(data):
-                raise ValueError(error)
-
-        # Metrics in the special category "glean.internal.metrics" need to have
-        # an empty category string when identifying the metrics in the ping.
-        if self.category == Metric.glean_internal_metric_cat:
-            self.category = ""
-
-    type: str
-
-    # Metadata
-    category: str
-    name: str
-    bugs: List[Union[int, str]]
-    description: str
-    notification_emails: List[str]
-    expires: str
-    data_reviews: List[str] = field(default_factory=list)
-    version: int = 0
-    disabled: bool = False
-
-    # Ping-related properties
-    lifetime: Lifetime = "ping"
-    send_in_pings: List[str] = field(default_factory=lambda: ["default"])
-
-    unit: str = ""
-
-    # The following is a Gecko-specific property for using the Glean SDK
-    # with GeckoView metrics. See bug 1566356 for more context.
-    gecko_datapoint: str = ""
-
-    # Lint checks to disable for this metric.
-    no_lint: List[str] = field(default_factory=list)
-
-    # Implementation detail -- these are parameters to the constructor that
-    # aren't stored in the dataclass object.
-    _config: InitVar[dict] = {}
-    _validated: InitVar[bool] = False
-
     def is_disabled(self):
         return self.disabled or self.is_expired()
 
@@ -158,27 +166,22 @@ class Metric:
         return self.category in (Metric.glean_internal_metric_cat, "")
 
 
-@dataclass
 class Boolean(Metric):
     typename = "boolean"
 
 
-@dataclass
 class String(Metric):
     typename = "string"
 
 
-@dataclass
 class StringList(Metric):
     typename = "string_list"
 
 
-@dataclass
 class Counter(Metric):
     typename = "counter"
 
 
-@dataclass
 class Quantity(Metric):
     typename = "quantity"
 
@@ -193,17 +196,16 @@ class TimeUnit(enum.Enum):
     day = 6
 
 
-@dataclass
 class TimeBase(Metric):
-    time_unit: TimeUnit = "millisecond"
+    def __init__(self, *args, **kwargs):
+        self.time_unit = getattr(TimeUnit, kwargs.pop("time_unit", "millisecond"))
+        super().__init__(*args, **kwargs)
 
 
-@dataclass
 class Timespan(TimeBase):
     typename = "timespan"
 
 
-@dataclass
 class TimingDistribution(TimeBase):
     typename = "timing_distribution"
 
@@ -215,11 +217,12 @@ class MemoryUnit(enum.Enum):
     gigabyte = 3
 
 
-@dataclass
 class MemoryDistribution(Metric):
     typename = "memory_distribution"
 
-    memory_unit: MemoryUnit = "byte"
+    def __init__(self, *args, **kwargs):
+        self.memory_unit = getattr(MemoryUnit, kwargs.pop("memory_unit", "byte"))
+        super().__init__(*args, **kwargs)
 
 
 class HistogramType(enum.Enum):
@@ -227,30 +230,32 @@ class HistogramType(enum.Enum):
     exponential = 1
 
 
-@dataclass
 class CustomDistribution(Metric):
     typename = "custom_distribution"
 
-    range_min: int = 1
-    # The defaults must be provided here to work with Python's @dataclass,
-    # however, in practice, these parameters are required by the schema,
-    # so they will never be used.
-    range_max: int = -1
-    bucket_count: int = -1
-    histogram_type: HistogramType = HistogramType.exponential
+    def __init__(self, *args, **kwargs):
+        self.range_min = kwargs.pop("range_min", 1)
+        self.range_max = kwargs.pop("range_max")
+        self.bucket_count = kwargs.pop("bucket_count")
+        self.histogram_type = getattr(
+            HistogramType, kwargs.pop("histogram_type", "exponential")
+        )
+        super().__init__(*args, **kwargs)
 
 
-@dataclass
 class Datetime(TimeBase):
     typename = "datetime"
 
 
-@dataclass
 class Event(Metric):
     typename = "event"
+
     default_store_names = ["events"]
 
-    extra_keys: Dict[str, str] = field(default_factory=dict)
+    def __init__(self, *args, **kwargs):
+        self.extra_keys = kwargs.pop("extra_keys", {})
+        self.validate_extra_keys(self.extra_keys, kwargs.get("_config", {}))
+        super().__init__(*args, **kwargs)
 
     @property
     def allowed_extra_keys(self):
@@ -268,42 +273,40 @@ class Event(Metric):
             )
 
 
-@dataclass
 class Uuid(Metric):
     typename = "uuid"
 
 
-@dataclass
 class Labeled(Metric):
     labeled = True
-    # Start the labels as a List to preserve the order from `metrics.yaml`
-    labels: List[str] = None
 
-    def __post_init__(self, *args):
-        ordered_labels = self.labels
+    def __init__(self, *args, **kwargs):
+        labels = kwargs.pop("labels", None)
+        if labels is not None:
+            self.ordered_labels = labels
+            self.labels = set(labels)
+        else:
+            self.ordered_labels = None
+            self.labels = None
+        super().__init__(*args, **kwargs)
 
-        # If any, turn the labels into a Set to properly inialize the Metric object.
-        # This is important because Kotlin code needs this labels as a Set
-        if self.labels is not None:
-            self.labels = set(ordered_labels)
-        super().__post_init__(*args)
-
-        # After initializing the Metric object, add the ordered_labels to it.
-        # If we do this step before calling the __post_init__ for the Metric class,
-        # the metric schema validation will fail
-        self.ordered_labels = ordered_labels
+    def serialize(self):
+        """
+        Serialize the metric back to JSON object model.
+        """
+        d = super().serialize()
+        d["labels"] = self.ordered_labels
+        del d["ordered_labels"]
+        return d
 
 
-@dataclass
 class LabeledBoolean(Labeled, Boolean):
     typename = "labeled_boolean"
 
 
-@dataclass
 class LabeledString(Labeled, String):
     typename = "labeled_string"
 
 
-@dataclass
 class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"

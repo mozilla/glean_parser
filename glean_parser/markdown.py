@@ -76,7 +76,7 @@ def ping_docs(ping_name):
     if ping_name not in pings.RESERVED_PING_NAMES:
         return ""
 
-    return f"https://mozilla.github.io/glean/book/user/pings/{ping_name}.html"
+    return "https://mozilla.github.io/glean/book/user/pings/{}.html".format(ping_name)
 
 
 def if_empty(ping_name, custom_pings_cache={}):
@@ -156,7 +156,7 @@ def output_markdown(objs, output_dir, options={}):
     filename = "metrics.md"
     filepath = output_dir / filename
 
-    with open(filepath, "w", encoding="utf-8") as fd:
+    with filepath.open("w", encoding="utf-8") as fd:
         fd.write(template.render(metrics_by_pings=metrics_by_pings))
         # Jinja2 squashes the final newline, so we explicitly add it
         fd.write("\n")

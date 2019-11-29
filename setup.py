@@ -12,9 +12,9 @@ import sys
 from setuptools import setup, find_packages
 
 
-if sys.version_info < (3, 7):
+if sys.version_info < (3, 5):
     print(
-        "glean_parser requires at least Python 3.7",
+        "glean_parser requires at least Python 3.5",
         file=sys.stderr
     )
     sys.exit(1)
@@ -27,13 +27,15 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'appdirs>=1.4.3',
+    'backports-datetime-fromisoformat==1.0.0',
     'Click>=7.0',
-    'PyYAML>=3.13',
-    'jsonschema>=3.0.2',
+    'diskcache>=4.0.0',
     'inflection>=0.3.1',
     'Jinja2>=2.10.1',
-    'diskcache>=4.0.0',
-    'appdirs>=1.4.3',
+    'jsonschema>=3.0.2',
+    'pep487==1.0.1'
+    'PyYAML>=3.13',
     'yamllint>=1.18.0'
 ]
 
@@ -49,7 +51,10 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description="Parser tools for Mozilla's Glean telemetry",
     entry_points={

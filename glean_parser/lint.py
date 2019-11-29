@@ -58,9 +58,9 @@ def check_common_prefix(category_name, metrics):
     if i > 0:
         common_prefix = "_".join(first[:i])
         yield (
-            f"Within category '{category_name}', all metrics begin with prefix "
-            f"'{common_prefix}'. Remove prefixes and (possibly) rename category."
-        )
+            "Within category '{}', all metrics begin with prefix "
+            "'{}'. Remove prefixes and (possibly) rename category."
+        ).format(category_name, common_prefix)
 
 
 def check_unit_in_name(metric, parser_config={}):
@@ -93,17 +93,16 @@ def check_unit_in_name(metric, parser_config={}):
             or unit_in_name == metric.time_unit.name
         ):
             yield (
-                f"Suffix '{unit_in_name}' is redundant with time_unit. "
-                "Only include time_unit."
-            )
+                "Suffix '{}' is redundant with time_unit. " "Only include time_unit."
+            ).format(unit_in_name)
         elif (
             unit_in_name in TIME_UNIT_ABBREV.keys()
             or unit_in_name in TIME_UNIT_ABBREV.values()
         ):
             yield (
-                f"Suffix '{unit_in_name}' doesn't match time_unit. "
+                "Suffix '{}' doesn't match time_unit. "
                 "Confirm the unit is correct and only include time_unit."
-            )
+            ).format(unit_in_name)
 
     elif hasattr(metric, "memory_unit"):
         if (
@@ -111,24 +110,23 @@ def check_unit_in_name(metric, parser_config={}):
             or unit_in_name == metric.memory_unit.name
         ):
             yield (
-                f"Suffix '{unit_in_name}' is redundant with memory_unit. "
+                "Suffix '{}' is redundant with memory_unit. "
                 "Only include memory_unit."
-            )
+            ).format(unit_in_name)
         elif (
             unit_in_name in MEMORY_UNIT_ABBREV.keys()
             or unit_in_name in MEMORY_UNIT_ABBREV.values()
         ):
             yield (
-                f"Suffix '{unit_in_name}' doesn't match memory_unit. "
+                "Suffix '{}' doesn't match memory_unit. "
                 "Confirm the unit is correct and only include memory_unit."
-            )
+            ).format(unit_in_name)
 
     elif hasattr(metric, "unit"):
         if unit_in_name == metric.unit:
             yield (
-                f"Suffix '{unit_in_name}' is redundant with unit param. "
-                "Only include unit."
-            )
+                "Suffix '{}' is redundant with unit param. " "Only include unit."
+            ).format(unit_in_name)
 
 
 def check_category_generic(category_name, metrics):
@@ -138,7 +136,7 @@ def check_category_generic(category_name, metrics):
     GENERIC_CATEGORIES = ["metrics", "events"]
 
     if category_name in GENERIC_CATEGORIES:
-        yield f"Category '{category_name}' is too generic."
+        yield "Category '{}' is too generic.".format(category_name)
 
 
 def check_bug_number(metric, parser_config={}):
@@ -146,9 +144,9 @@ def check_bug_number(metric, parser_config={}):
 
     if len(number_bugs):
         yield (
-            f"For bugs {', '.join(number_bugs)}: "
+            "For bugs {}: "
             "Bug numbers are deprecated and should be changed to full URLs."
-        )
+        ).format(", ".join(number_bugs))
 
 
 def check_valid_in_baseline(metric, parser_config={}):
@@ -156,7 +154,7 @@ def check_valid_in_baseline(metric, parser_config={}):
 
     if not allow_reserved and "baseline" in metric.send_in_pings:
         yield (
-            f"The baseline ping is Glean-internal. "
+            "The baseline ping is Glean-internal. "
             "User metrics should go into the 'metrics' ping or custom pings."
         )
 
@@ -168,7 +166,9 @@ def check_misspelled_pings(metric, parser_config={}):
         for builtin in builtin_pings:
             distance = _hamming_distance(ping, builtin)
             if distance == 1:
-                yield (f"Ping '{ping}' seems misspelled. Did you mean '{builtin}'?")
+                yield ("Ping '{}' seems misspelled. Did you mean '{}'?").format(
+                    ping, builtin
+                )
 
 
 CATEGORY_CHECKS = {
@@ -212,7 +212,7 @@ def lint_metrics(objs, parser_config={}, file=sys.stderr):
                 if len(new_nits):
                     if check_name not in metric.no_lint:
                         nits.extend(
-                            (check_name, f"{metric.category}.{metric.name}", msg)
+                            (check_name, ".".join([metric.category, metric.name]), msg)
                             for msg in new_nits
                         )
                 else:
@@ -223,16 +223,18 @@ def lint_metrics(objs, parser_config={}, file=sys.stderr):
                         nits.append(
                             (
                                 "SUPERFLUOUS_NO_LINT",
-                                f"{metric.category}.{metric.name}",
-                                f"Superfluous no_lint entry '{check_name}'. "
-                                "Please remove it.",
+                                ".".join([metric.category, metric.name]),
+                                (
+                                    "Superfluous no_lint entry '{}'. "
+                                    "Please remove it."
+                                ).format(check_name),
                             )
                         )
 
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
         for check_name, name, msg in nits:
-            print(f"{check_name}: {name}: {msg}", file=file)
+            print("{}: {}: {}".format(check_name, name, msg), file=file)
         print("", file=file)
         print("Please fix the above nits to continue.", file=file)
         print(
@@ -259,7 +261,7 @@ def lint_yaml_files(input_filepaths, file=sys.stderr):
     for path in input_filepaths:
         # yamllint needs both the file content and the path.
         file_content = None
-        with open(path, "r") as fd:
+        with path.open("r") as fd:
             file_content = fd.read()
 
         problems = linter.run(file_content, YamlLintConfig("extends: default"), path)
@@ -268,7 +270,7 @@ def lint_yaml_files(input_filepaths, file=sys.stderr):
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
         for p in nits:
-            print(f"{path} ({p.line}:{p.column}) - {p.message}", file=file)
+            print("{} ({}:{}) - {}".format(path, p.line, p.column, p.message))
         print("", file=file)
         print("Please fix the above nits to continue.", file=file)
 
