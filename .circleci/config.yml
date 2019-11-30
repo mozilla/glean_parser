@@ -34,9 +34,6 @@ commands:
                     command: |
                         make docs
                         touch docs/_build/html/.nojekyll
-            - persist-to-workspace:
-                    root: docs/_build
-                    paths: html
 
 jobs:
     build-35:
@@ -57,6 +54,9 @@ jobs:
             - image: circleci/python:3.7.5
         steps:
             - test-python-version
+            - persist-to-workspace:
+                    root: docs/_build
+                    paths: html
 
     build-38:
         docker:
