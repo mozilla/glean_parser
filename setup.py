@@ -34,9 +34,9 @@ requirements = [
     'inflection>=0.3.1',
     'Jinja2>=2.10.1',
     'jsonschema>=3.0.2',
-    'pep487==1.0.1'
+    'pep487==1.0.1',
     'PyYAML>=3.13',
-    'yamllint>=1.18.0'
+    'yamllint>=1.18.0',
 ]
 
 setup_requirements = ['pytest-runner', 'setuptools-scm']
