@@ -28,9 +28,17 @@ from . import util
 # - "clear_output_dir": a flag to clear the target directory before moving there
 #   the generated files.
 OUTPUTTERS = {
-    "kotlin": {"output_func": kotlin.output_kotlin, "clear_output_dir": True},
+    "kotlin": {
+        "output_func": kotlin.output_kotlin,
+        "clear_output_dir": True,
+        "extensions": ["*.kt"],
+    },
     "markdown": {"output_func": markdown.output_markdown, "clear_output_dir": False},
-    "swift": {"output_func": swift.output_swift, "clear_output_dir": True},
+    "swift": {
+        "output_func": swift.output_swift,
+        "clear_output_dir": True,
+        "extensions": ["*.swift"],
+    },
 }
 
 
@@ -73,15 +81,17 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
             if output_dir.is_file():
                 output_dir.unlink()
             elif output_dir.is_dir():
-                shutil.rmtree(output_dir)
+                for extensions in OUTPUTTERS[output_format]["extensions"]:
+                    for filepath in output_dir.glob(extensions):
+                        filepath.unlink()
+                if len(list(output_dir.iterdir())):
+                    print(f"Extra contents found in '{output_dir}'.")
 
-            shutil.copytree(tempdir, output_dir)
-        else:
-            # We can't use shutil.copytree alone if the directory already exists.
-            # However, if it doesn't exist, make sure to create one otherwise
-            # shutil.copy will fail.
-            os.makedirs(output_dir, exist_ok=True)
-            for filename in tempdir_path.glob("*"):
-                shutil.copy(filename, output_dir)
+        # We can't use shutil.copytree alone if the directory already exists.
+        # However, if it doesn't exist, make sure to create one otherwise
+        # shutil.copy will fail.
+        os.makedirs(output_dir, exist_ok=True)
+        for filename in tempdir_path.glob("*"):
+            shutil.copy(filename, output_dir)
 
     return 0
