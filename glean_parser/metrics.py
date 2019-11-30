@@ -23,9 +23,6 @@ else:
     base_object = object
 
 
-_builtin_type = type
-
-
 class Lifetime(enum.Enum):
     ping = 0
     user = 1
