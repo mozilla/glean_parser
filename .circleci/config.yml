@@ -29,11 +29,6 @@ commands:
             - run:
                     name: test
                     command: make test
-            - run:
-                    name: make-docs
-                    command: |
-                        make docs
-                        touch docs/_build/html/.nojekyll
 
 jobs:
     build-35:
@@ -57,6 +52,11 @@ jobs:
             - persist_to_workspace:
                     root: docs/_build
                     paths: html
+            - run:
+                    name: make-docs
+                    command: |
+                        make docs
+                        touch docs/_build/html/.nojekyll
 
     build-38:
         docker:
