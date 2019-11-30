@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.12.0 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.12.1.dev3+gd50acfb documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -63,9 +63,17 @@
 <span class="c1"># - &quot;clear_output_dir&quot;: a flag to clear the target directory before moving there</span>
 <span class="c1">#   the generated files.</span>
 <span class="n">OUTPUTTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span>
+        <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*.kt&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
     <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span> <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+    <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;output_func&quot;</span><span class="p">:</span> <span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span>
+        <span class="s2">&quot;clear_output_dir&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*.swift&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 
@@ -108,16 +116,18 @@
             <span class="k">if</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                 <span class="n">output_dir</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
             <span class="k">elif</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">extensions</span> <span class="ow">in</span> <span class="n">OUTPUTTERS</span><span class="p">[</span><span class="n">output_format</span><span class="p">][</span><span class="s2">&quot;extensions&quot;</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">extensions</span><span class="p">):</span>
+                        <span class="n">filepath</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">output_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extra contents found in &#39;</span><span class="si">{output_dir}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># We can&#39;t use shutil.copytree alone if the directory already exists.</span>
-            <span class="c1"># However, if it doesn&#39;t exist, make sure to create one otherwise</span>
-            <span class="c1"># shutil.copy will fail.</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">tempdir_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
+        <span class="c1"># We can&#39;t use shutil.copytree alone if the directory already exists.</span>
+        <span class="c1"># However, if it doesn&#39;t exist, make sure to create one otherwise</span>
+        <span class="c1"># shutil.copy will fail.</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">tempdir_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="mi">0</span></div>
 </pre></div>
