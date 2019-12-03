@@ -85,7 +85,7 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
                     for filepath in output_dir.glob(extensions):
                         filepath.unlink()
                 if len(list(output_dir.iterdir())):
-                    print(f"Extra contents found in '{output_dir}'.")
+                    print("Extra contents found in '{}'.".format(output_dir))
 
         # We can't use shutil.copytree alone if the directory already exists.
         # However, if it doesn't exist, make sure to create one otherwise

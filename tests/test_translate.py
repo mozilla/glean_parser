@@ -120,10 +120,10 @@ def test_translate_send_in_pings(tmpdir):
 
 
 def test_translate_dont_remove_extra_files(tmpdir):
-    output = Path(tmpdir) / "foo"
+    output = Path(str(tmpdir)) / "foo"
     output.mkdir()
 
-    with open(output / "extra.txt", "w") as fd:
+    with (output / "extra.txt").open("w") as fd:
         fd.write("\n")
 
     translate.translate(
