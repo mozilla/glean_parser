@@ -8,6 +8,7 @@ Unreleased
 * The `translate` command will no longer clear extra files in the output directory.
 * BUGFIX: Ensure all newlines in comments are prefixed with comment markers
 * BUGFIX: Escape Swift keywords in variable names in generated code
+* Generate documentation for pings that are sent if empty
 
 1.12.0 (2019-11-27)
 -------------------

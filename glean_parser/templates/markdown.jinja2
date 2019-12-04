@@ -23,6 +23,10 @@ Sorry about that.
 See the Glean SDK documentation for the [`{{ ping_name }}` ping]({{ ping_name|ping_docs }}).
 {% endif %}
 {% endif %}
+{% if ping_name|ping_send_if_empty %}
+This ping is sent if empty.
+{% endif %}
+{% if metrics_by_pings[ping_name] %}
 The following metrics are added to the ping:
 
 | Name | Type | Description | Data reviews | Extras | Expiration |
@@ -43,6 +47,9 @@ The following metrics are added to the ping:
 {%- endif -%} |
 {{- metric.expires }} |
 {% endfor %}
+{% else %}
+This ping contains no metrics.
+{% endif %}
 
 {% endfor %}
 
