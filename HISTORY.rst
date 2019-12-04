@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.13.0 (2019-12-04)
+-------------------
+
 * The `translate` command will no longer clear extra files in the output directory.
 * BUGFIX: Ensure all newlines in comments are prefixed with comment markers
 * BUGFIX: Escape Swift keywords in variable names in generated code
