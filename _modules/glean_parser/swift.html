@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.swift &#8212; Glean Parser 1.12.1.dev3+gd50acfb documentation</title>
+    <title>glean_parser.swift &#8212; Glean Parser 1.12.1.dev8+gc353310 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -50,6 +50,10 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="c1"># An (imcomplete) list of reserved keywords in Swift.</span>
+<span class="c1"># These will be replaced in generated code by their escaped form.</span>
+<span class="n">SWIFT_RESERVED_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="s2">&quot;typealias&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="swift_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.swift_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">swift_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -118,6 +122,16 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;{util.Camelize(obj_type)}MetricType&quot;</span></div>
 
 
+<div class="viewcode-block" id="variable_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.variable_name">[docs]</a><span class="k">def</span> <span class="nf">variable_name</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a valid Swift variable name, escaping keywords if necessary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">SWIFT_RESERVED_NAMES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{var}</span><span class="s2">`&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">var</span></div>
+
+
 <div class="viewcode-block" id="output_swift"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.output_swift">[docs]</a><span class="k">def</span> <span class="nf">output_swift</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Swift code to `output_dir`.</span>
@@ -133,6 +147,7 @@
             <span class="p">(</span><span class="s2">&quot;swift&quot;</span><span class="p">,</span> <span class="n">swift_datatypes_filter</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;type_name&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;class_name&quot;</span><span class="p">,</span> <span class="n">class_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;variable_name&quot;</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
