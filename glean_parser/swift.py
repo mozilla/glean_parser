@@ -16,6 +16,10 @@ from . import pings
 from . import util
 from collections import defaultdict
 
+# An (imcomplete) list of reserved keywords in Swift.
+# These will be replaced in generated code by their escaped form.
+SWIFT_RESERVED_NAMES = ["internal", "typealias"]
+
 
 def swift_datatypes_filter(value):
     """
@@ -83,6 +87,16 @@ def class_name(obj_type):
     return f"{util.Camelize(obj_type)}MetricType"
 
 
+def variable_name(var):
+    """
+    Returns a valid Swift variable name, escaping keywords if necessary.
+    """
+    if var in SWIFT_RESERVED_NAMES:
+        return f"`{var}`"
+    else:
+        return var
+
+
 def output_swift(objs, output_dir, options={}):
     """
     Given a tree of objects, output Swift code to `output_dir`.
@@ -98,6 +112,7 @@ def output_swift(objs, output_dir, options={}):
             ("swift", swift_datatypes_filter),
             ("type_name", type_name),
             ("class_name", class_name),
+            ("variable_name", variable_name),
         ),
     )
 

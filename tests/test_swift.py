@@ -47,7 +47,14 @@ def test_parser(tmpdir):
         content = fd.read()
         assert 'category: ""' in content
 
-    # Only run this test if swiftlint is on the path
+    # Syntax check on the generated files.
+    # Only run this test if swiftc is on the path.
+    if shutil.which("swiftc"):
+        for filepath in tmpdir.glob("*.swift"):
+            subprocess.check_call(["swiftc", "-dump-parse", filepath])
+
+    # Lint check on the generated files.
+    # Only run this test if swiftlint is on the path.
     if shutil.which("swiftlint"):
         for filepath in tmpdir.glob("*.swift"):
             subprocess.check_call(["swiftlint", "lint", filepath])
