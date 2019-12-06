@@ -13,65 +13,60 @@ from setuptools import setup, find_packages
 
 
 if sys.version_info < (3, 5):
-    print(
-        "glean_parser requires at least Python 3.5",
-        file=sys.stderr
-    )
+    print("glean_parser requires at least Python 3.5", file=sys.stderr)
     sys.exit(1)
 
 
-with open('README.rst') as readme_file:
+with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
+with open("HISTORY.rst") as history_file:
     history = history_file.read()
 
 requirements = [
-    'appdirs>=1.4.3',
-    'backports-datetime-fromisoformat==1.0.0',
-    'Click>=7.0',
-    'diskcache>=4.0.0',
-    'inflection>=0.3.1',
-    'Jinja2>=2.10.1',
-    'jsonschema>=3.0.2',
-    'pep487==1.0.1',
-    'PyYAML>=3.13',
-    'yamllint>=1.18.0',
+    "appdirs>=1.4.3",
+    "backports-datetime-fromisoformat==1.0.0",
+    "Click>=7.0",
+    "diskcache>=4.0.0",
+    "inflection>=0.3.1",
+    "Jinja2>=2.10.1",
+    "jsonschema>=3.0.2",
+    "pep487==1.0.1",
+    "PyYAML>=3.13",
+    "yamllint>=1.18.0",
 ]
 
-setup_requirements = ['pytest-runner', 'setuptools-scm']
+setup_requirements = ["pytest-runner", "setuptools-scm"]
 
-test_requirements = ['pytest', ]
+test_requirements = [
+    "pytest",
+]
 
 setup(
     author="Michael Droettboom",
-    author_email='mdroettboom@mozilla.com',
+    author_email="mdroettboom@mozilla.com",
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     description="Parser tools for Mozilla's Glean telemetry",
-    entry_points={
-        'console_scripts': [
-            'glean_parser=glean_parser.__main__:main',
-        ],
-    },
+    entry_points={"console_scripts": ["glean_parser=glean_parser.__main__:main",],},
     install_requires=requirements,
-    long_description=readme + '\n\n' + history,
+    long_description=readme + "\n\n" + history,
     include_package_data=True,
-    keywords='glean_parser',
-    name='glean_parser',
-    packages=find_packages(include=['glean_parser']),
+    keywords="glean_parser",
+    name="glean_parser",
+    packages=find_packages(include=["glean_parser"]),
     setup_requires=setup_requirements,
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    url='https://github.com/mozilla/glean_parser',
+    url="https://github.com/mozilla/glean_parser",
     zip_safe=False,
-    use_scm_version=True
+    use_scm_version=True,
 )
