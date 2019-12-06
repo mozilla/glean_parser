@@ -25,7 +25,7 @@ def test_translate_unknown_format():
 
 
 def test_translate_missing_directory(tmpdir):
-    output = Path(tmpdir) / "foo"
+    output = Path(str(tmpdir)) / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -38,7 +38,7 @@ def test_translate_missing_directory(tmpdir):
 
 
 def test_translate_remove_obsolete_kotlin_files(tmpdir):
-    output = Path(tmpdir) / "foo"
+    output = Path(str(tmpdir)) / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -55,7 +55,7 @@ def test_translate_remove_obsolete_kotlin_files(tmpdir):
 
 
 def test_translate_retains_existing_markdown_files(tmpdir):
-    output = Path(tmpdir) / "foo"
+    output = Path(str(tmpdir)) / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -66,7 +66,7 @@ def test_translate_retains_existing_markdown_files(tmpdir):
 
     # Move the file to a different location, translate always writes to
     # metrics.md.
-    shutil.move(output / "metrics.md", output / "old.md")
+    shutil.move(str(output / "metrics.md"), str(output / "old.md"))
 
     assert len(list(output.iterdir())) == 1
 
@@ -120,10 +120,10 @@ def test_translate_send_in_pings(tmpdir):
 
 
 def test_translate_dont_remove_extra_files(tmpdir):
-    output = Path(tmpdir) / "foo"
+    output = Path(str(tmpdir)) / "foo"
     output.mkdir()
 
-    with open(output / "extra.txt", "w") as fd:
+    with (output / "extra.txt").open("w") as fd:
         fd.write("\n")
 
     translate.translate(

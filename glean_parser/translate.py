@@ -56,7 +56,7 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
         See `parser.parse_metrics` for more info.
     """
     if output_format not in OUTPUTTERS:
-        raise ValueError(f"Unknown output format '{output_format}'")
+        raise ValueError("Unknown output format '{}'".format(output_format))
 
     all_objects = parser.parse_objects(input_filepaths, parser_config)
 
@@ -85,13 +85,13 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
                     for filepath in output_dir.glob(extensions):
                         filepath.unlink()
                 if len(list(output_dir.iterdir())):
-                    print(f"Extra contents found in '{output_dir}'.")
+                    print("Extra contents found in '{}'.".format(output_dir))
 
         # We can't use shutil.copytree alone if the directory already exists.
         # However, if it doesn't exist, make sure to create one otherwise
         # shutil.copy will fail.
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(str(output_dir), exist_ok=True)
         for filename in tempdir_path.glob("*"):
-            shutil.copy(filename, output_dir)
+            shutil.copy(str(filename), str(output_dir))
 
     return 0

@@ -8,6 +8,7 @@
 Code for parsing metrics.yaml files.
 """
 
+from collections import OrderedDict
 import functools
 from pathlib import Path
 import textwrap
@@ -44,7 +45,7 @@ def _update_validator(validator):
         if len(missing_properties):
             missing_properties = sorted(list(missing_properties))
             yield ValidationError(
-                f"Missing required properties: {', '.join(missing_properties)}"
+                "Missing required properties: {}".format(", ".join(missing_properties))
             )
 
     validator.VALIDATORS["required"] = required
@@ -55,13 +56,15 @@ def _load_file(filepath):
     Load a metrics.yaml or pings.yaml format file.
     """
     try:
-        content = util.load_yaml_or_json(filepath)
+        content = util.load_yaml_or_json(filepath, ordered_dict=True)
     except Exception as e:
         yield util.format_error(filepath, "", textwrap.fill(str(e)))
         return {}, None
 
     if content is None:
-        yield util.format_error(filepath, "", f"'{filepath}' file can not be empty.")
+        yield util.format_error(
+            filepath, "", "'{}' file can not be empty.".format(filepath)
+        )
         return {}, None
 
     if content == {}:
@@ -102,7 +105,9 @@ def _get_schema(schema_id, filepath="<input>"):
     if schema_id not in schemas:
         raise ValueError(
             util.format_error(
-                filepath, "", f"$schema key must be one of {', '.join(schemas.keys())}"
+                filepath,
+                "",
+                "$schema key must be one of {}".format(", ".join(schemas.keys())),
             )
         )
     return schemas[schema_id]
@@ -153,12 +158,12 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
         if not config.get("allow_reserved") and category_key.split(".")[0] == "glean":
             yield util.format_error(
                 filepath,
-                f"For category '{category_key}'",
-                f"Categories beginning with 'glean' are reserved for "
-                f"Glean internal use.",
+                "For category '{}'".format(category_key),
+                "Categories beginning with 'glean' are reserved for "
+                "Glean internal use.",
             )
             continue
-        all_objects.setdefault(category_key, {})
+        all_objects.setdefault(category_key, OrderedDict())
         for metric_key, metric_val in category_val.items():
             try:
                 metric_obj = Metric.make_metric(
@@ -166,7 +171,9 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                 )
             except Exception as e:
                 yield util.format_error(
-                    filepath, f"On instance {category_key}.{metric_key}", str(e)
+                    filepath,
+                    "On instance {}.{}".format(category_key, metric_key),
+                    str(e),
                 )
                 metric_obj = None
             else:
@@ -176,9 +183,9 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                 ):
                     yield util.format_error(
                         filepath,
-                        f"On instance {category_key}.{metric_key}",
-                        f'Only internal metrics may specify "all_pings" '
-                        f'in "send_in_pings"',
+                        "On instance {}.{}".format(category_key, metric_key),
+                        'Only internal metrics may specify "all_pings" '
+                        'in "send_in_pings"',
                     )
                     metric_obj = None
 
@@ -191,8 +198,9 @@ def _instantiate_metrics(all_objects, sources, content, filepath, config):
                 yield util.format_error(
                     filepath,
                     "",
-                    f"Duplicate metric name '{category_key}.{metric_key}'"
-                    f"already defined in '{already_seen}'",
+                    ("Duplicate metric name '{}.{}'" "already defined in '{}'").format(
+                        category_key, metric_key, already_seen
+                    ),
                 )
             else:
                 all_objects[category_key][metric_key] = metric_obj
@@ -211,15 +219,17 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
             if ping_key in RESERVED_PING_NAMES:
                 yield util.format_error(
                     filepath,
-                    f"For ping '{ping_key}'",
-                    f"Ping uses a reserved name ({RESERVED_PING_NAMES})",
+                    "For ping '{}'".format(ping_key),
+                    "Ping uses a reserved name ({})".format(RESERVED_PING_NAMES),
                 )
                 continue
         ping_val["name"] = ping_key
         try:
             ping_obj = Ping(**ping_val)
         except Exception as e:
-            yield util.format_error(filepath, f"On instance {ping_key}", str(e))
+            yield util.format_error(
+                filepath, "On instance '{}'".format(ping_key), str(e)
+            )
             ping_obj = None
 
         already_seen = sources.get(ping_key)
@@ -228,8 +238,9 @@ def _instantiate_pings(all_objects, sources, content, filepath, config):
             yield util.format_error(
                 filepath,
                 "",
-                f"Duplicate ping name '{ping_key}'"
-                f"already defined in '{already_seen}'",
+                ("Duplicate ping name '{}'" "already defined in '{}'").format(
+                    ping_key, already_seen
+                ),
             )
         else:
             all_objects.setdefault("pings", {})[ping_key] = ping_obj
@@ -285,7 +296,7 @@ def parse_objects(filepaths, config={}):
           value from the `metrics.yaml`, rather than having it overridden when
           the metric expires.
     """
-    all_objects = {}
+    all_objects = OrderedDict()
     sources = {}
     filepaths = util.ensure_list(filepaths)
     for filepath in filepaths:

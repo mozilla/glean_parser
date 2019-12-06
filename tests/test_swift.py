@@ -3,6 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
+from collections import OrderedDict
 from pathlib import Path
 import shutil
 import subprocess
@@ -18,7 +19,7 @@ ROOT = Path(__file__).parent
 
 def test_parser(tmpdir):
     """Test translating metrics to Swift files."""
-    tmpdir = Path(tmpdir)
+    tmpdir = Path(str(tmpdir))
 
     translate.translate(
         ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
@@ -35,15 +36,15 @@ def test_parser(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with open(tmpdir / "CorePing.swift", "r", encoding="utf-8") as fd:
+    with (tmpdir / "CorePing.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "True if the user has set Firefox as the default browser." in content
 
-    with open(tmpdir / "Telemetry.swift", "r", encoding="utf-8") as fd:
+    with (tmpdir / "Telemetry.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "جمع 搜集" in content
 
-    with open(tmpdir / "GleanInternalMetrics.swift", "r", encoding="utf-8") as fd:
+    with (tmpdir / "GleanInternalMetrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert 'category: ""' in content
 
@@ -66,7 +67,8 @@ def test_swift_generator():
     assert kdf("\n") == r'"\n"'
     assert kdf([42, "\n"]) == r'[42, "\n"]'
     assert (
-        kdf({"key": "value", "key2": "value2"}) == r'["key": "value", "key2": "value2"]'
+        kdf(OrderedDict([("key", "value"), ("key2", "value2")]))
+        == r'["key": "value", "key2": "value2"]'
     )
     assert kdf(metrics.Lifetime.ping) == ".ping"
 

@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from collections import OrderedDict
 import datetime
 import functools
 import json
@@ -53,7 +54,47 @@ class _NoDatesSafeLoader(yaml.SafeLoader):
 _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
-def load_yaml_or_json(path):
+if sys.version_info < (3, 7):
+    # In Python prior to 3.7, dictionary order is not preserved. However, we
+    # want the metrics to appear in the output in the same order as they are in
+    # the metrics.yaml file, so on earlier versions of Python we must use an
+    # OrderedDict object.
+    def ordered_yaml_load(stream):
+        class OrderedLoader(_NoDatesSafeLoader):
+            pass
+
+        def construct_mapping(loader, node):
+            loader.flatten_mapping(node)
+            return OrderedDict(loader.construct_pairs(node))
+
+        OrderedLoader.add_constructor(
+            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping
+        )
+        return yaml.load(stream, OrderedLoader)
+
+    def ordered_yaml_dump(data, **kwargs):
+        class OrderedDumper(yaml.Dumper):
+            pass
+
+        def _dict_representer(dumper, data):
+            return dumper.represent_mapping(
+                yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
+            )
+
+        OrderedDumper.add_representer(OrderedDict, _dict_representer)
+        return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
+
+
+else:
+
+    def ordered_yaml_load(stream):
+        return yaml.load(stream, Loader=_NoDatesSafeLoader)
+
+    def ordered_yaml_dump(data, **kwargs):
+        return yaml.dump(data, **kwargs)
+
+
+def load_yaml_or_json(path, ordered_dict=False):
     """
     Load the content from either a .json or .yaml file, based on the filename
     extension.
@@ -70,13 +111,16 @@ def load_yaml_or_json(path):
         return {}
 
     if path.suffix == ".json":
-        with open(path, "r") as fd:
+        with path.open("r") as fd:
             return json.load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
-        with open(path, "r") as fd:
-            return yaml.load(fd, Loader=_NoDatesSafeLoader)
+        with path.open("r") as fd:
+            if ordered_dict:
+                return ordered_yaml_load(fd)
+            else:
+                return yaml.load(fd, Loader=_NoDatesSafeLoader)
     else:
-        raise ValueError(f"Unknown file extension {path.suffix}")
+        raise ValueError("Unknown file extension {}".format(path.suffix))
 
 
 def ensure_list(value):
@@ -192,6 +236,12 @@ def fetch_remote_url(url, cache=True):
 
     contents = urllib.request.urlopen(url).read()
 
+    # On Python 3.5, urlopen does not handle the unicode decoding for us. This
+    # is ok because we control these files and we know they are in UTF-8,
+    # however, this wouldn't be correct in general.
+    if sys.version_info < (3, 6):
+        contents = contents.decode("utf8")
+
     if cache:
         with diskcache.Cache(cache_dir) as dc:
             dc[url] = contents
@@ -227,7 +277,7 @@ def pprint_validation_error(error):
         else:
             instance = [instance]
 
-    yaml_instance = yaml.dump(instance, width=72, default_flow_style=False)
+    yaml_instance = ordered_yaml_dump(instance, width=72, default_flow_style=False)
 
     parts = ["```", yaml_instance.rstrip(), "```", "", textwrap.fill(error.message)]
     if error.context:
@@ -252,9 +302,9 @@ def format_error(filepath, header, content):
     else:
         filepath = "<string>"
     if header:
-        return f"{filepath}: {header}:\n{_utils.indent(content)}"
+        return "{}: {}\n{}".format(filepath, header, _utils.indent(content))
     else:
-        return f"{filepath}:\n{_utils.indent(content)}"
+        return "{}:\n{}".format(filepath, _utils.indent(content))
 
 
 def is_expired(expires):
@@ -271,8 +321,10 @@ def is_expired(expires):
             date = datetime.date.fromisoformat(expires)
         except ValueError:
             raise ValueError(
-                f"Invalid expiration date '{expires}'. "
-                "Must be of the form yyyy-mm-dd in UTC."
+                (
+                    "Invalid expiration date '{}'. "
+                    "Must be of the form yyyy-mm-dd in UTC."
+                ).format(expires)
             )
         return date <= datetime.datetime.utcnow().date()
 

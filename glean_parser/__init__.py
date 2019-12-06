@@ -16,3 +16,11 @@ except DistributionNotFound:
 
 __author__ = """Michael Droettboom"""
 __email__ = "mdroettboom@mozilla.com"
+
+import sys
+
+# Import a backport of datetime.datetime.fromisoformat()
+if sys.version_info < (3, 7):
+    from backports.datetime_fromisoformat import MonkeyPatch
+
+    MonkeyPatch.patch_fromisoformat()

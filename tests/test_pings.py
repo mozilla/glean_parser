@@ -34,7 +34,7 @@ def test_reserved_metrics_category():
     util.add_required(content)
     errors = list(parser.parse_objects(content))
     assert len(errors) == 1
-    assert "reserved as a category name" in errors[0]
+    assert "reserved" in errors[0]
 
 
 def test_snake_case_ping_names():

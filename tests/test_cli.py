@@ -42,7 +42,7 @@ def test_translate(tmpdir):
         ],
     )
     assert result.exit_code == 0
-    assert set(os.listdir(tmpdir)) == set(
+    assert set(os.listdir(str(tmpdir))) == set(
         [
             "CorePing.kt",
             "Telemetry.kt",
@@ -51,9 +51,9 @@ def test_translate(tmpdir):
             "GleanInternalMetrics.kt",
         ]
     )
-    for filename in os.listdir(tmpdir):
-        path = tmpdir / filename
-        with open(path) as fd:
+    for filename in os.listdir(str(tmpdir)):
+        path = Path(str(tmpdir)) / filename
+        with path.open() as fd:
             content = fd.read()
         assert "package Foo" in content
 
@@ -73,7 +73,7 @@ def test_translate_errors(tmpdir):
         ],
     )
     assert result.exit_code == 1
-    assert len(os.listdir(tmpdir)) == 0
+    assert len(os.listdir(str(tmpdir))) == 0
 
 
 def test_translate_invalid_format(tmpdir):

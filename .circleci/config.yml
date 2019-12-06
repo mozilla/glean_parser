@@ -1,49 +1,68 @@
-version: 2
+version: 2.1
 
-test-template: &test-template
-    steps:
-        - checkout
-        - run:
-                name: environment
-                command: |
-                    echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
-        - run:
-                name: install
-                command: |
-                    pip install --progress-bar off --user -U -r requirements_dev.txt
-                    sudo apt update -q
-                    sudo apt upgrade -q
-                    sudo apt install openjdk-11-jdk-headless
-                    make install-kotlin-linters
-
-        - run:
-                name: lint
-                command: make lint
-        - run:
-                name: install
-                command: python setup.py install --user
-        - run:
-                name: test
-                command: make test
-        - run:
-                name: make-docs
-                command: |
-                    make docs
-                    touch docs/_build/html/.nojekyll
-        - persist-to-workspace:
-                root: docs/_build
-                paths: html
+commands:
+    test-python-version:
+        parameters:
+            requirements-file:
+                type: string
+                default: "requirements_dev.txt"
+        steps:
+            - checkout
+            - run:
+                    name: environment
+                    command: |
+                        echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+            - run:
+                    name: install
+                    command: |
+                        pip install --progress-bar off --user -U -r <<parameters.requirements-file>>
+                        sudo apt update -q
+                        sudo apt upgrade -q
+                        sudo apt install openjdk-11-jdk-headless
+                        make install-kotlin-linters
+            - run:
+                    name: lint
+                    command: make lint
+            - run:
+                    name: install
+                    command: python setup.py install --user
+            - run:
+                    name: test
+                    command: make test
 
 jobs:
+    build-35:
+        docker:
+            - image: circleci/python:3.5.9
+        steps:
+            - test-python-version:
+                    requirements-file: requirements_dev_py35.txt
+
+    build-36:
+        docker:
+            - image: circleci/python:3.6.9
+        steps:
+            - test-python-version
+
     build-37:
         docker:
             - image: circleci/python:3.7.5
-        <<: *test-template
+        steps:
+            - test-python-version
+            - run:
+                    name: make-docs
+                    command: |
+                        make docs
+                        touch docs/_build/html/.nojekyll
+            - persist_to_workspace:
+                    root: docs/_build
+                    paths: html
 
     build-38:
         docker:
             - image: circleci/python:3.8.0
-        <<: *test-template
+        steps:
+            - test-python-version
 
     docs-deploy:
         docker:
@@ -90,6 +109,14 @@ workflows:
     version: 2
     build:
         jobs:
+            - build-35:
+                    filters:
+                        tags:
+                            only: /.*/
+            - build-36:
+                    filters:
+                        tags:
+                            only: /.*/
             - build-37:
                     filters:
                         tags:

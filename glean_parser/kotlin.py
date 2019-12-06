@@ -8,12 +8,12 @@
 Outputter to generate Kotlin code for metrics.
 """
 
+from collections import OrderedDict
 import enum
 import json
 
 from . import metrics
 from . import util
-from collections import defaultdict
 
 
 def kotlin_datatypes_filter(value):
@@ -50,7 +50,7 @@ def kotlin_datatypes_filter(value):
                     first = False
                 yield ")"
             elif isinstance(value, enum.Enum):
-                yield (f"{value.__class__.__name__}.{util.Camelize(value.name)}")
+                yield (value.__class__.__name__ + "." + util.Camelize(value.name))
             elif isinstance(value, set):
                 yield "setOf("
                 first = True
@@ -72,10 +72,10 @@ def type_name(obj):
     """
     if isinstance(obj, metrics.Event):
         if len(obj.extra_keys):
-            enumeration = f"{util.camelize(obj.name)}Keys"
+            enumeration = util.camelize(obj.name) + "Keys"
         else:
             enumeration = "NoExtraKeys"
-        return f"EventMetricType<{enumeration}>"
+        return "EventMetricType<{}>".format(enumeration)
     return class_name(obj.type)
 
 
@@ -87,7 +87,7 @@ def class_name(obj_type):
         return "PingType"
     if obj_type.startswith("labeled_"):
         obj_type = obj_type[8:]
-    return f"{util.Camelize(obj_type)}MetricType"
+    return util.Camelize(obj_type) + "MetricType"
 
 
 def output_gecko_lookup(objs, output_dir, options={}):
@@ -131,7 +131,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
     #   },
     #   "other-type": {}
     # }
-    gecko_metrics = defaultdict(lambda: defaultdict(list))
+    gecko_metrics = OrderedDict()
 
     # Define scalar-like types.
     SCALAR_LIKE_TYPES = ["boolean", "string", "quantity"]
@@ -154,6 +154,9 @@ def output_gecko_lookup(objs, output_dir, options={}):
                 # are categorical histograms.
                 type_category = "categoricals"
 
+            gecko_metrics.setdefault(type_category, OrderedDict())
+            gecko_metrics[type_category].setdefault(category_key, [])
+
             gecko_metrics[type_category][category_key].append(
                 {"gecko_datapoint": metric.gecko_datapoint, "name": metric.name}
             )
@@ -164,7 +167,7 @@ def output_gecko_lookup(objs, output_dir, options={}):
         return
 
     filepath = output_dir / "GleanGeckoMetricsMapping.kt"
-    with open(filepath, "w", encoding="utf-8") as fd:
+    with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
                 gecko_metrics=gecko_metrics,
@@ -232,7 +235,7 @@ def output_kotlin(objs, output_dir, options={}):
             getattr(metric, "labeled", False) for metric in category_val.values()
         )
 
-        with open(filepath, "w", encoding="utf-8") as fd:
+        with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
                     category_name=category_key,
