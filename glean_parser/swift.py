@@ -92,7 +92,7 @@ def variable_name(var):
     Returns a valid Swift variable name, escaping keywords if necessary.
     """
     if var in SWIFT_RESERVED_NAMES:
-        return f"`{var}`"
+        return "`" + var + "`"
     else:
         return var
 
