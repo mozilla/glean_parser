@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.14.0 (2019-12-06)
+-------------------
+
 * glean_parser now supports Python versions 3.5, 3.6, 3.7 and 3.8.
 
 1.13.0 (2019-12-04)
