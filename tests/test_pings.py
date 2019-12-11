@@ -37,7 +37,7 @@ def test_reserved_metrics_category():
     assert "reserved" in errors[0]
 
 
-def test_snake_case_ping_names():
+def test_camel_case_ping_name():
     content = {"camelCasePingName": {"include_client_id": True}}
 
     util.add_required_ping(content)
@@ -46,8 +46,25 @@ def test_snake_case_ping_names():
     assert "camelCasePingName" in errors[0]
 
 
+def test_snake_case_ping_name():
+    content = {"snake_case_ping_name": {"include_client_id": True}}
+
+    util.add_required_ping(content)
+    errors = list(parser.parse_objects([content]))
+    assert len(errors) == 1
+    assert "snake_case_ping_name" in errors[0]
+
+
+def test_legacy_snake_case_ping_name():
+    content = {"bookmarks_sync": {"include_client_id": True}}
+
+    util.add_required_ping(content)
+    errors = list(parser.parse_objects([content]))
+    assert len(errors) == 0
+
+
 def test_send_if_empty():
-    content = {"valid_ping": {"include_client_id": True, "send_if_empty": True}}
+    content = {"valid-ping": {"include_client_id": True, "send_if_empty": True}}
 
     util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))

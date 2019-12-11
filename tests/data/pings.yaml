@@ -4,7 +4,7 @@
 ---
 $schema: moz://mozilla.org/schemas/glean/pings/1-0-0
 
-custom_ping:
+custom-ping:
   description:
     This is a custom ping
   include_client_id: false
@@ -15,7 +15,7 @@ custom_ping:
   notification_emails:
     - CHANGE-ME@test-only.com
 
-really_custom_ping:
+really-custom-ping:
   description: >
     Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -32,7 +32,7 @@ really_custom_ping:
   notification_emails:
     - CHANGE-ME@test-only.com
 
-custom_ping_might_be_empty:
+custom-ping-might-be-empty:
   description:
     This is another custom ping
   include_client_id: true

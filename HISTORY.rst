@@ -9,6 +9,7 @@ Unreleased
 -------------------
 
 * glean_parser now supports Python versions 3.5, 3.6, 3.7 and 3.8.
+* Restrict new pings names to be kebab-case and change `all_pings` to `all-pings`
 
 1.13.0 (2019-12-04)
 -------------------

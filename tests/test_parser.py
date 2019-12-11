@@ -39,10 +39,10 @@ def test_parser():
                 assert isinstance(metric_val.labels, set)
 
     pings = all_metrics.value["pings"]
-    assert pings["custom_ping"].name == "custom_ping"
-    assert pings["custom_ping"].include_client_id is False
-    assert pings["really_custom_ping"].name == "really_custom_ping"
-    assert pings["really_custom_ping"].include_client_id is True
+    assert pings["custom-ping"].name == "custom-ping"
+    assert pings["custom-ping"].include_client_id is False
+    assert pings["really-custom-ping"].name == "really-custom-ping"
+    assert pings["really-custom-ping"].include_client_id is True
 
 
 def test_parser_invalid():
@@ -304,9 +304,9 @@ def test_geckoview_only_on_valid_metrics():
 
 
 def test_all_pings_reserved():
-    # send_in_pings: [all_pings] is only allowed for internal metrics
+    # send_in_pings: [all-pings] is only allowed for internal metrics
     contents = [
-        {"category": {"metric": {"type": "string", "send_in_pings": ["all_pings"]}}}
+        {"category": {"metric": {"type": "string", "send_in_pings": ["all-pings"]}}}
     ]
 
     contents = [util.add_required(x) for x in contents]
@@ -320,13 +320,13 @@ def test_all_pings_reserved():
     errors = list(all_metrics)
     assert len(errors) == 0
 
-    # A custom ping called "all_pings" is not allowed
-    contents = [{"all_pings": {"include_client_id": True}}]
+    # A custom ping called "all-pings" is not allowed
+    contents = [{"all-pings": {"include_client_id": True}}]
     contents = [util.add_required_ping(x) for x in contents]
     all_pings = parser.parse_objects(contents)
     errors = list(all_pings)
     assert len(errors) == 1
-    assert "is not allowed for 'all_pings'"
+    assert "is not allowed for 'all-pings'"
 
 
 def test_custom_distribution():
