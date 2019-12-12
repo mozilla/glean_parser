@@ -25,10 +25,10 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "appdirs>=1.4.3",
-    "backports-datetime-fromisoformat==1.0.0",
     "Click>=7.0",
     "diskcache>=4.0.0",
     "inflection>=0.3.1",
+    "iso8601>=0.1.12",
     "Jinja2>=2.10.1",
     "jsonschema>=3.0.2",
     "pep487==1.0.1",

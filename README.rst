@@ -33,7 +33,7 @@ is installed by `pip`.
 
 Additionally on Python 3.6 and 3.5:
 
-- backports-datetime-fromisoformat
+- iso8601
 
 And on Python 3.5:
 

@@ -21,6 +21,9 @@ import jsonschema
 from jsonschema import _utils
 import yaml
 
+if sys.version_info < (3, 7):
+    import iso8601
+
 
 TESTING_MODE = "pytest" in sys.modules
 
@@ -318,7 +321,10 @@ def is_expired(expires):
         return True
     else:
         try:
-            date = datetime.date.fromisoformat(expires)
+            if sys.version_info < (3, 7):
+                date = iso8601.parse_date(expires).date()
+            else:
+                date = datetime.date.fromisoformat(expires)
         except ValueError:
             raise ValueError(
                 (
@@ -335,7 +341,10 @@ def validate_expires(expires):
     """
     if expires in ("never", "expired"):
         return
-    datetime.date.fromisoformat(expires)
+    if sys.version_info < (3, 7):
+        iso8601.parse_date(expires)
+    else:
+        datetime.date.fromisoformat(expires)
 
 
 def report_validation_errors(all_objects):
