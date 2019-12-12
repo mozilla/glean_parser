@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Add some additional ping names to the non-kebab-case allow list.
+
 1.15.0 (2019-12-12)
 -------------------
 
