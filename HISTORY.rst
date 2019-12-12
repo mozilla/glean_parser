@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+* Add project title to markdown template.
+* Remove "Sorry about that" from markdown template.
+
 1.15.2 (2019-12-12)
 -------------------
 
