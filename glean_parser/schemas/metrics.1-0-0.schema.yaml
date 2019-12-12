@@ -28,6 +28,14 @@ definitions:
     pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
     maxLength: 40
 
+  kebab_case:
+    type: string
+    # Bug 1601270; we allow 3 specific existing snake_cased ping names for now,
+    # but these special cases can be removed once the number of legacy clients
+    # sufficiently dwindles, likely in 2020H2.
+    pattern: "^[a-z][a-z0-9-]{0,29}$\
+      |^deletion_request$|^bookmarks_sync$|^history_sync$"
+
   long_id:
     allOf:
       - $ref: "#/definitions/snake_case"
@@ -160,12 +168,12 @@ definitions:
           and the `metrics` ping for everything else. Most metrics don't need to
           specify this.
 
-          (There is an additional special value of `all_pings` for internal
+          (There is an additional special value of `all-pings` for internal
           Glean metrics only that is used to indicate that a metric may appear
           in any ping.)
         type: array
         items:
-          $ref: "#/definitions/snake_case"
+          $ref: "#/definitions/kebab_case"
         default:
           - default
 

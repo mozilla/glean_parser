@@ -44,7 +44,7 @@ def ping_desc(ping_name, custom_pings_cache={}):
             "This is a built-in ping that is assembled out of the "
             "box by the Glean SDK."
         )
-    elif ping_name == "all_pings":
+    elif ping_name == "all-pings":
         desc = "These metrics are sent in every ping."
     elif ping_name in custom_pings_cache:
         desc = custom_pings_cache[ping_name].description
