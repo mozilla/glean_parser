@@ -96,8 +96,8 @@ def output_markdown(objs, output_dir, options={}):
     :param objects: A tree of objects (metrics and pings) as returned from
     `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
-    :param options: options dictionary. No option currently supported, stays for
-    signature compatibility with the other outputters.
+    :param options: options dictionary, with the following optional key:
+        - `project_title`: The projects title.
     """
 
     # Build a dictionary that associates pings with their metrics.
@@ -142,6 +142,8 @@ def output_markdown(objs, output_dir, options={}):
             metrics_by_pings[ping_name], key=lambda x: x.identifier()
         )
 
+    project_title = options.get("project_title", "this project")
+
     template = util.get_jinja2_template(
         "markdown.jinja2",
         filters=(
@@ -157,6 +159,11 @@ def output_markdown(objs, output_dir, options={}):
     filepath = output_dir / filename
 
     with filepath.open("w", encoding="utf-8") as fd:
-        fd.write(template.render(metrics_by_pings=metrics_by_pings))
+        fd.write(
+            template.render(
+                metrics_by_pings=metrics_by_pings,
+                project_title=project_title
+            )
+        )
         # Jinja2 squashes the final newline, so we explicitly add it
         fd.write("\n")
