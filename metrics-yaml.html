@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.15.0 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.15.1.dev2+g6bb5317 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -252,7 +252,7 @@ entirety below:</p>
     <span class="c1"># but these special cases can be removed once the number of legacy clients</span>
     <span class="c1"># sufficiently dwindles, likely in 2020H2.</span>
     <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z][a-z0-9-]{0,29}$\</span>
-      <span class="s">|^deletion_request$|^bookmarks_sync$|^history_sync$&quot;</span>
+      <span class="s">|^deletion_request$|^bookmarks_sync$|^history_sync$|^session_end$|^glean_.*$&quot;</span>
 
   <span class="nt">long_id</span><span class="p">:</span>
     <span class="nt">allOf</span><span class="p">:</span>
