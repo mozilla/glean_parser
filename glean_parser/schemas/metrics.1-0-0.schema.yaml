@@ -34,7 +34,7 @@ definitions:
     # but these special cases can be removed once the number of legacy clients
     # sufficiently dwindles, likely in 2020H2.
     pattern: "^[a-z][a-z0-9-]{0,29}$\
-      |^deletion_request$|^bookmarks_sync$|^history_sync$"
+      |^deletion_request$|^bookmarks_sync$|^history_sync$|^session_end$|^glean_.*$"
 
   long_id:
     allOf:
