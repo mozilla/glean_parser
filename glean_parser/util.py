@@ -143,7 +143,7 @@ def camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace(".", "_"), False)
+    return inflection.camelize(value.replace(".", "_").replace("-", "_"), False)
 
 
 def Camelize(value):
@@ -153,7 +153,7 @@ def Camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace(".", "_"), True)
+    return inflection.camelize(value.replace(".", "_").replace("-", "_"), True)
 
 
 @functools.lru_cache()
