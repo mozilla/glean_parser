@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.15.2 (2019-12-12)
+-------------------
+
+* BUGFIX: Use a pure Python library for iso8601 so there is no compilation required.
+
 1.15.1 (2019-12-12)
 -------------------
 
