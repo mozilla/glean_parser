@@ -95,6 +95,34 @@ def test_parser(tmpdir):
     run_linters(tmpdir.glob("*.kt"))
 
 
+def test_ping_parser(tmpdir):
+    """Test translating pings to Kotlin files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "pings.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo"},
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        [
+            "Pings.kt",
+        ]
+    )
+
+    # Make sure descriptions made it in
+    with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "This is a custom ping" in content
+        # Make sure the namespace option is in effect
+        assert "package Foo" in content
+
+    run_linters(tmpdir.glob("*.kt"))
+
+
 def test_kotlin_generator():
     kdf = kotlin.kotlin_datatypes_filter
 
