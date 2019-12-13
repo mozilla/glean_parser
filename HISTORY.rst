@@ -7,6 +7,7 @@ Unreleased
 
 * Add project title to markdown template.
 * Remove "Sorry about that" from markdown template.
+* BUGFIX: Replace dashes in variable names to force proper naming
 
 1.15.2 (2019-12-12)
 -------------------
