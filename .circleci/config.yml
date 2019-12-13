@@ -25,7 +25,13 @@ commands:
                     command: make lint
             - run:
                     name: install
-                    command: python setup.py install --user
+                    # Set CC to something that isn't a working compiler so we
+                    # can detect if any of the dependencies require a compiler
+                    # to be installed. We can't count on a working compiler
+                    # being available to pip on all of the platforms we need to
+                    # support, so we need to make sure the dependencies are all
+                    # pure Python or provide pre-built wheels.
+                    command: CC=broken_compiler python setup.py install --user
             - run:
                     name: test
                     command: make test
