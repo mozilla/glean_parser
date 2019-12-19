@@ -4,10 +4,11 @@ from docutils import statemachine
 import m2r
 
 from glean_parser.parser import get_parameter_doc
+from glean_parser.parser import get_ping_parameter_doc
 
 
-class MetricParameterDirective(Directive):
-    """Insert descriptions of metric parameters into the document."""
+class ParameterDirective(Directive):
+    """Insert descriptions of parameters into the document."""
     required_arguments = 1
     optional_arguments = 0
     has_content = False
@@ -19,7 +20,7 @@ class MetricParameterDirective(Directive):
             self.lineno - self.state_machine.input_offset - 1
         )
 
-        markdown = get_parameter_doc(parameter)
+        markdown = self.get_parameter_doc(parameter)
         rst = m2r.convert(markdown)
 
         description = statemachine.string2lines(rst, 4, convert_whitespace=True)
@@ -36,5 +37,20 @@ class MetricParameterDirective(Directive):
         return []
 
 
+class MetricParameterDirective(ParameterDirective):
+    """Insert descriptions of metric parameters into the document."""
+
+    def get_parameter_doc(self, parameter):
+        return get_parameter_doc(parameter)
+
+
+class PingParameterDirective(ParameterDirective):
+    """Insert descriptions of ping parameters into the document."""
+
+    def get_parameter_doc(self, parameter):
+        return get_ping_parameter_doc(parameter)
+
+
 def setup(app):
     app.add_directive('metric_parameter', MetricParameterDirective)
+    app.add_directive('ping_parameter', PingParameterDirective)

@@ -10,6 +10,7 @@ Glean parser
    readme
    installation
    metrics-yaml
+   pings-yaml
    modules
    contributing
    authors
