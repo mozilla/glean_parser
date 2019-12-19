@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.15.5 (2019-12-19)
+-------------------
+
+* BUGFIX: Also allow the legacy name `all_pings` for `send_in_pings` parameter on metrics
+
 1.15.4 (2019-12-19)
 -------------------
 
