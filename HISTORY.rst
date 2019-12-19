@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.15.4 (2019-12-19)
+-------------------
+
+* BUGFIX: Also allow the legacy name `all_pings`
+
 1.15.3 (2019-12-13)
 -------------------
 
