@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.15.5 documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.15.6.dev3+ge909f22 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -161,6 +161,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">schema</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_schema</span><span class="p">(</span><span class="n">METRICS_ID</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;definitions&quot;</span><span class="p">][</span><span class="s2">&quot;metric&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_ping_parameter_doc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.get_ping_parameter_doc">[docs]</a><span class="k">def</span> <span class="nf">get_ping_parameter_doc</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns documentation about a specific ping parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">schema</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_schema</span><span class="p">(</span><span class="n">PINGS_ID</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;additionalProperties&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="validate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.parser.validate">[docs]</a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;&lt;input&gt;&quot;</span><span class="p">):</span>
@@ -369,6 +377,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pings-yaml.html"><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
