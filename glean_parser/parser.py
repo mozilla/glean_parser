@@ -128,6 +128,15 @@ def get_parameter_doc(key):
     return schema["definitions"]["metric"]["properties"][key]["description"]
 
 
+def get_ping_parameter_doc(key):
+    """
+    Returns documentation about a specific ping parameter.
+    """
+    schema, _ = _get_schema(PINGS_ID)
+    print(str(schema))
+    return schema["additionalProperties"]["properties"][key]["description"]
+
+
 def validate(content, filepath="<input>"):
     """
     Validate the given content against the appropriate schema.
