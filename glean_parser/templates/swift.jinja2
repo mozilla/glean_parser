@@ -46,9 +46,11 @@ extension {{ namespace }} {
     {% else %}
     enum {{ category_name|Camelize }} {
     {% for obj in objs.values() %}
-        {% if obj.extra_keys|length %}
-        enum {{ obj.name|Camelize }}Keys: Int32, ExtraKeys {
-        {% for key in obj.allowed_extra_keys %}
+        {% if obj|attr("_generate_enums") %}
+        {% for name, suffix in obj["_generate_enums"] %}
+        {% if obj|attr(name)|length %}
+        enum {{ obj.name|Camelize }}{{ suffix }}: Int32, ExtraKeys {
+        {% for key in obj|attr(name) %}
             case {{ key|camelize|variable_name }} = {{ loop.index-1 }}
         {% endfor %}
 
@@ -57,6 +59,8 @@ extension {{ namespace }} {
             }
         }
 
+        {% endif %}
+        {% endfor %}
         {% endif %}
     {% endfor %}
     {% for obj in objs.values() %}

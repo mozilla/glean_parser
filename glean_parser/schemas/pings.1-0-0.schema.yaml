@@ -113,6 +113,21 @@ additionalProperties:
         type: string
         format: uri
 
+    reasons:
+      title: The reasons this ping can be sent.
+      description: |
+        A list of reasons that the ping might be triggered. Sent in the ping's
+        `ping_info.reason` field.
+
+        Specified as a mapping from reason codes (which are short strings), to
+        a textual description of the reason.
+      type: object
+      propertyNames:
+        type: string
+        maxLength: 30
+      additionalProperties:
+        type: string
+
   required:
     - description
     - include_client_id
