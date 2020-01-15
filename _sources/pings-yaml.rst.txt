@@ -27,6 +27,7 @@ Ping parameters
 
 .. ping_parameter:: data_reviews
 
+.. ping_parameter:: reasons
 
 JSON Schema
 -----------

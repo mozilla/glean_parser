@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.kotlin &#8212; Glean Parser 1.15.6.dev5+g50c65fd documentation</title>
+    <title>glean_parser.kotlin &#8212; Glean Parser 1.15.6.dev9+gb2dbbfb documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -47,7 +47,6 @@
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
@@ -105,12 +104,17 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Kotlin type to use for a given metric or ping object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">):</span>
-            <span class="n">enumeration</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;Keys&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">enumeration</span> <span class="o">=</span> <span class="s2">&quot;NoExtraKeys&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;EventMetricType&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">enumeration</span><span class="p">)</span>
+    <span class="n">generate_enums</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_generate_enums&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">generate_enums</span><span class="p">):</span>
+        <span class="n">template_args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">member</span><span class="p">,</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">generate_enums</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">member</span><span class="p">)):</span>
+                <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;NoExtraKeys&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">),</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_args</span><span class="p">))</span>
+
     <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
 
 
@@ -252,6 +256,7 @@
         <span class="s2">&quot;name&quot;</span><span class="p">,</span>
         <span class="s2">&quot;range_max&quot;</span><span class="p">,</span>
         <span class="s2">&quot;range_min&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
         <span class="s2">&quot;send_in_pings&quot;</span><span class="p">,</span>
         <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
     <span class="p">]</span>

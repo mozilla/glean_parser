@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>pings.yaml file &#8212; Glean Parser 1.15.6.dev5+g50c65fd documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 1.15.6.dev9+gb2dbbfb documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -83,6 +83,13 @@ page in a tracker.</p>
 <span id="id6"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of URIs to any data collection reviews relevant to the ping.</p>
+</div>
+<div class="section" id="reasons">
+<span id="id7"></span><h3>reasons<a class="headerlink" href="#reasons" title="Permalink to this headline">¶</a></h3>
+<p>A list of reasons that the ping might be triggered. Sent in the ping’s
+<code class="docutils literal notranslate"><span class="pre">ping_info.reason</span></code> field.</p>
+<p>Specified as a mapping from reason codes (which are short strings), to
+a textual description of the reason.</p>
 </div>
 </div>
 <div class="section" id="json-schema">
@@ -203,6 +210,21 @@ entirety below:</p>
       <span class="nt">items</span><span class="p">:</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
         <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
+
+    <span class="nt">reasons</span><span class="p">:</span>
+      <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The reasons this ping can be sent.</span>
+      <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no">A list of reasons that the ping might be triggered. Sent in the ping&#39;s</span>
+        <span class="no">`ping_info.reason` field.</span>
+
+        <span class="no">Specified as a mapping from reason codes (which are short strings), to</span>
+        <span class="no">a textual description of the reason.</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
+      <span class="nt">propertyNames</span><span class="p">:</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+      <span class="nt">additionalProperties</span><span class="p">:</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
   <span class="nt">required</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
