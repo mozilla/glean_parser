@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.16.0 (2020-01-15)
+-------------------
+
 * Support for `reason` codes on pings was added.
 
 1.15.5 (2019-12-19)
