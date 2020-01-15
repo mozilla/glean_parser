@@ -11,7 +11,6 @@ Outputter to generate Swift code for metrics.
 import enum
 import json
 
-from . import metrics
 from . import pings
 from . import util
 from collections import defaultdict
