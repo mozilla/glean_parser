@@ -37,13 +37,17 @@ import {{ glean_namespace }}.private.LabeledMetricType // ktlint-disable import-
 
 internal object {{ category_name|Camelize }} {
 {% for obj in objs.values() %}
-    {% if obj.extra_keys|length %}
+    {% if obj|attr("_generate_enums") %}
+    {% for name, suffix in obj["_generate_enums"] %}
+    {% if obj|attr(name)|length %}
     @Suppress("ClassNaming", "EnumNaming")
-    enum class {{ obj.name|camelize }}Keys {
-    {% for key in obj.allowed_extra_keys %}
+    enum class {{ obj.name|camelize }}{{ suffix }} {
+    {% for key in obj|attr(name) %}
         {{ key|camelize }}{{ "," if not loop.last }}
     {% endfor %}
     }
+    {% endif %}
+    {% endfor %}
     {% endif %}
 {% endfor %}
 {% for obj in objs.values() %}

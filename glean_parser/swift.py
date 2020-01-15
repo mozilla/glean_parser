@@ -11,7 +11,6 @@ Outputter to generate Swift code for metrics.
 import enum
 import json
 
-from . import metrics
 from . import pings
 from . import util
 from collections import defaultdict
@@ -67,12 +66,17 @@ def type_name(obj):
     """
     Returns the Swift type to use for a given metric or ping object.
     """
-    if isinstance(obj, metrics.Event):
-        if len(obj.extra_keys):
-            enumeration = util.Camelize(obj.name) + "Keys"
-        else:
-            enumeration = "NoExtraKeys"
-        return "EventMetricType<{}>".format(enumeration)
+    generate_enums = getattr(obj, "_generate_enums", [])
+    if len(generate_enums):
+        template_args = []
+        for member, suffix in generate_enums:
+            if len(getattr(obj, member)):
+                template_args.append(util.camelize(obj.name) + suffix)
+            else:
+                template_args.append("NoExtraKeys")
+
+        return "{}<{}>".format(class_name(obj.type), ", ".join(template_args))
+
     return class_name(obj.type)
 
 
@@ -119,13 +123,14 @@ def output_swift(objs, output_dir, options={}):
     # The object parameters to pass to constructors.
     # Need to be in the order the type constructor expects them.
     extra_args = [
-        "category",
-        "name",
-        "send_in_pings",
-        "lifetime",
-        "disabled",
-        "time_unit",
         "allowed_extra_keys",
+        "category",
+        "disabled",
+        "lifetime",
+        "name",
+        "reason_codes",
+        "send_in_pings",
+        "time_unit",
     ]
 
     namespace = options.get("namespace", "GleanMetrics")

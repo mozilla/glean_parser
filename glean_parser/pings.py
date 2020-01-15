@@ -33,6 +33,7 @@ class Ping(base_object):
         data_reviews=None,
         include_client_id=False,
         send_if_empty=False,
+        reasons=None,
         _validated=False,
     ):
         # Avoid cyclical import
@@ -47,6 +48,9 @@ class Ping(base_object):
         self.data_reviews = data_reviews
         self.include_client_id = include_client_id
         self.send_if_empty = send_if_empty
+        if reasons is None:
+            reasons = {}
+        self.reasons = reasons
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
@@ -55,9 +59,15 @@ class Ping(base_object):
             for error in parser.validate(data):
                 raise ValueError(error)
 
+    _generate_enums = [("reason_codes", "ReasonCodes")]
+
     @property
     def type(self):
         return "ping"
+
+    @property
+    def reason_codes(self):
+        return sorted(list(self.reasons.keys()))
 
     def serialize(self):
         """

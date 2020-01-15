@@ -118,4 +118,14 @@ def test_metric_type_name():
         bugs=[42],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert swift.type_name(ping) == "Ping"
+    assert swift.type_name(ping) == "Ping<NoExtraKeys>"
+
+    ping = pings.Ping(
+        name="custom",
+        description="description...",
+        include_client_id=True,
+        bugs=[42],
+        notification_emails=["nobody@nowhere.com"],
+        reasons={"foo": "foolicious", "bar": "barlicious"}
+    )
+    assert swift.type_name(ping) == "Ping<customReasonCodes>"
