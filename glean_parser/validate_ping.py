@@ -26,7 +26,7 @@ SCHEMAS_DIR = ROOT_DIR / "schemas"
 GLEAN_PING_SCHEMA_GIT_HASH = "a56043b"
 GLEAN_PING_SCHEMA_URL = (
     "https://raw.githubusercontent.com/mozilla-services/"
-    "mozilla-pipeline-schemas/%s/schemas/glean/glean/"
+    "mozilla-pipeline-schemas/{}/schemas/glean/glean/"
     "glean.1.schema.json"
 ).format(GLEAN_PING_SCHEMA_GIT_HASH)
 
