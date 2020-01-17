@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Updated ping schema URL
+
 1.16.0 (2020-01-15)
 -------------------
 
