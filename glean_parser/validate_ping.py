@@ -23,17 +23,18 @@ ROOT_DIR = Path(__file__).parent
 SCHEMAS_DIR = ROOT_DIR / "schemas"
 
 
-PING_SCHEMA_DEFAULT_URL = (
+GLEAN_PING_SCHEMA_GIT_HASH = "a56043b"
+GLEAN_PING_SCHEMA_URL = (
     "https://raw.githubusercontent.com/mozilla-services/"
-    "mozilla-pipeline-schemas/dev/schemas/glean/baseline/"
-    "baseline.1.schema.json"
+    f"mozilla-pipeline-schemas/{GLEAN_PING_SCHEMA_GIT_HASH}/"
+    "schemas/glean/glean/glean.1.schema.json"
 )
 
 
 @functools.lru_cache(maxsize=1)
 def _get_ping_schema(schema_url):
     contents = util.fetch_remote_url(
-        schema_url, cache=(schema_url != PING_SCHEMA_DEFAULT_URL)
+        schema_url, cache=(schema_url != GLEAN_PING_SCHEMA_URL)
     )
     return json.loads(contents)
 
@@ -59,7 +60,7 @@ def _validate_ping(ins, outs, schema_url):
     return has_error
 
 
-def validate_ping(ins, outs=None, schema_url=PING_SCHEMA_DEFAULT_URL):
+def validate_ping(ins, outs=None, schema_url=GLEAN_PING_SCHEMA_URL):
     """
     Validates the contents of a Glean ping.
 
