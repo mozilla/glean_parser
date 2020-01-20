@@ -74,9 +74,8 @@ def translate(input, format, output, option, allow_reserved):
     "--schema",
     "-s",
     type=str,
-    default=validate_ping.PING_SCHEMA_DEFAULT_URL,
     nargs=1,
-    required=False,
+    required=True,
     help=("HTTP url or file path to Glean ping schema. If remote, will cache to disk."),
 )
 def check(schema):

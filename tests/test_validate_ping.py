@@ -5,6 +5,7 @@
 
 import io
 import json
+from pytest import raises
 
 from glean_parser import validate_ping
 
@@ -36,3 +37,6 @@ def test_validate_ping():
     )
 
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
+
+    with raises(TypeError):
+        validate_ping.validate_ping(input, output)

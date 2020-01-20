@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+* Remove default schema URL from `validate_ping`
+* Make `schema` argument required for CLI
+
 1.16.0 (2020-01-15)
 -------------------
 
