@@ -23,18 +23,9 @@ ROOT_DIR = Path(__file__).parent
 SCHEMAS_DIR = ROOT_DIR / "schemas"
 
 
-PING_SCHEMA_DEFAULT_URL = (
-    "https://raw.githubusercontent.com/mozilla-services/"
-    "mozilla-pipeline-schemas/dev/schemas/glean/baseline/"
-    "baseline.1.schema.json"
-)
-
-
 @functools.lru_cache(maxsize=1)
 def _get_ping_schema(schema_url):
-    contents = util.fetch_remote_url(
-        schema_url, cache=(schema_url != PING_SCHEMA_DEFAULT_URL)
-    )
+    contents = util.fetch_remote_url(schema_url)
     return json.loads(contents)
 
 
@@ -59,7 +50,7 @@ def _validate_ping(ins, outs, schema_url):
     return has_error
 
 
-def validate_ping(ins, outs=None, schema_url=PING_SCHEMA_DEFAULT_URL):
+def validate_ping(ins, outs=None, schema_url=None):
     """
     Validates the contents of a Glean ping.
 
@@ -70,6 +61,9 @@ def validate_ping(ins, outs=None, schema_url=PING_SCHEMA_DEFAULT_URL):
         mozilla-pipeline-schemas.
     :rtype: int 1 if any errors occurred, otherwise 0.
     """
+    if schema_url is None:
+        raise TypeError("Missing required argument 'schema_url'")
+
     if outs is None:
         outs = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
