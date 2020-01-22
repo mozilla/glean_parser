@@ -33,12 +33,30 @@ extension {{ namespace }} {
             // Intentionally left private, no external user can instantiate a new global object.
         }
 
-      {% for obj in objs.values() %}
+        {% for obj in objs.values() %}
+        {% if obj|attr("_generate_enums") %}
+        {% for name, suffix in obj["_generate_enums"] %}
+        {% if obj|attr(name)|length %}
+        enum {{ obj.name|Camelize }}{{ suffix }}: Int, ReasonCodes {
+            {% for key in obj|attr(name) %}
+            case {{ key|camelize|variable_name }} = {{ loop.index-1 }}
+            {% endfor %}
+
+            public func index() -> Int {
+                return self.rawValue
+            }
+        }
+
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
         /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
         let {{ obj.name|camelize|variable_name }} = {{obj|type_name}}(
             name: {{ obj.name|swift }},
             includeClientId: {{obj.include_client_id|swift}},
-            sendIfEmpty: {{obj.send_if_empty|swift}}
+            sendIfEmpty: {{obj.send_if_empty|swift}},
+            reasonCodes: {{obj.reason_codes|swift}}
         )
 
       {% endfor %}

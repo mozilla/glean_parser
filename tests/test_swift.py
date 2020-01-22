@@ -119,7 +119,7 @@ def test_metric_type_name():
         bugs=[42],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert swift.type_name(ping) == "Ping<NoExtraKeys>"
+    assert swift.type_name(ping) == "Ping<NoReasonCodes>"
 
     ping = pings.Ping(
         name="custom",
@@ -129,7 +129,7 @@ def test_metric_type_name():
         notification_emails=["nobody@nowhere.com"],
         reasons={"foo": "foolicious", "bar": "barlicious"}
     )
-    assert swift.type_name(ping) == "Ping<customReasonCodes>"
+    assert swift.type_name(ping) == "Ping<CustomReasonCodes>"
 
 
 def test_order_of_fields(tmpdir):
