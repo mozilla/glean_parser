@@ -7,6 +7,7 @@ from collections import OrderedDict
 from pathlib import Path
 import shutil
 import subprocess
+import re
 
 from glean_parser import swift
 from glean_parser import metrics
@@ -129,3 +130,40 @@ def test_metric_type_name():
         reasons={"foo": "foolicious", "bar": "barlicious"}
     )
     assert swift.type_name(ping) == "Ping<customReasonCodes>"
+
+
+def test_order_of_fields(tmpdir):
+    """Test that translating metrics to Swift files keeps a stable order of fields."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
+    )
+
+    # Make sure descriptions made it in
+    fd = (tmpdir / "CorePing.swift").open("r", encoding="utf-8")
+    content = fd.read()
+    fd.close()
+
+    lines = content.splitlines()
+    first_metric_fields = []
+    found_metric = False
+
+    # Get the fields of the first metric
+    # Checking only one metric should be good enough for now
+    for line in lines:
+        if found_metric:
+            if re.search("\\)$", line):
+                break
+
+            # Collect only the fields
+            field = line.strip().split(":")[0]
+            first_metric_fields.append(field)
+        elif re.search("MetricType", line):
+            found_metric = True
+
+    expected_fields = ["category", "name", "sendInPings", "lifetime", "disabled"]
+
+    # We only check the limited list of always available fields.
+    size = len(expected_fields)
+    assert expected_fields == first_metric_fields[:size]
