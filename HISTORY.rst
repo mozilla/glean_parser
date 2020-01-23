@@ -7,6 +7,7 @@ Unreleased
 
 * Remove default schema URL from `validate_ping`
 * Make `schema` argument required for CLI
+* BUGFIX: Avoid default import in Swift code for Glean itself
 
 1.16.0 (2020-01-15)
 -------------------
