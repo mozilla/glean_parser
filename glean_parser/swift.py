@@ -121,16 +121,18 @@ def output_swift(objs, output_dir, options={}):
     )
 
     # The object parameters to pass to constructors.
-    # Need to be in the order the type constructor expects them.
+    # **CAUTION**: This list needs to be in the order the type constructor expects them.
+    # The `test_order_of_fields` test checks that the generated code is valid.
+    # **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**
     extra_args = [
-        "allowed_extra_keys",
         "category",
-        "disabled",
-        "lifetime",
         "name",
-        "reason_codes",
         "send_in_pings",
+        "lifetime",
+        "disabled",
         "time_unit",
+        "reason_codes",
+        "allowed_extra_keys",
     ]
 
     namespace = options.get("namespace", "GleanMetrics")
