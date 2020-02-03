@@ -71,9 +71,12 @@ def type_name(obj):
         template_args = []
         for member, suffix in generate_enums:
             if len(getattr(obj, member)):
-                template_args.append(util.camelize(obj.name) + suffix)
+                template_args.append(util.Camelize(obj.name) + suffix)
             else:
-                template_args.append("NoExtraKeys")
+                if suffix == "Keys":
+                    template_args.append("NoExtraKeys")
+                else:
+                    template_args.append("No" + suffix)
 
         return "{}<{}>".format(class_name(obj.type), ", ".join(template_args))
 
@@ -131,8 +134,8 @@ def output_swift(objs, output_dir, options={}):
         "lifetime",
         "disabled",
         "time_unit",
-        "reason_codes",
         "allowed_extra_keys",
+        "reason_codes",
     ]
 
     namespace = options.get("namespace", "GleanMetrics")
