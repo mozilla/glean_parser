@@ -69,6 +69,10 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
             file=sys.stderr,
         )
 
+    # allow_reserved is also relevant to the translators, so copy it there
+    if parser_config.get("allow_reserved"):
+        options["allow_reserved"] = True
+
     # Write everything out to a temporary directory, and then move it to the
     # real directory, for transactional integrity.
     with tempfile.TemporaryDirectory() as tempdir:
