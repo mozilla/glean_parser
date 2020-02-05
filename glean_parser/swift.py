@@ -112,6 +112,9 @@ def output_swift(objs, output_dir, options={}):
     `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
+        - namespace: The namespace to generate metrics in
+        - glean_namespace: The namespace to import Glean from
+        - allow_reserved: When True, this is a Glean-internal build
     """
     template = util.get_jinja2_template(
         "swift.jinja2",
@@ -164,6 +167,7 @@ def output_swift(objs, output_dir, options={}):
                     glean_namespace=glean_namespace,
                     has_labeled_metrics=has_labeled_metrics,
                     is_ping_type=len(custom_pings) > 0,
+                    allow_reserved=options.get("allow_reserved", False)
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it

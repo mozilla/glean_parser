@@ -167,3 +167,33 @@ def test_order_of_fields(tmpdir):
     # We only check the limited list of always available fields.
     size = len(expected_fields)
     assert expected_fields == first_metric_fields[:size]
+
+
+def test_no_import_glean(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
+    )
+
+    # Make sure descriptions made it in
+    fd = (tmpdir / "CorePing.swift").open("r", encoding="utf-8")
+    content = fd.read()
+    fd.close()
+
+    assert "import Glean" not in content
+
+
+def test_import_glean(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "smaller.yaml", "swift", tmpdir, {}, {}
+    )
+
+    # Make sure descriptions made it in
+    fd = (tmpdir / "Telemetry.swift").open("r", encoding="utf-8")
+    content = fd.read()
+    fd.close()
+
+    assert "import Glean" in content

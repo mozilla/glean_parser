@@ -15,7 +15,7 @@ Jinja2 template is not. Please file bugs! #}
         )
 {% endmacro %}
 
-{% if glean_namespace|length and glean_namespace is not equalto "Glean" %}
+{% if not allow_reserved %}
 import {{ glean_namespace }}
 
 {% endif %}
