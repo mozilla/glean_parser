@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+* **Breaking Change (Java API)** Have the metrics names in Java match the names in Kotlin.
+  See [Bug 1588060](https://bugzilla.mozilla.org/show_bug.cgi?id=1588060).
+
 1.17.3 (2020-02-05)
 -------------------
 
