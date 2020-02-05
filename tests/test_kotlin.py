@@ -179,7 +179,7 @@ def test_metric_type_name():
         bugs=[42],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert kotlin.type_name(ping) == "PingType<NoExtraKeys>"
+    assert kotlin.type_name(ping) == "PingType<NoReasonCodes>"
 
     ping = pings.Ping(
         name="custom",
