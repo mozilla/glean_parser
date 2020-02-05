@@ -5,7 +5,13 @@ History
 Unreleased
 ----------
 
-1.12.2 (2020-02-05)
+1.17.3 (2020-02-05)
+-------------------
+
+* BUGFIX: The version of Jinja2 now specifies < 3.0, since that version no
+  longer supports Python 3.5.
+
+1.17.2 (2020-02-05)
 -------------------
 
 * BUGFIX: Fixes an import error in generated Kotlin code.
