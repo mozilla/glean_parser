@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.17.1 (2020-02-05)
+-------------------
+
 * BUGFIX: Generated Swift code now includes `import Glean`, unless generating
   for a Glean-internal build.
 
