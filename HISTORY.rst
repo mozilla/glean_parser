@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.12.2 (2020-02-05)
+-------------------
+
+* BUGFIX: Fixes an import error in generated Kotlin code.
+
 1.17.1 (2020-02-05)
 -------------------
 
