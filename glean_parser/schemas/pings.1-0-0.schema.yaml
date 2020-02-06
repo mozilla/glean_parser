@@ -51,6 +51,9 @@ additionalProperties:
         **Required.**
 
         A textual description of the purpose of this ping and what it contains.
+
+        Descriptions may contain [markdown
+        syntax](https://www.markdownguide.org/basic-syntax/).
       type: string
 
     include_client_id:
