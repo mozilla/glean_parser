@@ -133,18 +133,29 @@ Deploying
 
 A reminder for the maintainers on how to deploy.
 
+Get a clean master branch with all of the changes from `upstream`::
+
+  $ git checkout master
+  $ git fetch upstream
+  $ git rebase upstream/master
+
 - Update the header with the new version and date in HISTORY.rst.
 
 - (By using the setuptools-scm package, there is no need to update the version anywhere else).
 
 - Make sure all your changes are committed.
 
-Then run (assuming the main fork is in a git remote called `upstream`)::
+- Push the changes upstream::
 
-$ git checkout master
-$ git fetch upstream
-$ git rebase upstream/master
-$ git tag vX.X.X
-$ git push upstream master --tags
+  $ git push upstream master
 
-The continuous integration system will then deploy to PyPI if tests pass.
+- Wait for [continuous integration to
+  pass](https://circleci.com/gh/mozilla/glean/tree/master) on master.
+
+- Make the release on GitHub using [this link](https://github.com/mozilla/glean_parser/releases/new)
+
+- Enter the new version in the form `vX.Y.Z`.
+
+- Copy and paste the relevant part of the `HISTORY.rst` file into the description.
+
+The continuous integration system will then automatically deploy to PyPI.
