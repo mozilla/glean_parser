@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Contributing &#8212; Glean Parser 1.17.4.dev2+ge928dca documentation</title>
+    <title>Contributing &#8212; Glean Parser 1.17.4.dev4+gafa196a documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -157,20 +157,35 @@ feature to the list in README.rst.</li>
 <div class="section" id="deploying">
 <h2>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
 <p>A reminder for the maintainers on how to deploy.</p>
-<ul class="simple">
-<li>Update the header with the new version and date in HISTORY.rst.</li>
-<li>(By using the setuptools-scm package, there is no need to update the version anywhere else).</li>
-<li>Make sure all your changes are committed.</li>
-</ul>
-<p>Then run (assuming the main fork is in a git remote called <cite>upstream</cite>):</p>
+<p>Get a clean master branch with all of the changes from <cite>upstream</cite>:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git checkout master
 $ git fetch upstream
 $ git rebase upstream/master
-$ git tag vX.X.X
-$ git push upstream master --tags
 </pre></div>
 </div>
-<p>The continuous integration system will then deploy to PyPI if tests pass.</p>
+<ul>
+<li><p class="first">Update the header with the new version and date in HISTORY.rst.</p>
+</li>
+<li><p class="first">(By using the setuptools-scm package, there is no need to update the version anywhere else).</p>
+</li>
+<li><p class="first">Make sure all your changes are committed.</p>
+</li>
+<li><p class="first">Push the changes upstream:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git push upstream master
+</pre></div>
+</div>
+</li>
+<li><p class="first">Wait for [continuous integration to
+pass](<a class="reference external" href="https://circleci.com/gh/mozilla/glean/tree/master">https://circleci.com/gh/mozilla/glean/tree/master</a>) on master.</p>
+</li>
+<li><p class="first">Make the release on GitHub using [this link](<a class="reference external" href="https://github.com/mozilla/glean_parser/releases/new">https://github.com/mozilla/glean_parser/releases/new</a>)</p>
+</li>
+<li><p class="first">Enter the new version in the form <cite>vX.Y.Z</cite>.</p>
+</li>
+<li><p class="first">Copy and paste the relevant part of the <cite>HISTORY.rst</cite> file into the description.</p>
+</li>
+</ul>
+<p>The continuous integration system will then automatically deploy to PyPI.</p>
 </div>
 </div>
 
