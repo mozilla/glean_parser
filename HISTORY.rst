@@ -35,6 +35,12 @@ Unreleased
 
 * Support for `reason` codes on pings was added.
 
+1.15.6 (2020-02-06)
+-------------------
+
+* BUGFIX: The version of Jinja2 now specifies < 3.0, since that version no
+  longer supports Python 3.5 (backported from 1.17.3).
+
 1.15.5 (2019-12-19)
 -------------------
 
