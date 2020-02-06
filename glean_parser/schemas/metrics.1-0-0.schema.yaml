@@ -138,6 +138,9 @@ definitions:
 
           A textual description of what this metric does, what it means, and its
           edge cases or any other helpful information.
+
+          Descriptions may contain [markdown
+          syntax](https://www.markdownguide.org/basic-syntax/).
         type: string
 
       lifetime:
