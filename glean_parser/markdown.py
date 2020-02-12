@@ -86,6 +86,18 @@ def if_empty(ping_name, custom_pings_cache={}):
     )
 
 
+def ping_reasons(ping_name, custom_pings_cache):
+    """
+    Returns the reasons dictionary for the ping.
+    """
+    if ping_name in pings.RESERVED_PING_NAMES or ping_name == "all-pings":
+        return {}
+    elif ping_name in custom_pings_cache:
+        return custom_pings_cache[ping_name].reasons
+
+    return {}
+
+
 def output_markdown(objs, output_dir, options={}):
     """
     Given a tree of objects, output Markdown docs to `output_dir`.
@@ -152,6 +164,7 @@ def output_markdown(objs, output_dir, options={}):
             ("ping_desc", lambda x: ping_desc(x, custom_pings_cache)),
             ("ping_send_if_empty", lambda x: if_empty(x, custom_pings_cache)),
             ("ping_docs", ping_docs),
+            ("ping_reasons", lambda x: ping_reasons(x, custom_pings_cache)),
         ),
     )
 
@@ -161,8 +174,7 @@ def output_markdown(objs, output_dir, options={}):
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
-                metrics_by_pings=metrics_by_pings,
-                project_title=project_title
+                metrics_by_pings=metrics_by_pings, project_title=project_title
             )
         )
         # Jinja2 squashes the final newline, so we explicitly add it

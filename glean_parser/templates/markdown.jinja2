@@ -16,14 +16,25 @@ This means you might have to go searching through the dependency tree to get a f
 
 {% for ping_name in metrics_by_pings.keys()|sort %}
 {% raw %}##{% endraw %} {{ ping_name }}
+
 {% if ping_name|ping_desc and ping_name|ping_desc|length > 0 %}
 {{ ping_name|ping_desc }}
+
 {% if ping_name|ping_docs|length > 0 %}
 See the Glean SDK documentation for the [`{{ ping_name }}` ping]({{ ping_name|ping_docs }}).
+
 {% endif %}
 {% endif %}
 {% if ping_name|ping_send_if_empty %}
 This ping is sent if empty.
+
+{% endif %}
+{% if ping_name|ping_reasons %}
+Reasons this ping may be sent:
+{% for (reason, desc) in ping_name|ping_reasons|dictsort %}
+    - `{{ reason }}`: {{ desc }}
+{% endfor %}
+
 {% endif %}
 {% if metrics_by_pings[ping_name] %}
 The following metrics are added to the ping:
