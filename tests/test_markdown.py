@@ -136,3 +136,21 @@ def test_metrics_docs():
         markdown.metrics_docs("labeled_string")
         == "https://mozilla.github.io/glean/book/user/metrics/labeled_strings.html"
     )
+
+
+def test_reasons(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "pings.yaml",
+        "markdown",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+
+    # Make sure descriptions made it in
+    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "- `serious`: A serious reason for sending a ping." in content

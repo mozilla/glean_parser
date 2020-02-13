@@ -43,3 +43,8 @@ custom-ping-might-be-empty:
     - http://nowhere.com/reviews
   notification_emails:
     - CHANGE-ME@test-only.com
+  reasons:
+    silly:
+      A silly reason for sending a ping.
+    serious:
+      A serious reason for sending a ping.
