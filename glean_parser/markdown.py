@@ -90,7 +90,7 @@ def ping_reasons(ping_name, custom_pings_cache):
     """
     Returns the reasons dictionary for the ping.
     """
-    if ping_name in pings.RESERVED_PING_NAMES or ping_name == "all-pings":
+    if ping_name == "all-pings":
         return {}
     elif ping_name in custom_pings_cache:
         return custom_pings_cache[ping_name].reasons
