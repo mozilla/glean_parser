@@ -10,7 +10,9 @@ Jinja2 template is not. Please file bugs! #}
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 {% macro obj_declaration(obj, suffix='', access='', lazy=False) %}
+{% if (access != "private ") -%}
 @get:JvmName("{{ obj.name|camelize }}{{ suffix }}")
+{% endif -%}
 {{ access }}val {{ obj.name|camelize }}{{ suffix }}: {{ obj|type_name }}{% if lazy %} by lazy { {%- else %} ={% endif %}
 
         {{ obj|type_name }}(
