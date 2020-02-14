@@ -31,6 +31,7 @@ This ping is sent if empty.
 {% endif %}
 {% if ping_name|ping_reasons %}
 Reasons this ping may be sent:
+
 {% for (reason, desc) in ping_name|ping_reasons|dictsort %}
     - `{{ reason }}`: {{ desc|indent(6, indentfirst=False) }}
 {% endfor %}
