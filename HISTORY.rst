@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.18.2 (2020-02-14)
+-------------------
+
 * BUGFIX: Fix rendering of first element of reason list.
 
 1.18.1 (2020-02-14)
