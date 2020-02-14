@@ -5,6 +5,10 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Reason codes are displayed in markdown output for built-in pings as
+  well.
+* BUGFIX: Reason descriptions are indented correctly in markdown output.
+
 1.18.0 (2020-02-13)
 -------------------
 
