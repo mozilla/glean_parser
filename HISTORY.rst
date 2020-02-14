@@ -5,9 +5,14 @@ History
 Unreleased
 ----------
 
+1.18.1 (2020-02-14)
+-------------------
+
 * BUGFIX: Reason codes are displayed in markdown output for built-in pings as
   well.
 * BUGFIX: Reason descriptions are indented correctly in markdown output.
+* BUGFIX: To avoid a compiler error, the @JvmName annotation isn't added to
+  private members.
 
 1.18.0 (2020-02-13)
 -------------------
