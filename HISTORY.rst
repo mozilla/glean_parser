@@ -5,6 +5,10 @@ History
 Unreleased
 ----------
 
+* Dropped the 'inflection' dependency.
+* Constrained the 'zipp' and 'MarkupSafe' transitive dependencies to versions that
+  support Python 3.5.
+
 1.18.2 (2020-02-14)
 -------------------
 

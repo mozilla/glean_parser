@@ -15,7 +15,6 @@ import urllib.request
 
 import appdirs
 import diskcache
-import inflection
 import jinja2
 import jsonschema
 from jsonschema import _utils
@@ -136,6 +135,24 @@ def ensure_list(value):
     return value
 
 
+def to_camel_case(input, capitalize_first_letter):
+    """
+    Convert the value to camelCase.
+
+    This additionally replaces any '.' with '_'. The first letter is capitalized
+    depending on `capitalize_first_letter`.
+    """
+    sanitized_input = input.replace(".", "_").replace("-", "_")
+    # Filter out any empty token. This could happen due to leading '_' or
+    # consecutive '__'.
+    tokens = [s.capitalize() for s in sanitized_input.split("_") if len(s) != 0]
+    # If we're not meant to capitalize the first letter, then lowercase it.
+    if not capitalize_first_letter:
+        tokens[0] = tokens[0].lower()
+    # Finally join the tokens and capitalize.
+    return ''.join(tokens)
+
+
 def camelize(value):
     """
     Convert the value to camelCase (with a lower case first letter).
@@ -143,7 +160,7 @@ def camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace(".", "_").replace("-", "_"), False)
+    return to_camel_case(value, False)
 
 
 def Camelize(value):
@@ -153,7 +170,7 @@ def Camelize(value):
     This is a thin wrapper around inflection.camelize that handles dots in
     addition to underscores.
     """
-    return inflection.camelize(value.replace(".", "_").replace("-", "_"), True)
+    return to_camel_case(value, True)
 
 
 @functools.lru_cache()
