@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.18.3.dev2+g4eb0d46 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.18.3.dev3+g1349c86 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -988,6 +988,14 @@ jsonschema calls “context”).</p>
 <dt id="glean_parser.util.report_validation_errors">
 <code class="descclassname">glean_parser.util.</code><code class="descname">report_validation_errors</code><span class="sig-paren">(</span><em>all_objects</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#report_validation_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.report_validation_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report any validation errors found to the console.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.util.to_camel_case">
+<code class="descclassname">glean_parser.util.</code><code class="descname">to_camel_case</code><span class="sig-paren">(</span><em>input</em>, <em>capitalize_first_letter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#to_camel_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.to_camel_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the value to camelCase.</p>
+<p>This additionally replaces any ‘.’ with ‘_’. The first letter is capitalized
+depending on <cite>capitalize_first_letter</cite>.</p>
 </dd></dl>
 
 <dl class="function">
