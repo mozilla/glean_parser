@@ -26,7 +26,6 @@ is installed by `pip`.
 - appdirs
 - Click
 - diskcache
-- inflection
 - Jinja2
 - jsonschema
 - PyYAML

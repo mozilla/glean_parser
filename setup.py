@@ -27,7 +27,6 @@ requirements = [
     "appdirs>=1.4.3",
     "Click>=7.0",
     "diskcache>=4.0.0",
-    "inflection>=0.3.1",
     "iso8601>=0.1.12",
     "Jinja2>=2.10.1,<3.0",
     "jsonschema>=3.0.2",
