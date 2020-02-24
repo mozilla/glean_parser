@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.18.3 (2020-02-24)
+-------------------
+
 * Dropped the 'inflection' dependency.
 * Constrained the 'zipp' and 'MarkupSafe' transitive dependencies to versions that
   support Python 3.5.
