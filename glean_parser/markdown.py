@@ -98,6 +98,27 @@ def ping_reasons(ping_name, custom_pings_cache):
     return {}
 
 
+def ping_data_reviews(ping_name, custom_pings_cache={}):
+    return (
+        custom_pings_cache.get(ping_name)
+        and custom_pings_cache[ping_name].data_reviews
+    )
+
+
+def ping_bugs(ping_name, custom_pings_cache={}):
+    return (
+        custom_pings_cache.get(ping_name)
+        and custom_pings_cache[ping_name].bugs
+    )
+
+
+def ping_include_client_id(ping_name, custom_pings_cache={}):
+    return (
+        custom_pings_cache.get(ping_name)
+        and custom_pings_cache[ping_name].include_client_id
+    )
+
+
 def output_markdown(objs, output_dir, options={}):
     """
     Given a tree of objects, output Markdown docs to `output_dir`.
@@ -165,6 +186,10 @@ def output_markdown(objs, output_dir, options={}):
             ("ping_send_if_empty", lambda x: if_empty(x, custom_pings_cache)),
             ("ping_docs", ping_docs),
             ("ping_reasons", lambda x: ping_reasons(x, custom_pings_cache)),
+            ("ping_data_reviews", lambda x: ping_data_reviews(x, custom_pings_cache)),
+            ("ping_bugs", lambda x: ping_bugs(x, custom_pings_cache)),
+            ("ping_include_client_id",
+                lambda x: ping_include_client_id(x, custom_pings_cache)),
         ),
     )
 
