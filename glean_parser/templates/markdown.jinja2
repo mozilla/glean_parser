@@ -30,20 +30,23 @@ This ping is sent if empty.
 
 {% endif %}
 {% if ping_name|ping_include_client_id %}
-This ping includes the client id.
+This ping includes the [client id](https://mozilla.github.io/glean/book/user/pings/index.html?highlight=client_info#the-client_info-section).
 
 {% endif %}
 {% if ping_name|ping_data_reviews %}
 **Data reviews for this ping:**
+
 {% for review in ping_name|ping_data_reviews %}
-    - [{{review}}]({{review}})
+    - <{{review}}>
 {% endfor %}
 
 {% endif %}
 {% if ping_name|ping_bugs %}
 **Bugs related to this ping:**
+
 {% for bug in ping_name|ping_bugs %}
-    - [Bug {{bug}}](https://bugzilla.mozilla.org/show_bug.cgi?id={{bug}})
+    - {% if bug|int != 0 %}{{bug}}{% else %}<{{bug}}>{% endif %}
+
 {% endfor %}
 
 {% endif %}
