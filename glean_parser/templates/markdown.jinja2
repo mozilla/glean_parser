@@ -37,7 +37,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 **Data reviews for this ping:**
 
 {% for review in ping_name|ping_data_reviews %}
-    - <{{review}}>
+- <{{review}}>
 {% endfor %}
 
 {% endif %}
@@ -45,7 +45,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 **Bugs related to this ping:**
 
 {% for bug in ping_name|ping_bugs %}
-    - {% if bug|int != 0 %}{{bug}}{% else %}<{{bug}}>{% endif %}
+- {% if bug|int != 0 %}{{bug}}{% else %}<{{bug}}>{% endif %}
 
 {% endfor %}
 
@@ -54,7 +54,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 **Reasons this ping may be sent:**
 
 {% for (reason, desc) in ping_name|ping_reasons|dictsort %}
-    - `{{ reason }}`: {{ desc|indent(6, indentfirst=False) }}
+- `{{ reason }}`: {{ desc|indent(6, indentfirst=False) }}
 {% endfor %}
 
 {% endif %}
