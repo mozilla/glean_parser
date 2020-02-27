@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.18.3.dev4+g73e5f56 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.18.4.dev1+gc35c29c documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -133,6 +133,27 @@
     <span class="k">return</span> <span class="p">{}</span></div>
 
 
+<div class="viewcode-block" id="ping_data_reviews"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_data_reviews">[docs]</a><span class="k">def</span> <span class="nf">ping_data_reviews</span><span class="p">(</span><span class="n">ping_name</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">custom_pings_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_name</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">data_reviews</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ping_bugs"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_bugs">[docs]</a><span class="k">def</span> <span class="nf">ping_bugs</span><span class="p">(</span><span class="n">ping_name</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">custom_pings_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_name</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">bugs</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ping_include_client_id"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_include_client_id">[docs]</a><span class="k">def</span> <span class="nf">ping_include_client_id</span><span class="p">(</span><span class="n">ping_name</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">custom_pings_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_name</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">include_client_id</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="output_markdown"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.output_markdown">[docs]</a><span class="k">def</span> <span class="nf">output_markdown</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Markdown docs to `output_dir`.</span>
@@ -200,6 +221,10 @@
             <span class="p">(</span><span class="s2">&quot;ping_send_if_empty&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">if_empty</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
             <span class="p">(</span><span class="s2">&quot;ping_docs&quot;</span><span class="p">,</span> <span class="n">ping_docs</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;ping_reasons&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ping_reasons</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;ping_data_reviews&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ping_data_reviews</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;ping_bugs&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ping_bugs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;ping_include_client_id&quot;</span><span class="p">,</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ping_include_client_id</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">)),</span>
         <span class="p">),</span>
     <span class="p">)</span>
 
