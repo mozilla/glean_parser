@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+* Add more information about pings to markdown documentation:
+  * State wether the ping includes client id;
+  * Add list of data review links;
+  * Add list of related bugs links.
+
 1.18.3 (2020-02-24)
 -------------------
 
