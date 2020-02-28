@@ -9,6 +9,8 @@ Unreleased
   * State wether the ping includes client id;
   * Add list of data review links;
   * Add list of related bugs links.
+* `glean_parser` now makes it easier to write external translation functions for
+  different language targets.
 
 1.18.3 (2020-02-24)
 -------------------
