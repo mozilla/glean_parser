@@ -13,7 +13,7 @@ telemetry:
       Correlation of data.
       Some Unicode: جمع 搜集
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/1137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
