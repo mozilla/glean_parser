@@ -10,6 +10,7 @@ import shutil
 
 from glean_parser import parser
 from glean_parser import translate
+from glean_parser.util import load_yaml_or_json
 
 import util
 
@@ -135,3 +136,29 @@ def test_translate_dont_remove_extra_files(tmpdir):
 
     assert len(list(output.iterdir())) == 6
     assert "extra.txt" in [str(x.name) for x in output.iterdir()]
+
+
+def test_external_translator(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    def external_translator(all_objects, output_dir, options):
+        assert {"foo": "bar", "allow_reserved": True} == options
+
+        for category in all_objects:
+            with open(tmpdir / category, "w") as fd:
+                for metric in category:
+                    fd.write("{}\n".format(metric))
+
+    translate.translate_metrics(
+        ROOT / "data" / "core.yaml",
+        Path(str(tmpdir)),
+        external_translator,
+        options={"foo": "bar"},
+        parser_config={"allow_reserved": True},
+    )
+
+    content = load_yaml_or_json(ROOT / "data" / "core.yaml")
+
+    expected_keys = set(content.keys()) - set(["$schema"])
+
+    assert set(x.name for x in tmpdir.iterdir()) == expected_keys
