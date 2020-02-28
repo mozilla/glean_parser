@@ -145,7 +145,7 @@ def test_external_translator(tmpdir):
         assert {"foo": "bar", "allow_reserved": True} == options
 
         for category in all_objects:
-            with open(tmpdir / category, "w") as fd:
+            with (tmpdir / category).open("w") as fd:
                 for metric in category:
                     fd.write("{}\n".format(metric))
 
