@@ -10,7 +10,10 @@ Outputter to generate Swift code for metrics.
 
 import enum
 import json
+from pathlib import Path
+from typing import Any, Dict, Union
 
+from . import metrics
 from . import pings
 from . import util
 from collections import defaultdict
@@ -20,7 +23,7 @@ from collections import defaultdict
 SWIFT_RESERVED_NAMES = ["internal", "typealias"]
 
 
-def swift_datatypes_filter(value):
+def swift_datatypes_filter(value: util.JSONType) -> str:
     """
     A Jinja2 filter that renders Swift literals.
 
@@ -62,7 +65,7 @@ def swift_datatypes_filter(value):
     return "".join(SwiftEncoder().iterencode(value))
 
 
-def type_name(obj):
+def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
     """
     Returns the Swift type to use for a given metric or ping object.
     """
@@ -83,7 +86,7 @@ def type_name(obj):
     return class_name(obj.type)
 
 
-def class_name(obj_type):
+def class_name(obj_type: str) -> str:
     """
     Returns the Swift class name for a given metric or ping type.
     """
@@ -94,7 +97,7 @@ def class_name(obj_type):
     return util.Camelize(obj_type) + "MetricType"
 
 
-def variable_name(var):
+def variable_name(var: str) -> str:
     """
     Returns a valid Swift variable name, escaping keywords if necessary.
     """
@@ -104,12 +107,14 @@ def variable_name(var):
         return var
 
 
-def output_swift(objs, output_dir, options={}):
+def output_swift(
+    objs: metrics.ObjectTree, output_dir: Path, options: Dict[str, Any] = {}
+) -> None:
     """
     Given a tree of objects, output Swift code to `output_dir`.
 
     :param objects: A tree of objects (metrics and pings) as returned from
-    `parser.parse_objects`.
+        `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
         - namespace: The namespace to generate metrics in
@@ -148,7 +153,7 @@ def output_swift(objs, output_dir, options={}):
         filename = util.Camelize(category_key) + ".swift"
         filepath = output_dir / filename
 
-        custom_pings = defaultdict()
+        custom_pings = defaultdict()  # type: Dict[str, pings.Ping]
         for obj in category_val.values():
             if isinstance(obj, pings.Ping):
                 custom_pings[obj.name] = obj
@@ -167,7 +172,7 @@ def output_swift(objs, output_dir, options={}):
                     glean_namespace=glean_namespace,
                     has_labeled_metrics=has_labeled_metrics,
                     is_ping_type=len(custom_pings) > 0,
-                    allow_reserved=options.get("allow_reserved", False)
+                    allow_reserved=options.get("allow_reserved", False),
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it

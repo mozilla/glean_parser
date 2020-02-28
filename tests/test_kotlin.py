@@ -107,11 +107,7 @@ def test_ping_parser(tmpdir):
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
-        [
-            "Pings.kt",
-        ]
-    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Pings.kt"])
 
     # Make sure descriptions made it in
     with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:

@@ -127,7 +127,7 @@ def test_metric_type_name():
         include_client_id=True,
         bugs=[42],
         notification_emails=["nobody@nowhere.com"],
-        reasons={"foo": "foolicious", "bar": "barlicious"}
+        reasons={"foo": "foolicious", "bar": "barlicious"},
     )
     assert swift.type_name(ping) == "Ping<CustomReasonCodes>"
 
@@ -187,9 +187,7 @@ def test_no_import_glean(tmpdir):
 def test_import_glean(tmpdir):
     tmpdir = Path(str(tmpdir))
 
-    translate.translate(
-        ROOT / "data" / "smaller.yaml", "swift", tmpdir, {}, {}
-    )
+    translate.translate(ROOT / "data" / "smaller.yaml", "swift", tmpdir, {}, {})
 
     # Make sure descriptions made it in
     fd = (tmpdir / "Telemetry.swift").open("r", encoding="utf-8")

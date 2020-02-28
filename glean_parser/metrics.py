@@ -10,7 +10,10 @@ Classes for each of the high-level metric types.
 
 import enum
 import sys
+from typing import Any, Dict, List, Optional, Type, Union  # noqa
 
+
+from . import pings
 from . import util
 
 
@@ -30,29 +33,30 @@ class Lifetime(enum.Enum):
 
 
 class Metric(base_object):
-    glean_internal_metric_cat = "glean.internal.metrics"
-    metric_types = {}
-    default_store_names = ["metrics"]
+    typename = "ERROR"  # type: str
+    glean_internal_metric_cat = "glean.internal.metrics"  # type: str
+    metric_types = {}  # type: Dict[str, Any]
+    default_store_names = ["metrics"]  # type: List[str]
 
     def __init__(
         self,
-        type,
-        category,
-        name,
-        bugs,
-        description,
-        notification_emails,
-        expires,
-        data_reviews=None,
-        version=0,
-        disabled=False,
-        lifetime="ping",
-        send_in_pings=None,
-        unit="",
-        gecko_datapoint="",
-        no_lint=None,
-        _config=None,
-        _validated=False,
+        type: str,
+        category: str,
+        name: str,
+        bugs: List[str],
+        description: str,
+        notification_emails: List[str],
+        expires: str,
+        data_reviews: Optional[List[str]] = None,
+        version: int = 0,
+        disabled: bool = False,
+        lifetime: str = "ping",
+        send_in_pings: Optional[List[str]] = None,
+        unit: str = "",
+        gecko_datapoint: str = "",
+        no_lint: Optional[List[str]] = None,
+        _config: Optional[Dict[str, Any]] = None,
+        _validated: bool = False,
     ):
         # Avoid cyclical import
         from . import parser
@@ -85,7 +89,7 @@ class Metric(base_object):
             data = {
                 "$schema": parser.METRICS_ID,
                 self.category: {self.name: self.serialize()},
-            }
+            }  # type: Dict[str, util.JSONType]
             for error in parser.validate(data):
                 raise ValueError(error)
 
@@ -101,7 +105,14 @@ class Metric(base_object):
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category, name, metric_info, config={}, validated=False):
+    def make_metric(
+        cls,
+        category: str,
+        name: str,
+        metric_info: Dict[str, util.JSONType],
+        config: Dict[str, Any] = {},
+        validated: bool = False,
+    ):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
@@ -116,6 +127,8 @@ class Metric(base_object):
         :return: A new Metric instance.
         """
         metric_type = metric_info["type"]
+        if not isinstance(metric_type, str):
+            raise TypeError("Unknown metric type {}".format(metric_type))
         return cls.metric_types[metric_type](
             category=category,
             name=name,
@@ -124,7 +137,7 @@ class Metric(base_object):
             **metric_info
         )
 
-    def serialize(self):
+    def serialize(self) -> Dict[str, util.JSONType]:
         """
         Serialize the metric back to JSON object model.
         """
@@ -139,7 +152,7 @@ class Metric(base_object):
         del d["category"]
         return d
 
-    def identifier(self):
+    def identifier(self) -> str:
         """
         Create an identifier unique for this metric.
         Generally, category.name; however, Glean internal
@@ -149,17 +162,17 @@ class Metric(base_object):
             return self.name
         return ".".join((self.category, self.name))
 
-    def is_disabled(self):
+    def is_disabled(self) -> bool:
         return self.disabled or self.is_expired()
 
-    def is_expired(self):
+    def is_expired(self) -> bool:
         return util.is_expired(self.expires)
 
     @staticmethod
-    def validate_expires(expires):
+    def validate_expires(expires) -> None:
         return util.validate_expires(expires)
 
-    def is_internal_metric(self):
+    def is_internal_metric(self) -> bool:
         return self.category in (Metric.glean_internal_metric_cat, "")
 
 
@@ -262,7 +275,7 @@ class Event(Metric):
         return sorted(list(self.extra_keys.keys()))
 
     @staticmethod
-    def validate_extra_keys(extra_keys, config):
+    def validate_extra_keys(extra_keys: Dict[str, str], config: Dict[str, Any]) -> None:
         if not config.get("allow_reserved") and any(
             k.startswith("glean.") for k in extra_keys.keys()
         ):
@@ -289,7 +302,7 @@ class Labeled(Metric):
             self.labels = None
         super().__init__(*args, **kwargs)
 
-    def serialize(self):
+    def serialize(self) -> Dict[str, util.JSONType]:
         """
         Serialize the metric back to JSON object model.
         """
@@ -309,3 +322,6 @@ class LabeledString(Labeled, String):
 
 class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"
+
+
+ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping]]]
