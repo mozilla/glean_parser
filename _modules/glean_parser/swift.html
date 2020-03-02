@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.swift &#8212; Glean Parser 1.18.4.dev3+g592a72b documentation</title>
+    <title>glean_parser.swift &#8212; Glean Parser 1.18.4.dev7+g034c219 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -45,7 +45,10 @@
 
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
@@ -55,7 +58,7 @@
 <span class="n">SWIFT_RESERVED_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="s2">&quot;typealias&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="swift_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.swift_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">swift_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="swift_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.swift_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">swift_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Jinja2 filter that renders Swift literals.</span>
 
@@ -97,7 +100,7 @@
     <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SwiftEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.type_name">[docs]</a><span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.type_name">[docs]</a><span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Swift type to use for a given metric or ping object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -118,7 +121,7 @@
     <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.class_name">[docs]</a><span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">):</span>
+<div class="viewcode-block" id="class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.class_name">[docs]</a><span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Swift class name for a given metric or ping type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -129,7 +132,7 @@
     <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;MetricType&quot;</span></div>
 
 
-<div class="viewcode-block" id="variable_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.variable_name">[docs]</a><span class="k">def</span> <span class="nf">variable_name</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+<div class="viewcode-block" id="variable_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.variable_name">[docs]</a><span class="k">def</span> <span class="nf">variable_name</span><span class="p">(</span><span class="n">var</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a valid Swift variable name, escaping keywords if necessary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -139,12 +142,14 @@
         <span class="k">return</span> <span class="n">var</span></div>
 
 
-<div class="viewcode-block" id="output_swift"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.output_swift">[docs]</a><span class="k">def</span> <span class="nf">output_swift</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="output_swift"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.output_swift">[docs]</a><span class="k">def</span> <span class="nf">output_swift</span><span class="p">(</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Swift code to `output_dir`.</span>
 
 <span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
-<span class="sd">    `parser.parse_objects`.</span>
+<span class="sd">        `parser.parse_objects`.</span>
 <span class="sd">    :param output_dir: Path to an output directory to write to.</span>
 <span class="sd">    :param options: options dictionary, with the following optional keys:</span>
 <span class="sd">        - namespace: The namespace to generate metrics in</span>
@@ -183,7 +188,7 @@
         <span class="n">filename</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">category_key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.swift&quot;</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
 
-        <span class="n">custom_pings</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">()</span>
+        <span class="n">custom_pings</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">()</span>  <span class="c1"># type: Dict[str, pings.Ping]</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
                 <span class="n">custom_pings</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
@@ -202,7 +207,7 @@
                     <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
                     <span class="n">has_labeled_metrics</span><span class="o">=</span><span class="n">has_labeled_metrics</span><span class="p">,</span>
                     <span class="n">is_ping_type</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">custom_pings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="n">allow_reserved</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                    <span class="n">allow_reserved</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>

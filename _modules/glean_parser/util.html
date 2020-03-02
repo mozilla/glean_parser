@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.util &#8212; Glean Parser 1.18.4.dev3+g592a72b documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.18.4.dev7+g034c219 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -46,24 +46,34 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 
-<span class="kn">import</span> <span class="nn">appdirs</span>
-<span class="kn">import</span> <span class="nn">diskcache</span>
+<span class="kn">import</span> <span class="nn">appdirs</span>  <span class="c1"># type: ignore</span>
+<span class="kn">import</span> <span class="nn">diskcache</span>  <span class="c1"># type: ignore</span>
 <span class="kn">import</span> <span class="nn">jinja2</span>
-<span class="kn">import</span> <span class="nn">jsonschema</span>
-<span class="kn">from</span> <span class="nn">jsonschema</span> <span class="kn">import</span> <span class="n">_utils</span>
+<span class="kn">import</span> <span class="nn">jsonschema</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span> <span class="nn">jsonschema</span> <span class="kn">import</span> <span class="n">_utils</span>  <span class="c1"># type: ignore</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">iso8601</span>
+    <span class="kn">import</span> <span class="nn">iso8601</span>  <span class="c1"># type: ignore</span>
 
 
 <span class="n">TESTING_MODE</span> <span class="o">=</span> <span class="s2">&quot;pytest&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
 
 
+<span class="n">JSONType</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The types supported by JSON.</span>
+
+<span class="sd">This is only an approximation -- this should really be a recursive type.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1"># Adapted from</span>
 <span class="c1"># https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml</span>
+
+
 <span class="k">class</span> <span class="nc">_NoDatesSafeLoader</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">remove_implicit_resolver</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tag_to_remove</span><span class="p">):</span>
@@ -131,7 +141,7 @@
         <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_yaml_or_json"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.load_yaml_or_json">[docs]</a><span class="k">def</span> <span class="nf">load_yaml_or_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">ordered_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="load_yaml_or_json"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.load_yaml_or_json">[docs]</a><span class="k">def</span> <span class="nf">load_yaml_or_json</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">ordered_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the content from either a .json or .yaml file, based on the filename</span>
 <span class="sd">    extension.</span>
@@ -160,7 +170,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown file extension </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ensure_list"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ensure_list">[docs]</a><span class="k">def</span> <span class="nf">ensure_list</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="ensure_list"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ensure_list">[docs]</a><span class="k">def</span> <span class="nf">ensure_list</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensures that the value is a list. If it is anything but a list or tuple, a</span>
 <span class="sd">    list with a single element containing only value is returned.</span>
@@ -170,7 +180,7 @@
     <span class="k">return</span> <span class="n">value</span></div>
 
 
-<div class="viewcode-block" id="to_camel_case"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.to_camel_case">[docs]</a><span class="k">def</span> <span class="nf">to_camel_case</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">capitalize_first_letter</span><span class="p">):</span>
+<div class="viewcode-block" id="to_camel_case"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.to_camel_case">[docs]</a><span class="k">def</span> <span class="nf">to_camel_case</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">capitalize_first_letter</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the value to camelCase.</span>
 
@@ -185,10 +195,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">capitalize_first_letter</span><span class="p">:</span>
         <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="c1"># Finally join the tokens and capitalize.</span>
-    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="camelize"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.camelize">[docs]</a><span class="k">def</span> <span class="nf">camelize</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="camelize"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.camelize">[docs]</a><span class="k">def</span> <span class="nf">camelize</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the value to camelCase (with a lower case first letter).</span>
 
@@ -198,7 +208,7 @@
     <span class="k">return</span> <span class="n">to_camel_case</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Camelize"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.Camelize">[docs]</a><span class="k">def</span> <span class="nf">Camelize</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Camelize"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.Camelize">[docs]</a><span class="k">def</span> <span class="nf">Camelize</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the value to CamelCase (with an upper case first letter).</span>
 
@@ -209,7 +219,9 @@
 
 
 <div class="viewcode-block" id="get_jinja2_template"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.get_jinja2_template">[docs]</a><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">get_jinja2_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">()):</span>
+<span class="k">def</span> <span class="nf">get_jinja2_template</span><span class="p">(</span>
+    <span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="p">()</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a Jinja2 template that ships with glean_parser.</span>
 
@@ -271,7 +283,7 @@
     <span class="k">return</span> <span class="n">NullResolver</span><span class="o">.</span><span class="n">from_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="fetch_remote_url"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.fetch_remote_url">[docs]</a><span class="k">def</span> <span class="nf">fetch_remote_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="fetch_remote_url"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.fetch_remote_url">[docs]</a><span class="k">def</span> <span class="nf">fetch_remote_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches the contents from an HTTP url or local file path, and optionally</span>
 <span class="sd">    caches it to disk.</span>
@@ -289,13 +301,13 @@
             <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">dc</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">dc</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
 
-    <span class="n">contents</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
 
     <span class="c1"># On Python 3.5, urlopen does not handle the unicode decoding for us. This</span>
     <span class="c1"># is ok because we control these files and we know they are in UTF-8,</span>
     <span class="c1"># however, this wouldn&#39;t be correct in general.</span>
     <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">diskcache</span><span class="o">.</span><span class="n">Cache</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">dc</span><span class="p">:</span>
@@ -307,7 +319,7 @@
 <span class="n">_unset</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">Unset</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="pprint_validation_error"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.pprint_validation_error">[docs]</a><span class="k">def</span> <span class="nf">pprint_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<div class="viewcode-block" id="pprint_validation_error"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.pprint_validation_error">[docs]</a><span class="k">def</span> <span class="nf">pprint_validation_error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A version of jsonschema&#39;s ValidationError __str__ method that doesn&#39;t</span>
 <span class="sd">    include the schema fragment that failed.  This makes the error messages</span>
@@ -348,7 +360,7 @@
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="format_error"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.format_error">[docs]</a><span class="k">def</span> <span class="nf">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="format_error"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.format_error">[docs]</a><span class="k">def</span> <span class="nf">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Format a jsonshema validation error.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -362,7 +374,7 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.is_expired">[docs]</a><span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="n">expires</span><span class="p">):</span>
+<div class="viewcode-block" id="is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.is_expired">[docs]</a><span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses the `expires` field in a metric or ping and returns whether</span>
 <span class="sd">    the object should be considered expired.</span>
@@ -387,7 +399,7 @@
         <span class="k">return</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.validate_expires">[docs]</a><span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">):</span>
+<div class="viewcode-block" id="validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.validate_expires">[docs]</a><span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Raises ValueError if `expires` is not valid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
