@@ -19,9 +19,9 @@ from . import util
 
 # Import a backport of PEP487 to support __init_subclass__
 if sys.version_info < (3, 6):
-    import pep487
+    import pep487  # type: ignore
 
-    base_object = pep487.PEP487Object
+    base_object = pep487.PEP487Object  # type: ignore
 else:
     base_object = object
 
@@ -32,7 +32,7 @@ class Lifetime(enum.Enum):
     application = 2
 
 
-class Metric(base_object):
+class Metric(base_object):  # type: ignore
     typename = "ERROR"  # type: str
     glean_internal_metric_cat = "glean.internal.metrics"  # type: str
     metric_types = {}  # type: Dict[str, Any]
@@ -176,23 +176,23 @@ class Metric(base_object):
         return self.category in (Metric.glean_internal_metric_cat, "")
 
 
-class Boolean(Metric):
+class Boolean(Metric):  # type: ignore
     typename = "boolean"
 
 
-class String(Metric):
+class String(Metric):  # type: ignore
     typename = "string"
 
 
-class StringList(Metric):
+class StringList(Metric):  # type: ignore
     typename = "string_list"
 
 
-class Counter(Metric):
+class Counter(Metric):  # type: ignore
     typename = "counter"
 
 
-class Quantity(Metric):
+class Quantity(Metric):  # type: ignore
     typename = "quantity"
 
 
@@ -206,17 +206,17 @@ class TimeUnit(enum.Enum):
     day = 6
 
 
-class TimeBase(Metric):
+class TimeBase(Metric):  # type: ignore
     def __init__(self, *args, **kwargs):
         self.time_unit = getattr(TimeUnit, kwargs.pop("time_unit", "millisecond"))
         super().__init__(*args, **kwargs)
 
 
-class Timespan(TimeBase):
+class Timespan(TimeBase):  # type: ignore
     typename = "timespan"
 
 
-class TimingDistribution(TimeBase):
+class TimingDistribution(TimeBase):  # type: ignore
     typename = "timing_distribution"
 
 
@@ -227,7 +227,7 @@ class MemoryUnit(enum.Enum):
     gigabyte = 3
 
 
-class MemoryDistribution(Metric):
+class MemoryDistribution(Metric):  # type: ignore
     typename = "memory_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -240,7 +240,7 @@ class HistogramType(enum.Enum):
     exponential = 1
 
 
-class CustomDistribution(Metric):
+class CustomDistribution(Metric):  # type: ignore
     typename = "custom_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -253,11 +253,11 @@ class CustomDistribution(Metric):
         super().__init__(*args, **kwargs)
 
 
-class Datetime(TimeBase):
+class Datetime(TimeBase):  # type: ignore
     typename = "datetime"
 
 
-class Event(Metric):
+class Event(Metric):  # type: ignore
     typename = "event"
 
     default_store_names = ["events"]
@@ -285,11 +285,11 @@ class Event(Metric):
             )
 
 
-class Uuid(Metric):
+class Uuid(Metric):  # type: ignore
     typename = "uuid"
 
 
-class Labeled(Metric):
+class Labeled(Metric):  # type: ignore
     labeled = True
 
     def __init__(self, *args, **kwargs):
@@ -312,15 +312,15 @@ class Labeled(Metric):
         return d
 
 
-class LabeledBoolean(Labeled, Boolean):
+class LabeledBoolean(Labeled, Boolean):  # type: ignore
     typename = "labeled_boolean"
 
 
-class LabeledString(Labeled, String):
+class LabeledString(Labeled, String):  # type: ignore
     typename = "labeled_string"
 
 
-class LabeledCounter(Labeled, Counter):
+class LabeledCounter(Labeled, Counter):  # type: ignore
     typename = "labeled_counter"
 
 

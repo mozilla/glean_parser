@@ -17,9 +17,9 @@ from . import util
 
 # Import a backport of PEP487 to support __init_subclass__
 if sys.version_info < (3, 6):
-    import pep487
+    import pep487  # type: ignore
 
-    base_object = pep487.PEP487Object
+    base_object = pep487.PEP487Object  # type: ignore
 else:
     base_object = object
 
@@ -27,7 +27,7 @@ else:
 RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
 
 
-class Ping(base_object):
+class Ping(base_object):  # type: ignore
     def __init__(
         self,
         name: str,

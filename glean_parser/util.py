@@ -22,7 +22,7 @@ from jsonschema import _utils  # type: ignore
 import yaml
 
 if sys.version_info < (3, 7):
-    import iso8601
+    import iso8601  # type: ignore
 
 
 TESTING_MODE = "pytest" in sys.modules
@@ -272,7 +272,7 @@ def fetch_remote_url(url: str, cache: bool = True):
     # is ok because we control these files and we know they are in UTF-8,
     # however, this wouldn't be correct in general.
     if sys.version_info < (3, 6):
-        contents = contents.decode("utf8")
+        contents = contents.decode("utf8")  # type: ignore
 
     if cache:
         with diskcache.Cache(cache_dir) as dc:
