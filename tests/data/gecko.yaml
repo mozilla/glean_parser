@@ -13,7 +13,7 @@ page.perf:
     description: >
       A sample timing distribution metric exported from Gecko.
     bugs:
-      - 1566356
+      - https://bugzilla.mozilla.org/11566356
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -28,7 +28,7 @@ page.perf:
     description: >
       Another sample timing distribution metric exported from Gecko.
     bugs:
-      - 1566356
+      - https://bugzilla.mozilla.org/11566356
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -48,7 +48,7 @@ page.perf:
     description: >
       A sample categorical metric exported from Gecko.
     bugs:
-      - 1571740
+      - https://bugzilla.mozilla.org/11571740
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -66,7 +66,7 @@ gfx.content.checkerboard:
     description: >
       A sample timing distribution metric exported from Gecko.
     bugs:
-      - 1566356
+      - https://bugzilla.mozilla.org/11566356
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -81,7 +81,7 @@ gfx.info.adapter:
     description: >
       A sample string metric. It's a string scalar exported from Gecko.
     bugs:
-      - 1579365
+      - https://bugzilla.mozilla.org/11579365
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -95,7 +95,7 @@ gfx.info.adapter:
     description: >
       A sample boolean metric. It's a boolean scalar exported from Gecko.
     bugs:
-      - 1579365
+      - https://bugzilla.mozilla.org/11579365
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -110,7 +110,7 @@ gfx.info.adapter:
     description: >
       A sample quantity metric. It's a uint scalar exported from Gecko.
     bugs:
-      - 1579365
+      - https://bugzilla.mozilla.org/11579365
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -125,7 +125,7 @@ non.gecko.metrics:
     description: >
       A sample timing distribution that is not tied to a Gecko datapoint.
     bugs:
-      - 1566356
+      - https://bugzilla.mozilla.org/11566356
     data_reviews:
       - http://example.com/reviews
     notification_emails:

@@ -13,7 +13,7 @@ telemetry:
       Correlation of data.
       Some Unicode: جمع 搜集
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/1137353
     data_reviews:
       - http://example.com/reviews
       - http://example.com/other_reviews
@@ -31,7 +31,7 @@ core_ping:
       Running ping counter for this ping. This works as a sequence
       number to allow detecting for missing send_in_pings.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -46,7 +46,7 @@ core_ping:
     description: >
       The date the ping was created.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -60,7 +60,7 @@ core_ping:
     description: >
       The number of sessions since the last upload.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -76,7 +76,7 @@ core_ping:
       since the last upload.
     time_unit: second
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -99,7 +99,7 @@ core_ping:
       - this.is-fine
       - this-is-fine
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -114,7 +114,7 @@ core_ping:
       The number of times the flash plugin was used since the last
       upload.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -128,7 +128,7 @@ core_ping:
     description: >
       True if the user has set Firefox as the default browser.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -143,7 +143,7 @@ environment:
     lifetime: application
     description: The application locale, e.g. “en-US”.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -157,7 +157,7 @@ environment:
     lifetime: application
     description: The name of the operating system.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -171,7 +171,7 @@ environment:
     lifetime: application
     description: The version of the operating system.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -188,7 +188,7 @@ environment:
       truncated to 12 characters & model is truncated to 19
       characters.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -202,7 +202,7 @@ environment:
     lifetime: application
     description: The architecture of the device.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -215,7 +215,7 @@ environment:
     description: Profile creation date.
     time_unit: day
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -230,7 +230,7 @@ environment:
     description: >
       Identifier of the default search engine, e.g. “yahoo”.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -245,7 +245,7 @@ environment:
     description: >
       Version displayed to the user, e.g. “57.0b2”.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -260,7 +260,7 @@ environment:
     description: >
       Distribution identifier, e.g. “lollipop”.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -275,7 +275,7 @@ environment:
     description: >
       Adjust’s campaign identifier.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -289,7 +289,7 @@ environment:
     description: >
       Just testing events
     bugs:
-      - 123456789
+      - https://bugzilla.mozilla.org/1123456789
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -306,7 +306,7 @@ environment:
     description: >
       Just testing events
     bugs:
-      - 123456789
+      - https://bugzilla.mozilla.org/1123456789
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -320,7 +320,7 @@ dotted.category:
     description: >
       dummy metric
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
@@ -341,7 +341,7 @@ glean.internal.metrics:
       Duis aute irure dolor in reprehenderit in voluptate velit esse
       cillum dolore eu fugiat nulla pariatur.
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:

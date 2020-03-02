@@ -13,7 +13,8 @@ gleantest.lifetime:
     description: A counter with an invalid lifetime
     type: counter
     lifetime: user2
-    bugs: [123456789]
+    bugs:
+      - https://bugzilla.mozilla.org/1123456789
     notification_emails: ['nobody@example.com']
     expires: never
     data_reviews: ['http://example.com']
@@ -21,7 +22,8 @@ gleantest.with.way.too.long.category.name:
   test_event_inv_lt:
     description: A test metric
     type: boolean
-    bugs: [1580707]
+    bugs:
+      - https://bugzilla.mozilla.org/1580707
     notification_emails: ['nobody@example.com']
     expires: never
     data_reviews: ['http://example.com']
@@ -29,7 +31,8 @@ gleantest.short.category:
   very_long_metric_name_this_is_too_long_s_well:
     description: A test metric
     type: boolean
-    bugs: [1580707]
+    bugs:
+      - https://bugzilla.mozilla.org/1580707
     notification_emails: ['nobody@example.com']
     expires: never
     data_reviews: ['http://example.com']

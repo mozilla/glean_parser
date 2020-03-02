@@ -10,7 +10,7 @@ telemetry:
     lifetime: user
     description: duplicate send in ping test
     bugs:
-      - 1137353
+      - https://bugzilla.mozilla.org/11137353
     data_reviews:
       - http://example.com/reviews
     notification_emails:
