@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.18.4.dev7+g034c219 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.18.4.dev11+g6c07ff7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -862,14 +862,22 @@ the metric expires.</div></blockquote>
 <p>High-level interface for translating <cite>metrics.yaml</cite> into other formats.</p>
 <dl class="class">
 <dt id="glean_parser.translate.Outputter">
-<em class="property">class </em><code class="descclassname">glean_parser.translate.</code><code class="descname">Outputter</code><span class="sig-paren">(</span><em>output_func: Callable[[Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], pathlib.Path, Dict[str, Any]], None], clear_output_dir: bool, extensions: List[str] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/translate.html#Outputter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.Outputter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.translate.</code><code class="descname">Outputter</code><span class="sig-paren">(</span><em>output_func: Callable[[Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], pathlib.Path, Dict[str, Any]], None], clear_patterns: List[str] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/translate.html#Outputter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.Outputter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to define an output format.</p>
+<p>Each outputter in the table has the following member values:
+- output_func: the main function of the outputter, the one which</p>
+<blockquote>
+<div>does the actual translation.</div></blockquote>
+<ul class="simple">
+<li>clear_patterns: A list of glob patterns to clear in the directory before
+writing new results to it.</li>
+</ul>
 </dd></dl>
 
 <dl class="function">
 <dt id="glean_parser.translate.translate">
-<code class="descclassname">glean_parser.translate.</code><code class="descname">translate</code><span class="sig-paren">(</span><em>input_filepaths: Iterable[pathlib.Path], output_format: str, output_dir: pathlib.Path, options: Dict[str, Any] = {}, parser_config: Dict[str, Any] = {}</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/glean_parser/translate.html#translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.translate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">glean_parser.translate.</code><code class="descname">translate</code><span class="sig-paren">(</span><em>input_filepaths: Iterable[pathlib.Path], output_format: str, output_dir: pathlib.Path, options: Dict[str, Any] = {}, parser_config: Dict[str, Any] = {}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/translate.html#translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Translate the files in <cite>input_filepaths</cite> to the given <cite>output_format</cite> and
 put the results in <cite>output_dir</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -878,10 +886,48 @@ put the results in <cite>output_dir</cite>.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>input_filepaths</strong> – list of paths to input metrics.yaml files</li>
-<li><strong>output_format</strong> – the name of the output formats</li>
+<li><strong>output_format</strong> – the name of the output format</li>
 <li><strong>output_dir</strong> – the path to the output directory</li>
 <li><strong>options</strong> – dictionary of options. The available options are backend
 format specific.</li>
+<li><strong>parser_config</strong> – A dictionary of options that change parsing behavior.
+See <cite>parser.parse_metrics</cite> for more info.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="glean_parser.translate.translate_metrics">
+<code class="descclassname">glean_parser.translate.</code><code class="descname">translate_metrics</code><span class="sig-paren">(</span><em>input_filepaths: Iterable[pathlib.Path], output_dir: pathlib.Path, translation_func: Callable[[Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], pathlib.Path, Dict[str, Any]], None], clear_patterns: List[str] = [], options: Dict[str, Any] = {}, parser_config: Dict[str, Any] = {}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/translate.html#translate_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.translate_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate the files in <cite>input_filepaths</cite> by running the metrics through a
+translation function and writing the results in <cite>output_dir</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>input_filepaths</strong> – list of paths to input metrics.yaml files</li>
+<li><strong>output_dir</strong> – the path to the output directory</li>
+<li><strong>translation_func</strong> – <p>the function that actually performs the translation.
+It is passed the following arguments:</p>
+<blockquote>
+<div><ul>
+<li>metrics_objects: The tree of metrics as pings as returned by
+<cite>parser.parse_objects</cite>.</li>
+<li>output_dir: The path to the output directory.</li>
+<li>options: A dictionary of output format-specific options.</li>
+</ul>
+</div></blockquote>
+<p>Examples of translation functions are in <cite>kotlin.py</cite> and <cite>swift.py</cite>.</p>
+</li>
+<li><strong>clear_patterns</strong> – a list of glob patterns of files to clear before
+generating the output files. By default, no files will be cleared (i.e.
+the directory should be left alone).</li>
+<li><strong>options</strong> – dictionary of options. The available options are backend
+format specific. These are passed unchanged to <cite>translation_func</cite>.</li>
 <li><strong>parser_config</strong> – A dictionary of options that change parsing behavior.
 See <cite>parser.parse_metrics</cite> for more info.</li>
 </ul>

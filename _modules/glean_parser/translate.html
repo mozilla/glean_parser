@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.18.4.dev7+g034c219 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.18.4.dev11+g6c07ff7 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -59,59 +59,62 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
-<span class="c1"># Each outputter in the table has the following keys:</span>
-<span class="c1"># - &quot;output_func&quot;: the main function of the outputter, the one which</span>
-<span class="c1">#   does the actual translation.</span>
-<span class="c1"># - &quot;clear_output_dir&quot;: a flag to clear the target directory before moving there</span>
-<span class="c1">#   the generated files.</span>
-<span class="c1"># - &quot;extensions&quot;: A list of glob patterns to clear in the directory.</span>
-
-
 <div class="viewcode-block" id="Outputter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.Outputter">[docs]</a><span class="k">class</span> <span class="nc">Outputter</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to define an output format.</span>
+
+<span class="sd">    Each outputter in the table has the following member values:</span>
+<span class="sd">    - output_func: the main function of the outputter, the one which</span>
+<span class="sd">      does the actual translation.</span>
+<span class="sd">    - clear_patterns: A list of glob patterns to clear in the directory before</span>
+<span class="sd">      writing new results to it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">clear_output_dir</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">extensions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">output_func</span> <span class="o">=</span> <span class="n">output_func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_output_dir</span> <span class="o">=</span> <span class="n">clear_output_dir</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span> <span class="o">=</span> <span class="n">extensions</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_patterns</span> <span class="o">=</span> <span class="n">clear_patterns</span></div>
 
 
 <span class="n">OUTPUTTERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.kt&quot;</span><span class="p">]),</span>
-    <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-    <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.swift&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.kt&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">),</span>
+    <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.swift&quot;</span><span class="p">]),</span>
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span>
+<div class="viewcode-block" id="translate_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.translate_metrics">[docs]</a><span class="k">def</span> <span class="nf">translate_metrics</span><span class="p">(</span>
     <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
-    <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">translation_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Translate the files in `input_filepaths` to the given `output_format` and</span>
-<span class="sd">    put the results in `output_dir`.</span>
+<span class="sd">    Translate the files in `input_filepaths` by running the metrics through a</span>
+<span class="sd">    translation function and writing the results in `output_dir`.</span>
 
 <span class="sd">    :param input_filepaths: list of paths to input metrics.yaml files</span>
-<span class="sd">    :param output_format: the name of the output formats</span>
 <span class="sd">    :param output_dir: the path to the output directory</span>
+<span class="sd">    :param translation_func: the function that actually performs the translation.</span>
+<span class="sd">        It is passed the following arguments:</span>
+<span class="sd">            - metrics_objects: The tree of metrics as pings as returned by</span>
+<span class="sd">              `parser.parse_objects`.</span>
+<span class="sd">            - output_dir: The path to the output directory.</span>
+<span class="sd">            - options: A dictionary of output format-specific options.</span>
+<span class="sd">        Examples of translation functions are in `kotlin.py` and `swift.py`.</span>
+<span class="sd">    :param clear_patterns: a list of glob patterns of files to clear before</span>
+<span class="sd">        generating the output files. By default, no files will be cleared (i.e.</span>
+<span class="sd">        the directory should be left alone).</span>
 <span class="sd">    :param options: dictionary of options. The available options are backend</span>
-<span class="sd">        format specific.</span>
+<span class="sd">        format specific. These are passed unchanged to `translation_func`.</span>
 <span class="sd">    :param parser_config: A dictionary of options that change parsing behavior.</span>
 <span class="sd">        See `parser.parse_metrics` for more info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">output_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OUTPUTTERS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown output format &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_format</span><span class="p">))</span>
-
     <span class="n">all_objects</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_objects</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">report_validation_errors</span><span class="p">(</span><span class="n">all_objects</span><span class="p">):</span>
@@ -131,17 +134,16 @@
     <span class="c1"># real directory, for transactional integrity.</span>
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
         <span class="n">tempdir_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span>
-        <span class="n">OUTPUTTERS</span><span class="p">[</span><span class="n">output_format</span><span class="p">]</span><span class="o">.</span><span class="n">output_func</span><span class="p">(</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tempdir_path</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+        <span class="n">translation_func</span><span class="p">(</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">tempdir_path</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">OUTPUTTERS</span><span class="p">[</span><span class="n">output_format</span><span class="p">]</span><span class="o">.</span><span class="n">clear_output_dir</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                <span class="n">output_dir</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-                <span class="k">for</span> <span class="n">extensions</span> <span class="ow">in</span> <span class="n">OUTPUTTERS</span><span class="p">[</span><span class="n">output_format</span><span class="p">]</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">extensions</span><span class="p">):</span>
-                        <span class="n">filepath</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">output_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())):</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extra contents found in &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">output_dir</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">clear_patterns</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">clear_pattern</span> <span class="ow">in</span> <span class="n">clear_patterns</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">output_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">clear_pattern</span><span class="p">):</span>
+                    <span class="n">filepath</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">output_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extra contents found in &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span>
 
         <span class="c1"># We can&#39;t use shutil.copytree alone if the directory already exists.</span>
         <span class="c1"># However, if it doesn&#39;t exist, make sure to create one otherwise</span>
@@ -151,6 +153,40 @@
             <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_dir</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span>
+    <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Translate the files in `input_filepaths` to the given `output_format` and</span>
+<span class="sd">    put the results in `output_dir`.</span>
+
+<span class="sd">    :param input_filepaths: list of paths to input metrics.yaml files</span>
+<span class="sd">    :param output_format: the name of the output format</span>
+<span class="sd">    :param output_dir: the path to the output directory</span>
+<span class="sd">    :param options: dictionary of options. The available options are backend</span>
+<span class="sd">        format specific.</span>
+<span class="sd">    :param parser_config: A dictionary of options that change parsing behavior.</span>
+<span class="sd">        See `parser.parse_metrics` for more info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">format_desc</span> <span class="o">=</span> <span class="n">OUTPUTTERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output_format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">format_desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown output format &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">output_format</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">translate_metrics</span><span class="p">(</span>
+        <span class="n">input_filepaths</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="p">,</span>
+        <span class="n">format_desc</span><span class="o">.</span><span class="n">output_func</span><span class="p">,</span>
+        <span class="n">format_desc</span><span class="o">.</span><span class="n">clear_patterns</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">,</span>
+        <span class="n">parser_config</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
           </div>
