@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 import sys
 
-import jsonschema
+import jsonschema  # type: ignore
 
 from . import util
 

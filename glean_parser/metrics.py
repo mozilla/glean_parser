@@ -10,15 +10,18 @@ Classes for each of the high-level metric types.
 
 import enum
 import sys
+from typing import Any, Dict, List, Optional, Type, Union  # noqa
 
+
+from . import pings
 from . import util
 
 
 # Import a backport of PEP487 to support __init_subclass__
 if sys.version_info < (3, 6):
-    import pep487
+    import pep487  # type: ignore
 
-    base_object = pep487.PEP487Object
+    base_object = pep487.PEP487Object  # type: ignore
 else:
     base_object = object
 
@@ -29,30 +32,31 @@ class Lifetime(enum.Enum):
     application = 2
 
 
-class Metric(base_object):
-    glean_internal_metric_cat = "glean.internal.metrics"
-    metric_types = {}
-    default_store_names = ["metrics"]
+class Metric(base_object):  # type: ignore
+    typename = "ERROR"  # type: str
+    glean_internal_metric_cat = "glean.internal.metrics"  # type: str
+    metric_types = {}  # type: Dict[str, Any]
+    default_store_names = ["metrics"]  # type: List[str]
 
     def __init__(
         self,
-        type,
-        category,
-        name,
-        bugs,
-        description,
-        notification_emails,
-        expires,
-        data_reviews=None,
-        version=0,
-        disabled=False,
-        lifetime="ping",
-        send_in_pings=None,
-        unit="",
-        gecko_datapoint="",
-        no_lint=None,
-        _config=None,
-        _validated=False,
+        type: str,
+        category: str,
+        name: str,
+        bugs: List[str],
+        description: str,
+        notification_emails: List[str],
+        expires: str,
+        data_reviews: Optional[List[str]] = None,
+        version: int = 0,
+        disabled: bool = False,
+        lifetime: str = "ping",
+        send_in_pings: Optional[List[str]] = None,
+        unit: str = "",
+        gecko_datapoint: str = "",
+        no_lint: Optional[List[str]] = None,
+        _config: Optional[Dict[str, Any]] = None,
+        _validated: bool = False,
     ):
         # Avoid cyclical import
         from . import parser
@@ -85,7 +89,7 @@ class Metric(base_object):
             data = {
                 "$schema": parser.METRICS_ID,
                 self.category: {self.name: self.serialize()},
-            }
+            }  # type: Dict[str, util.JSONType]
             for error in parser.validate(data):
                 raise ValueError(error)
 
@@ -101,7 +105,14 @@ class Metric(base_object):
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def make_metric(cls, category, name, metric_info, config={}, validated=False):
+    def make_metric(
+        cls,
+        category: str,
+        name: str,
+        metric_info: Dict[str, util.JSONType],
+        config: Dict[str, Any] = {},
+        validated: bool = False,
+    ):
         """
         Given a metric_info dictionary from metrics.yaml, return a metric
         instance.
@@ -116,6 +127,8 @@ class Metric(base_object):
         :return: A new Metric instance.
         """
         metric_type = metric_info["type"]
+        if not isinstance(metric_type, str):
+            raise TypeError("Unknown metric type {}".format(metric_type))
         return cls.metric_types[metric_type](
             category=category,
             name=name,
@@ -124,7 +137,7 @@ class Metric(base_object):
             **metric_info
         )
 
-    def serialize(self):
+    def serialize(self) -> Dict[str, util.JSONType]:
         """
         Serialize the metric back to JSON object model.
         """
@@ -139,7 +152,7 @@ class Metric(base_object):
         del d["category"]
         return d
 
-    def identifier(self):
+    def identifier(self) -> str:
         """
         Create an identifier unique for this metric.
         Generally, category.name; however, Glean internal
@@ -149,37 +162,37 @@ class Metric(base_object):
             return self.name
         return ".".join((self.category, self.name))
 
-    def is_disabled(self):
+    def is_disabled(self) -> bool:
         return self.disabled or self.is_expired()
 
-    def is_expired(self):
+    def is_expired(self) -> bool:
         return util.is_expired(self.expires)
 
     @staticmethod
-    def validate_expires(expires):
+    def validate_expires(expires) -> None:
         return util.validate_expires(expires)
 
-    def is_internal_metric(self):
+    def is_internal_metric(self) -> bool:
         return self.category in (Metric.glean_internal_metric_cat, "")
 
 
-class Boolean(Metric):
+class Boolean(Metric):  # type: ignore
     typename = "boolean"
 
 
-class String(Metric):
+class String(Metric):  # type: ignore
     typename = "string"
 
 
-class StringList(Metric):
+class StringList(Metric):  # type: ignore
     typename = "string_list"
 
 
-class Counter(Metric):
+class Counter(Metric):  # type: ignore
     typename = "counter"
 
 
-class Quantity(Metric):
+class Quantity(Metric):  # type: ignore
     typename = "quantity"
 
 
@@ -193,17 +206,17 @@ class TimeUnit(enum.Enum):
     day = 6
 
 
-class TimeBase(Metric):
+class TimeBase(Metric):  # type: ignore
     def __init__(self, *args, **kwargs):
         self.time_unit = getattr(TimeUnit, kwargs.pop("time_unit", "millisecond"))
         super().__init__(*args, **kwargs)
 
 
-class Timespan(TimeBase):
+class Timespan(TimeBase):  # type: ignore
     typename = "timespan"
 
 
-class TimingDistribution(TimeBase):
+class TimingDistribution(TimeBase):  # type: ignore
     typename = "timing_distribution"
 
 
@@ -214,7 +227,7 @@ class MemoryUnit(enum.Enum):
     gigabyte = 3
 
 
-class MemoryDistribution(Metric):
+class MemoryDistribution(Metric):  # type: ignore
     typename = "memory_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -227,7 +240,7 @@ class HistogramType(enum.Enum):
     exponential = 1
 
 
-class CustomDistribution(Metric):
+class CustomDistribution(Metric):  # type: ignore
     typename = "custom_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -240,11 +253,11 @@ class CustomDistribution(Metric):
         super().__init__(*args, **kwargs)
 
 
-class Datetime(TimeBase):
+class Datetime(TimeBase):  # type: ignore
     typename = "datetime"
 
 
-class Event(Metric):
+class Event(Metric):  # type: ignore
     typename = "event"
 
     default_store_names = ["events"]
@@ -262,7 +275,7 @@ class Event(Metric):
         return sorted(list(self.extra_keys.keys()))
 
     @staticmethod
-    def validate_extra_keys(extra_keys, config):
+    def validate_extra_keys(extra_keys: Dict[str, str], config: Dict[str, Any]) -> None:
         if not config.get("allow_reserved") and any(
             k.startswith("glean.") for k in extra_keys.keys()
         ):
@@ -272,11 +285,11 @@ class Event(Metric):
             )
 
 
-class Uuid(Metric):
+class Uuid(Metric):  # type: ignore
     typename = "uuid"
 
 
-class Labeled(Metric):
+class Labeled(Metric):  # type: ignore
     labeled = True
 
     def __init__(self, *args, **kwargs):
@@ -289,7 +302,7 @@ class Labeled(Metric):
             self.labels = None
         super().__init__(*args, **kwargs)
 
-    def serialize(self):
+    def serialize(self) -> Dict[str, util.JSONType]:
         """
         Serialize the metric back to JSON object model.
         """
@@ -299,13 +312,16 @@ class Labeled(Metric):
         return d
 
 
-class LabeledBoolean(Labeled, Boolean):
+class LabeledBoolean(Labeled, Boolean):  # type: ignore
     typename = "labeled_boolean"
 
 
-class LabeledString(Labeled, String):
+class LabeledString(Labeled, String):  # type: ignore
     typename = "labeled_string"
 
 
-class LabeledCounter(Labeled, Counter):
+class LabeledCounter(Labeled, Counter):  # type: ignore
     typename = "labeled_counter"
+
+
+ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping]]]

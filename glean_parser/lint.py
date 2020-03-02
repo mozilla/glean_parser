@@ -3,25 +3,32 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+from pathlib import Path
 import re
 import sys
+from typing import Any, Callable, Dict, Generator, List, Iterable, Tuple, Union  # noqa
 
 
+from . import metrics
 from . import parser
 from . import util
 
-from yamllint.config import YamlLintConfig
-from yamllint import linter
+
+from yamllint.config import YamlLintConfig  # type: ignore
+from yamllint import linter  # type: ignore
 
 
-def _split_words(name):
+LintGenerator = Generator[str, None, None]
+
+
+def _split_words(name: str) -> List[str]:
     """
     Helper function to split words on either `.` or `_`.
     """
     return re.split("[._]", name)
 
 
-def _hamming_distance(str1, str2):
+def _hamming_distance(str1: str, str2: str) -> int:
     """
     Count the # of differences between strings str1 and str2,
     padding the shorter one with whitespace
@@ -39,7 +46,9 @@ def _hamming_distance(str1, str2):
     return diffs
 
 
-def check_common_prefix(category_name, metrics):
+def check_common_prefix(
+    category_name: str, metrics: Iterable[metrics.Metric]
+) -> LintGenerator:
     """
     Check if all metrics begin with a common prefix.
     """
@@ -63,7 +72,9 @@ def check_common_prefix(category_name, metrics):
         ).format(category_name, common_prefix)
 
 
-def check_unit_in_name(metric, parser_config={}):
+def check_unit_in_name(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
     """
     The metric name ends in a unit.
     """
@@ -87,10 +98,14 @@ def check_unit_in_name(metric, parser_config={}):
     name_words = _split_words(metric.name)
     unit_in_name = name_words[-1]
 
-    if hasattr(metric, "time_unit"):
+    time_unit = getattr(metric, "time_unit", None)
+    memory_unit = getattr(metric, "memory_unit", None)
+    unit = getattr(metric, "unit", None)
+
+    if time_unit is not None:
         if (
-            unit_in_name == TIME_UNIT_ABBREV.get(metric.time_unit.name)
-            or unit_in_name == metric.time_unit.name
+            unit_in_name == TIME_UNIT_ABBREV.get(time_unit.name)
+            or unit_in_name == time_unit.name
         ):
             yield (
                 "Suffix '{}' is redundant with time_unit. " "Only include time_unit."
@@ -104,10 +119,10 @@ def check_unit_in_name(metric, parser_config={}):
                 "Confirm the unit is correct and only include time_unit."
             ).format(unit_in_name)
 
-    elif hasattr(metric, "memory_unit"):
+    elif memory_unit is not None:
         if (
-            unit_in_name == MEMORY_UNIT_ABBREV.get(metric.memory_unit.name)
-            or unit_in_name == metric.memory_unit.name
+            unit_in_name == MEMORY_UNIT_ABBREV.get(memory_unit.name)
+            or unit_in_name == memory_unit.name
         ):
             yield (
                 "Suffix '{}' is redundant with memory_unit. "
@@ -122,14 +137,16 @@ def check_unit_in_name(metric, parser_config={}):
                 "Confirm the unit is correct and only include memory_unit."
             ).format(unit_in_name)
 
-    elif hasattr(metric, "unit"):
-        if unit_in_name == metric.unit:
+    elif unit is not None:
+        if unit_in_name == unit:
             yield (
                 "Suffix '{}' is redundant with unit param. " "Only include unit."
             ).format(unit_in_name)
 
 
-def check_category_generic(category_name, metrics):
+def check_category_generic(
+    category_name: str, metrics: Iterable[metrics.Metric]
+) -> LintGenerator:
     """
     The category name is too generic.
     """
@@ -139,7 +156,9 @@ def check_category_generic(category_name, metrics):
         yield "Category '{}' is too generic.".format(category_name)
 
 
-def check_bug_number(metric, parser_config={}):
+def check_bug_number(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
     number_bugs = [str(bug) for bug in metric.bugs if isinstance(bug, int)]
 
     if len(number_bugs):
@@ -149,7 +168,9 @@ def check_bug_number(metric, parser_config={}):
         ).format(", ".join(number_bugs))
 
 
-def check_valid_in_baseline(metric, parser_config={}):
+def check_valid_in_baseline(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
     allow_reserved = parser_config.get("allow_reserved", False)
 
     if not allow_reserved and "baseline" in metric.send_in_pings:
@@ -159,7 +180,9 @@ def check_valid_in_baseline(metric, parser_config={}):
         )
 
 
-def check_misspelled_pings(metric, parser_config={}):
+def check_misspelled_pings(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
     builtin_pings = ["metrics", "events"]
 
     for ping in metric.send_in_pings:
@@ -174,7 +197,7 @@ def check_misspelled_pings(metric, parser_config={}):
 CATEGORY_CHECKS = {
     "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
-}
+}  # type: Dict[str, Callable[[str, Iterable[metrics.Metric]], LintGenerator]]
 
 
 INDIVIDUAL_CHECKS = {
@@ -182,10 +205,12 @@ INDIVIDUAL_CHECKS = {
     "BUG_NUMBER": check_bug_number,
     "BASELINE_PING": check_valid_in_baseline,
     "MISSPELLED_PING": check_misspelled_pings,
-}
+}  # type: Dict[str, Callable[[metrics.Metric, dict], LintGenerator]]
 
 
-def lint_metrics(objs, parser_config={}, file=sys.stderr):
+def lint_metrics(
+    objs: metrics.ObjectTree, parser_config: Dict[str, Any] = {}, file=sys.stderr
+) -> List[Tuple[str, str, str]]:
     """
     Performs glinter checks on a set of metrics objects.
 
@@ -193,20 +218,29 @@ def lint_metrics(objs, parser_config={}, file=sys.stderr):
     :param file: The stream to write errors to.
     :returns: List of nits.
     """
-    nits = []
-    for (category_name, metrics) in sorted(list(objs.items())):
+    nits = []  # type: List[Tuple[str, str, str]]
+    for (category_name, category) in sorted(list(objs.items())):
         if category_name == "pings":
             continue
 
-        for (check_name, check_func) in CATEGORY_CHECKS.items():
-            if any(check_name in metric.no_lint for metric in metrics.values()):
+        # Make sure the category has only Metrics, not Pings
+        category_metrics = dict(
+            (name, metric)
+            for (name, metric) in category.items()
+            if isinstance(metric, metrics.Metric)
+        )
+
+        for (cat_check_name, cat_check_func) in CATEGORY_CHECKS.items():
+            if any(
+                cat_check_name in metric.no_lint for metric in category_metrics.values()
+            ):
                 continue
             nits.extend(
-                (check_name, category_name, msg)
-                for msg in check_func(category_name, metrics.values())
+                (cat_check_name, category_name, msg)
+                for msg in cat_check_func(category_name, category_metrics.values())
             )
 
-        for (metric_name, metric) in sorted(list(metrics.items())):
+        for (metric_name, metric) in sorted(list(category_metrics.items())):
             for (check_name, check_func) in INDIVIDUAL_CHECKS.items():
                 new_nits = list(check_func(metric, parser_config))
                 if len(new_nits):
@@ -248,7 +282,7 @@ def lint_metrics(objs, parser_config={}, file=sys.stderr):
     return nits
 
 
-def lint_yaml_files(input_filepaths, file=sys.stderr):
+def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
     """
     Performs glinter YAML lint on a set of files.
 
@@ -257,7 +291,9 @@ def lint_yaml_files(input_filepaths, file=sys.stderr):
     :returns: List of nits.
     """
 
-    nits = []
+    # Generic type since the actual type comes from yamllint, which we don't
+    # control.
+    nits = []  # type: List
     for path in input_filepaths:
         # yamllint needs both the file content and the path.
         file_content = None
@@ -277,12 +313,14 @@ def lint_yaml_files(input_filepaths, file=sys.stderr):
     return nits
 
 
-def glinter(input_filepaths, parser_config={}, file=sys.stderr):
+def glinter(
+    input_filepaths: Iterable[Path], parser_config: Dict[str, Any] = {}, file=sys.stderr
+) -> int:
     """
     Commandline helper for glinter.
 
     :param input_filepaths: List of Path objects to load metrics from.
-    :param parser_config: Parser configuration objects, passed to
+    :param parser_config: Parser configuration object, passed to
       `parser.parse_objects`.
     :param file: The stream to write the errors to.
     :return: Non-zero if there were any glinter errors.

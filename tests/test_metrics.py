@@ -20,7 +20,7 @@ def test_metrics_match_schema():
 
     assert set(metrics.Metric.metric_types.keys()) == set(
         schema["definitions"]["metric"]["properties"]["type"]["enum"]
-    )
+    ) | set(["ERROR"])
 
 
 def test_enforcement():

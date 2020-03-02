@@ -13,11 +13,13 @@ import os
 import shutil
 import sys
 import tempfile
+from typing import Any, Callable, Dict, Iterable, List
 
 from . import lint
 from . import parser
 from . import kotlin
 from . import markdown
+from . import metrics
 from . import swift
 from . import util
 
@@ -27,22 +29,39 @@ from . import util
 #   does the actual translation.
 # - "clear_output_dir": a flag to clear the target directory before moving there
 #   the generated files.
+# - "extensions": A list of glob patterns to clear in the directory.
+
+
+class Outputter:
+    """
+    Class to define an output format.
+    """
+
+    def __init__(
+        self,
+        output_func: Callable[[metrics.ObjectTree, Path, Dict[str, Any]], None],
+        clear_output_dir: bool,
+        extensions: List[str] = [],
+    ):
+        self.output_func = output_func
+        self.clear_output_dir = clear_output_dir
+        self.extensions = extensions
+
+
 OUTPUTTERS = {
-    "kotlin": {
-        "output_func": kotlin.output_kotlin,
-        "clear_output_dir": True,
-        "extensions": ["*.kt"],
-    },
-    "markdown": {"output_func": markdown.output_markdown, "clear_output_dir": False},
-    "swift": {
-        "output_func": swift.output_swift,
-        "clear_output_dir": True,
-        "extensions": ["*.swift"],
-    },
+    "kotlin": Outputter(kotlin.output_kotlin, True, ["*.kt"]),
+    "markdown": Outputter(markdown.output_markdown, False),
+    "swift": Outputter(swift.output_swift, True, ["*.swift"]),
 }
 
 
-def translate(input_filepaths, output_format, output_dir, options={}, parser_config={}):
+def translate(
+    input_filepaths: Iterable[Path],
+    output_format: str,
+    output_dir: Path,
+    options: Dict[str, Any] = {},
+    parser_config: Dict[str, Any] = {},
+) -> int:
     """
     Translate the files in `input_filepaths` to the given `output_format` and
     put the results in `output_dir`.
@@ -77,15 +96,13 @@ def translate(input_filepaths, output_format, output_dir, options={}, parser_con
     # real directory, for transactional integrity.
     with tempfile.TemporaryDirectory() as tempdir:
         tempdir_path = Path(tempdir)
-        OUTPUTTERS[output_format]["output_func"](
-            all_objects.value, tempdir_path, options
-        )
+        OUTPUTTERS[output_format].output_func(all_objects.value, tempdir_path, options)
 
-        if OUTPUTTERS[output_format]["clear_output_dir"]:
+        if OUTPUTTERS[output_format].clear_output_dir:
             if output_dir.is_file():
                 output_dir.unlink()
             elif output_dir.is_dir():
-                for extensions in OUTPUTTERS[output_format]["extensions"]:
+                for extensions in OUTPUTTERS[output_format].extensions:
                     for filepath in output_dir.glob(extensions):
                         filepath.unlink()
                 if len(list(output_dir.iterdir())):
