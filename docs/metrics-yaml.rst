@@ -17,6 +17,8 @@ Within each category, the individual metrics are defined. The key is the name of
 the metric (``snake_case`` with a maximum of 30 characters), and each value is
 an object with the following parameters described below.
 
+``metrics.yaml`` files must be encoded in UTF-8.
+
 Metric parameters
 -----------------
 
