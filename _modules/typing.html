@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>typing &#8212; Glean Parser 1.18.4.dev11+g6c07ff7 documentation</title>
+    <title>typing &#8212; Glean Parser 1.18.4.dev14+gcf34c6c documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -167,14 +167,14 @@
         <span class="k">return</span> <span class="n">ForwardRef</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">_GenericAlias</span><span class="p">)</span> <span class="ow">and</span>
             <span class="n">arg</span><span class="o">.</span><span class="n">__origin__</span> <span class="ow">in</span> <span class="n">invalid_generic_forms</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{arg}</span><span class="s2"> is not valid as type argument&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2"> is not valid as type argument&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">_SpecialForm</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">NoReturn</span><span class="p">)</span> <span class="ow">or</span>
             <span class="n">arg</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Generic</span><span class="p">,</span> <span class="n">_Protocol</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plain </span><span class="si">{arg}</span><span class="s2"> is not valid as type argument&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Plain </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2"> is not valid as type argument&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">ForwardRef</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">arg</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{msg}</span><span class="s2"> Got </span><span class="si">{arg!r:.100}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> Got </span><span class="si">{</span><span class="n">arg</span><span class="si">!r:</span><span class="s2">.100</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">arg</span>
 
 
@@ -189,7 +189,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="s1">&#39;builtins&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__qualname__</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{obj.__module__}</span><span class="s1">.</span><span class="si">{obj.__qualname__}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="o">...</span><span class="p">:</span>
         <span class="k">return</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">):</span>
@@ -236,12 +236,12 @@
 <span class="sd">    This gives a nice error message in case of count mismatch.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__parameters__</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls}</span><span class="s2"> is not a generic class&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2"> is not a generic class&quot;</span><span class="p">)</span>
     <span class="n">alen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
     <span class="n">elen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__parameters__</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">alen</span> <span class="o">!=</span> <span class="n">elen</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Too {&#39;many&#39; if alen &gt; elen else &#39;few&#39;} parameters for </span><span class="si">{cls}</span><span class="s2">;&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot; actual </span><span class="si">{alen}</span><span class="s2">, expected </span><span class="si">{elen}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Too </span><span class="si">{</span><span class="s1">&#39;many&#39;</span> <span class="k">if</span> <span class="n">alen</span> <span class="o">&gt;</span> <span class="n">elen</span> <span class="k">else</span> <span class="s1">&#39;few&#39;</span><span class="si">}</span><span class="s2"> parameters for </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">;&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; actual </span><span class="si">{</span><span class="n">alen</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">elen</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_remove_dups_flatten</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
@@ -342,7 +342,7 @@
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span>
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="c1"># Close enough.</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot subclass </span><span class="si">{cls!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot subclass </span><span class="si">{</span><span class="bp">cls</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
@@ -364,13 +364,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot instantiate </span><span class="si">{self!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot instantiate </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__instancecheck__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self}</span><span class="s2"> cannot be used with isinstance()&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be used with isinstance()&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__subclasscheck__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self}</span><span class="s2"> cannot be used with issubclass()&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be used with issubclass()&quot;</span><span class="p">)</span>
 
     <span class="nd">@_tp_cache</span>
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -391,7 +391,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">==</span> <span class="s1">&#39;Optional&#39;</span><span class="p">:</span>
             <span class="n">arg</span> <span class="o">=</span> <span class="n">_type_check</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="s2">&quot;Optional[t] requires a single type.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Union</span><span class="p">[</span><span class="n">arg</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self}</span><span class="s2"> is not subscriptable&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not subscriptable&quot;</span><span class="p">)</span>
 
 
 <span class="n">Any</span> <span class="o">=</span> <span class="n">_SpecialForm</span><span class="p">(</span><span class="s1">&#39;Any&#39;</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span>
@@ -479,11 +479,11 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">is_argument</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward reference must be a string -- got </span><span class="si">{arg!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward reference must be a string -- got </span><span class="si">{</span><span class="n">arg</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s1">&#39;&lt;string&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;eval&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward reference must be an expression -- got </span><span class="si">{arg!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forward reference must be an expression -- got </span><span class="si">{</span><span class="n">arg</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="o">=</span> <span class="n">arg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__forward_code__</span> <span class="o">=</span> <span class="n">code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__forward_evaluated__</span> <span class="o">=</span> <span class="kc">False</span>
@@ -515,7 +515,7 @@
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__forward_value__</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ForwardRef(</span><span class="si">{self.__forward_arg__!r}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ForwardRef(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span><span class="si">!r}</span><span class="s1">)&#39;</span>
 
 
 <span class="k">class</span> <span class="nc">TypeVar</span><span class="p">(</span><span class="n">_Final</span><span class="p">,</span> <span class="n">_Immutable</span><span class="p">,</span> <span class="n">_root</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -657,7 +657,7 @@
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__origin__</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Generic</span><span class="p">,</span> <span class="n">_Protocol</span><span class="p">):</span>
             <span class="c1"># Can&#39;t subscript Generic[...] or _Protocol[...].</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot subscript already-subscripted </span><span class="si">{self}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot subscript already-subscripted </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">,)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Parameters to generic types must be types.&quot;</span>
@@ -677,15 +677,15 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="n">_type_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__origin__</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special</span><span class="p">:</span>
-                <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[{&quot;, &quot;.join([_type_repr(a) for a in self.__args__])}]&#39;</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_type_repr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__args__</span><span class="p">])</span><span class="si">}</span><span class="s1">]&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">args</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-            <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{name}{args}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">args</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;typing.Callable&#39;</span>
         <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;typing.Callable&#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;[[{&quot;, &quot;.join([_type_repr(a) for a in self.__args__[:-1]])}], &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;{_type_repr(self.__args__[-1])}]&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s1">&#39;[[</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">_type_repr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__args__</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span><span class="si">}</span><span class="s1">], &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_type_repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__args__</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">_GenericAlias</span><span class="p">):</span>
@@ -703,8 +703,8 @@
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inst</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{self._name}</span><span class="s2"> cannot be instantiated; &quot;</span>
-                            <span class="sa">f</span><span class="s2">&quot;use {self._name.lower()}() instead&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> cannot be instantiated; &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;use </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">() instead&quot;</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__origin__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">__orig_class__</span> <span class="o">=</span> <span class="bp">self</span>
@@ -788,7 +788,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Callable[args, result]: args must be a list.&quot;</span>
-                                <span class="sa">f</span><span class="s2">&quot; Got </span><span class="si">{args}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="sa">f</span><span class="s2">&quot; Got </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getitem_inner__</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
@@ -857,7 +857,7 @@
             <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">,)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span> <span class="ow">and</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Tuple</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Parameter list to </span><span class="si">{cls.__qualname__}</span><span class="s2">[...] cannot be empty&quot;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Parameter list to </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">[...] cannot be empty&quot;</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Parameters to generic types must be types.&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_type_check</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Generic</span><span class="p">:</span>
@@ -908,8 +908,8 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">tvarset</span> <span class="o">&lt;=</span> <span class="n">gvarset</span><span class="p">:</span>
                     <span class="n">s_vars</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tvars</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gvarset</span><span class="p">)</span>
                     <span class="n">s_args</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gvars</span><span class="p">)</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Some type variables (</span><span class="si">{s_vars}</span><span class="s2">) are&quot;</span>
-                                    <span class="sa">f</span><span class="s2">&quot; not listed in Generic[</span><span class="si">{s_args}</span><span class="s2">]&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Some type variables (</span><span class="si">{</span><span class="n">s_vars</span><span class="si">}</span><span class="s2">) are&quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot; not listed in Generic[</span><span class="si">{</span><span class="n">s_args</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
                 <span class="n">tvars</span> <span class="o">=</span> <span class="n">gvars</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">__parameters__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tvars</span><span class="p">)</span>
 
@@ -1456,7 +1456,7 @@
                 <span class="n">fields</span><span class="p">,</span> <span class="o">=</span> <span class="n">args</span> <span class="c1"># allow the &quot;fields&quot; keyword be passed</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NamedTuple.__new__() takes from 2 to 3 &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;positional arguments but {len(args) + 2} &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;positional arguments but </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="si">}</span><span class="s1"> &#39;</span>
                                 <span class="sa">f</span><span class="s1">&#39;were given&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
         <span class="k">elif</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">fields</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">)</span>
