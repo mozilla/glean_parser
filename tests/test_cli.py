@@ -7,6 +7,7 @@
 
 import os
 from pathlib import Path
+import re
 
 from click.testing import CliRunner
 
@@ -53,7 +54,7 @@ def test_translate(tmpdir):
     )
     for filename in os.listdir(str(tmpdir)):
         path = Path(str(tmpdir)) / filename
-        with path.open() as fd:
+        with path.open(encoding="utf-8") as fd:
             content = fd.read()
         assert "package Foo" in content
 
@@ -84,4 +85,4 @@ def test_translate_invalid_format(tmpdir):
         ["translate", str(ROOT / "data" / "core.yaml"), "-o", str(tmpdir), "-f", "foo"],
     )
     assert result.exit_code == 2
-    assert 'Invalid value for "--format"' in result.output
+    assert re.search("Invalid value for ['\"]--format['\"]", result.output)
