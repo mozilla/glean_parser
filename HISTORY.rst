@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.90.0 (2020-03-18)
+-------------------
+
+* **Breaking change:** The regular expression used to validate labels is
+  stricter and more correct.
 * Add more information about pings to markdown documentation:
   * State wether the ping includes client id;
   * Add list of data review links;
