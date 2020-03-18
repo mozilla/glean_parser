@@ -11,6 +11,7 @@ Unreleased
   * Add list of related bugs links.
 * `glean_parser` now makes it easier to write external translation functions for
   different language targets.
+* BUGFIX: glean_parser now works on 32-bit Windows.
 
 1.18.3 (2020-02-24)
 -------------------

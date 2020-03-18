@@ -123,10 +123,10 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
         return {}
 
     if path.suffix == ".json":
-        with path.open("r") as fd:
+        with path.open("r", encoding="utf-8") as fd:
             return json.load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
-        with path.open("r") as fd:
+        with path.open("r", encoding="utf-8") as fd:
             if ordered_dict:
                 return ordered_yaml_load(fd)
             else:

@@ -297,7 +297,7 @@ def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
     for path in input_filepaths:
         # yamllint needs both the file content and the path.
         file_content = None
-        with path.open("r") as fd:
+        with path.open("r", encoding="utf-8") as fd:
             file_content = fd.read()
 
         problems = linter.run(file_content, YamlLintConfig("extends: default"), path)
