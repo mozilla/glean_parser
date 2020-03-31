@@ -1,5 +1,5 @@
 ``pings.yaml`` file
-=====================
+===================
 
 The ``pings.yaml`` file defines what pings your application will collect.
 
@@ -13,7 +13,7 @@ Ping names must be in ``kebab-case``.
 Ping names have a maximum of 30 characters.
 
 Ping parameters
------------------
+---------------
 
 .. ping_parameter:: description
 
