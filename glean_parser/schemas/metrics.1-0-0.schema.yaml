@@ -87,24 +87,24 @@ definitions:
               metrics coming from GeckoView.
 
             - `timespan`: Represents a time interval. Additional properties:
-              `time_unit`_.
+              `time_unit`.
 
             - `timing_distribution`: Record the distribution of multiple
-              timings. Additional properties: `time_unit`_.
+              timings. Additional properties: `time_unit`.
 
             - `datetime`: A date/time value. Represented as an ISO datetime in
-              UTC. Additional properties: `time_unit`_.
+              UTC. Additional properties: `time_unit`.
 
             - `uuid`: Record a UUID v4.
 
             - `memory_distribution`: A histogram for recording memory usage
-              values. Additional properties: `memory_unit`_.
+              values. Additional properties: `memory_unit`.
 
             - `custom_distribution`: A histogram with a custom range and number
               of buckets. This metric type is for legacy support only and is
               only allowed for metrics coming from GeckoView. Additional
-              properties: `range_min`_, `range_max`_, `bucket_count`_,
-              `histogram_type`_.
+              properties: `range_min`, `range_max`, `bucket_count`,
+              `histogram_type`.
 
             - Additionally, labeled versions of many metric types are supported.
               These support the `labels`_ parameter, allowing multiple instances
@@ -299,9 +299,9 @@ definitions:
         description: |
           A list of labels for a labeled metric.  If provided, the labels are
           enforced at run time, and recording to an unknown label is recorded
-          to the special label ``__other__``.  If not provided, the labels
+          to the special label `__other__`.  If not provided, the labels
           may be anything, but using too many unique labels will put some
-          labels in the special label ``__other__``.
+          labels in the special label `__other__`.
 
           Valid with any of the labeled metric types.
         anyOf:

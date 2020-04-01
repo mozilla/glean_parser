@@ -340,6 +340,7 @@ def parse_objects(
         files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
+
         - `allow_reserved`: Allow values reserved for internal Glean use.
         - `do_not_disable_expired`: Don't mark expired metrics as disabled.
           This is useful when you want to retain the original "disabled"

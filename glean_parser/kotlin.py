@@ -109,7 +109,7 @@ def output_gecko_lookup(
     Glean SDK metric types.
 
     :param objects: A tree of objects (metrics and pings) as returned from
-    `parser.parse_objects`.
+        `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 
@@ -203,7 +203,7 @@ def output_kotlin(
     Given a tree of objects, output Kotlin code to `output_dir`.
 
     :param objects: A tree of objects (metrics and pings) as returned from
-    `parser.parse_objects`.
+        `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 

@@ -29,8 +29,10 @@ class Outputter:
     Class to define an output format.
 
     Each outputter in the table has the following member values:
+
     - output_func: the main function of the outputter, the one which
       does the actual translation.
+
     - clear_patterns: A list of glob patterns to clear in the directory before
       writing new results to it.
     """
@@ -67,10 +69,12 @@ def translate_metrics(
     :param output_dir: the path to the output directory
     :param translation_func: the function that actually performs the translation.
         It is passed the following arguments:
+
             - metrics_objects: The tree of metrics as pings as returned by
               `parser.parse_objects`.
             - output_dir: The path to the output directory.
             - options: A dictionary of output format-specific options.
+
         Examples of translation functions are in `kotlin.py` and `swift.py`.
     :param clear_patterns: a list of glob patterns of files to clear before
         generating the output files. By default, no files will be cleared (i.e.

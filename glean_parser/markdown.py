@@ -141,7 +141,7 @@ def output_markdown(
     contents and a section for each ping metrics are collected for.
 
     :param objects: A tree of objects (metrics and pings) as returned from
-    `parser.parse_objects`.
+        `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional key:
         - `project_title`: The projects title.
