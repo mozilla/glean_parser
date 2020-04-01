@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.18.4.dev15+g23bdf57 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.19.1.dev2+g2c095b3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -73,22 +73,24 @@ Glean SDK metric types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
-</tr>
-</tbody>
-</table>
-<p><cite>parser.parse_objects</cite>.
-:param output_dir: Path to an output directory to write to.
-:param options: options dictionary, with the following optional keys:</p>
-<blockquote>
-<div><ul class="simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</li>
+<li><strong>output_dir</strong> – Path to an output directory to write to.</li>
+<li><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
+<ul>
 <li><cite>namespace</cite>: The package namespace to declare at the top of the
 generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 <li><cite>glean_namespace</cite>: The package namespace of the glean library itself.
 This is where glean objects will be imported from in the generated
 code.</li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -99,22 +101,24 @@ code.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
-</tr>
-</tbody>
-</table>
-<p><cite>parser.parse_objects</cite>.
-:param output_dir: Path to an output directory to write to.
-:param options: options dictionary, with the following optional keys:</p>
-<blockquote>
-<div><ul class="simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</li>
+<li><strong>output_dir</strong> – Path to an output directory to write to.</li>
+<li><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
+<ul>
 <li><cite>namespace</cite>: The package namespace to declare at the top of the
 generated files. Defaults to <cite>GleanMetrics</cite>.</li>
 <li><cite>glean_namespace</cite>: The package namespace of the glean library itself.
 This is where glean objects will be imported from in the generated
 code.</li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -257,18 +261,17 @@ contents and a section for each ping metrics are collected for.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>objects</strong> – A tree of objects (metrics and pings) as returned from</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</li>
+<li><strong>output_dir</strong> – Path to an output directory to write to.</li>
+<li><strong>options</strong> – options dictionary, with the following optional key:
+- <cite>project_title</cite>: The projects title.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-<p><cite>parser.parse_objects</cite>.
-:param output_dir: Path to an output directory to write to.
-:param options: options dictionary, with the following optional key:</p>
-<blockquote>
-<div><ul class="simple">
-<li><cite>project_title</cite>: The projects title.</li>
-</ul>
-</div></blockquote>
 </dd></dl>
 
 <dl class="function">
@@ -749,13 +752,14 @@ of the <cite>pings.Ping</cite> instances.</p>
 <li><strong>filepaths</strong> – list of Path objects to metrics.yaml and/or pings.yaml
 files</li>
 <li><strong>config</strong> – <p>A dictionary of options that change parsing behavior.
-Supported keys are:
-- <cite>allow_reserved</cite>: Allow values reserved for internal Glean use.
-- <cite>do_not_disable_expired</cite>: Don’t mark expired metrics as disabled.</p>
-<blockquote>
-<div>This is useful when you want to retain the original “disabled”
+Supported keys are:</p>
+<ul>
+<li><cite>allow_reserved</cite>: Allow values reserved for internal Glean use.</li>
+<li><cite>do_not_disable_expired</cite>: Don’t mark expired metrics as disabled.
+This is useful when you want to retain the original “disabled”
 value from the <cite>metrics.yaml</cite>, rather than having it overridden when
-the metric expires.</div></blockquote>
+the metric expires.</li>
+</ul>
 </li>
 </ul>
 </td>
@@ -865,11 +869,10 @@ the metric expires.</div></blockquote>
 <em class="property">class </em><code class="descclassname">glean_parser.translate.</code><code class="descname">Outputter</code><span class="sig-paren">(</span><em>output_func: Callable[[Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], pathlib.Path, Dict[str, Any]], None], clear_patterns: List[str] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/translate.html#Outputter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.translate.Outputter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to define an output format.</p>
-<p>Each outputter in the table has the following member values:
-- output_func: the main function of the outputter, the one which</p>
-<blockquote>
-<div>does the actual translation.</div></blockquote>
+<p>Each outputter in the table has the following member values:</p>
 <ul class="simple">
+<li>output_func: the main function of the outputter, the one which
+does the actual translation.</li>
 <li>clear_patterns: A list of glob patterns to clear in the directory before
 writing new results to it.</li>
 </ul>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.18.4.dev15+g23bdf57 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.19.1.dev2+g2c095b3 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -64,8 +64,10 @@
 <span class="sd">    Class to define an output format.</span>
 
 <span class="sd">    Each outputter in the table has the following member values:</span>
+
 <span class="sd">    - output_func: the main function of the outputter, the one which</span>
 <span class="sd">      does the actual translation.</span>
+
 <span class="sd">    - clear_patterns: A list of glob patterns to clear in the directory before</span>
 <span class="sd">      writing new results to it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -102,10 +104,12 @@
 <span class="sd">    :param output_dir: the path to the output directory</span>
 <span class="sd">    :param translation_func: the function that actually performs the translation.</span>
 <span class="sd">        It is passed the following arguments:</span>
+
 <span class="sd">            - metrics_objects: The tree of metrics as pings as returned by</span>
 <span class="sd">              `parser.parse_objects`.</span>
 <span class="sd">            - output_dir: The path to the output directory.</span>
 <span class="sd">            - options: A dictionary of output format-specific options.</span>
+
 <span class="sd">        Examples of translation functions are in `kotlin.py` and `swift.py`.</span>
 <span class="sd">    :param clear_patterns: a list of glob patterns of files to clear before</span>
 <span class="sd">        generating the output files. By default, no files will be cleared (i.e.</span>
