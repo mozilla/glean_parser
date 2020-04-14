@@ -11,7 +11,6 @@ High-level interface for translating `metrics.yaml` into other formats.
 from pathlib import Path
 import os
 import shutil
-import sys
 import tempfile
 from typing import Any, Callable, Dict, Iterable, List
 
@@ -84,16 +83,15 @@ def translate_metrics(
     :param parser_config: A dictionary of options that change parsing behavior.
         See `parser.parse_metrics` for more info.
     """
+    input_filepaths = util.ensure_list(input_filepaths)
+
+    if lint.glinter(input_filepaths, parser_config):
+        return 1
+
     all_objects = parser.parse_objects(input_filepaths, parser_config)
 
     if util.report_validation_errors(all_objects):
         return 1
-
-    if lint.lint_metrics(all_objects.value, parser_config):
-        print(
-            "NOTE: These warnings will become errors in a future release of Glean.",
-            file=sys.stderr,
-        )
 
     # allow_reserved is also relevant to the translators, so copy it there
     if parser_config.get("allow_reserved"):

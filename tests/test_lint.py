@@ -3,7 +3,11 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import io
 from pathlib import Path
+
+
+import yaml
 
 
 from glean_parser import lint
@@ -42,7 +46,7 @@ def test_common_prefix():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 1
-    assert nits[0][0] == "COMMON_PREFIX"
+    assert nits[0].check_name == "COMMON_PREFIX"
 
     # Now make sure the override works
     contents[0]["no_lint"] = ["COMMON_PREFIX"]
@@ -81,7 +85,7 @@ def test_unit_in_name():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 3
-    assert all(nit[0] == "UNIT_IN_NAME" for nit in nits)
+    assert all(nit.check_name == "UNIT_IN_NAME" for nit in nits)
 
     # Now make sure the override works
     contents[0]["telemetry"]["network_latency_ms"]["no_lint"] = ["UNIT_IN_NAME"]
@@ -105,7 +109,7 @@ def test_category_generic():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 1
-    assert nits[0][0] == "CATEGORY_GENERIC"
+    assert nits[0].check_name == "CATEGORY_GENERIC"
 
     contents[0]["no_lint"] = ["CATEGORY_GENERIC"]
     all_metrics = parser.parse_objects(contents)
@@ -147,7 +151,7 @@ def test_combined():
 
     assert len(nits) == 5
     assert set(["COMMON_PREFIX", "CATEGORY_GENERIC", "UNIT_IN_NAME"]) == set(
-        v[0] for v in nits
+        v.check_name for v in nits
     )
 
 
@@ -172,8 +176,8 @@ def test_superfluous():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 1
-    assert all(nit[0] == "SUPERFLUOUS_NO_LINT" for nit in nits)
-    assert all("UNIT_IN_NAME" in nit[2] for nit in nits)
+    assert all(nit.check_name == "SUPERFLUOUS_NO_LINT" for nit in nits)
+    assert all("UNIT_IN_NAME" in nit.msg for nit in nits)
 
 
 def test_baseline_restriction():
@@ -195,7 +199,7 @@ def test_baseline_restriction():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 2
-    assert set(["BASELINE_PING"]) == set(v[0] for v in nits)
+    assert set(["BASELINE_PING"]) == set(v.check_name for v in nits)
 
 
 def test_misspelling_pings():
@@ -217,7 +221,7 @@ def test_misspelling_pings():
     nits = lint.lint_metrics(all_metrics.value)
 
     assert len(nits) == 2
-    assert set(["MISSPELLED_PING"]) == set(v[0] for v in nits)
+    assert set(["MISSPELLED_PING"]) == set(v.check_name for v in nits)
 
 
 def test_yaml_lint():
@@ -246,6 +250,7 @@ def test_user_lifetime_expiration():
             }
         }
     ]
+
     contents = [util.add_required(x) for x in contents]
     all_metrics = parser.parse_objects(contents)
 
@@ -253,7 +258,33 @@ def test_user_lifetime_expiration():
     assert len(errs) == 0
 
     nits = lint.lint_metrics(all_metrics.value)
-    print(all_metrics)
 
     assert len(nits) == 1
-    assert set(["USER_LIFETIME_EXPIRATION"]) == set(v[0] for v in nits)
+    assert set(["USER_LIFETIME_EXPIRATION"]) == set(v.check_name for v in nits)
+
+
+def test_warnings():
+    # SUPERFLUOUS_NO_LINT is a warning, so it shouldn't return an error code
+    contents = [
+        {
+            "user_data": {
+                "counter": {
+                    "type": "counter",
+                    "send_in_pings": ["metrics"],
+                    "no_lint": ["UNIT_IN_NAME"],
+                },
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert not any(x.is_error for x in nits)
+    assert len(nits) == 1
+    assert nits[0].check_name == "SUPERFLUOUS_NO_LINT"
