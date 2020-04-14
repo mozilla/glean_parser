@@ -3,11 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
-import io
 from pathlib import Path
-
-
-import yaml
 
 
 from glean_parser import lint
