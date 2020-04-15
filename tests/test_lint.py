@@ -281,6 +281,6 @@ def test_warnings():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert not any(x.is_error for x in nits)
+    assert not any(x.check_type == lint.CheckType.error for x in nits)
     assert len(nits) == 1
     assert nits[0].check_name == "SUPERFLUOUS_NO_LINT"

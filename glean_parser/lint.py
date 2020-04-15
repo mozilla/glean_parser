@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 
+import enum
 from pathlib import Path
 import re
 import sys
@@ -19,6 +20,11 @@ from yamllint import linter  # type: ignore
 
 
 LintGenerator = Generator[str, None, None]
+
+
+class CheckType(enum.Enum):
+    warning = 0
+    error = 1
 
 
 def _split_words(name: str) -> List[str]:
@@ -208,35 +214,33 @@ def check_user_lifetime_expiration(
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
 CATEGORY_CHECKS = {
-    "COMMON_PREFIX": (check_common_prefix, True),
-    "CATEGORY_GENERIC": (check_category_generic, True),
-}  # noqa type: Dict[str, Tuple[Callable[[str, Iterable[metrics.Metric]], LintGenerator], bool]]
+    "COMMON_PREFIX": (check_common_prefix, CheckType.error),
+    "CATEGORY_GENERIC": (check_category_generic, CheckType.error),
+}  # noqa type: Dict[str, Tuple[Callable[[str, Iterable[metrics.Metric]], LintGenerator], CheckType]]
 
 
 # The checks that operate on individual metrics:
 #     {NAME: (function, is_error)}
 INDIVIDUAL_CHECKS = {
-    "UNIT_IN_NAME": (check_unit_in_name, True),
-    "BUG_NUMBER": (check_bug_number, True),
-    "BASELINE_PING": (check_valid_in_baseline, True),
-    "MISSPELLED_PING": (check_misspelled_pings, True),
-    "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, False),
-}  # type: Dict[str, Tuple[Callable[[metrics.Metric, dict], LintGenerator], bool]]
+    "UNIT_IN_NAME": (check_unit_in_name, CheckType.error),
+    "BUG_NUMBER": (check_bug_number, CheckType.error),
+    "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
+    "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
+    "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
+}  # type: Dict[str, Tuple[Callable[[metrics.Metric, dict], LintGenerator], CheckType]]
 
 
 class GlinterNit:
-    def __init__(self, check_name: str, name: str, msg: str, is_error: bool):
+    def __init__(self, check_name: str, name: str, msg: str, check_type: CheckType):
         self.check_name = check_name
         self.name = name
         self.msg = msg
-        self.is_error = is_error
+        self.check_type = check_type
 
     def format(self):
-        if self.is_error:
-            nit_type = "ERROR"
-        else:
-            nit_type = "WARNING"
-        return "{}: {}: {}: {}".format(nit_type, self.check_name, self.name, self.msg)
+        return "{}: {}: {}: {}".format(
+            self.check_type.name.upper(), self.check_name, self.name, self.msg
+        )
 
 
 def lint_metrics(
@@ -261,18 +265,18 @@ def lint_metrics(
             if isinstance(metric, metrics.Metric)
         )
 
-        for (cat_check_name, (cat_check_func, is_error)) in CATEGORY_CHECKS.items():
+        for (cat_check_name, (cat_check_func, check_type)) in CATEGORY_CHECKS.items():
             if any(
                 cat_check_name in metric.no_lint for metric in category_metrics.values()
             ):
                 continue
             nits.extend(
-                GlinterNit(cat_check_name, category_name, msg, is_error)
+                GlinterNit(cat_check_name, category_name, msg, check_type)
                 for msg in cat_check_func(category_name, category_metrics.values())
             )
 
         for (metric_name, metric) in sorted(list(category_metrics.items())):
-            for (check_name, (check_func, is_error)) in INDIVIDUAL_CHECKS.items():
+            for (check_name, (check_func, check_type)) in INDIVIDUAL_CHECKS.items():
                 new_nits = list(check_func(metric, parser_config))
                 if len(new_nits):
                     if check_name not in metric.no_lint:
@@ -281,7 +285,7 @@ def lint_metrics(
                                 check_name,
                                 ".".join([metric.category, metric.name]),
                                 msg,
-                                is_error,
+                                check_type,
                             )
                             for msg in new_nits
                         )
@@ -298,7 +302,7 @@ def lint_metrics(
                                     "Superfluous no_lint entry '{}'. "
                                     "Please remove it."
                                 ).format(check_name),
-                                False,
+                                CheckType.warning,
                             )
                         )
 
@@ -371,7 +375,7 @@ def glinter(
         return 1
 
     nits = lint_metrics(objs.value, parser_config=parser_config, file=file)
-    if any(nit.is_error for nit in nits):
+    if any(nit.check_type == CheckType.error for nit in nits):
         return 1
     if len(nits) == 0:
         print("✨ Your metrics are Glean! ✨", file=file)
