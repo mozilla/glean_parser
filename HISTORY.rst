@@ -5,7 +5,8 @@ History
 Unreleased
 ----------
 
-* `glean_parser` now produces a linter error when `user` lifetime metrics are
+* **Breaking change:** glinter errors found during the `translate` command will now return an error code. glinter warnings will be displayed, but not return an error code.
+* `glean_parser` now produces a linter warning when `user` lifetime metrics are
   set to expire. See [bug 1604854](https://bugzilla.mozilla.org/show_bug.cgi?id=1604854)
   for additional context.
 
