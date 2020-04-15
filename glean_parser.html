@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.19.1.dev3+g23dbc2a documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.19.1.dev7+gc64931f documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -130,6 +130,34 @@ code.</li>
 </div>
 <div class="section" id="module-glean_parser.lint">
 <span id="glean-parser-lint-module"></span><h2>glean_parser.lint module<a class="headerlink" href="#module-glean_parser.lint" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="glean_parser.lint.CheckType">
+<em class="property">class </em><code class="descclassname">glean_parser.lint.</code><code class="descname">CheckType</code><a class="reference internal" href="_modules/glean_parser/lint.html#CheckType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.CheckType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="glean_parser.lint.CheckType.error">
+<code class="descname">error</code><em class="property"> = 1</em><a class="headerlink" href="#glean_parser.lint.CheckType.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.lint.CheckType.warning">
+<code class="descname">warning</code><em class="property"> = 0</em><a class="headerlink" href="#glean_parser.lint.CheckType.warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.lint.GlinterNit">
+<em class="property">class </em><code class="descclassname">glean_parser.lint.</code><code class="descname">GlinterNit</code><span class="sig-paren">(</span><em>check_name: str</em>, <em>name: str</em>, <em>msg: str</em>, <em>check_type: glean_parser.lint.CheckType</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/lint.html#GlinterNit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.GlinterNit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="glean_parser.lint.GlinterNit.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/lint.html#GlinterNit.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.GlinterNit.format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="glean_parser.lint.check_bug_number">
 <code class="descclassname">glean_parser.lint.</code><code class="descname">check_bug_number</code><span class="sig-paren">(</span><em>metric: glean_parser.metrics.Metric</em>, <em>parser_config: Dict[str</em>, <em>Any] = {}</em><span class="sig-paren">)</span> &#x2192; Generator[str, None, None]<a class="reference internal" href="_modules/glean_parser/lint.html#check_bug_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.check_bug_number" title="Permalink to this definition">¶</a></dt>
@@ -193,7 +221,7 @@ code.</li>
 
 <dl class="function">
 <dt id="glean_parser.lint.lint_metrics">
-<code class="descclassname">glean_parser.lint.</code><code class="descname">lint_metrics</code><span class="sig-paren">(</span><em>objs: Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], parser_config: Dict[str, Any] = {}, file=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em><span class="sig-paren">)</span> &#x2192; List[Tuple[str, str, str]]<a class="reference internal" href="_modules/glean_parser/lint.html#lint_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.lint_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">glean_parser.lint.</code><code class="descname">lint_metrics</code><span class="sig-paren">(</span><em>objs: Dict[str, Dict[str, Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]]], parser_config: Dict[str, Any] = {}, file=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em><span class="sig-paren">)</span> &#x2192; List[glean_parser.lint.GlinterNit]<a class="reference internal" href="_modules/glean_parser/lint.html#lint_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.lint_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs glinter checks on a set of metrics objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
