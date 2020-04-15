@@ -5,18 +5,21 @@ History
 Unreleased
 ----------
 
+1.20.0 (2020-04-15)
+-------------------
+
 * **Breaking change:** glinter errors found during the `translate` command will now return an error code. glinter warnings will be displayed, but not return an error code.
 * `glean_parser` now produces a linter warning when `user` lifetime metrics are
   set to expire. See [bug 1604854](https://bugzilla.mozilla.org/show_bug.cgi?id=1604854)
   for additional context.
 
-1.90.0 (2020-03-18)
+1.19.0 (2020-03-18)
 -------------------
 
 * **Breaking change:** The regular expression used to validate labels is
   stricter and more correct.
 * Add more information about pings to markdown documentation:
-  * State wether the ping includes client id;
+  * State whether the ping includes client id;
   * Add list of data review links;
   * Add list of related bugs links.
 * `glean_parser` now makes it easier to write external translation functions for
