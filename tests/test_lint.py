@@ -229,3 +229,31 @@ def test_yaml_lint():
     assert len(nits) == 3
     # The second rule is empty because it's a syntax error.
     assert set(["indentation", None, "trailing-spaces"]) == set(v.rule for v in nits)
+
+
+def test_user_lifetime_expiration():
+    """Test that expiring 'user' lifetime metrics generate a warning."""
+    contents = [
+        {
+            "user_data": {
+                "counter": {
+                    "type": "counter",
+                    "lifetime": "user",
+                    "expires": "2100-01-01",
+                },
+                "string": {"type": "string", "lifetime": "user", "expires": "never"},
+                "other": {"type": "string", "lifetime": "application"},
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+    print(all_metrics)
+
+    assert len(nits) == 1
+    assert set(["USER_LIFETIME_EXPIRATION"]) == set(v[0] for v in nits)

@@ -194,6 +194,17 @@ def check_misspelled_pings(
                 )
 
 
+def check_user_lifetime_expiration(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
+
+    if metric.lifetime == metrics.Lifetime.user and metric.expires != "never":
+        yield (
+            "Metrics with `user` lifetime cannot have an expiration date. "
+            "They live as long as the user profile does."
+        )
+
+
 CATEGORY_CHECKS = {
     "COMMON_PREFIX": check_common_prefix,
     "CATEGORY_GENERIC": check_category_generic,
@@ -205,6 +216,7 @@ INDIVIDUAL_CHECKS = {
     "BUG_NUMBER": check_bug_number,
     "BASELINE_PING": check_valid_in_baseline,
     "MISSPELLED_PING": check_misspelled_pings,
+    "USER_LIFETIME_EXPIRATION": check_user_lifetime_expiration,
 }  # type: Dict[str, Callable[[metrics.Metric, dict], LintGenerator]]
 
 

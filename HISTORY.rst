@@ -5,6 +5,10 @@ History
 Unreleased
 ----------
 
+* `glean_parser` now produces a linter error when `user` lifetime metrics are
+  set to expire. See [bug 1604854](https://bugzilla.mozilla.org/show_bug.cgi?id=1604854)
+  for additional context.
+
 1.90.0 (2020-03-18)
 -------------------
 
