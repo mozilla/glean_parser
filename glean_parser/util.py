@@ -253,6 +253,10 @@ def fetch_remote_url(url: str, cache: bool = True):
     Fetches the contents from an HTTP url or local file path, and optionally
     caches it to disk.
     """
+    # Include the Python version in the cache key, since caches aren't
+    # sharable across Python versions.
+    key = (url, str(sys.version_info))
+
     is_http = url.startswith("http")
 
     if not is_http:
@@ -263,8 +267,8 @@ def fetch_remote_url(url: str, cache: bool = True):
     if cache:
         cache_dir = appdirs.user_cache_dir("glean_parser", "mozilla")
         with diskcache.Cache(cache_dir) as dc:
-            if url in dc:
-                return dc[url]
+            if key in dc:
+                return dc[key]
 
     contents = urllib.request.urlopen(url).read()  # type: ignore
 
@@ -276,7 +280,7 @@ def fetch_remote_url(url: str, cache: bool = True):
 
     if cache:
         with diskcache.Cache(cache_dir) as dc:
-            dc[url] = contents
+            dc[key] = contents
 
     return contents
 
