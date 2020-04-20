@@ -20,7 +20,7 @@ commands:
                         # otherwise its dependencies might install newer versions of
                         # glean_parser's dependencies.
                         python3 -m venv .rb
-                        .rb/bin/pip install --progress-bar off requirements-builder
+                        .rb/bin/pip install requirements-builder
                         .rb/bin/requirements-builder --level=min setup.py > min_requirements.txt
 
                         pip install --progress-bar off --user -U -r min_requirements.txt
