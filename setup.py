@@ -28,6 +28,7 @@ requirements = [
     "Click>=7",
     "diskcache>=4",
     "iso8601>=0.1.10",
+    # Jinja2 3.0.0 will drop Python 3.5 support.
     "Jinja2>=2.10.1,<3.0",
     "jsonschema>=3.0.2",
     # 'markupsafe' is required by Jinja2. From version 2.0.0 on
