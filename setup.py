@@ -24,16 +24,17 @@ with open("HISTORY.rst", encoding="utf-8") as history_file:
     history = history_file.read()
 
 requirements = [
-    "appdirs>=1.4.3",
-    "Click>=7.0",
-    "diskcache>=4.0.0",
-    "iso8601>=0.1.12",
+    "appdirs>=1.4",
+    "Click>=7",
+    "diskcache>=4",
+    "iso8601>=0.1.10",
+    # Jinja2 3.0.0 will drop Python 3.5 support.
     "Jinja2>=2.10.1,<3.0",
     "jsonschema>=3.0.2",
     # 'markupsafe' is required by Jinja2. From version 2.0.0 on
     # py3.5 support is dropped.
     "markupsafe>=1.1,<2.0.0",
-    "pep487==1.0.1",
+    "pep487>=1.0.1",
     "PyYAML>=3.13",
     "yamllint>=1.18.0",
     # 'zipp' is required by jsonschema->importlib_metadata,

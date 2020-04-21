@@ -1,17 +1,36 @@
 version: 2.1
 
 commands:
-    test-python-version:
-        parameters:
-            requirements-file:
-                type: string
-                default: "requirements_dev.txt"
+    test-start:
         steps:
             - checkout
             - run:
                     name: environment
                     command: |
                         echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+
+    test-min-requirements:
+        steps:
+            - run:
+                    name: install minimum requirements
+                    command: |
+                        # Use requirements-builder to determine the minimum versions of
+                        # all requirements and test those
+                        # We install requirements-builder itself into its own venv, since
+                        # otherwise its dependencies might install newer versions of
+                        # glean_parser's dependencies.
+                        python3 -m venv .rb
+                        .rb/bin/pip install requirements-builder
+                        .rb/bin/requirements-builder --level=min setup.py > min_requirements.txt
+
+                        pip install --progress-bar off --user -U -r min_requirements.txt
+
+    test-python-version:
+        parameters:
+            requirements-file:
+                type: string
+                default: "requirements_dev.txt"
+        steps:
             - run:
                     name: install
                     command: |
@@ -41,6 +60,16 @@ jobs:
         docker:
             - image: circleci/python:3.5.9
         steps:
+            - test-start
+            - test-python-version:
+                    requirements-file: requirements_dev_py35.txt
+
+    build-35-min:
+        docker:
+            - image: circleci/python:3.5.9
+        steps:
+            - test-start
+            - test-min-requirements
             - test-python-version:
                     requirements-file: requirements_dev_py35.txt
 
@@ -48,12 +77,14 @@ jobs:
         docker:
             - image: circleci/python:3.6.9
         steps:
+            - test-start
             - test-python-version
 
     build-37:
         docker:
             - image: circleci/python:3.7.5
         steps:
+            - test-start
             - test-python-version
             - run:
                     name: make-docs
@@ -68,6 +99,15 @@ jobs:
         docker:
             - image: circleci/python:3.8.0
         steps:
+            - test-start
+            - test-python-version
+
+    build-38-min:
+        docker:
+            - image: circleci/python:3.8.0
+        steps:
+            - test-start
+            - test-min-requirements
             - test-python-version
 
     docs-deploy:
@@ -119,6 +159,10 @@ workflows:
                     filters:
                         tags:
                             only: /.*/
+            - build-35-min:
+                    filters:
+                        tags:
+                            only: /.*/
             - build-36:
                     filters:
                         tags:
@@ -128,6 +172,10 @@ workflows:
                         tags:
                             only: /.*/
             - build-38:
+                    filters:
+                        tags:
+                            only: /.*/
+            - build-38-min:
                     filters:
                         tags:
                             only: /.*/
