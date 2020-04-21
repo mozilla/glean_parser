@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.util &#8212; Glean Parser 1.19.1.dev8+gfd3418b documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.20.1.dev6+ge7c9a97 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -288,6 +288,10 @@
 <span class="sd">    Fetches the contents from an HTTP url or local file path, and optionally</span>
 <span class="sd">    caches it to disk.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Include the Python version in the cache key, since caches aren&#39;t</span>
+    <span class="c1"># sharable across Python versions.</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">))</span>
+
     <span class="n">is_http</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_http</span><span class="p">:</span>
@@ -298,8 +302,8 @@
     <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
         <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">(</span><span class="s2">&quot;glean_parser&quot;</span><span class="p">,</span> <span class="s2">&quot;mozilla&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">diskcache</span><span class="o">.</span><span class="n">Cache</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">dc</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">dc</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">dc</span><span class="p">[</span><span class="n">url</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dc</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="n">contents</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
 
@@ -311,7 +315,7 @@
 
     <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">diskcache</span><span class="o">.</span><span class="n">Cache</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">dc</span><span class="p">:</span>
-            <span class="n">dc</span><span class="p">[</span><span class="n">url</span><span class="p">]</span> <span class="o">=</span> <span class="n">contents</span>
+            <span class="n">dc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">contents</span>
 
     <span class="k">return</span> <span class="n">contents</span></div>
 
