@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Dependencies that depend on the version of Python being used are now specified using the `Declaring platform specific dependencies syntax in setuptools <https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies>`__. This means that more recent versions of dependencies are likely to be installed on Python 3.6 and later, and unnecessary backport libraries won't be installed on more recent Python versions.
+
 1.12.1 (2020-04-21)
 -------------------
 
