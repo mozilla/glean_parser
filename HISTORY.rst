@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.12.1 (2020-04-21)
+-------------------
+
 * The minimum version of the runtime dependencies has been lowered to increase compatibility with other tools.  These minimum versions are now tested in CI, in addition to testing the latest versions of the dependencies that was already happening in CI.
 
 1.20.0 (2020-04-15)
