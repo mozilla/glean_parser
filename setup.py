@@ -27,19 +27,20 @@ requirements = [
     "appdirs>=1.4",
     "Click>=7",
     "diskcache>=4",
-    "iso8601>=0.1.10",
+    "iso8601>=0.1.10; python_version<='3.6'",
     # Jinja2 3.0.0 will drop Python 3.5 support.
-    "Jinja2>=2.10.1,<3.0",
+    "Jinja2>=2.10.1,<3.0; python_version=='3.5'",
+    "Jinja2>=2.10.1; python_version>'3.5'",
     "jsonschema>=3.0.2",
     # 'markupsafe' is required by Jinja2. From version 2.0.0 on
     # py3.5 support is dropped.
-    "markupsafe>=1.1,<2.0.0",
-    "pep487>=1.0.1",
+    "markupsafe>=1.1,<2.0.0; python_version=='3.5'",
+    "pep487>=1.0.1; python_version=='3.5'",
     "PyYAML>=3.13",
     "yamllint>=1.18.0",
     # 'zipp' is required by jsonschema->importlib_metadata,
     # it drops py3.5 in newer versions.
-    "zipp>=0.5,<2.0",
+    "zipp>=0.5,<2.0; python_version=='3.5'",
 ]
 
 setup_requirements = ["pytest-runner", "setuptools-scm"]
