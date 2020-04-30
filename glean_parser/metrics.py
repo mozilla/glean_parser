@@ -219,6 +219,10 @@ class Timespan(TimeBase):  # type: ignore
 class TimingDistribution(TimeBase):  # type: ignore
     typename = "timing_distribution"
 
+    def __init__(self, *args, **kwargs):
+        self.time_unit = getattr(TimeUnit, kwargs.pop("time_unit", "nanosecond"))
+        Metric.__init__(self, *args, **kwargs)
+
 
 class MemoryUnit(enum.Enum):
     byte = 0

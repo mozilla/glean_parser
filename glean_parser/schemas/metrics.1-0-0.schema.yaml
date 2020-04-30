@@ -256,12 +256,21 @@ definitions:
       time_unit:
         title: Time unit
         description: |
-          Specifies the unit that the metric will be stored and displayed in. If
-          not provided, it defaults to milliseconds. Time values are sent to the
-          backend as integers, so `time_unit`_ determines the maximum resolution
-          at which timespans are recorded. Times are always truncated, not
-          rounded, to the nearest time unit. For example, a measurement of 25 ns
-          will be returned as 0 ms if `time_unit` is `"millisecond"`.
+          For timespans and datetimes, specifies the unit that the metric will
+          be stored and displayed in. If not provided, it defaults to
+          "millisecond". Time values are sent to the backend as integers, so
+          `time_unit`_ determines the maximum resolution at which timespans are
+          recorded. Times are always truncated, not rounded, to the nearest time
+          unit. For example, a measurement of 25 ns will be returned as 0 ms if
+          `time_unit` is `"millisecond"`.
+
+          For timing distributions, times are always recorded and sent in
+          nanoseconds, but `time_unit` controls the minimum and maximum values.
+          If not provided, it defaults to "nanosecond".
+
+          - nanosecond: 1ns <= x <= 10 minutes
+          - microsecond: 1μs <= x <= ~6.94 days
+          - millisecond: 1ms <= x <= ~19 years
 
           Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.
         enum:
