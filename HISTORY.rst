@@ -5,12 +5,12 @@ History
 Unreleased
 ----------
 
-1.12.2 (2020-04-24)
+1.20.2 (2020-04-24)
 -------------------
 
 * Dependencies that depend on the version of Python being used are now specified using the `Declaring platform specific dependencies syntax in setuptools <https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies>`__. This means that more recent versions of dependencies are likely to be installed on Python 3.6 and later, and unnecessary backport libraries won't be installed on more recent Python versions.
 
-1.12.1 (2020-04-21)
+1.20.1 (2020-04-21)
 -------------------
 
 * The minimum version of the runtime dependencies has been lowered to increase compatibility with other tools.  These minimum versions are now tested in CI, in addition to testing the latest versions of the dependencies that was already happening in CI.
