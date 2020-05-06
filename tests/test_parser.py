@@ -303,6 +303,19 @@ def test_geckoview_only_on_valid_metrics():
     assert "is only allowed for" in str(errs[0])
 
 
+def test_timing_distribution_unit_default():
+    contents = [{"category1": {"metric1": {"type": "timing_distribution"}}}]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+    errs = list(all_metrics)
+    assert len(errs) == 0
+    assert (
+        all_metrics.value["category1"]["metric1"].time_unit
+        == metrics.TimeUnit.nanosecond
+    )
+
+
 def test_all_pings_reserved():
     # send_in_pings: [all-pings] is only allowed for internal metrics
     contents = [

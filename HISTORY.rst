@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Support for using `timing_distribution`'s `time_unit` parameter to control the range of acceptable values is documented. The default unit for this use case is `nanosecond` to avoid creating a breaking change.  See [bug 1630997](https://bugzilla.mozilla.org/show_bug.cgi?id=1630997) for more information.
+
 1.20.2 (2020-04-24)
 -------------------
 
