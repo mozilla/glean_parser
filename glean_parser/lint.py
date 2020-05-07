@@ -342,16 +342,16 @@ def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
             file_content = fd.read()
 
         problems = linter.run(file_content, YamlLintConfig("extends: default"), path)
-        nits.extend(p for p in problems)
+        nits.extend((path, p) for p in problems)
 
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
-        for p in nits:
+        for (path, p) in nits:
             print("{} ({}:{}) - {}".format(path, p.line, p.column, p.message))
         print("", file=file)
         print("Please fix the above nits to continue.", file=file)
 
-    return nits
+    return [x[1] for x in nits]
 
 
 def glinter(
