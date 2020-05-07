@@ -54,7 +54,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 **Reasons this ping may be sent:**
 
 {% for (reason, desc) in ping_name|ping_reasons|dictsort %}
-- `{{ reason }}`: {{ desc|indent(6, indentfirst=False) }}
+- `{{ reason }}`: {{ desc|indent(6, first=False) }}
 {% endfor %}
 
 {% endif %}
