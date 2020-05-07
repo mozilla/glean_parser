@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.20.4 (2020-05-07)
+-------------------
+
 * BUGFIX: yamllint errors are now reported using the correct file name.
 
 1.20.3 (2020-05-06)
