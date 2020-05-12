@@ -12,6 +12,7 @@ from typing import Any, Callable, Dict, Generator, List, Iterable, Tuple, Union 
 
 from . import metrics
 from . import parser
+from . import pings
 from . import util
 
 
@@ -32,6 +33,20 @@ def _split_words(name: str) -> List[str]:
     Helper function to split words on either `.` or `_`.
     """
     return re.split("[._]", name)
+
+
+def _english_list(items: List[str]) -> str:
+    """
+    Helper function to format a list [A, B, C] as "'A', 'B', or 'C'".
+    """
+    if len(items) == 0:
+        return ""
+    elif len(items) == 1:
+        return "'{}'".format(items[0])
+    else:
+        return "{}, or '{}'".format(
+            ", ".join(["'{}'".format(x) for x in items[:-1]]), items[-1]
+        )
 
 
 def _hamming_distance(str1: str, str2: str) -> int:
@@ -73,8 +88,9 @@ def check_common_prefix(
     if i > 0:
         common_prefix = "_".join(first[:i])
         yield (
-            "Within category '{}', all metrics begin with prefix "
-            "'{}'. Remove prefixes and (possibly) rename category."
+            "Within category '{}', all metrics begin with prefix '{}'."
+            "Remove the prefixes on the metric names and (possibly) "
+            "rename the category."
         ).format(category_name, common_prefix)
 
 
@@ -114,16 +130,16 @@ def check_unit_in_name(
             or unit_in_name == time_unit.name
         ):
             yield (
-                "Suffix '{}' is redundant with time_unit. " "Only include time_unit."
-            ).format(unit_in_name)
+                "Suffix '{}' is redundant with time_unit '{}'. Only include time_unit."
+            ).format(unit_in_name, time_unit.name)
         elif (
             unit_in_name in TIME_UNIT_ABBREV.keys()
             or unit_in_name in TIME_UNIT_ABBREV.values()
         ):
             yield (
-                "Suffix '{}' doesn't match time_unit. "
+                "Suffix '{}' doesn't match time_unit '{}'. "
                 "Confirm the unit is correct and only include time_unit."
-            ).format(unit_in_name)
+            ).format(unit_in_name, time_unit.name)
 
     elif memory_unit is not None:
         if (
@@ -131,23 +147,23 @@ def check_unit_in_name(
             or unit_in_name == memory_unit.name
         ):
             yield (
-                "Suffix '{}' is redundant with memory_unit. "
+                "Suffix '{}' is redundant with memory_unit '{}'. "
                 "Only include memory_unit."
-            ).format(unit_in_name)
+            ).format(unit_in_name, memory_unit.name)
         elif (
             unit_in_name in MEMORY_UNIT_ABBREV.keys()
             or unit_in_name in MEMORY_UNIT_ABBREV.values()
         ):
             yield (
-                "Suffix '{}' doesn't match memory_unit. "
+                "Suffix '{}' doesn't match memory_unit '{}'. "
                 "Confirm the unit is correct and only include memory_unit."
-            ).format(unit_in_name)
+            ).format(unit_in_name, memory_unit.name)
 
     elif unit is not None:
         if unit_in_name == unit:
             yield (
-                "Suffix '{}' is redundant with unit param. " "Only include unit."
-            ).format(unit_in_name)
+                "Suffix '{}' is redundant with unit param '{}'. Only include unit."
+            ).format(unit_in_name, unit)
 
 
 def check_category_generic(
@@ -159,7 +175,9 @@ def check_category_generic(
     GENERIC_CATEGORIES = ["metrics", "events"]
 
     if category_name in GENERIC_CATEGORIES:
-        yield "Category '{}' is too generic.".format(category_name)
+        yield "Category '{}' is too generic. Don't use {} for category names".format(
+            category_name, _english_list(GENERIC_CATEGORIES)
+        )
 
 
 def check_bug_number(
@@ -170,7 +188,8 @@ def check_bug_number(
     if len(number_bugs):
         yield (
             "For bugs {}: "
-            "Bug numbers are deprecated and should be changed to full URLs."
+            "Bug numbers are deprecated and should be changed to full URLs. "
+            "For example, use 'http://bugzilla.mozilla.org/12345' instead of '12345'."
         ).format(", ".join(number_bugs))
 
 
@@ -182,17 +201,15 @@ def check_valid_in_baseline(
     if not allow_reserved and "baseline" in metric.send_in_pings:
         yield (
             "The baseline ping is Glean-internal. "
-            "User metrics should go into the 'metrics' ping or custom pings."
+            "Remove 'baseline' from the send_in_pings array."
         )
 
 
 def check_misspelled_pings(
     metric: metrics.Metric, parser_config: Dict[str, Any] = {}
 ) -> LintGenerator:
-    builtin_pings = ["metrics", "events"]
-
     for ping in metric.send_in_pings:
-        for builtin in builtin_pings:
+        for builtin in pings.RESERVED_PING_NAMES:
             distance = _hamming_distance(ping, builtin)
             if distance == 1:
                 yield ("Ping '{}' seems misspelled. Did you mean '{}'?").format(
@@ -206,8 +223,9 @@ def check_user_lifetime_expiration(
 
     if metric.lifetime == metrics.Lifetime.user and metric.expires != "never":
         yield (
-            "Metrics with `user` lifetime cannot have an expiration date. "
-            "They live as long as the user profile does."
+            "Metrics with 'user' lifetime cannot have an expiration date. "
+            "They live as long as the user profile does. "
+            "Set expires to 'never'."
         )
 
 
