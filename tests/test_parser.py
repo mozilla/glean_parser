@@ -503,3 +503,11 @@ def test_do_not_disable_expired():
 
     metrics = all_metrics.value
     assert metrics["category"]["metric"].disabled is False
+
+
+def test_send_in_pings_restrictions():
+    """Test that invalid ping names are disallowed in `send_in_pings`."""
+    all_metrics = parser.parse_objects(ROOT / "data" / "invalid-ping-names.yaml")
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "'invalid_ping_name' does not match" in errors[0]

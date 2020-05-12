@@ -53,7 +53,7 @@ def test_parser(tmpdir):
     # Only run this test if swiftc is on the path.
     if shutil.which("swiftc"):
         for filepath in tmpdir.glob("*.swift"):
-            subprocess.check_call(["swiftc", "-dump-parse", filepath])
+            subprocess.check_call(["swiftc", "-parse", filepath])
 
     # Lint check on the generated files.
     # Only run this test if swiftlint is on the path.
