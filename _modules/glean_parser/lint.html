@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.20.5.dev3+g3ac5a5c documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.20.5.dev5+g3c615ec documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -47,6 +47,7 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
@@ -67,6 +68,20 @@
 <span class="sd">    Helper function to split words on either `.` or `_`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[._]&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_english_list</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function to format a list [A, B, C] as &quot;&#39;A&#39;, &#39;B&#39;, or &#39;C&#39;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, or &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_hamming_distance</span><span class="p">(</span><span class="n">str1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">str2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -108,8 +123,9 @@
     <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">common_prefix</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">first</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span>
         <span class="k">yield</span> <span class="p">(</span>
-            <span class="s2">&quot;Within category &#39;</span><span class="si">{}</span><span class="s2">&#39;, all metrics begin with prefix &quot;</span>
-            <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;. Remove prefixes and (possibly) rename category.&quot;</span>
+            <span class="s2">&quot;Within category &#39;</span><span class="si">{}</span><span class="s2">&#39;, all metrics begin with prefix &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span>
+            <span class="s2">&quot;Remove the prefixes on the metric names and (possibly) &quot;</span>
+            <span class="s2">&quot;rename the category.&quot;</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="n">common_prefix</span><span class="p">)</span></div>
 
 
@@ -149,16 +165,16 @@
             <span class="ow">or</span> <span class="n">unit_in_name</span> <span class="o">==</span> <span class="n">time_unit</span><span class="o">.</span><span class="n">name</span>
         <span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span>
-                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with time_unit. &quot;</span> <span class="s2">&quot;Only include time_unit.&quot;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">)</span>
+                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with time_unit &#39;</span><span class="si">{}</span><span class="s2">&#39;. Only include time_unit.&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="p">(</span>
             <span class="n">unit_in_name</span> <span class="ow">in</span> <span class="n">TIME_UNIT_ABBREV</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="ow">or</span> <span class="n">unit_in_name</span> <span class="ow">in</span> <span class="n">TIME_UNIT_ABBREV</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span>
-                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; doesn&#39;t match time_unit. &quot;</span>
+                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; doesn&#39;t match time_unit &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span>
                 <span class="s2">&quot;Confirm the unit is correct and only include time_unit.&quot;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">memory_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -166,23 +182,23 @@
             <span class="ow">or</span> <span class="n">unit_in_name</span> <span class="o">==</span> <span class="n">memory_unit</span><span class="o">.</span><span class="n">name</span>
         <span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span>
-                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with memory_unit. &quot;</span>
+                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with memory_unit &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span>
                 <span class="s2">&quot;Only include memory_unit.&quot;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">,</span> <span class="n">memory_unit</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="p">(</span>
             <span class="n">unit_in_name</span> <span class="ow">in</span> <span class="n">MEMORY_UNIT_ABBREV</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="ow">or</span> <span class="n">unit_in_name</span> <span class="ow">in</span> <span class="n">MEMORY_UNIT_ABBREV</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span>
-                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; doesn&#39;t match memory_unit. &quot;</span>
+                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; doesn&#39;t match memory_unit &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span>
                 <span class="s2">&quot;Confirm the unit is correct and only include memory_unit.&quot;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">,</span> <span class="n">memory_unit</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">unit_in_name</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
             <span class="k">yield</span> <span class="p">(</span>
-                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with unit param. &quot;</span> <span class="s2">&quot;Only include unit.&quot;</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">)</span></div>
+                <span class="s2">&quot;Suffix &#39;</span><span class="si">{}</span><span class="s2">&#39; is redundant with unit param &#39;</span><span class="si">{}</span><span class="s2">&#39;. Only include unit.&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_in_name</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="check_category_generic"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_category_generic">[docs]</a><span class="k">def</span> <span class="nf">check_category_generic</span><span class="p">(</span>
@@ -194,7 +210,9 @@
     <span class="n">GENERIC_CATEGORIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">category_name</span> <span class="ow">in</span> <span class="n">GENERIC_CATEGORIES</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="s2">&quot;Category &#39;</span><span class="si">{}</span><span class="s2">&#39; is too generic.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category_name</span><span class="p">)</span></div>
+        <span class="k">yield</span> <span class="s2">&quot;Category &#39;</span><span class="si">{}</span><span class="s2">&#39; is too generic. Don&#39;t use </span><span class="si">{}</span><span class="s2"> for category names&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">category_name</span><span class="p">,</span> <span class="n">_english_list</span><span class="p">(</span><span class="n">GENERIC_CATEGORIES</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="check_bug_number"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_bug_number">[docs]</a><span class="k">def</span> <span class="nf">check_bug_number</span><span class="p">(</span>
@@ -205,7 +223,8 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">number_bugs</span><span class="p">):</span>
         <span class="k">yield</span> <span class="p">(</span>
             <span class="s2">&quot;For bugs </span><span class="si">{}</span><span class="s2">: &quot;</span>
-            <span class="s2">&quot;Bug numbers are deprecated and should be changed to full URLs.&quot;</span>
+            <span class="s2">&quot;Bug numbers are deprecated and should be changed to full URLs. &quot;</span>
+            <span class="s2">&quot;For example, use &#39;http://bugzilla.mozilla.org/12345&#39; instead of &#39;12345&#39;.&quot;</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">number_bugs</span><span class="p">))</span></div>
 
 
@@ -217,17 +236,15 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_reserved</span> <span class="ow">and</span> <span class="s2">&quot;baseline&quot;</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
         <span class="k">yield</span> <span class="p">(</span>
             <span class="s2">&quot;The baseline ping is Glean-internal. &quot;</span>
-            <span class="s2">&quot;User metrics should go into the &#39;metrics&#39; ping or custom pings.&quot;</span>
+            <span class="s2">&quot;Remove &#39;baseline&#39; from the send_in_pings array.&quot;</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="check_misspelled_pings"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_misspelled_pings">[docs]</a><span class="k">def</span> <span class="nf">check_misspelled_pings</span><span class="p">(</span>
     <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
-    <span class="n">builtin_pings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">]</span>
-
     <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">builtin</span> <span class="ow">in</span> <span class="n">builtin_pings</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">builtin</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
             <span class="n">distance</span> <span class="o">=</span> <span class="n">_hamming_distance</span><span class="p">(</span><span class="n">ping</span><span class="p">,</span> <span class="n">builtin</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">distance</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;Ping &#39;</span><span class="si">{}</span><span class="s2">&#39; seems misspelled. Did you mean &#39;</span><span class="si">{}</span><span class="s2">&#39;?&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -241,8 +258,9 @@
 
     <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">==</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Lifetime</span><span class="o">.</span><span class="n">user</span> <span class="ow">and</span> <span class="n">metric</span><span class="o">.</span><span class="n">expires</span> <span class="o">!=</span> <span class="s2">&quot;never&quot;</span><span class="p">:</span>
         <span class="k">yield</span> <span class="p">(</span>
-            <span class="s2">&quot;Metrics with `user` lifetime cannot have an expiration date. &quot;</span>
-            <span class="s2">&quot;They live as long as the user profile does.&quot;</span>
+            <span class="s2">&quot;Metrics with &#39;user&#39; lifetime cannot have an expiration date. &quot;</span>
+            <span class="s2">&quot;They live as long as the user profile does. &quot;</span>
+            <span class="s2">&quot;Set expires to &#39;never&#39;.&quot;</span>
         <span class="p">)</span></div>
 
 
