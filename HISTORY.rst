@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+* `glinter` messages have been improved with more details and to be more
+  actionable.
+
 1.20.4 (2020-05-07)
 -------------------
 
