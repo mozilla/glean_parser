@@ -26,27 +26,14 @@ def test_parser(tmpdir):
         ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
-        [
-            "CorePing.swift",
-            "Telemetry.swift",
-            "Environment.swift",
-            "DottedCategory.swift",
-            "GleanInternalMetrics.swift",
-        ]
-    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "CorePing.swift").open("r", encoding="utf-8") as fd:
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
+
         assert "True if the user has set Firefox as the default browser." in content
-
-    with (tmpdir / "Telemetry.swift").open("r", encoding="utf-8") as fd:
-        content = fd.read()
         assert "جمع 搜集" in content
-
-    with (tmpdir / "GleanInternalMetrics.swift").open("r", encoding="utf-8") as fd:
-        content = fd.read()
         assert 'category: ""' in content
 
     # Syntax check on the generated files.
@@ -141,7 +128,7 @@ def test_order_of_fields(tmpdir):
     )
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "CorePing.swift").open("r", encoding="utf-8")
+    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
@@ -177,7 +164,7 @@ def test_no_import_glean(tmpdir):
     )
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "CorePing.swift").open("r", encoding="utf-8")
+    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
@@ -190,7 +177,7 @@ def test_import_glean(tmpdir):
     translate.translate(ROOT / "data" / "smaller.yaml", "swift", tmpdir, {}, {})
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "Telemetry.swift").open("r", encoding="utf-8")
+    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 

@@ -16,7 +16,6 @@ from typing import Any, Dict, Union
 from . import metrics
 from . import pings
 from . import util
-from collections import defaultdict
 
 # An (imcomplete) list of reserved keywords in Swift.
 # These will be replaced in generated code by their escaped form.
@@ -107,6 +106,16 @@ def variable_name(var: str) -> str:
         return var
 
 
+class Category:
+    """
+    Data struct holding information about a metric to be used in the template.
+    """
+
+    name = None  # type: str
+    objs = None  # type: Dict[str, Union[metrics.Metric, pings.Ping]]
+    contains_pings = False  # type: bool
+
+
 def output_swift(
     objs: metrics.ObjectTree, output_dir: Path, options: Dict[str, Any] = {}
 ) -> None:
@@ -149,31 +158,31 @@ def output_swift(
     namespace = options.get("namespace", "GleanMetrics")
     glean_namespace = options.get("glean_namespace", "Glean")
 
+    filename = "Metrics.swift"
+    filepath = output_dir / filename
+    categories = []
+
     for category_key, category_val in objs.items():
-        filename = util.Camelize(category_key) + ".swift"
-        filepath = output_dir / filename
-
-        custom_pings = defaultdict()  # type: Dict[str, pings.Ping]
-        for obj in category_val.values():
-            if isinstance(obj, pings.Ping):
-                custom_pings[obj.name] = obj
-
-        has_labeled_metrics = any(
-            getattr(metric, "labeled", False) for metric in category_val.values()
+        contains_pings = any(
+            isinstance(obj, pings.Ping) for obj in category_val.values()
         )
 
-        with filepath.open("w", encoding="utf-8") as fd:
-            fd.write(
-                template.render(
-                    category_name=category_key,
-                    objs=category_val,
-                    extra_args=extra_args,
-                    namespace=namespace,
-                    glean_namespace=glean_namespace,
-                    has_labeled_metrics=has_labeled_metrics,
-                    is_ping_type=len(custom_pings) > 0,
-                    allow_reserved=options.get("allow_reserved", False),
-                )
+        cat = Category()
+        cat.name = category_key
+        cat.objs = category_val
+        cat.contains_pings = contains_pings
+
+        categories.append(cat)
+
+    with filepath.open("w", encoding="utf-8") as fd:
+        fd.write(
+            template.render(
+                categories=categories,
+                extra_args=extra_args,
+                namespace=namespace,
+                glean_namespace=glean_namespace,
+                allow_reserved=options.get("allow_reserved", False),
             )
-            # Jinja2 squashes the final newline, so we explicitly add it
-            fd.write("\n")
+        )
+        # Jinja2 squashes the final newline, so we explicitly add it
+        fd.write("\n")
