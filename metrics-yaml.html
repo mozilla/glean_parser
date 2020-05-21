@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.20.5.dev5+g3c615ec documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.20.5.dev6+gd948a04 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -211,6 +211,7 @@ labels in the special label <code class="docutils literal notranslate"><span cla
 <span id="id13"></span><h3>extra_keys<a class="headerlink" href="#extra-keys" title="Permalink to this headline">¶</a></h3>
 <p>The acceptable keys on the “extra” object sent with events. This is an
 object mapping the key to an object containing metadata about the key.
+A maximum of 10 extra keys is allowed.
 This metadata object has the following keys:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">description</span></code>: <strong>Required.</strong> A description of the key.</li>
@@ -556,6 +557,7 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">The acceptable keys on the &quot;extra&quot; object sent with events. This is an</span>
           <span class="no">object mapping the key to an object containing metadata about the key.</span>
+          <span class="no">A maximum of 10 extra keys is allowed.</span>
           <span class="no">This metadata object has the following keys:</span>
 
             <span class="no">- `description`: **Required.** A description of the key.</span>
@@ -571,6 +573,7 @@ entirety below:</p>
               <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
+        <span class="nt">maxProperties</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
         <span class="nt">default</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
 
       <span class="nt">gecko_datapoint</span><span class="p">:</span>
