@@ -36,3 +36,35 @@ gleantest.short.category:
     notification_emails: ['nobody@example.com']
     expires: never
     data_reviews: ['http://example.com']
+gleantest.event:
+  event_too_many_extras:
+    description: A test event with too many extra keys
+    type: event
+    bugs:
+      - https://bugzilla.mozilla.org/1580707
+    notification_emails: ['nobody@example.com']
+    expires: never
+    data_reviews: ['http://example.com']
+    extra_keys:
+      key_1:
+        description: Sample extra key
+      key_2:
+        description: Sample extra key
+      key_3:
+        description: Sample extra key
+      key_4:
+        description: Sample extra key
+      key_5:
+        description: Sample extra key
+      key_6:
+        description: Sample extra key
+      key_7:
+        description: Sample extra key
+      key_8:
+        description: Sample extra key
+      key_9:
+        description: Sample extra key
+      key_10:
+        description: Sample extra key
+      key_11:
+        description: Sample extra key
