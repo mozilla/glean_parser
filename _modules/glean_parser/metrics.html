@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.20.5.dev6+gd948a04 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.20.5.dev7+gb734c43 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -61,10 +61,13 @@
     <span class="n">base_object</span> <span class="o">=</span> <span class="nb">object</span>
 
 
+<span class="c1"># Important: if the values are ever changing here, make sure</span>
+<span class="c1"># to also fix mozilla/glean. Otherwise language bindings may</span>
+<span class="c1"># break there.</span>
 <div class="viewcode-block" id="Lifetime"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Lifetime">[docs]</a><span class="k">class</span> <span class="nc">Lifetime</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">ping</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">application</span> <span class="o">=</span> <span class="mi">2</span></div>
+    <span class="n">application</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
 <div class="viewcode-block" id="Metric"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric">[docs]</a><span class="k">class</span> <span class="nc">Metric</span><span class="p">(</span><span class="n">base_object</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
