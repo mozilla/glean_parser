@@ -8,6 +8,7 @@ Unreleased
 * `glinter` messages have been improved with more details and to be more
   actionable.
 * A maximum of 10 `extra_keys` is now enforced for `event` metric types.
+* BUGFIX: the `Lifetime` enum values now match the values of the implementation in mozilla/glean. 
 
 1.20.4 (2020-05-07)
 -------------------

@@ -26,10 +26,13 @@ else:
     base_object = object
 
 
+# Important: if the values are ever changing here, make sure
+# to also fix mozilla/glean. Otherwise language bindings may
+# break there.
 class Lifetime(enum.Enum):
     ping = 0
-    user = 1
-    application = 2
+    application = 1
+    user = 2
 
 
 class Metric(base_object):  # type: ignore
