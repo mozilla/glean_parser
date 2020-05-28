@@ -149,8 +149,7 @@ Get a clean master branch with all of the changes from `upstream`::
 
   $ git push upstream master
 
-- Wait for [continuous integration to
-  pass](https://circleci.com/gh/mozilla/glean/tree/master) on master.
+- Wait for [continuous integration to pass](https://circleci.com/gh/mozilla/glean/tree/master) on master.
 
 - Make the release on GitHub using [this link](https://github.com/mozilla/glean_parser/releases/new)
 
