@@ -133,11 +133,11 @@ Deploying
 
 A reminder for the maintainers on how to deploy.
 
-Get a clean master branch with all of the changes from `upstream`::
+Get a clean main branch with all of the changes from `upstream`::
 
-  $ git checkout master
+  $ git checkout main
   $ git fetch upstream
-  $ git rebase upstream/master
+  $ git rebase upstream/main
 
 - Update the header with the new version and date in HISTORY.rst.
 
@@ -147,9 +147,9 @@ Get a clean master branch with all of the changes from `upstream`::
 
 - Push the changes upstream::
 
-  $ git push upstream master
+  $ git push upstream main
 
-- Wait for [continuous integration to pass](https://circleci.com/gh/mozilla/glean/tree/master) on master.
+- Wait for [continuous integration to pass](https://circleci.com/gh/mozilla/glean/tree/main) on main.
 
 - Make the release on GitHub using [this link](https://github.com/mozilla/glean_parser/releases/new)
 

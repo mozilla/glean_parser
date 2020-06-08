@@ -184,7 +184,7 @@ workflows:
                         - build-37
                     filters:
                         branches:
-                            only: master
+                            only: main
             - pypi-deploy:
                     requires:
                         - build-37

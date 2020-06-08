@@ -43,7 +43,8 @@ templates_path = ['_templates']
 # source_suffix = ['.rst', '.md']
 source_suffix = '.rst'
 
-# The master toctree document.
+# The main toctree document.
+# Sphinx uses the variable 'master_doc' for this.
 master_doc = 'index'
 
 # General information about the project.
