@@ -61,15 +61,13 @@ def metrics_docs(obj_name: str) -> str:
     Return a link to the documentation entry for the Glean SDK metric of the
     requested type.
     """
-    base_url = "https://mozilla.github.io/glean/book/user/metrics/{}.html"
-
     # We need to fixup labeled stuff, as types are singular and docs refer
     # to them as plural.
     fixedup_name = obj_name
     if obj_name.startswith("labeled_"):
         fixedup_name += "s"
 
-    return base_url.format(fixedup_name)
+    return f"https://mozilla.github.io/glean/book/user/metrics/{fixedup_name}.html"
 
 
 def ping_docs(ping_name: str) -> str:
@@ -80,7 +78,7 @@ def ping_docs(ping_name: str) -> str:
     if ping_name not in pings.RESERVED_PING_NAMES:
         return ""
 
-    return "https://mozilla.github.io/glean/book/user/pings/{}.html".format(ping_name)
+    return f"https://mozilla.github.io/glean/book/user/pings/{ping_name}.html"
 
 
 def if_empty(ping_name: str, custom_pings_cache: Dict[str, pings.Ping] = {}) -> bool:
@@ -162,8 +160,8 @@ def output_markdown(
     # }
     #
     # This also builds a dictionary of custom pings, if available.
-    custom_pings_cache = defaultdict()  # type: Dict[str, pings.Ping]
-    metrics_by_pings = defaultdict(list)  # type: Dict[str, List[metrics.Metric]]
+    custom_pings_cache: Dict[str, pings.Ping] = defaultdict()
+    metrics_by_pings: Dict[str, List[metrics.Metric]] = defaultdict(list)
     for category_key, category_val in objs.items():
         for obj in category_val.values():
             # Filter out custom pings. We will need them for extracting

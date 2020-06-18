@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Support for Python 3.5 has been dropped.
+
 1.22.0 (2020-05-28)
 -------------------
 

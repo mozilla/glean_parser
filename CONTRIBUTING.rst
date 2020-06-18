@@ -87,10 +87,6 @@ Ready to contribute? Here's how to set up `glean_parser` for local development.
 
     $ pip install -r requirements_dev.txt
 
-   If using Python 3.5:
-
-    $ pip install -r requirements_dev_35.txt
-
    Optionally, if you want to ensure that the generated Kotlin code lints correctly, install a Java SDK, and then run::
 
      $ make install-kotlin-linters
@@ -117,7 +113,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.5, 3.6, 3.7 and 3.8 (The CI system will take care of testing all of these Python versions).
+3. The pull request should work for Python 3.6, 3.7 and 3.8 (The CI system will take care of testing all of these Python versions).
 4. The pull request should update the changelog in `HISTORY.rst`.
 
 Tips

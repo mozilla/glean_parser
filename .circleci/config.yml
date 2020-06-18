@@ -56,29 +56,20 @@ commands:
                     command: make test
 
 jobs:
-    build-35:
-        docker:
-            - image: circleci/python:3.5.9
-        steps:
-            - test-start
-            - test-python-version:
-                    requirements-file: requirements_dev_py35.txt
-
-    build-35-min:
-        docker:
-            - image: circleci/python:3.5.9
-        steps:
-            - test-start
-            - test-min-requirements
-            - test-python-version:
-                    requirements-file: requirements_dev_py35.txt
-
     build-36:
         docker:
             - image: circleci/python:3.6.9
         steps:
             - test-start
             - test-python-version
+
+    build-36-min:
+        docker:
+            - image: circleci/python:3.6.9
+        steps:
+            - test-start
+            - test-min-requirements
+            - test-python-version:
 
     build-37:
         docker:
@@ -155,15 +146,11 @@ workflows:
     version: 2
     build:
         jobs:
-            - build-35:
-                    filters:
-                        tags:
-                            only: /.*/
-            - build-35-min:
-                    filters:
-                        tags:
-                            only: /.*/
             - build-36:
+                    filters:
+                        tags:
+                            only: /.*/
+            - build-36-min:
                     filters:
                         tags:
                             only: /.*/
