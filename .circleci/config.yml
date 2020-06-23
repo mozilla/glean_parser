@@ -69,7 +69,7 @@ jobs:
         steps:
             - test-start
             - test-min-requirements
-            - test-python-version:
+            - test-python-version
 
     build-37:
         docker:
