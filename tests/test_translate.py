@@ -147,7 +147,7 @@ def test_external_translator(tmpdir):
         for category in all_objects:
             with (tmpdir / category).open("w") as fd:
                 for metric in category:
-                    fd.write("{}\n".format(metric))
+                    fd.write(f"{metric}\n")
 
     translate.translate_metrics(
         ROOT / "data" / "core.yaml",

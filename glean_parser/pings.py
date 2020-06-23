@@ -8,26 +8,16 @@
 Classes for managing the description of pings.
 """
 
-import sys
 from typing import Dict, List, Optional
 
 
 from . import util
 
 
-# Import a backport of PEP487 to support __init_subclass__
-if sys.version_info < (3, 6):
-    import pep487  # type: ignore
-
-    base_object = pep487.PEP487Object  # type: ignore
-else:
-    base_object = object
-
-
 RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
 
 
-class Ping(base_object):  # type: ignore
+class Ping:
     def __init__(
         self,
         name: str,
@@ -59,10 +49,10 @@ class Ping(base_object):  # type: ignore
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
         if not _validated:
-            data = {
+            data: Dict[str, util.JSONType] = {
                 "$schema": parser.PINGS_ID,
                 self.name: self.serialize(),
-            }  # type: Dict[str, util.JSONType]
+            }
             for error in parser.validate(data):
                 raise ValueError(error)
 

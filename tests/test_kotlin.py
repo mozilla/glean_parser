@@ -23,7 +23,7 @@ DETEKT_VERSION = "1.1.1"
 
 
 def run_detekt(files):
-    detekt_exec = ROOT.parent / "detekt-cli-{}-all.jar".format(DETEKT_VERSION)
+    detekt_exec = ROOT.parent / f"detekt-cli-{DETEKT_VERSION}-all.jar"
     # We want to make sure this runs on CI, but it's not required
     # for local development
     if detekt_exec.is_file() or "CI" in os.environ:

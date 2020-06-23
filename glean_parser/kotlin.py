@@ -144,9 +144,9 @@ def output_gecko_lookup(
     #   },
     #   "other-type": {}
     # }
-    gecko_metrics = (
-        OrderedDict()
-    )  # type: OrderedDict[str, OrderedDict[str, List[Dict[str, str]]]]
+    gecko_metrics: OrderedDict[
+        str, OrderedDict[str, List[Dict[str, str]]]
+    ] = OrderedDict()
 
     # Define scalar-like types.
     SCALAR_LIKE_TYPES = ["boolean", "string", "quantity"]

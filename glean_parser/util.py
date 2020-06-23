@@ -132,7 +132,7 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
             else:
                 return yaml.load(fd, Loader=_NoDatesSafeLoader)
     else:
-        raise ValueError("Unknown file extension {}".format(path.suffix))
+        raise ValueError(f"Unknown file extension {path.suffix}")
 
 
 def ensure_list(value: Any) -> Sequence[Any]:
@@ -261,8 +261,7 @@ def fetch_remote_url(url: str, cache: bool = True):
 
     if not is_http:
         with open(url, "r", encoding="utf-8") as fd:
-            contents = fd.read()
-        return contents
+            return fd.read()
 
     if cache:
         cache_dir = appdirs.user_cache_dir("glean_parser", "mozilla")
@@ -270,13 +269,7 @@ def fetch_remote_url(url: str, cache: bool = True):
             if key in dc:
                 return dc[key]
 
-    contents = urllib.request.urlopen(url).read()  # type: ignore
-
-    # On Python 3.5, urlopen does not handle the unicode decoding for us. This
-    # is ok because we control these files and we know they are in UTF-8,
-    # however, this wouldn't be correct in general.
-    if sys.version_info < (3, 6):
-        contents = contents.decode("utf8")  # type: ignore
+    contents: str = urllib.request.urlopen(url).read()
 
     if cache:
         with diskcache.Cache(cache_dir) as dc:
@@ -338,9 +331,9 @@ def format_error(filepath: Union[str, Path], header: str, content: str) -> str:
     else:
         filepath = "<string>"
     if header:
-        return "{}: {}\n{}".format(filepath, header, _utils.indent(content))
+        return f"{filepath}: {header}\n{_utils.indent(content)}"
     else:
-        return "{}:\n{}".format(filepath, _utils.indent(content))
+        return f"{filepath}:\n{_utils.indent(content)}"
 
 
 def is_expired(expires: str) -> bool:
@@ -360,10 +353,8 @@ def is_expired(expires: str) -> bool:
                 date = datetime.date.fromisoformat(expires)
         except ValueError:
             raise ValueError(
-                (
-                    "Invalid expiration date '{}'. "
-                    "Must be of the form yyyy-mm-dd in UTC."
-                ).format(expires)
+                f"Invalid expiration date '{expires}'. "
+                "Must be of the form yyyy-mm-dd in UTC."
             )
         return date <= datetime.datetime.utcnow().date()
 

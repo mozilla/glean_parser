@@ -9,21 +9,11 @@ Classes for each of the high-level metric types.
 """
 
 import enum
-import sys
 from typing import Any, Dict, List, Optional, Type, Union  # noqa
 
 
 from . import pings
 from . import util
-
-
-# Import a backport of PEP487 to support __init_subclass__
-if sys.version_info < (3, 6):
-    import pep487  # type: ignore
-
-    base_object = pep487.PEP487Object  # type: ignore
-else:
-    base_object = object
 
 
 # Important: if the values are ever changing here, make sure
@@ -35,11 +25,11 @@ class Lifetime(enum.Enum):
     user = 2
 
 
-class Metric(base_object):  # type: ignore
-    typename = "ERROR"  # type: str
-    glean_internal_metric_cat = "glean.internal.metrics"  # type: str
-    metric_types = {}  # type: Dict[str, Any]
-    default_store_names = ["metrics"]  # type: List[str]
+class Metric:
+    typename: str = "ERROR"
+    glean_internal_metric_cat: str = "glean.internal.metrics"
+    metric_types: Dict[str, Any] = {}
+    default_store_names: List[str] = ["metrics"]
 
     def __init__(
         self,
@@ -131,13 +121,13 @@ class Metric(base_object):  # type: ignore
         """
         metric_type = metric_info["type"]
         if not isinstance(metric_type, str):
-            raise TypeError("Unknown metric type {}".format(metric_type))
+            raise TypeError(f"Unknown metric type {metric_type}")
         return cls.metric_types[metric_type](
             category=category,
             name=name,
             _validated=validated,
             _config=config,
-            **metric_info
+            **metric_info,
         )
 
     def serialize(self) -> Dict[str, util.JSONType]:
@@ -179,23 +169,23 @@ class Metric(base_object):  # type: ignore
         return self.category in (Metric.glean_internal_metric_cat, "")
 
 
-class Boolean(Metric):  # type: ignore
+class Boolean(Metric):
     typename = "boolean"
 
 
-class String(Metric):  # type: ignore
+class String(Metric):
     typename = "string"
 
 
-class StringList(Metric):  # type: ignore
+class StringList(Metric):
     typename = "string_list"
 
 
-class Counter(Metric):  # type: ignore
+class Counter(Metric):
     typename = "counter"
 
 
-class Quantity(Metric):  # type: ignore
+class Quantity(Metric):
     typename = "quantity"
 
 
@@ -209,17 +199,17 @@ class TimeUnit(enum.Enum):
     day = 6
 
 
-class TimeBase(Metric):  # type: ignore
+class TimeBase(Metric):
     def __init__(self, *args, **kwargs):
         self.time_unit = getattr(TimeUnit, kwargs.pop("time_unit", "millisecond"))
         super().__init__(*args, **kwargs)
 
 
-class Timespan(TimeBase):  # type: ignore
+class Timespan(TimeBase):
     typename = "timespan"
 
 
-class TimingDistribution(TimeBase):  # type: ignore
+class TimingDistribution(TimeBase):
     typename = "timing_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -234,7 +224,7 @@ class MemoryUnit(enum.Enum):
     gigabyte = 3
 
 
-class MemoryDistribution(Metric):  # type: ignore
+class MemoryDistribution(Metric):
     typename = "memory_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -247,7 +237,7 @@ class HistogramType(enum.Enum):
     exponential = 1
 
 
-class CustomDistribution(Metric):  # type: ignore
+class CustomDistribution(Metric):
     typename = "custom_distribution"
 
     def __init__(self, *args, **kwargs):
@@ -260,11 +250,11 @@ class CustomDistribution(Metric):  # type: ignore
         super().__init__(*args, **kwargs)
 
 
-class Datetime(TimeBase):  # type: ignore
+class Datetime(TimeBase):
     typename = "datetime"
 
 
-class Event(Metric):  # type: ignore
+class Event(Metric):
     typename = "event"
 
     default_store_names = ["events"]
@@ -292,11 +282,11 @@ class Event(Metric):  # type: ignore
             )
 
 
-class Uuid(Metric):  # type: ignore
+class Uuid(Metric):
     typename = "uuid"
 
 
-class Labeled(Metric):  # type: ignore
+class Labeled(Metric):
     labeled = True
 
     def __init__(self, *args, **kwargs):
@@ -319,15 +309,15 @@ class Labeled(Metric):  # type: ignore
         return d
 
 
-class LabeledBoolean(Labeled, Boolean):  # type: ignore
+class LabeledBoolean(Labeled, Boolean):
     typename = "labeled_boolean"
 
 
-class LabeledString(Labeled, String):  # type: ignore
+class LabeledString(Labeled, String):
     typename = "labeled_string"
 
 
-class LabeledCounter(Labeled, Counter):  # type: ignore
+class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"
 
 

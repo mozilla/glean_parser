@@ -111,9 +111,9 @@ class Category:
     Data struct holding information about a metric to be used in the template.
     """
 
-    name = None  # type: str
-    objs = None  # type: Dict[str, Union[metrics.Metric, pings.Ping]]
-    contains_pings = False  # type: bool
+    name: str
+    objs: Dict[str, Union[metrics.Metric, pings.Ping]]
+    contains_pings: bool
 
 
 def output_swift(

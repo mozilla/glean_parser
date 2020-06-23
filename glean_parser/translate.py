@@ -110,7 +110,7 @@ def translate_metrics(
                 for filepath in output_dir.glob(clear_pattern):
                     filepath.unlink()
             if len(list(output_dir.iterdir())):
-                print("Extra contents found in '{}'.".format(output_dir))
+                print(f"Extra contents found in '{output_dir}'.")
 
         # We can't use shutil.copytree alone if the directory already exists.
         # However, if it doesn't exist, make sure to create one otherwise
@@ -144,7 +144,7 @@ def translate(
     format_desc = OUTPUTTERS.get(output_format, None)
 
     if format_desc is None:
-        raise ValueError("Unknown output format '{}'".format(output_format))
+        raise ValueError(f"Unknown output format '{output_format}'")
 
     return translate_metrics(
         input_filepaths,

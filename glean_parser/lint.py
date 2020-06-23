@@ -42,10 +42,10 @@ def _english_list(items: List[str]) -> str:
     if len(items) == 0:
         return ""
     elif len(items) == 1:
-        return "'{}'".format(items[0])
+        return f"'{items[0]}'"
     else:
         return "{}, or '{}'".format(
-            ", ".join(["'{}'".format(x) for x in items[:-1]]), items[-1]
+            ", ".join([f"'{x}'" for x in items[:-1]]), items[-1]
         )
 
 
@@ -88,10 +88,11 @@ def check_common_prefix(
     if i > 0:
         common_prefix = "_".join(first[:i])
         yield (
-            "Within category '{}', all metrics begin with prefix '{}'."
+            f"Within category '{category_name}', all metrics begin with "
+            f"prefix '{common_prefix}'."
             "Remove the prefixes on the metric names and (possibly) "
             "rename the category."
-        ).format(category_name, common_prefix)
+        )
 
 
 def check_unit_in_name(
@@ -130,16 +131,18 @@ def check_unit_in_name(
             or unit_in_name == time_unit.name
         ):
             yield (
-                "Suffix '{}' is redundant with time_unit '{}'. Only include time_unit."
-            ).format(unit_in_name, time_unit.name)
+                f"Suffix '{unit_in_name}' is redundant with time_unit "
+                f"'{time_unit.name}'. Only include time_unit."
+            )
         elif (
             unit_in_name in TIME_UNIT_ABBREV.keys()
             or unit_in_name in TIME_UNIT_ABBREV.values()
         ):
             yield (
-                "Suffix '{}' doesn't match time_unit '{}'. "
+                f"Suffix '{unit_in_name}' doesn't match time_unit "
+                f"'{time_unit.name}'. "
                 "Confirm the unit is correct and only include time_unit."
-            ).format(unit_in_name, time_unit.name)
+            )
 
     elif memory_unit is not None:
         if (
@@ -147,23 +150,27 @@ def check_unit_in_name(
             or unit_in_name == memory_unit.name
         ):
             yield (
-                "Suffix '{}' is redundant with memory_unit '{}'. "
+                f"Suffix '{unit_in_name}' is redundant with memory_unit "
+                f"'{memory_unit.name}'. "
                 "Only include memory_unit."
-            ).format(unit_in_name, memory_unit.name)
+            )
         elif (
             unit_in_name in MEMORY_UNIT_ABBREV.keys()
             or unit_in_name in MEMORY_UNIT_ABBREV.values()
         ):
             yield (
-                "Suffix '{}' doesn't match memory_unit '{}'. "
+                f"Suffix '{unit_in_name}' doesn't match memory_unit "
+                f"{memory_unit.name}'. "
                 "Confirm the unit is correct and only include memory_unit."
-            ).format(unit_in_name, memory_unit.name)
+            )
 
     elif unit is not None:
         if unit_in_name == unit:
             yield (
-                "Suffix '{}' is redundant with unit param '{}'. Only include unit."
-            ).format(unit_in_name, unit)
+                f"Suffix '{unit_in_name}' is redundant with unit param "
+                f"'{unit}'. "
+                "Only include unit."
+            )
 
 
 def check_category_generic(
@@ -175,8 +182,9 @@ def check_category_generic(
     GENERIC_CATEGORIES = ["metrics", "events"]
 
     if category_name in GENERIC_CATEGORIES:
-        yield "Category '{}' is too generic. Don't use {} for category names".format(
-            category_name, _english_list(GENERIC_CATEGORIES)
+        yield (
+            f"Category '{category_name}' is too generic. "
+            f"Don't use {_english_list(GENERIC_CATEGORIES)} for category names"
         )
 
 
@@ -187,10 +195,10 @@ def check_bug_number(
 
     if len(number_bugs):
         yield (
-            "For bugs {}: "
+            f"For bugs {', '.join(number_bugs)}: "
             "Bug numbers are deprecated and should be changed to full URLs. "
             "For example, use 'http://bugzilla.mozilla.org/12345' instead of '12345'."
-        ).format(", ".join(number_bugs))
+        )
 
 
 def check_valid_in_baseline(
@@ -212,9 +220,7 @@ def check_misspelled_pings(
         for builtin in pings.RESERVED_PING_NAMES:
             distance = _hamming_distance(ping, builtin)
             if distance == 1:
-                yield ("Ping '{}' seems misspelled. Did you mean '{}'?").format(
-                    ping, builtin
-                )
+                yield f"Ping '{ping}' seems misspelled. Did you mean '{builtin}'?"
 
 
 def check_user_lifetime_expiration(
@@ -231,21 +237,25 @@ def check_user_lifetime_expiration(
 
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
-CATEGORY_CHECKS = {
+CATEGORY_CHECKS: Dict[
+    str, Tuple[Callable[[str, Iterable[metrics.Metric]], LintGenerator], CheckType]
+] = {
     "COMMON_PREFIX": (check_common_prefix, CheckType.error),
     "CATEGORY_GENERIC": (check_category_generic, CheckType.error),
-}  # noqa type: Dict[str, Tuple[Callable[[str, Iterable[metrics.Metric]], LintGenerator], CheckType]]
+}
 
 
 # The checks that operate on individual metrics:
 #     {NAME: (function, is_error)}
-INDIVIDUAL_CHECKS = {
+INDIVIDUAL_CHECKS: Dict[
+    str, Tuple[Callable[[metrics.Metric, dict], LintGenerator], CheckType]
+] = {
     "UNIT_IN_NAME": (check_unit_in_name, CheckType.error),
     "BUG_NUMBER": (check_bug_number, CheckType.error),
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
-}  # type: Dict[str, Tuple[Callable[[metrics.Metric, dict], LintGenerator], CheckType]]
+}
 
 
 class GlinterNit:
@@ -256,8 +266,9 @@ class GlinterNit:
         self.check_type = check_type
 
     def format(self):
-        return "{}: {}: {}: {}".format(
-            self.check_type.name.upper(), self.check_name, self.name, self.msg
+        return (
+            f"{self.check_type.name.upper()}: {self.check_name}: "
+            f"{self.name}: {self.msg}"
         )
 
 
@@ -271,7 +282,7 @@ def lint_metrics(
     :param file: The stream to write errors to.
     :returns: List of nits.
     """
-    nits = []  # type: List[GlinterNit]
+    nits: List[GlinterNit] = []
     for (category_name, category) in sorted(list(objs.items())):
         if category_name == "pings":
             continue
@@ -317,9 +328,9 @@ def lint_metrics(
                                 "SUPERFLUOUS_NO_LINT",
                                 ".".join([metric.category, metric.name]),
                                 (
-                                    "Superfluous no_lint entry '{}'. "
+                                    f"Superfluous no_lint entry '{check_name}'. "
                                     "Please remove it."
-                                ).format(check_name),
+                                ),
                                 CheckType.warning,
                             )
                         )
@@ -352,7 +363,7 @@ def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
 
     # Generic type since the actual type comes from yamllint, which we don't
     # control.
-    nits = []  # type: List
+    nits: List = []
     for path in input_filepaths:
         # yamllint needs both the file content and the path.
         file_content = None
@@ -365,7 +376,7 @@ def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
         for (path, p) in nits:
-            print("{} ({}:{}) - {}".format(path, p.line, p.column, p.message))
+            print(f"{path} ({p.line}:{p.column}) - {p.message}")
         print("", file=file)
         print("Please fix the above nits to continue.", file=file)
 
