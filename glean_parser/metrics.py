@@ -127,7 +127,7 @@ class Metric:
             name=name,
             _validated=validated,
             _config=config,
-            **metric_info
+            **metric_info,
         )
 
     def serialize(self) -> Dict[str, util.JSONType]:
