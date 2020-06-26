@@ -208,7 +208,6 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         content = " ".join(content.split())
         assert (
             "enum ExampleKeys: Int32, ExtraKeys "
-            "{ case alice = 0 case bob = 1 case charlie = 2"
-            in content
+            "{ case alice = 0 case bob = 1 case charlie = 2" in content
         )
         assert 'allowedExtraKeys: ["alice", "bob", "charlie"]' in content
