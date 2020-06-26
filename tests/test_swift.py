@@ -182,3 +182,33 @@ def test_import_glean(tmpdir):
     fd.close()
 
     assert "import Glean" in content
+
+
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "swift",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert (
+            "enum ExampleKeys: Int32, ExtraKeys "
+            "{ case alice = 0 case bob = 1 case charlie = 2"
+            in content
+        )
+        assert 'allowedExtraKeys: ["alice", "bob", "charlie"]' in content
