@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.23.0 (2020-06-27)
+-------------------
+
 * Support for Python 3.5 has been dropped.
 * BUGFIX: The ordering of event extra keys will now match with their enum, fixing a serious bug where keys of extras may not match the correct values in the data payload.  See https://bugzilla.mozilla.org/show_bug.cgi?id=1648768.
 
