@@ -327,3 +327,29 @@ def test_gecko_datapoints(tmpdir):
             assert "HistogramMetricBase" not in content
 
     run_linters(tmpdir.glob("*.kt"))
+
+
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+
+    with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert "exampleKeys { alice, bob, charlie }" in content
+        assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content

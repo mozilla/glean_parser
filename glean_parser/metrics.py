@@ -259,7 +259,7 @@ class Event(Metric):
 
     default_store_names = ["events"]
 
-    _generate_enums = [("extra_keys", "Keys")]
+    _generate_enums = [("allowed_extra_keys", "Keys")]
 
     def __init__(self, *args, **kwargs):
         self.extra_keys = kwargs.pop("extra_keys", {})

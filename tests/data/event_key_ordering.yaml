@@ -1,0 +1,27 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+
+event:
+  example:
+    type: event
+    description: >
+      Testing event extra key ordering
+    bugs:
+      - https://bugzilla.mozilla.org/1123456789
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    extra_keys:
+      # Keys are deliberately non-alphabetical here to ensure that they are
+      # sorted by glean_parser
+      charlie:
+        description: "one"
+      alice:
+        description: "two"
+      bob:
+        description: "three"
+    expires: 2100-01-01

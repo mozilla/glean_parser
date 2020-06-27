@@ -151,3 +151,33 @@ def test_reasons(tmpdir):
     with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "- `serious`: A serious reason for sending a ping." in content
+
+
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "markdown",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+
+    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        print(content)
+        content = " ".join(content.split())
+        assert (
+            r"<ul><li>alice: two</li>"
+            r"<li>bob: three</li>"
+            r"<li>charlie: one</li></ul>" in content
+        )
