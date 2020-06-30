@@ -173,12 +173,9 @@ def output_markdown(
                 if obj.send_if_empty:
                     metrics_by_pings[obj.name] = []
 
-            if obj.is_internal_metric():
-                # This is an internal Glean metric, and we don't
-                # want docs for it.
-                continue
-
-            if isinstance(obj, metrics.Metric):
+            # If this is an internal Glean metric, and we don't
+            # want docs for it.
+            if isinstance(obj, metrics.Metric) and not obj.is_internal_metric():
                 # If we get here, obj is definitely a metric we want
                 # docs for.
                 for ping_name in obj.send_in_pings:
