@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.24.0 (2020-06-30)
+-------------------
+
 * BUGFIX: look for metrics in send_if_empty pings. Metrics for these kinds of pings were being ignored.
 
 1.23.0 (2020-06-27)
