@@ -188,8 +188,8 @@ def test_send_if_empty_metrics(tmpdir):
 
     translate.translate(
         [
-            ROOT / "data" / "pings.yaml",
             ROOT / "data" / "send_if_empty_with_metrics.yaml",
+            ROOT / "data" / "pings.yaml",
         ],
         "markdown",
         tmpdir,

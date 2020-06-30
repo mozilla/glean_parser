@@ -169,8 +169,9 @@ def output_markdown(
             if isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
                 # Pings that have `send_if_empty` set to true,
-                # might not have any metrics.
-                if obj.send_if_empty:
+                # might not have any metrics. They need to at least have an
+                # empty array of metrics to show up on the template.
+                if obj.send_if_empty and not metrics_by_pings[obj.name]:
                     metrics_by_pings[obj.name] = []
 
             # If this is an internal Glean metric, and we don't
