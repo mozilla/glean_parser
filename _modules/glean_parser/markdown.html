@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.22.1.dev4+g14e65c8 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.23.1.dev1+g3c8de75 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -203,13 +203,15 @@
             <span class="c1"># the description</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">):</span>
                 <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
-                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">send_if_empty</span><span class="p">:</span>
+                <span class="c1"># Pings that have `send_if_empty` set to true,</span>
+                <span class="c1"># might not have any metrics. They need to at least have an</span>
+                <span class="c1"># empty array of metrics to show up on the template.</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">send_if_empty</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
                     <span class="n">metrics_by_pings</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_internal_metric</span><span class="p">():</span>
-                <span class="c1"># This is an internal Glean metric, and we don&#39;t</span>
-                <span class="c1"># want docs for it.</span>
-                <span class="k">continue</span>
-            <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># If this is an internal Glean metric, and we don&#39;t</span>
+            <span class="c1"># want docs for it.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_internal_metric</span><span class="p">():</span>
                 <span class="c1"># If we get here, obj is definitely a metric we want</span>
                 <span class="c1"># docs for.</span>
                 <span class="k">for</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
