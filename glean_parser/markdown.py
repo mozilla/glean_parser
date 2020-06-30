@@ -168,13 +168,15 @@ def output_markdown(
             # the description
             if isinstance(obj, pings.Ping):
                 custom_pings_cache[obj.name] = obj
-                if obj.send_if_empty:
+                # Pings that have `send_if_empty` set to true,
+                # might not have any metrics. They need to at least have an
+                # empty array of metrics to show up on the template.
+                if obj.send_if_empty and not metrics_by_pings[obj.name]:
                     metrics_by_pings[obj.name] = []
-            elif obj.is_internal_metric():
-                # This is an internal Glean metric, and we don't
-                # want docs for it.
-                continue
-            else:
+
+            # If this is an internal Glean metric, and we don't
+            # want docs for it.
+            if isinstance(obj, metrics.Metric) and not obj.is_internal_metric():
                 # If we get here, obj is definitely a metric we want
                 # docs for.
                 for ping_name in obj.send_in_pings:

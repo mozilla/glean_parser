@@ -181,3 +181,24 @@ def test_event_extra_keys_in_correct_order(tmpdir):
             r"<li>bob: three</li>"
             r"<li>charlie: one</li></ul>" in content
         )
+
+
+def test_send_if_empty_metrics(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        [
+            ROOT / "data" / "send_if_empty_with_metrics.yaml",
+            ROOT / "data" / "pings.yaml",
+        ],
+        "markdown",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+
+    # Make sure descriptions made it in
+    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "Lorem ipsum dolor sit amet, consectetur adipiscing elit." in content
