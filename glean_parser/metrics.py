@@ -25,6 +25,13 @@ class Lifetime(enum.Enum):
     user = 2
 
 
+class DataCategory(enum.Enum):
+    technical = 1
+    interaction = 2
+    web_activity = 3
+    highly_sensitive = 4
+
+
 class Metric:
     typename: str = "ERROR"
     glean_internal_metric_cat: str = "glean.internal.metrics"
@@ -48,6 +55,7 @@ class Metric:
         unit: str = "",
         gecko_datapoint: str = "",
         no_lint: Optional[List[str]] = None,
+        data_categories: Optional[List[str]] = None,
         _config: Optional[Dict[str, Any]] = None,
         _validated: bool = False,
     ):
@@ -75,6 +83,8 @@ class Metric:
         if no_lint is None:
             no_lint = []
         self.no_lint = no_lint
+        if data_categories is not None:
+            self.data_categories = [getattr(DataCategory, x) for x in data_categories]
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
@@ -141,6 +151,8 @@ class Metric:
                 d[key] = d[key].name
             if isinstance(val, set):
                 d[key] = sorted(list(val))
+            if isinstance(val, list) and len(val) and isinstance(val[0], enum.Enum):
+                d[key] = [x.name for x in val]
         del d["name"]
         del d["category"]
         return d

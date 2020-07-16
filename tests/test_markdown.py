@@ -34,7 +34,8 @@ def test_parser(tmpdir):
         assert "is assembled out of the box by the Glean SDK." in content
         # Make sure the table structure is in place
         assert (
-            "| Name | Type | Description | Data reviews | Extras | Expiration |"
+            "| Name | Type | Description | Data reviews | Extras | "
+            + "Expiration | [Data Category]"
             in content
         )
         # Make sure non ASCII characters are there
@@ -202,3 +203,21 @@ def test_send_if_empty_metrics(tmpdir):
     with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "Lorem ipsum dolor sit amet, consectetur adipiscing elit." in content
+
+
+def test_data_categories():
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=[42],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        extra_keys={"my_extra": {"description": "an extra"}},
+        data_categories=["technical", "interaction"],
+    )
+
+    assert markdown.data_category_numbers(event.data_categories) == "1, 2"
+
+    assert markdown.data_category_numbers(None) == "unknown"
