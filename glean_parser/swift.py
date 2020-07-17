@@ -140,21 +140,6 @@ def output_swift(
         ),
     )
 
-    # The object parameters to pass to constructors.
-    # **CAUTION**: This list needs to be in the order the type constructor expects them.
-    # The `test_order_of_fields` test checks that the generated code is valid.
-    # **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**
-    extra_args = [
-        "category",
-        "name",
-        "send_in_pings",
-        "lifetime",
-        "disabled",
-        "time_unit",
-        "allowed_extra_keys",
-        "reason_codes",
-    ]
-
     namespace = options.get("namespace", "GleanMetrics")
     glean_namespace = options.get("glean_namespace", "Glean")
 
@@ -178,7 +163,7 @@ def output_swift(
         fd.write(
             template.render(
                 categories=categories,
-                extra_args=extra_args,
+                extra_args=util.extra_metric_args,
                 namespace=namespace,
                 glean_namespace=glean_namespace,
                 allow_reserved=options.get("allow_reserved", False),

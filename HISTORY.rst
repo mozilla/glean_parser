@@ -6,6 +6,8 @@ Unreleased
 ----------
 
 * Add support for generating C# code.
+* BUGFIX: The memory unit is now correctly passed to the MemoryDistribution
+  metric type in Swift.
 
 1.24.0 (2020-06-30)
 -------------------
