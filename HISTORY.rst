@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.25.0 (2020-07-17)
+-------------------
+
 * Add support for generating C# code.
 
 1.24.0 (2020-06-30)
