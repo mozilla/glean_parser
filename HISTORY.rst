@@ -6,6 +6,7 @@ Unreleased
 ----------
 
 * Add support for JWE metric types.
+* Add a `data_category` field to all metrics for specifying the type of data collected in the field.
 
 1.25.0 (2020-07-17)
 -------------------
