@@ -381,3 +381,40 @@ def report_validation_errors(all_objects):
         print("=" * 78, file=sys.stderr)
         print(error, file=sys.stderr)
     return found_error
+
+
+# Names of metric parameters to pass to constructors.
+# This includes only things that the language bindings care about, not things
+# that are metadata-only or are resolved into other parameters at parse time.
+# **CAUTION**: This list needs to be in the order the Swift type constructors
+# expects them. (The other language bindings don't care about the order). The
+# `test_order_of_fields` test checks that the generated code is valid.
+# **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**
+extra_metric_args = [
+    "category",
+    "name",
+    "send_in_pings",
+    "lifetime",
+    "disabled",
+    "time_unit",
+    "memory_unit",
+    "allowed_extra_keys",
+    "reason_codes",
+    "bucket_count",
+    "range_max",
+    "range_min",
+    "histogram_type",
+]
+
+
+# Names of ping parameters to pass to constructors.
+extra_ping_args = [
+    "include_client_id",
+    "send_if_empty",
+    "name",
+    "reason_codes",
+]
+
+
+# Names of parameters to pass to both metric and ping constructors.
+extra_args = list(set(extra_metric_args) | set(extra_ping_args))

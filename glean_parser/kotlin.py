@@ -222,25 +222,6 @@ def output_kotlin(
         ),
     )
 
-    # The object parameters to pass to constructors
-    extra_args = [
-        "allowed_extra_keys",
-        "bucket_count",
-        "category",
-        "disabled",
-        "histogram_type",
-        "include_client_id",
-        "send_if_empty",
-        "lifetime",
-        "memory_unit",
-        "name",
-        "range_max",
-        "range_min",
-        "reason_codes",
-        "send_in_pings",
-        "time_unit",
-    ]
-
     namespace = options.get("namespace", "GleanMetrics")
     glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
 
@@ -261,7 +242,7 @@ def output_kotlin(
                     category_name=category_key,
                     objs=category_val,
                     obj_types=obj_types,
-                    extra_args=extra_args,
+                    extra_args=util.extra_args,
                     namespace=namespace,
                     has_labeled_metrics=has_labeled_metrics,
                     glean_namespace=glean_namespace,
