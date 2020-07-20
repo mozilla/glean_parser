@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.util &#8212; Glean Parser 1.25.1.dev1+g0bbcc45 documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.25.1.dev2+ga89ad1a documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -416,6 +416,43 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">found_error</span></div>
+
+
+<span class="c1"># Names of metric parameters to pass to constructors.</span>
+<span class="c1"># This includes only things that the language bindings care about, not things</span>
+<span class="c1"># that are metadata-only or are resolved into other parameters at parse time.</span>
+<span class="c1"># **CAUTION**: This list needs to be in the order the Swift type constructors</span>
+<span class="c1"># expects them. (The other language bindings don&#39;t care about the order). The</span>
+<span class="c1"># `test_order_of_fields` test checks that the generated code is valid.</span>
+<span class="c1"># **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**</span>
+<span class="n">extra_metric_args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;send_in_pings&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lifetime&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;memory_unit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;allowed_extra_keys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bucket_count&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;range_max&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;range_min&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;histogram_type&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Names of ping parameters to pass to constructors.</span>
+<span class="n">extra_ping_args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;include_client_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;send_if_empty&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Names of parameters to pass to both metric and ping constructors.</span>
+<span class="n">extra_args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extra_metric_args</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">extra_ping_args</span><span class="p">))</span>
 </pre></div>
 
           </div>
