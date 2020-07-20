@@ -286,6 +286,14 @@ class Uuid(Metric):
     typename = "uuid"
 
 
+class Jwe(Metric):
+    typename = "jwe"
+
+    def __init__(self, *args, **kwargs):
+        self.decrypted_name = kwargs.pop("decrypted_name")
+        super().__init__(*args, **kwargs)
+
+
 class Labeled(Metric):
     labeled = True
 

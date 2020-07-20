@@ -97,6 +97,8 @@ definitions:
 
             - `uuid`: Record a UUID v4.
 
+            - `jwe`: Record a JWE value.
+
             - `memory_distribution`: A histogram for recording memory usage
               values. Additional properties: `memory_unit`.
 
@@ -127,6 +129,7 @@ definitions:
           - memory_distribution
           - datetime
           - uuid
+          - jwe
           - labeled_boolean
           - labeled_string
           - labeled_counter
@@ -412,6 +415,16 @@ definitions:
         items:
           type: string
 
+      decrypted_name:
+        title: Decrypted name
+        description: |
+          Name of the column where to persist the decrypted value
+          stored in the JWE after processing.
+
+          Required when `type`_ is `jwe`.
+        type: string
+        pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
+
     required:
       - type
       - bugs
@@ -529,3 +542,13 @@ additionalProperties:
             - unit
           description: |
             `quantity` is missing required parameter `unit`.
+      -
+        if:
+          properties:
+            type:
+              const: jwe
+        then:
+          required:
+            - decrypted_name
+          description: |
+            `jwe` is missing required parameter `decrypted_name`.
