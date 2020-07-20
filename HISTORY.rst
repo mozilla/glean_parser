@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Add support for JWE metric types.
+
 1.25.0 (2020-07-17)
 -------------------
 
