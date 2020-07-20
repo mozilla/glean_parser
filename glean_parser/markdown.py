@@ -33,6 +33,9 @@ def extra_info(obj: Union[metrics.Metric, pings.Ping]) -> List[Tuple[str, str]]:
         for label in obj.ordered_labels:
             extra_info.append((label, None))
 
+    if isinstance(obj, metrics.Jwe):
+        extra_info.append(("decrypted_name", obj.decrypted_name))
+
     return extra_info
 
 
