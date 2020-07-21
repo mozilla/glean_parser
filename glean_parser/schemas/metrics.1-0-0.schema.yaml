@@ -425,6 +425,52 @@ definitions:
         type: string
         pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
 
+      data_categories:
+        title: Data collection categories
+        description: |
+          There are four data collection categories [defined
+          here](https://wiki.mozilla.org/Firefox/Data_Collection):
+
+          - **Category 1: Technical Data:** (`technical`) Information about the
+            machine or Firefox itself. Examples include OS, available memory,
+            crashes and errors, outcome of automated processes like updates,
+            safebrowsing, activation, version \#s, and buildid. This also
+            includes compatibility information about features and APIs used by
+            websites, addons, and other 3rd-party software that interact with
+            Firefox during usage.
+
+          - **Category 2: Interaction Data:** (`interaction`) Information about
+            the user’s direct engagement with Firefox. Examples include how many
+            tabs, addons, or windows a user has open; uses of specific Firefox
+            features; session length, scrolls and clicks; and the status of
+            discrete user preferences.
+
+          - **Category 3: Web activity data:** (`web_activity`) Information
+            about user web browsing that could be considered sensitive. Examples
+            include users’ specific web browsing history; general information
+            about their web browsing history (such as TLDs or categories of
+            webpages visited over time); and potentially certain types of
+            interaction data about specific webpages visited.
+
+          - **Category 4: Highly sensitive data:** (`highly_sensitive`)
+            Information that directly identifies a person, or if combined with
+            other data could identify a person. Examples include e-mail,
+            usernames, identifiers such as google ad id, apple id, fxaccount,
+            city or country (unless small ones are explicitly filtered out), or
+            certain cookies. It may be embedded within specific website content,
+            such as memory contents, dumps, captures of screen data, or DOM
+            data.
+        type: array
+        items:
+          enum:
+            - technical
+            - interaction
+            - web_activity
+            - highly_sensitive
+          type: string
+        minLength: 1
+        uniqueItems: true
+
     required:
       - type
       - bugs
