@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.27.0 (2020-07-21)
+-------------------
+
 * Rename the `data_category` field to `data_sensitivity` to be clearer.
 
 1.26.0 (2020-07-21)
