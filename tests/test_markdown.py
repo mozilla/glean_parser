@@ -35,7 +35,7 @@ def test_parser(tmpdir):
         # Make sure the table structure is in place
         assert (
             "| Name | Type | Description | Data reviews | Extras | "
-            + "Expiration | [Data Category]"
+            + "Expiration | [Data Sensitivity]"
             in content
         )
         # Make sure non ASCII characters are there
@@ -205,7 +205,7 @@ def test_send_if_empty_metrics(tmpdir):
         assert "Lorem ipsum dolor sit amet, consectetur adipiscing elit." in content
 
 
-def test_data_categories():
+def test_data_sensitivity():
     event = metrics.Event(
         type="event",
         category="category",
@@ -215,9 +215,9 @@ def test_data_categories():
         description="description...",
         expires="never",
         extra_keys={"my_extra": {"description": "an extra"}},
-        data_categories=["technical", "interaction"],
+        data_sensitivity=["technical", "interaction"],
     )
 
-    assert markdown.data_category_numbers(event.data_categories) == "1, 2"
+    assert markdown.data_sensitivity_numbers(event.data_sensitivity) == "1, 2"
 
-    assert markdown.data_category_numbers(None) == "unknown"
+    assert markdown.data_sensitivity_numbers(None) == "unknown"

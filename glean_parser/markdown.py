@@ -132,11 +132,13 @@ def ping_include_client_id(
         return False
 
 
-def data_category_numbers(data_category: Optional[List[metrics.DataCategory]]) -> str:
-    if data_category is None:
+def data_sensitivity_numbers(
+    data_sensitivity: Optional[List[metrics.DataSensitivity]],
+) -> str:
+    if data_sensitivity is None:
         return "unknown"
     else:
-        return ", ".join(str(x.value) for x in data_category)
+        return ", ".join(str(x.value) for x in data_sensitivity)
 
 
 def output_markdown(
@@ -216,7 +218,7 @@ def output_markdown(
                 "ping_include_client_id",
                 lambda x: ping_include_client_id(x, custom_pings_cache),
             ),
-            ("data_category_numbers", data_category_numbers),
+            ("data_sensitivity_numbers", data_sensitivity_numbers),
         ),
     )
 
