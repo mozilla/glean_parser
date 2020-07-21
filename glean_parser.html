@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.25.1.dev2+ga89ad1a documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.25.1.dev3+g7b8bcc7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -326,6 +326,11 @@ code.</li>
 <span id="glean-parser-markdown-module"></span><h2>glean_parser.markdown module<a class="headerlink" href="#module-glean_parser.markdown" title="Permalink to this headline">¶</a></h2>
 <p>Outputter to generate Markdown documentation for metrics.</p>
 <dl class="function">
+<dt id="glean_parser.markdown.data_category_numbers">
+<code class="descclassname">glean_parser.markdown.</code><code class="descname">data_category_numbers</code><span class="sig-paren">(</span><em>data_category: Optional[List[glean_parser.metrics.DataCategory]]</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/glean_parser/markdown.html#data_category_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.markdown.data_category_numbers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="glean_parser.markdown.extra_info">
 <code class="descclassname">glean_parser.markdown.</code><code class="descname">extra_info</code><span class="sig-paren">(</span><em>obj: Union[glean_parser.metrics.Metric, glean_parser.pings.Ping]</em><span class="sig-paren">)</span> &#x2192; List[Tuple[str, str]]<a class="reference internal" href="_modules/glean_parser/markdown.html#extra_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.markdown.extra_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of string to string tuples with extra information for the type
@@ -408,7 +413,7 @@ built-in ping.</p>
 <p>Classes for each of the high-level metric types.</p>
 <dl class="class">
 <dt id="glean_parser.metrics.Boolean">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Boolean</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Boolean" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Boolean</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Boolean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Boolean.typename">
@@ -419,7 +424,7 @@ built-in ping.</p>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Counter">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Counter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Counter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Counter</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Counter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Counter.typename">
@@ -435,6 +440,33 @@ built-in ping.</p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.CustomDistribution.typename">
 <code class="descname">typename</code><em class="property"> = 'custom_distribution'</em><a class="headerlink" href="#glean_parser.metrics.CustomDistribution.typename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="glean_parser.metrics.DataCategory">
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">DataCategory</code><a class="reference internal" href="_modules/glean_parser/metrics.html#DataCategory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.DataCategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="glean_parser.metrics.DataCategory.highly_sensitive">
+<code class="descname">highly_sensitive</code><em class="property"> = 4</em><a class="headerlink" href="#glean_parser.metrics.DataCategory.highly_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.DataCategory.interaction">
+<code class="descname">interaction</code><em class="property"> = 2</em><a class="headerlink" href="#glean_parser.metrics.DataCategory.interaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.DataCategory.technical">
+<code class="descname">technical</code><em class="property"> = 1</em><a class="headerlink" href="#glean_parser.metrics.DataCategory.technical" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="glean_parser.metrics.DataCategory.web_activity">
+<code class="descname">web_activity</code><em class="property"> = 3</em><a class="headerlink" href="#glean_parser.metrics.DataCategory.web_activity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -616,7 +648,7 @@ built-in ping.</p>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Metric">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Metric.default_store_names">
@@ -703,7 +735,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Quantity">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Quantity</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Quantity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Quantity</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Quantity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Quantity.typename">
@@ -714,7 +746,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.String">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">String</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.String" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">String</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#String"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.String" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.String.typename">
@@ -725,7 +757,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.StringList">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">StringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#StringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.StringList" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">StringList</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#StringList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.StringList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.StringList.typename">
@@ -806,7 +838,7 @@ jsonschema validation</td>
 
 <dl class="class">
 <dt id="glean_parser.metrics.Uuid">
-<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Uuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Uuid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">glean_parser.metrics.</code><code class="descname">Uuid</code><span class="sig-paren">(</span><em>type: str, category: str, name: str, bugs: List[str], description: str, notification_emails: List[str], expires: str, data_reviews: Optional[List[str]] = None, version: int = 0, disabled: bool = False, lifetime: str = 'ping', send_in_pings: Optional[List[str]] = None, unit: str = '', gecko_datapoint: str = '', no_lint: Optional[List[str]] = None, data_categories: Optional[List[str]] = None, _config: Optional[Dict[str, Any]] = None, _validated: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">glean_parser.metrics.Metric</span></code></a></p>
 <dl class="attribute">
 <dt id="glean_parser.metrics.Uuid.typename">
