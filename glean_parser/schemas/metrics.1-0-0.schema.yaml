@@ -425,11 +425,11 @@ definitions:
         type: string
         pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
 
-      data_categories:
-        title: Data collection categories
+      data_sensitivity:
+        title: The level of data sensitivity
         description: |
-          There are four data collection categories [defined
-          here](https://wiki.mozilla.org/Firefox/Data_Collection):
+          There are four data collection categories related to data sensitivity
+          [defined here](https://wiki.mozilla.org/Firefox/Data_Collection):
 
           - **Category 1: Technical Data:** (`technical`) Information about the
             machine or Firefox itself. Examples include OS, available memory,

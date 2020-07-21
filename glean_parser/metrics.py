@@ -25,7 +25,7 @@ class Lifetime(enum.Enum):
     user = 2
 
 
-class DataCategory(enum.Enum):
+class DataSensitivity(enum.Enum):
     technical = 1
     interaction = 2
     web_activity = 3
@@ -55,7 +55,7 @@ class Metric:
         unit: str = "",
         gecko_datapoint: str = "",
         no_lint: Optional[List[str]] = None,
-        data_categories: Optional[List[str]] = None,
+        data_sensitivity: Optional[List[str]] = None,
         _config: Optional[Dict[str, Any]] = None,
         _validated: bool = False,
     ):
@@ -83,8 +83,10 @@ class Metric:
         if no_lint is None:
             no_lint = []
         self.no_lint = no_lint
-        if data_categories is not None:
-            self.data_categories = [getattr(DataCategory, x) for x in data_categories]
+        if data_sensitivity is not None:
+            self.data_sensitivity = [
+                getattr(DataSensitivity, x) for x in data_sensitivity
+            ]
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).

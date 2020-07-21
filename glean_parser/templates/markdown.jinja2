@@ -61,7 +61,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 {% if metrics_by_pings[ping_name] %}
 The following metrics are added to the ping:
 
-| Name | Type | Description | Data reviews | Extras | Expiration | [Data Category](https://wiki.mozilla.org/Firefix/Data_Collection) |
+| Name | Type | Description | Data reviews | Extras | Expiration | [Data Sensitivity](https://wiki.mozilla.org/Firefix/Data_Collection) |
 | --- | --- | --- | --- | --- | --- |
 {% for metric in metrics_by_pings[ping_name] %}
 | {{ metric.identifier() }} |
@@ -78,7 +78,7 @@ The following metrics are added to the ping:
 </ul>
 {%- endif -%} |
 {{- metric.expires }} |
-{{- metric.data_categories|data_category_numbers }} |
+{{- metric.data_sensitivity|data_sensitivity_numbers }} |
 {% endfor %}
 {% else %}
 This ping contains no metrics.

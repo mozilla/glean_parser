@@ -5,11 +5,13 @@ History
 Unreleased
 ----------
 
+* Rename the `data_category` field to `data_sensitivity` to be clearer.
+
 1.26.0 (2020-07-21)
 -------------------
 
 * Add support for JWE metric types.
-* Add a `data_category` field to all metrics for specifying the type of data collected in the field.
+* Add a `data_sensitivity` field to all metrics for specifying the type of data collected in the field.
 
 1.25.0 (2020-07-17)
 -------------------

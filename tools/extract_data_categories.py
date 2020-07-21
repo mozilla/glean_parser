@@ -105,11 +105,14 @@ def categories_as_strings(categories: Set[int]) -> List[str]:
 
 
 def update_lines(
-    lines: List[str], category_name: str, metric_name: str, data_categories: List[str]
+    lines: List[str],
+    category_name: str,
+    metric_name: str,
+        data_sensitivity_values: List[str],
 ) -> List[str]:
     """
-    Update the lines of a YAML file in place to include the data_categories for
-    the given metric, returning the lines of the result.
+    Update the lines of a YAML file in place to include the data_sensitivity
+    for the given metric, returning the lines of the result.
     """
     output = []
     lines_iter = iter(lines)
@@ -131,9 +134,9 @@ def update_lines(
 
     for line in lines_iter:
         if not line.strip().startswith("- "):
-            output.append("    data_categories:\n")
-            for data_category in data_categories:
-                output.append(f"      - {data_category}\n")
+            output.append("    data_sensitivity:\n")
+            for data_sensitivity in data_sensitivity_values:
+                output.append(f"      - {data_sensitivity}\n")
             output.append(line)
             break
         else:
