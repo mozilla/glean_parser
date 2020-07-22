@@ -24,7 +24,7 @@ else:
     base_object = object
 
 
-RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
+RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion-request"]
 
 
 class Ping(base_object):  # type: ignore
