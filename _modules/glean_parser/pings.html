@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.pings &#8212; Glean Parser 1.22.1.dev1+g22d4292 documentation</title>
+    <title>glean_parser.pings &#8212; Glean Parser 1.27.1.dev1+gda8de22 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -43,26 +43,16 @@
 <span class="sd">Classes for managing the description of pings.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
-<span class="c1"># Import a backport of PEP487 to support __init_subclass__</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">pep487</span>  <span class="c1"># type: ignore</span>
-
-    <span class="n">base_object</span> <span class="o">=</span> <span class="n">pep487</span><span class="o">.</span><span class="n">PEP487Object</span>  <span class="c1"># type: ignore</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">base_object</span> <span class="o">=</span> <span class="nb">object</span>
-
-
 <span class="n">RESERVED_PING_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">,</span> <span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="s2">&quot;deletion-request&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="Ping"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.pings.Ping">[docs]</a><span class="k">class</span> <span class="nc">Ping</span><span class="p">(</span><span class="n">base_object</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+<div class="viewcode-block" id="Ping"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.pings.Ping">[docs]</a><span class="k">class</span> <span class="nc">Ping</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -94,10 +84,10 @@
         <span class="c1"># _validated indicates whether this metric has already been jsonschema</span>
         <span class="c1"># validated (but not any of the Python-level validation).</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_validated</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="n">parser</span><span class="o">.</span><span class="n">PINGS_ID</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize</span><span class="p">(),</span>
-            <span class="p">}</span>  <span class="c1"># type: Dict[str, util.JSONType]</span>
+            <span class="p">}</span>
             <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 

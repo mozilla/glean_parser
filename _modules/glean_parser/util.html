@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.util &#8212; Glean Parser 1.22.1.dev1+g22d4292 documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.27.1.dev1+gda8de22 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -167,7 +167,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">_NoDatesSafeLoader</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown file extension </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown file extension </span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ensure_list"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ensure_list">[docs]</a><span class="k">def</span> <span class="nf">ensure_list</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
@@ -296,8 +296,7 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_http</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-            <span class="n">contents</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">contents</span>
+            <span class="k">return</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
         <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="p">(</span><span class="s2">&quot;glean_parser&quot;</span><span class="p">,</span> <span class="s2">&quot;mozilla&quot;</span><span class="p">)</span>
@@ -305,13 +304,7 @@
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dc</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">dc</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="n">contents</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
-
-    <span class="c1"># On Python 3.5, urlopen does not handle the unicode decoding for us. This</span>
-    <span class="c1"># is ok because we control these files and we know they are in UTF-8,</span>
-    <span class="c1"># however, this wouldn&#39;t be correct in general.</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">contents</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">diskcache</span><span class="o">.</span><span class="n">Cache</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span> <span class="k">as</span> <span class="n">dc</span><span class="p">:</span>
@@ -373,9 +366,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="s2">&quot;&lt;string&gt;&quot;</span>
     <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">header</span><span class="p">,</span> <span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">header</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 <div class="viewcode-block" id="is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.is_expired">[docs]</a><span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -395,10 +388,8 @@
                 <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="s2">&quot;Invalid expiration date &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span>
-                    <span class="s2">&quot;Must be of the form yyyy-mm-dd in UTC.&quot;</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid expiration date &#39;</span><span class="si">{</span><span class="n">expires</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                <span class="s2">&quot;Must be of the form yyyy-mm-dd in UTC.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
 
@@ -425,6 +416,43 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">found_error</span></div>
+
+
+<span class="c1"># Names of metric parameters to pass to constructors.</span>
+<span class="c1"># This includes only things that the language bindings care about, not things</span>
+<span class="c1"># that are metadata-only or are resolved into other parameters at parse time.</span>
+<span class="c1"># **CAUTION**: This list needs to be in the order the Swift type constructors</span>
+<span class="c1"># expects them. (The other language bindings don&#39;t care about the order). The</span>
+<span class="c1"># `test_order_of_fields` test checks that the generated code is valid.</span>
+<span class="c1"># **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**</span>
+<span class="n">extra_metric_args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;send_in_pings&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lifetime&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;memory_unit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;allowed_extra_keys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bucket_count&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;range_max&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;range_min&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;histogram_type&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Names of ping parameters to pass to constructors.</span>
+<span class="n">extra_ping_args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;include_client_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;send_if_empty&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Names of parameters to pass to both metric and ping constructors.</span>
+<span class="n">extra_args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extra_metric_args</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">extra_ping_args</span><span class="p">))</span>
 </pre></div>
 
           </div>

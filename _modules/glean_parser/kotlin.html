@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser.kotlin &#8212; Glean Parser 1.22.1.dev1+g22d4292 documentation</title>
+    <title>glean_parser.kotlin &#8212; Glean Parser 1.27.1.dev1+gda8de22 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -179,9 +179,9 @@
     <span class="c1">#   },</span>
     <span class="c1">#   &quot;other-type&quot;: {}</span>
     <span class="c1"># }</span>
-    <span class="n">gecko_metrics</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">OrderedDict</span><span class="p">()</span>
-    <span class="p">)</span>  <span class="c1"># type: OrderedDict[str, OrderedDict[str, List[Dict[str, str]]]]</span>
+    <span class="n">gecko_metrics</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
     <span class="c1"># Define scalar-like types.</span>
     <span class="n">SCALAR_LIKE_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;quantity&quot;</span><span class="p">]</span>
@@ -257,25 +257,6 @@
         <span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="c1"># The object parameters to pass to constructors</span>
-    <span class="n">extra_args</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;allowed_extra_keys&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bucket_count&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;category&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;histogram_type&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;include_client_id&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;send_if_empty&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;lifetime&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;memory_unit&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;range_max&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;range_min&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;reason_codes&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;send_in_pings&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
-    <span class="p">]</span>
-
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;GleanMetrics&quot;</span><span class="p">)</span>
     <span class="n">glean_namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;glean_namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;mozilla.components.service.glean&quot;</span><span class="p">)</span>
 
@@ -296,7 +277,7 @@
                     <span class="n">category_name</span><span class="o">=</span><span class="n">category_key</span><span class="p">,</span>
                     <span class="n">objs</span><span class="o">=</span><span class="n">category_val</span><span class="p">,</span>
                     <span class="n">obj_types</span><span class="o">=</span><span class="n">obj_types</span><span class="p">,</span>
-                    <span class="n">extra_args</span><span class="o">=</span><span class="n">extra_args</span><span class="p">,</span>
+                    <span class="n">extra_args</span><span class="o">=</span><span class="n">util</span><span class="o">.</span><span class="n">extra_args</span><span class="p">,</span>
                     <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
                     <span class="n">has_labeled_metrics</span><span class="o">=</span><span class="n">has_labeled_metrics</span><span class="p">,</span>
                     <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
