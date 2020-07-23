@@ -14,7 +14,7 @@ from typing import Dict, List, Optional
 from . import util
 
 
-RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion_request"]
+RESERVED_PING_NAMES = ["baseline", "metrics", "events", "deletion-request"]
 
 
 class Ping:
