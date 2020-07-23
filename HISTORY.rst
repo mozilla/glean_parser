@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+1.28.0 (2020-07-23)
+-------------------
+
 * **Breaking change:** The internal ping `deletion-request` was misnamed in pings.py causing the linter to not allow use of the correctly named ping for adding legacy ids to. Consuming apps will need to update their metrics.yaml if they are using `deletion_request` in any `send_in_pings` to `deletion-request` after updating.
 
 1.27.0 (2020-07-21)
