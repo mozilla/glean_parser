@@ -4,14 +4,6 @@ glean\_parser package
 Submodules
 ----------
 
-glean\_parser.csharp module
----------------------------
-
-.. automodule:: glean_parser.csharp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 glean\_parser.kotlin module
 ---------------------------
 
