@@ -5,6 +5,10 @@ History
 Unreleased
 ----------
 
+1.28.1 (2020-07-24)
+
+* BUGFIX: Add missing column to correctly render markdown tables in generated documentation.
+
 1.28.0 (2020-07-23)
 -------------------
 
