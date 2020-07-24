@@ -62,7 +62,7 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 The following metrics are added to the ping:
 
 | Name | Type | Description | Data reviews | Extras | Expiration | [Data Sensitivity](https://wiki.mozilla.org/Firefox/Data_Collection) |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 {% for metric in metrics_by_pings[ping_name] %}
 | {{ metric.identifier() }} |
 {{- '['}}{{ metric.type }}]({{ metric.type|metrics_docs }}) |
