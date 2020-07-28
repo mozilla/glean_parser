@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Generate valid C# code when using Labeled metric types.
+
 1.28.1 (2020-07-24)
 -------------------
 
