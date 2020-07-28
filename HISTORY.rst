@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Support HashSet and Dictionary in the C# generated code.
+
 1.28.2 (2020-07-28)
 -------------------
 
