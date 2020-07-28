@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>glean_parser package &#8212; Glean Parser 1.28.2.dev2+g7a1c235 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.28.3.dev1+g32f2868 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -56,8 +56,8 @@
 <dt>Based on Python’s JSONEncoder, but overrides:</dt>
 <dd><ul class="first last simple">
 <li>lists to use <cite>new string[] {}</cite> (only strings)</li>
-<li>dicts to use mapOf (not currently supported)</li>
-<li>sets to use setOf (not currently supported)</li>
+<li>dicts to use <cite>new Dictionary&lt;string, string&gt; { …}</cite> (string, string)</li>
+<li>sets to use <cite>new HashSet&lt;string&gt;() {}</cite> (only strings)</li>
 <li>enums to use the like-named C# enum</li>
 </ul>
 </dd>
