@@ -86,7 +86,7 @@ def test_csharp_generator():
     assert cdf(["test", "\n"]) == r'new string[] {"test", "\n"}'
     assert (
         cdf(OrderedDict([("key", "value"), ("key2", "value2")]))
-        == r'mapOf("key" to "value", "key2" to "value2")'
+        == r'new Dictionary<string, string> {{"key", "value"}, {"key2", "value2"}}'
     )
     assert cdf(metrics.Lifetime.ping) == "Lifetime.Ping"
 
