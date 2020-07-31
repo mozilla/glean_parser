@@ -318,22 +318,6 @@ def lint_metrics(
                             )
                             for msg in new_nits
                         )
-                else:
-                    if (
-                        check_name not in CATEGORY_CHECKS
-                        and check_name in metric.no_lint
-                    ):
-                        nits.append(
-                            GlinterNit(
-                                "SUPERFLUOUS_NO_LINT",
-                                ".".join([metric.category, metric.name]),
-                                (
-                                    f"Superfluous no_lint entry '{check_name}'. "
-                                    "Please remove it."
-                                ),
-                                CheckType.warning,
-                            )
-                        )
 
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)

@@ -151,31 +151,6 @@ def test_combined():
     )
 
 
-def test_superfluous():
-    contents = [
-        {
-            "telemetry": {
-                "network_latency": {
-                    "type": "timespan",
-                    "time_unit": "millisecond",
-                    "no_lint": ["UNIT_IN_NAME"],
-                }
-            }
-        }
-    ]
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_objects(contents)
-
-    errs = list(all_metrics)
-    assert len(errs) == 0
-
-    nits = lint.lint_metrics(all_metrics.value)
-
-    assert len(nits) == 1
-    assert all(nit.check_name == "SUPERFLUOUS_NO_LINT" for nit in nits)
-    assert all("UNIT_IN_NAME" in nit.msg for nit in nits)
-
-
 def test_baseline_restriction():
     contents = [
         {
@@ -265,30 +240,3 @@ def test_user_lifetime_expiration():
 
     assert len(nits) == 1
     assert set(["USER_LIFETIME_EXPIRATION"]) == set(v.check_name for v in nits)
-
-
-def test_warnings():
-    # SUPERFLUOUS_NO_LINT is a warning, so it shouldn't return an error code
-    contents = [
-        {
-            "user_data": {
-                "counter": {
-                    "type": "counter",
-                    "send_in_pings": ["metrics"],
-                    "no_lint": ["UNIT_IN_NAME"],
-                },
-            }
-        }
-    ]
-
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_objects(contents)
-
-    errs = list(all_metrics)
-    assert len(errs) == 0
-
-    nits = lint.lint_metrics(all_metrics.value)
-
-    assert not any(x.check_type == lint.CheckType.error for x in nits)
-    assert len(nits) == 1
-    assert nits[0].check_name == "SUPERFLUOUS_NO_LINT"
