@@ -120,7 +120,7 @@ def glinter(input, allow_reserved):
 
 
 @click.group()
-@click.version_option(glean_parser.__version__, "glean_parser")
+@click.version_option(glean_parser.__version__, prog_name="glean_parser")
 def main(args=None):
     """Command line utility for glean_parser."""
     pass
