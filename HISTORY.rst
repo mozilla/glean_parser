@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* The `SUPERFLUOUS_NO_LINT` warning has been removed from the glinter. It likely did more harm than good, and makes it hard to make `metrics.yaml` files that pass across different versions of `glean_parser`.
+
 1.28.3 (2020-07-28)
 -------------------
 
