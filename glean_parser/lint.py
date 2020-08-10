@@ -235,6 +235,13 @@ def check_user_lifetime_expiration(
         )
 
 
+def check_expired_metric(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
+    if metric.is_expired():
+        yield ("Metric has expired. Please consider removing it.")
+
+
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
 CATEGORY_CHECKS: Dict[
@@ -255,6 +262,7 @@ INDIVIDUAL_CHECKS: Dict[
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
+    "EXPIRED": (check_expired_metric, CheckType.warning),
 }
 
 
