@@ -240,3 +240,29 @@ def test_user_lifetime_expiration():
 
     assert len(nits) == 1
     assert set(["USER_LIFETIME_EXPIRATION"]) == set(v.check_name for v in nits)
+
+
+def test_expired_metric():
+    """Test that expiring 'user' lifetime metrics generate a warning."""
+    contents = [
+        {
+            "user_data": {
+                "counter": {
+                    "type": "counter",
+                    "lifetime": "ping",
+                    "expires": "1999-01-01",
+                },
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert set(["EXPIRED"]) == set(v.check_name for v in nits)
