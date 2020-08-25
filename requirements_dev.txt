@@ -7,7 +7,7 @@ pip
 pytest-runner==5.2
 pytest==6.0.1
 Sphinx==3.2.1
-twine==1.13.0
+twine==3.2.0
 watchdog==0.10.3
 wheel
 yamllint==1.24.2
