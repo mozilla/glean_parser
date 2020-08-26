@@ -153,6 +153,7 @@ def test_external_translator(tmpdir):
         ROOT / "data" / "core.yaml",
         Path(str(tmpdir)),
         external_translator,
+        [],
         options={"foo": "bar"},
         parser_config={"allow_reserved": True},
     )

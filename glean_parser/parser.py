@@ -313,7 +313,7 @@ def _preprocess_objects(objs: ObjectTree, config: Dict[str, Any]) -> ObjectTree:
 
 @util.keep_value
 def parse_objects(
-    filepaths: Iterable[Path], config: Dict[str, Any] = {}
+    filepaths: Iterable[Path], config: Optional[Dict[str, Any]] = None
 ) -> Generator[str, None, ObjectTree]:
     """
     Parse one or more metrics.yaml and/or pings.yaml files, returning a tree of
@@ -343,6 +343,9 @@ def parse_objects(
           value from the `metrics.yaml`, rather than having it overridden when
           the metric expires.
     """
+    if config is None:
+        config = {}
+
     all_objects: ObjectTree = OrderedDict()
     sources: Dict[Any, Path] = {}
     filepaths = util.ensure_list(filepaths)
