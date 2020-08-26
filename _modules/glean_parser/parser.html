@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.28.4.dev15+gea3e61f documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.28.4.dev16+gad85232 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -149,7 +149,9 @@
     <span class="k">if</span> <span class="n">schema_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schemas</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
-                <span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;$schema key must be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;$schema key must be one of </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">schemas</span><span class="p">[</span><span class="n">schema_id</span><span class="p">]</span>
@@ -238,7 +240,9 @@
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span>
-                    <span class="n">filepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;On instance </span><span class="si">{</span><span class="n">category_key</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">metric_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                    <span class="n">filepath</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;On instance </span><span class="si">{</span><span class="n">category_key</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">metric_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="n">metric_obj</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
