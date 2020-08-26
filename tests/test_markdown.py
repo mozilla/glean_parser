@@ -143,7 +143,10 @@ def test_reasons(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "pings.yaml", "markdown", tmpdir, {"namespace": "Foo"},
+        ROOT / "data" / "pings.yaml",
+        "markdown",
+        tmpdir,
+        {"namespace": "Foo"},
     )
 
     assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
