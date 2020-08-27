@@ -8,6 +8,10 @@ commands:
                     name: environment
                     command: |
                         echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+            - run:
+                    name: Upgrade pip
+                    command: |
+                        pip install --upgrade --user pip
 
     test-min-requirements:
         steps:
