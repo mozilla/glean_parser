@@ -575,11 +575,10 @@ def test_quantity():
     contents = [util.add_required(x) for x in contents]
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
-    assert len(errors) == 2
+    assert len(errors) == 1
     assert any(
         "`quantity` is missing required parameter `unit`" in err for err in errors
     )
-    assert any("is only allowed for Gecko" in err for err in errors)
 
     # Test that quantity works
     contents = [
