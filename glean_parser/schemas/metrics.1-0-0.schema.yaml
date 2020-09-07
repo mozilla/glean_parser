@@ -83,8 +83,7 @@ definitions:
 
             - `counter`: A numeric value that can only be incremented.
 
-            - `quantity`: A numeric value that is set directly. Only allowed for
-              metrics coming from GeckoView.
+            - `quantity`: A numeric value that is set directly.
 
             - `timespan`: Represents a time interval. Additional properties:
               `time_unit`.
@@ -548,12 +547,11 @@ additionalProperties:
             type:
               enum:
                 - custom_distribution
-                - quantity
         then:
           required:
             - gecko_datapoint
           description: |
-            `custom_distribution` and `quantity` is only allowed for Gecko
+            `custom_distribution` is only allowed for Gecko
             metrics.
       -
         if:
