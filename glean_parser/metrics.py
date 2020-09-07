@@ -175,9 +175,8 @@ class Metric:
     def is_expired(self) -> bool:
         return util.is_expired(self.expires)
 
-    @staticmethod
-    def validate_expires(expires) -> None:
-        return util.validate_expires(expires)
+    def validate_expires(self):
+        return util.validate_expires(self.expires)
 
     def is_internal_metric(self) -> bool:
         return self.category in (Metric.glean_internal_metric_cat, "")

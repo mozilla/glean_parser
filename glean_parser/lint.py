@@ -235,6 +235,15 @@ def check_user_lifetime_expiration(
         )
 
 
+def check_expired_date(
+    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+) -> LintGenerator:
+    try:
+        metric.validate_expires()
+    except ValueError as e:
+        yield (str(e))
+
+
 def check_expired_metric(
     metric: metrics.Metric, parser_config: Dict[str, Any] = {}
 ) -> LintGenerator:
@@ -261,6 +270,7 @@ INDIVIDUAL_CHECKS: Dict[
     "BUG_NUMBER": (check_bug_number, CheckType.error),
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
+    "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
 }
