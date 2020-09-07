@@ -569,7 +569,7 @@ def test_memory_distribution():
 
 
 def test_quantity():
-    # Test that we get an error for a missing unit and gecko_datapoint
+    # Test that we get an error for a missing unit
     contents = [{"category": {"metric": {"type": "quantity"}}}]
 
     contents = [util.add_required(x) for x in contents]
