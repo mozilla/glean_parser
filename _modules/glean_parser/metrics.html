@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.28.4.dev17+gc608cd3 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -209,9 +209,8 @@
 <div class="viewcode-block" id="Metric.is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_expired">[docs]</a>    <span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Metric.validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.validate_expires">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Metric.validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.validate_expires">[docs]</a>    <span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Metric.is_internal_metric"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_internal_metric">[docs]</a>    <span class="k">def</span> <span class="nf">is_internal_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Metric</span><span class="o">.</span><span class="n">glean_internal_metric_cat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div></div>

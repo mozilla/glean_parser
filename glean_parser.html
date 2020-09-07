@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 1.28.4.dev17+gc608cd3 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -219,6 +219,11 @@ code.</p></li>
 <code class="sig-prename descclassname">glean_parser.lint.</code><code class="sig-name descname">check_common_prefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric">glean_parser.metrics.Metric</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Generator<span class="p">[</span>str<span class="p">, </span>None<span class="p">, </span>None<span class="p">]</span><a class="reference internal" href="_modules/glean_parser/lint.html#check_common_prefix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.check_common_prefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if all metrics begin with a common prefix.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt id="glean_parser.lint.check_expired_date">
+<code class="sig-prename descclassname">glean_parser.lint.</code><code class="sig-name descname">check_expired_date</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric">glean_parser.metrics.Metric</a></span></em>, <em class="sig-param"><span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">{}</span></em><span class="sig-paren">)</span> &#x2192; Generator<span class="p">[</span>str<span class="p">, </span>None<span class="p">, </span>None<span class="p">]</span><a class="reference internal" href="_modules/glean_parser/lint.html#check_expired_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.check_expired_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt id="glean_parser.lint.check_expired_metric">
@@ -704,7 +709,7 @@ jsonschema validation</p>
 
 <dl class="py method">
 <dt id="glean_parser.metrics.Metric.validate_expires">
-<em class="property">static </em><code class="sig-name descname">validate_expires</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expires</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/glean_parser/metrics.html#Metric.validate_expires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric.validate_expires" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">validate_expires</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/metrics.html#Metric.validate_expires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.metrics.Metric.validate_expires" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1170,6 +1175,13 @@ extension.</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt id="glean_parser.util.parse_expires">
+<code class="sig-prename descclassname">glean_parser.util.</code><code class="sig-name descname">parse_expires</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expires</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; datetime.date<a class="reference internal" href="_modules/glean_parser/util.html#parse_expires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.parse_expires" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the expired field date (yyyy-mm-dd) as a date.
+Raises a ValueError in case the string is not properly formatted.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="glean_parser.util.pprint_validation_error">
 <code class="sig-prename descclassname">glean_parser.util.</code><code class="sig-name descname">pprint_validation_error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/glean_parser/util.html#pprint_validation_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.pprint_validation_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>A version of jsonschema’s ValidationError __str__ method that doesn’t
@@ -1196,7 +1208,8 @@ depending on <cite>capitalize_first_letter</cite>.</p>
 <dl class="py function">
 <dt id="glean_parser.util.validate_expires">
 <code class="sig-prename descclassname">glean_parser.util.</code><code class="sig-name descname">validate_expires</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expires</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/glean_parser/util.html#validate_expires"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.util.validate_expires" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises ValueError if <cite>expires</cite> is not valid.</p>
+<dd><p>Raises a ValueError in case the <cite>expires</cite> is not ISO8601 parseable,
+or in case the date is more than 730 days (~2 years) in the future.</p>
 </dd></dl>
 
 </div>

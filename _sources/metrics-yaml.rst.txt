@@ -50,6 +50,8 @@ Metric parameters
 
 .. metric_parameter:: gecko_datapoint
 
+.. metric_parameter:: no_lint
+
 JSON Schema
 -----------
 

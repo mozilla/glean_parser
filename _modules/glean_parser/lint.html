@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.28.4.dev17+gc608cd3 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -269,6 +269,15 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="check_expired_date"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_expired_date">[docs]</a><span class="k">def</span> <span class="nf">check_expired_date</span><span class="p">(</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metric</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="check_expired_metric"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_expired_metric">[docs]</a><span class="k">def</span> <span class="nf">check_expired_metric</span><span class="p">(</span>
     <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
@@ -295,6 +304,7 @@
     <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_bug_number</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
     <span class="s2">&quot;BASELINE_PING&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_valid_in_baseline</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
     <span class="s2">&quot;MISSPELLED_PING&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_misspelled_pings</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
+    <span class="s2">&quot;EXPIRATION_DATE_TOO_FAR&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_expired_date</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">),</span>
     <span class="s2">&quot;USER_LIFETIME_EXPIRATION&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_user_lifetime_expiration</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">),</span>
     <span class="s2">&quot;EXPIRED&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_expired_metric</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">),</span>
 <span class="p">}</span>

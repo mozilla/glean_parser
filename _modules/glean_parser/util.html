@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.util &#8212; Glean Parser 1.28.4.dev17+gc608cd3 documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -370,6 +370,25 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="si">{</span><span class="n">_utils</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
+<div class="viewcode-block" id="parse_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.parse_expires">[docs]</a><span class="k">def</span> <span class="nf">parse_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the expired field date (yyyy-mm-dd) as a date.</span>
+<span class="sd">    Raises a ValueError in case the string is not properly formatted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="c1"># The schema enforces this formatting for the expires field,</span>
+        <span class="c1"># we shouldn&#39;t ever get to this exception.</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid expiration date &#39;</span><span class="si">{</span><span class="n">expires</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+            <span class="s2">&quot;Must be of the form yyyy-mm-dd in UTC.&quot;</span>
+        <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.is_expired">[docs]</a><span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses the `expires` field in a metric or ping and returns whether</span>
@@ -380,29 +399,27 @@
     <span class="k">elif</span> <span class="n">expires</span> <span class="o">==</span> <span class="s2">&quot;expired&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-                <span class="n">date</span> <span class="o">=</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid expiration date &#39;</span><span class="si">{</span><span class="n">expires</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
-                <span class="s2">&quot;Must be of the form yyyy-mm-dd in UTC.&quot;</span>
-            <span class="p">)</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">parse_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.validate_expires">[docs]</a><span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Raises ValueError if `expires` is not valid.</span>
+<span class="sd">    Raises a ValueError in case the `expires` is not ISO8601 parseable,</span>
+<span class="sd">    or in case the date is more than 730 days (~2 years) in the future.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">expires</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;never&quot;</span><span class="p">,</span> <span class="s2">&quot;expired&quot;</span><span class="p">):</span>
         <span class="k">return</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-        <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span></div>
+
+    <span class="n">date</span> <span class="o">=</span> <span class="n">parse_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
+    <span class="n">max_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">730</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date</span> <span class="o">&gt;</span> <span class="n">max_date</span><span class="o">.</span><span class="n">date</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">expires</span><span class="si">}</span><span class="s2">&#39; is more than 730 days (~2 years) in the future.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Please make sure this is intentional.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You can supress this warning by adding EXPIRATION_DATE_TOO_FAR to no_lint&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;See: https://mozilla.github.io/glean_parser/metrics-yaml.html#no_lint&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="report_validation_errors"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.report_validation_errors">[docs]</a><span class="k">def</span> <span class="nf">report_validation_errors</span><span class="p">(</span><span class="n">all_objects</span><span class="p">):</span>
