@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.28.4.dev19+g92e388d documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -69,6 +69,9 @@
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Jwe</span><span class="p">):</span>
         <span class="n">extra_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;decrypted_name&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">decrypted_name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+        <span class="n">extra_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">unit</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">extra_info</span></div>
 

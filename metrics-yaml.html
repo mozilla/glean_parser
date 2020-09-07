@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.28.4.dev18+gea85216 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.28.4.dev19+g92e388d documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -65,8 +65,7 @@ Additional properties: <code class="docutils literal notranslate"><span class="p
 <li><p><code class="docutils literal notranslate"><span class="pre">string</span></code>: A metric storing Unicode string values.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">string_list</span></code>: a list of Unicode strings.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly. Only allowed for
-metrics coming from GeckoView.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly.</p></li>
 <li><p><cite>timespan</cite>: Represents a time interval. Additional properties:
 <code class="docutils literal notranslate"><span class="pre">time_unit</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple
@@ -306,8 +305,7 @@ entirety below:</p>
 
             <span class="no">- `counter`: A numeric value that can only be incremented.</span>
 
-            <span class="no">- `quantity`: A numeric value that is set directly. Only allowed for</span>
-              <span class="no">metrics coming from GeckoView.</span>
+            <span class="no">- `quantity`: A numeric value that is set directly.</span>
 
             <span class="no">- `timespan`: Represents a time interval. Additional properties:</span>
               <span class="no">`time_unit`.</span>
@@ -771,12 +769,11 @@ entirety below:</p>
             <span class="nt">type</span><span class="p">:</span>
               <span class="nt">enum</span><span class="p">:</span>
                 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
         <span class="nt">then</span><span class="p">:</span>
           <span class="nt">required</span><span class="p">:</span>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gecko_datapoint</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`custom_distribution` and `quantity` is only allowed for Gecko</span>
+            <span class="no">`custom_distribution` is only allowed for Gecko</span>
             <span class="no">metrics.</span>
       <span class="p p-Indicator">-</span>
         <span class="nt">if</span><span class="p">:</span>
