@@ -7,6 +7,7 @@ Unreleased
 
 * The `SUPERFLUOUS_NO_LINT` warning has been removed from the glinter. It likely did more harm than good, and makes it hard to make `metrics.yaml` files that pass across different versions of `glean_parser`.
 * Expired metrics will now produce a linter warning, `EXPIRED_METRIC`.
+* Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning, `EXPIRATION_DATE_TOO_FAR`.
 
 1.28.3 (2020-07-28)
 -------------------

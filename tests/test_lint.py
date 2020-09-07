@@ -223,6 +223,7 @@ def test_user_lifetime_expiration():
                     "type": "counter",
                     "lifetime": "user",
                     "expires": "2100-01-01",
+                    "no_lint": ["EXPIRATION_DATE_TOO_FAR"],
                 },
                 "string": {"type": "string", "lifetime": "user", "expires": "never"},
                 "other": {"type": "string", "lifetime": "application"},
@@ -266,3 +267,29 @@ def test_expired_metric():
 
     assert len(nits) == 1
     assert set(["EXPIRED"]) == set(v.check_name for v in nits)
+
+
+def test_expires_too_far_in_the_future():
+    """Test that a `expires` dates too far in the future generates warnings"""
+    contents = [
+        {
+            "user_data": {
+                "too_far": {
+                    "type": "counter",
+                    "lifetime": "ping",
+                    "expires": "2100-01-01",
+                }
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert set(["EXPIRATION_DATE_TOO_FAR"]) == set(v.check_name for v in nits)
