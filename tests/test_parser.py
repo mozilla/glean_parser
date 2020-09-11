@@ -620,3 +620,39 @@ def test_send_in_pings_restrictions():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "'invalid_ping_name' does not match" in errors[0]
+
+
+def test_custom_expires():
+    contents = [
+        {
+            "category": {
+                "metric": {
+                    "type": "boolean",
+                    "expires": "foo",
+                },
+                "metric2": {
+                    "type": "boolean",
+                    "expires": "bar",
+                },
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(
+        contents,
+        {
+            "custom_is_expired": lambda x: x == "foo",
+            "custom_validate_expires": lambda x: x in ("foo", "bar"),
+        },
+    )
+
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric"].disabled is True
+    assert all_metrics.value["category"]["metric2"].disabled is False
+
+    with pytest.raises(ValueError):
+        # Double-check that parsing without custom functions breaks
+        all_metrics = parser.parse_objects(contents)
+        errors = list(all_metrics)

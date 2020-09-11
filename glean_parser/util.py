@@ -343,12 +343,13 @@ def parse_expires(expires: str) -> datetime.date:
     """
     try:
         if sys.version_info < (3, 7):
-            return iso8601.parse_date(expires).date()
+            try:
+                return iso8601.parse_date(expires).date()
+            except iso8601.ParseError:
+                raise ValueError()
         else:
             return datetime.date.fromisoformat(expires)
-    except (iso8601.iso8601.ParseError, ValueError):
-        # The schema enforces this formatting for the expires field,
-        # we shouldn't ever get to this exception.
+    except ValueError:
         raise ValueError(
             f"Invalid expiration date '{expires}'. "
             "Must be of the form yyyy-mm-dd in UTC."
