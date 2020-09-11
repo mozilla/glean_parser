@@ -74,6 +74,7 @@ def test_expires():
             notification_emails=["nobody@example.com"],
             description="description...",
         )
+        m.validate_expires()
 
 
 def test_timespan_time_unit():

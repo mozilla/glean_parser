@@ -46,7 +46,7 @@ class Metric:
         bugs: List[str],
         description: str,
         notification_emails: List[str],
-        expires: str,
+        expires: Any,
         data_reviews: Optional[List[str]] = None,
         version: int = 0,
         disabled: bool = False,
