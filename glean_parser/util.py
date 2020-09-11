@@ -346,7 +346,7 @@ def parse_expires(expires: str) -> datetime.date:
             return iso8601.parse_date(expires).date()
         else:
             return datetime.date.fromisoformat(expires)
-    except ValueError:
+    except (iso8601.iso8601.ParseError, ValueError):
         # The schema enforces this formatting for the expires field,
         # we shouldn't ever get to this exception.
         raise ValueError(

@@ -239,15 +239,17 @@ definitions:
         description: |
           **Required.**
 
-          May be one of the following values:
+          By default it may be one of the following values:
             - `<build date>`: An ISO date `yyyy-mm-dd` in UTC on which the
               metric expires. For example, `2019-03-13`. This date is checked at
               build time. Except in special cases, this form should be used so
               that the metric automatically "sunsets" after a period of time.
             - `never`: This metric never expires.
             - `expired`: This metric is manually expired.
+
+          The default may be overriden in certain applications by the
+          `custom_validate_expires` and `custom_is_expired` configs.
         type: string
-        pattern: "(never)|(expired)|([0-9]{4}-[0-9]{2}-[0-9]{2})"
 
       version:
         title: Metric version
