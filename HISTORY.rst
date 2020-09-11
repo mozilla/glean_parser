@@ -9,6 +9,10 @@ Unreleased
 * Expired metrics will now produce a linter warning, `EXPIRED_METRIC`.
 * Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning, `EXPIRATION_DATE_TOO_FAR`.
 * Allow using the Quantity metric type outside of Gecko.
+* New parser configs `custom_is_expired` and `custom_validate_expires` added.
+  These are both functions that take the `expires` value of the metric and return a bool.
+  (See `Metric.is_expired` and `Metric.validate_expires`).
+  These will allow FOG to provide custom validation for its version-based `expires` values.
 
 1.28.3 (2020-07-28)
 -------------------
