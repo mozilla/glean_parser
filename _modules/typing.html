@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>typing &#8212; Glean Parser 1.28.5.dev2+g3313ecc documentation</title>
+    <title>typing &#8212; Glean Parser 1.28.6.dev1+g4e9da3b documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -507,11 +507,13 @@
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ForwardRef</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__forward_value__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_value__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__forward_evaluated__</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_evaluated__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="ow">and</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__forward_value__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_value__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">__forward_arg__</span>
 
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__forward_value__</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;ForwardRef(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__forward_arg__</span><span class="si">!r}</span><span class="s1">)&#39;</span>
@@ -581,7 +583,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__bound__</span> <span class="o">=</span> <span class="n">_type_check</span><span class="p">(</span><span class="n">bound</span><span class="p">,</span> <span class="s2">&quot;Bound must be a type.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__bound__</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">def_mod</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_globals</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]</span>  <span class="c1"># for pickling</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">def_mod</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_globals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__main__&#39;</span><span class="p">)</span>  <span class="c1"># for pickling</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="n">def_mod</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">def_mod</span> <span class="o">!=</span> <span class="s1">&#39;typing&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="n">def_mod</span>
 
@@ -1015,7 +1020,11 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
             <span class="n">globalns</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">globalns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__globals__&#39;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">nsobj</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="c1"># Find globalns for the unwrapped object.</span>
+            <span class="k">while</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">nsobj</span><span class="p">,</span> <span class="s1">&#39;__wrapped__&#39;</span><span class="p">):</span>
+                <span class="n">nsobj</span> <span class="o">=</span> <span class="n">nsobj</span><span class="o">.</span><span class="n">__wrapped__</span>
+            <span class="n">globalns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nsobj</span><span class="p">,</span> <span class="s1">&#39;__globals__&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="n">localns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">localns</span> <span class="o">=</span> <span class="n">globalns</span>
     <span class="k">elif</span> <span class="n">localns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1311,6 +1320,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsInt</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __int__.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1319,6 +1329,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsFloat</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __float__.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1327,6 +1338,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsComplex</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __complex__.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1335,6 +1347,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsBytes</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __bytes__.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1343,6 +1356,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsAbs</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __abs__ that is covariant in its return type.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1351,6 +1365,7 @@
 
 
 <span class="k">class</span> <span class="nc">SupportsRound</span><span class="p">(</span><span class="n">_Protocol</span><span class="p">[</span><span class="n">T_co</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;An ABC with one abstract method __round__ that is covariant in its return type.&quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -1377,7 +1392,7 @@
                <span class="s1">&#39;_fields&#39;</span><span class="p">,</span> <span class="s1">&#39;_field_defaults&#39;</span><span class="p">,</span> <span class="s1">&#39;_field_types&#39;</span><span class="p">,</span>
                <span class="s1">&#39;_make&#39;</span><span class="p">,</span> <span class="s1">&#39;_replace&#39;</span><span class="p">,</span> <span class="s1">&#39;_asdict&#39;</span><span class="p">,</span> <span class="s1">&#39;_source&#39;</span><span class="p">)</span>
 
-<span class="n">_special</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__qualname__&#39;</span><span class="p">,</span> <span class="s1">&#39;__annotations__&#39;</span><span class="p">)</span>
+<span class="n">_special</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__annotations__&#39;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">NamedTupleMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
@@ -1533,7 +1548,7 @@
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="nd">@abstractmethod</span>
+    <span class="nd">@abstractproperty</span>
     <span class="k">def</span> <span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">pass</span>
 
