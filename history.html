@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Glean Parser 1.28.4.dev19+g92e388d documentation</title>
+    <title>History &#8212; Glean Parser 1.28.4.dev21+g4524be4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -41,6 +41,10 @@
 <li><p>Expired metrics will now produce a linter warning, <cite>EXPIRED_METRIC</cite>.</p></li>
 <li><p>Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning, <cite>EXPIRATION_DATE_TOO_FAR</cite>.</p></li>
 <li><p>Allow using the Quantity metric type outside of Gecko.</p></li>
+<li><p>New parser configs <cite>custom_is_expired</cite> and <cite>custom_validate_expires</cite> added.
+These are both functions that take the <cite>expires</cite> value of the metric and return a bool.
+(See <cite>Metric.is_expired</cite> and <cite>Metric.validate_expires</cite>).
+These will allow FOG to provide custom validation for its version-based <cite>expires</cite> values.</p></li>
 </ul>
 </div>
 <div class="section" id="id1">

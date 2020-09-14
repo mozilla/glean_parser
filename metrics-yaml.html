@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metrics.yaml file &#8212; Glean Parser 1.28.4.dev19+g92e388d documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 1.28.4.dev21+g4524be4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -151,7 +151,7 @@ will be silently ignored at runtime.</p>
 <div class="section" id="expires">
 <span id="id9"></span><h3>expires<a class="headerlink" href="#expires" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
-<p>May be one of the following values:</p>
+<p>By default it may be one of the following values:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;build</span> <span class="pre">date&gt;</span></code>: An ISO date <code class="docutils literal notranslate"><span class="pre">yyyy-mm-dd</span></code> in UTC on which the
 metric expires. For example, <code class="docutils literal notranslate"><span class="pre">2019-03-13</span></code>. This date is checked at
@@ -160,6 +160,8 @@ that the metric automatically “sunsets” after a period of time.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">never</span></code>: This metric never expires.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">expired</span></code>: This metric is manually expired.</p></li>
 </ul>
+<p>The default may be overriden in certain applications by the
+<code class="docutils literal notranslate"><span class="pre">custom_validate_expires</span></code> and <code class="docutils literal notranslate"><span class="pre">custom_is_expired</span></code> configs.</p>
 </div>
 <div class="section" id="version">
 <span id="id10"></span><h3>version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h3>
@@ -461,15 +463,17 @@ entirety below:</p>
         <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
           <span class="no">**Required.**</span>
 
-          <span class="no">May be one of the following values:</span>
+          <span class="no">By default it may be one of the following values:</span>
             <span class="no">- `&lt;build date&gt;`: An ISO date `yyyy-mm-dd` in UTC on which the</span>
               <span class="no">metric expires. For example, `2019-03-13`. This date is checked at</span>
               <span class="no">build time. Except in special cases, this form should be used so</span>
               <span class="no">that the metric automatically &quot;sunsets&quot; after a period of time.</span>
             <span class="no">- `never`: This metric never expires.</span>
             <span class="no">- `expired`: This metric is manually expired.</span>
+
+          <span class="no">The default may be overriden in certain applications by the</span>
+          <span class="no">`custom_validate_expires` and `custom_is_expired` configs.</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;(never)|(expired)|([0-9]{4}-[0-9]{2}-[0-9]{2})&quot;</span>
 
       <span class="nt">version</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metric version</span>

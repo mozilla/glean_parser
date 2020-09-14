@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.metrics &#8212; Glean Parser 1.28.4.dev19+g92e388d documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 1.28.4.dev21+g4524be4 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -80,7 +80,7 @@
         <span class="n">bugs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">notification_emails</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">expires</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">expires</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">data_reviews</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">disabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -90,7 +90,7 @@
         <span class="n">gecko_datapoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="n">no_lint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">data_sensitivity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_validated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># Avoid cyclical import</span>
@@ -131,6 +131,11 @@
             <span class="p">}</span>  <span class="c1"># type: Dict[str, util.JSONType]</span>
             <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+        <span class="c1"># Store the config, but only after validation.</span>
+        <span class="k">if</span> <span class="n">_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">_config</span>
 
         <span class="c1"># Metrics in the special category &quot;glean.internal.metrics&quot; need to have</span>
         <span class="c1"># an empty category string when identifying the metrics in the ping.</span>
@@ -207,10 +212,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_expired</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Metric.is_expired"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_expired">[docs]</a>    <span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_is_expired&quot;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">is_expired</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Metric.validate_expires"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.validate_expires">[docs]</a>    <span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_validate_expires&quot;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">)(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expires</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Metric.is_internal_metric"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_internal_metric">[docs]</a>    <span class="k">def</span> <span class="nf">is_internal_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Metric</span><span class="o">.</span><span class="n">glean_internal_metric_cat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div></div>
