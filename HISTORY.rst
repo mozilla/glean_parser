@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+1.28.5 (2020-09-14)
+-------------------
+
+* Fix deploy step to update pip before deploying to pypi.
+
 1.28.4 (2020-09-14)
 -------------------
 
