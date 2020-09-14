@@ -245,7 +245,7 @@ def check_user_lifetime_expiration(
 
 
 def check_expired_date(
-    metric: metrics.Metric, parser_config: Dict[str, Any] = {}
+    metric: metrics.Metric, parser_config: Dict[str, Any]
 ) -> LintGenerator:
     try:
         metric.validate_expires()
