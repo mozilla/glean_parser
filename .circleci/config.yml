@@ -136,6 +136,10 @@ jobs:
                     command: |
                         echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
             - run:
+                    name: Upgrade pip
+                    command: |
+                        pip install --upgrade --user pip
+            - run:
                     name: install
                     command: |
                         pip install --use-feature=2020-resolver --user -U -r requirements_dev.txt
