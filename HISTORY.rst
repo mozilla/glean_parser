@@ -5,9 +5,15 @@ History
 Unreleased
 ----------
 
-* The `SUPERFLUOUS_NO_LINT` warning has been removed from the glinter. It likely did more harm than good, and makes it hard to make `metrics.yaml` files that pass across different versions of `glean_parser`.
+1.28.4 (2020-09-14)
+-------------------
+
+* The `SUPERFLUOUS_NO_LINT` warning has been removed from the glinter.
+  It likely did more harm than good, and makes it hard to make
+  `metrics.yaml` files that pass across different versions of `glean_parser`.
 * Expired metrics will now produce a linter warning, `EXPIRED_METRIC`.
-* Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning, `EXPIRATION_DATE_TOO_FAR`.
+* Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning,
+  `EXPIRATION_DATE_TOO_FAR`.
 * Allow using the Quantity metric type outside of Gecko.
 * New parser configs `custom_is_expired` and `custom_validate_expires` added.
   These are both functions that take the `expires` value of the metric and return a bool.
