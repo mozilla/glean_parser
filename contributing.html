@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contributing &#8212; Glean Parser 1.28.6.dev5+g208d91b documentation</title>
+    <title>Contributing &#8212; Glean Parser 1.28.6.dev6+ga8ae30a documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -160,17 +160,19 @@ $ git rebase upstream/main
 <li><p>Update the header with the new version and date in HISTORY.rst.</p></li>
 <li><p>(By using the setuptools-scm package, there is no need to update the version anywhere else).</p></li>
 <li><p>Make sure all your changes are committed.</p></li>
-<li><p>Push the changes upstream:</p>
+<li><p>Push the changes upstream. (Normally pushing directly without review is frowned upon, but the <cite>main</cite> branch is protected from force pushes and release tagging requires the same permissions as pushing to <cite>main</cite>):</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git push upstream main
 </pre></div>
 </div>
 </li>
 <li><p>Wait for [continuous integration to pass](<a class="reference external" href="https://circleci.com/gh/mozilla/glean/tree/main">https://circleci.com/gh/mozilla/glean/tree/main</a>) on main.</p></li>
 <li><p>Make the release on GitHub using [this link](<a class="reference external" href="https://github.com/mozilla/glean_parser/releases/new">https://github.com/mozilla/glean_parser/releases/new</a>)</p></li>
-<li><p>Enter the new version in the form <cite>vX.Y.Z</cite>.</p></li>
+<li><p>Both the tag and the release title should be in the form <cite>vX.Y.Z</cite>.</p></li>
 <li><p>Copy and paste the relevant part of the <cite>HISTORY.rst</cite> file into the description.</p></li>
+<li><p>Tagging the release will trigger a CI workflow which will build the distribution of <cite>glean_parser</cite> and publish it to PyPI.</p></li>
 </ul>
 <p>The continuous integration system will then automatically deploy to PyPI.</p>
+<p>See also the [instructions for updating the version of <cite>glean_parser</cite> used by the Glean SDK](<a class="reference external" href="https://mozilla.github.io/glean/book/dev/upgrading-glean-parser.html">https://mozilla.github.io/glean/book/dev/upgrading-glean-parser.html</a>).</p>
 </div>
 </div>
 
