@@ -141,7 +141,7 @@ Get a clean main branch with all of the changes from `upstream`::
 
 - Make sure all your changes are committed.
 
-- Push the changes upstream. (Normally this is frowned upon, but the `main` branch is protected from force pushes and release tagging requires the same permissions as pushing to `main`)::
+- Push the changes upstream. (Normally pushing directly without review is frowned upon, but the `main` branch is protected from force pushes and release tagging requires the same permissions as pushing to `main`)::
 
   $ git push upstream main
 
