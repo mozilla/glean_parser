@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.markdown &#8212; Glean Parser 1.28.6.dev3+g733ee88 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 1.28.6.dev4+gca9db57 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -76,7 +76,9 @@
     <span class="k">return</span> <span class="n">extra_info</span></div>
 
 
-<div class="viewcode-block" id="ping_desc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_desc">[docs]</a><span class="k">def</span> <span class="nf">ping_desc</span><span class="p">(</span><span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="ping_desc"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_desc">[docs]</a><span class="k">def</span> <span class="nf">ping_desc</span><span class="p">(</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a text description of the ping. If a custom_pings_cache</span>
 <span class="sd">    is available, look in there for non-reserved ping names description.</span>
@@ -90,7 +92,7 @@
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">ping_name</span> <span class="o">==</span> <span class="s2">&quot;all-pings&quot;</span><span class="p">:</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;These metrics are sent in every ping.&quot;</span>
-    <span class="k">elif</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">custom_pings_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
         <span class="n">desc</span> <span class="o">=</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
 
     <span class="k">return</span> <span class="n">desc</span></div>
@@ -121,8 +123,10 @@
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;https://mozilla.github.io/glean/book/user/pings/</span><span class="si">{</span><span class="n">ping_name</span><span class="si">}</span><span class="s2">.html&quot;</span></div>
 
 
-<div class="viewcode-block" id="if_empty"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.if_empty">[docs]</a><span class="k">def</span> <span class="nf">if_empty</span><span class="p">(</span><span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+<div class="viewcode-block" id="if_empty"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.if_empty">[docs]</a><span class="k">def</span> <span class="nf">if_empty</span><span class="p">(</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">custom_pings_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">send_if_empty</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span></div>
@@ -143,27 +147,27 @@
 
 
 <div class="viewcode-block" id="ping_data_reviews"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_data_reviews">[docs]</a><span class="k">def</span> <span class="nf">ping_data_reviews</span><span class="p">(</span>
-    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">custom_pings_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">data_reviews</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="ping_bugs"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_bugs">[docs]</a><span class="k">def</span> <span class="nf">ping_bugs</span><span class="p">(</span>
-    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">custom_pings_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">bugs</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="ping_include_client_id"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.ping_include_client_id">[docs]</a><span class="k">def</span> <span class="nf">ping_include_client_id</span><span class="p">(</span>
-    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">custom_pings_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ping_name</span> <span class="ow">in</span> <span class="n">custom_pings_cache</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">custom_pings_cache</span><span class="p">[</span><span class="n">ping_name</span><span class="p">]</span><span class="o">.</span><span class="n">include_client_id</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span></div>
@@ -179,7 +183,7 @@
 
 
 <div class="viewcode-block" id="output_markdown"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.markdown.output_markdown">[docs]</a><span class="k">def</span> <span class="nf">output_markdown</span><span class="p">(</span>
-    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Markdown docs to `output_dir`.</span>
@@ -193,6 +197,8 @@
 <span class="sd">    :param options: options dictionary, with the following optional key:</span>
 <span class="sd">        - `project_title`: The projects title.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># Build a dictionary that associates pings with their metrics.</span>
     <span class="c1">#</span>
@@ -211,7 +217,7 @@
     <span class="c1"># This also builds a dictionary of custom pings, if available.</span>
     <span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">()</span>
     <span class="n">metrics_by_pings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">_category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="c1"># Filter out custom pings. We will need them for extracting</span>
             <span class="c1"># the description</span>

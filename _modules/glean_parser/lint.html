@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.lint &#8212; Glean Parser 1.28.6.dev3+g733ee88 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 1.28.6.dev4+gca9db57 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -41,7 +41,16 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Generator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># noqa</span>
 
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
@@ -130,7 +139,7 @@
 
 
 <div class="viewcode-block" id="check_unit_in_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_unit_in_name">[docs]</a><span class="k">def</span> <span class="nf">check_unit_in_name</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The metric name ends in a unit.</span>
@@ -223,7 +232,7 @@
 
 
 <div class="viewcode-block" id="check_bug_number"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_bug_number">[docs]</a><span class="k">def</span> <span class="nf">check_bug_number</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="n">number_bugs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">bug</span><span class="p">)</span> <span class="k">for</span> <span class="n">bug</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">bugs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bug</span><span class="p">,</span> <span class="nb">int</span><span class="p">)]</span>
 
@@ -236,7 +245,7 @@
 
 
 <div class="viewcode-block" id="check_valid_in_baseline"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_valid_in_baseline">[docs]</a><span class="k">def</span> <span class="nf">check_valid_in_baseline</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="n">allow_reserved</span> <span class="o">=</span> <span class="n">parser_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
@@ -248,7 +257,7 @@
 
 
 <div class="viewcode-block" id="check_misspelled_pings"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_misspelled_pings">[docs]</a><span class="k">def</span> <span class="nf">check_misspelled_pings</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">builtin</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
@@ -258,7 +267,7 @@
 
 
 <div class="viewcode-block" id="check_user_lifetime_expiration"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_user_lifetime_expiration">[docs]</a><span class="k">def</span> <span class="nf">check_user_lifetime_expiration</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">lifetime</span> <span class="o">==</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Lifetime</span><span class="o">.</span><span class="n">user</span> <span class="ow">and</span> <span class="n">metric</span><span class="o">.</span><span class="n">expires</span> <span class="o">!=</span> <span class="s2">&quot;never&quot;</span><span class="p">:</span>
@@ -270,7 +279,7 @@
 
 
 <div class="viewcode-block" id="check_expired_date"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_expired_date">[docs]</a><span class="k">def</span> <span class="nf">check_expired_date</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">metric</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">()</span>
@@ -279,7 +288,7 @@
 
 
 <div class="viewcode-block" id="check_expired_metric"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_expired_metric">[docs]</a><span class="k">def</span> <span class="nf">check_expired_metric</span><span class="p">(</span>
-    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LintGenerator</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">is_expired</span><span class="p">():</span>
         <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;Metric has expired. Please consider removing it.&quot;</span><span class="p">)</span></div>
@@ -325,7 +334,9 @@
 
 
 <div class="viewcode-block" id="lint_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_metrics">[docs]</a><span class="k">def</span> <span class="nf">lint_metrics</span><span class="p">(</span>
-    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GlinterNit</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs glinter checks on a set of metrics objects.</span>
@@ -334,6 +345,9 @@
 <span class="sd">    :param file: The stream to write errors to.</span>
 <span class="sd">    :returns: List of nits.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">parser_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_config</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="n">nits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">GlinterNit</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
         <span class="k">if</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s2">&quot;pings&quot;</span><span class="p">:</span>
@@ -356,7 +370,7 @@
                 <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">cat_check_func</span><span class="p">(</span><span class="n">category_name</span><span class="p">,</span> <span class="n">category_metrics</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
             <span class="p">)</span>
 
-        <span class="k">for</span> <span class="p">(</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">category_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">_metric_name</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">category_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">check_name</span><span class="p">,</span> <span class="p">(</span><span class="n">check_func</span><span class="p">,</span> <span class="n">check_type</span><span class="p">))</span> <span class="ow">in</span> <span class="n">INDIVIDUAL_CHECKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check_func</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">))</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">):</span>
@@ -420,7 +434,9 @@
 
 
 <div class="viewcode-block" id="glinter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.glinter">[docs]</a><span class="k">def</span> <span class="nf">glinter</span><span class="p">(</span>
-    <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+    <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Commandline helper for glinter.</span>
@@ -431,6 +447,9 @@
 <span class="sd">    :param file: The stream to write the errors to.</span>
 <span class="sd">    :return: Non-zero if there were any glinter errors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">parser_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_config</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="k">if</span> <span class="n">lint_yaml_files</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">1</span>
 

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.translate &#8212; Glean Parser 1.28.6.dev3+g733ee88 documentation</title>
+    <title>glean_parser.translate &#8212; Glean Parser 1.28.6.dev4+gca9db57 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -46,7 +46,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lint</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parser</span>
@@ -74,8 +74,11 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
-        <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
+        <span class="k">if</span> <span class="n">clear_patterns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">clear_patterns</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">output_func</span> <span class="o">=</span> <span class="n">output_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_patterns</span> <span class="o">=</span> <span class="n">clear_patterns</span></div>
 
@@ -83,7 +86,7 @@
 <span class="n">OUTPUTTERS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;csharp&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">csharp</span><span class="o">.</span><span class="n">output_csharp</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.cs&quot;</span><span class="p">]),</span>
     <span class="s2">&quot;kotlin&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">kotlin</span><span class="o">.</span><span class="n">output_kotlin</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.kt&quot;</span><span class="p">]),</span>
-    <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">),</span>
+    <span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">markdown</span><span class="o">.</span><span class="n">output_markdown</span><span class="p">,</span> <span class="p">[]),</span>
     <span class="s2">&quot;swift&quot;</span><span class="p">:</span> <span class="n">Outputter</span><span class="p">(</span><span class="n">swift</span><span class="o">.</span><span class="n">output_swift</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;*.swift&quot;</span><span class="p">]),</span>
 <span class="p">}</span>
 
@@ -92,9 +95,9 @@
     <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">translation_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
-    <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-    <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
-    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Translate the files in `input_filepaths` by running the metrics through a</span>
@@ -119,6 +122,15 @@
 <span class="sd">    :param parser_config: A dictionary of options that change parsing behavior.</span>
 <span class="sd">        See `parser.parse_metrics` for more info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">clear_patterns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clear_patterns</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">parser_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_config</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="n">input_filepaths</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">lint</span><span class="o">.</span><span class="n">glinter</span><span class="p">(</span><span class="n">input_filepaths</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">):</span>
@@ -162,8 +174,8 @@
     <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
-    <span class="n">options</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
-    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Translate the files in `input_filepaths` to the given `output_format` and</span>
@@ -177,6 +189,12 @@
 <span class="sd">    :param parser_config: A dictionary of options that change parsing behavior.</span>
 <span class="sd">        See `parser.parse_metrics` for more info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">parser_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_config</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="n">format_desc</span> <span class="o">=</span> <span class="n">OUTPUTTERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">output_format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">format_desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
