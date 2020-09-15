@@ -16,7 +16,7 @@ def add_required(chunk):
         "expires": "never",
     }
 
-    for category_key, category_val in chunk.items():
+    for _category_key, category_val in chunk.items():
         for metric in category_val.values():
             for default_name, default_val in DEFAULTS.items():
                 if default_name not in metric:

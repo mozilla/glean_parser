@@ -33,7 +33,7 @@ def test_parser():
     for category_key, category_val in all_metrics.value.items():
         if category_key == "pings":
             continue
-        for metric_key, metric_val in category_val.items():
+        for _metric_key, metric_val in category_val.items():
             assert isinstance(metric_val, metrics.Metric)
             assert isinstance(metric_val.lifetime, metrics.Lifetime)
             if getattr(metric_val, "labels", None) is not None:

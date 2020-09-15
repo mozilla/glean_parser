@@ -120,7 +120,7 @@ class Metric:
         category: str,
         name: str,
         metric_info: Dict[str, util.JSONType],
-        config: Dict[str, Any] = {},
+        config: Optional[Dict[str, Any]] = None,
         validated: bool = False,
     ):
         """
@@ -136,6 +136,9 @@ class Metric:
             jsonschema validation
         :return: A new Metric instance.
         """
+        if config is None:
+            config = {}
+
         metric_type = metric_info["type"]
         if not isinstance(metric_type, str):
             raise TypeError(f"Unknown metric type {metric_type}")
