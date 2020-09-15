@@ -131,5 +131,18 @@ main.add_command(check)
 main.add_command(glinter)
 
 
+def main_wrapper(args=None):
+    """
+    A simple wrapper around click's `main` to display the glean_parser version
+    when there is an error.
+    """
+    try:
+        main(args=args)
+    except SystemExit as e:
+        if e.code != 0:
+            print(f"ERROR running glean_parser v{glean_parser.__version__}")
+        raise
+
+
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    main_wrapper()  # pragma: no cover
