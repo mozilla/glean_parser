@@ -149,7 +149,7 @@ Get a clean main branch with all of the changes from `upstream`::
 
 - Make the release on GitHub using [this link](https://github.com/mozilla/glean_parser/releases/new)
 
-- Enter the new version in the form `vX.Y.Z`.
+- Both the tag and the release title should be in the form `vX.Y.Z`.
 
 - Copy and paste the relevant part of the `HISTORY.rst` file into the description.
 
