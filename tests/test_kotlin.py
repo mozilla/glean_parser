@@ -357,7 +357,7 @@ def test_event_extra_keys_in_correct_order(tmpdir):
 
 def test_arguments_are_generated_in_deterministic_order(tmpdir):
     """
-    Assert that arguments on generated code are always on the same order.
+    Assert that arguments on generated code are always in the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1666192
     """
