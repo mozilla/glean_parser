@@ -434,5 +434,7 @@ extra_ping_args = [
 ]
 
 
-# Names of parameters to pass to both metric and ping constructors.
-extra_args = list(set(extra_metric_args) | set(extra_ping_args))
+# Names of parameters to pass to both metric and ping constructors (no duplicates).
+extra_args = extra_metric_args + [
+    v for v in extra_ping_args if v not in extra_metric_args
+]
