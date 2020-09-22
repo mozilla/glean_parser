@@ -353,3 +353,28 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         content = " ".join(content.split())
         assert "exampleKeys { alice, bob, charlie }" in content
         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
+
+
+def test_arguments_are_generated_in_deterministic_order(tmpdir):
+    """
+    Assert that arguments on generated code are always in the same order.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1666192
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+
+    with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        expected = 'EventMetricType<exampleKeys> by lazy { EventMetricType<exampleKeys>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
+        assert expected in content

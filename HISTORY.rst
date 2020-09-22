@@ -9,6 +9,7 @@ Unreleased
 -------------------
 
 * Fix deploy step to update pip before deploying to pypi.
+* BUGFIX: Ensure Kotlin arguments are deterministically ordered
 
 1.28.4 (2020-09-14)
 -------------------
