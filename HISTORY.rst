@@ -5,11 +5,15 @@ History
 Unreleased
 ----------
 
+1.28.6 (2020-09-24)
+-------------------
+
+* BUGFIX: Ensure Kotlin arguments are deterministically ordered
+
 1.28.5 (2020-09-14)
 -------------------
 
 * Fix deploy step to update pip before deploying to pypi.
-* BUGFIX: Ensure Kotlin arguments are deterministically ordered
 
 1.28.4 (2020-09-14)
 -------------------
