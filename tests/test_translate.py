@@ -38,6 +38,25 @@ def test_translate_missing_directory(tmpdir):
     assert len(list(output.iterdir())) == 5
 
 
+def test_translate_missing_input_files(tmpdir):
+    output = Path(str(tmpdir))
+
+    with pytest.raises(FileNotFoundError):
+        translate.translate(
+            ROOT / "data" / "missing.yaml",
+            "kotlin",
+            output,
+            parser_config={"allow_reserved": True},
+        )
+
+    assert 0 == translate.translate(
+        ROOT / "data" / "missing.yaml",
+        "kotlin",
+        output,
+        parser_config={"allow_reserved": True, "allow_missing_files": True},
+    )
+
+
 def test_translate_remove_obsolete_kotlin_files(tmpdir):
     output = Path(str(tmpdir)) / "foo"
 

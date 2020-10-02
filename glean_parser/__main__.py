@@ -53,7 +53,12 @@ from . import validate_ping
         "Should only be set when building the Glean library itself."
     ),
 )
-def translate(input, format, output, option, allow_reserved):
+@click.option(
+    "--allow-missing-files",
+    is_flag=True,
+    help=("Do not treat missing input files as an error."),
+)
+def translate(input, format, output, option, allow_reserved, allow_missing_files):
     """
     Translate metrics.yaml and pings.yaml files to other formats.
     """
@@ -68,7 +73,10 @@ def translate(input, format, output, option, allow_reserved):
             format,
             Path(output),
             option_dict,
-            {"allow_reserved": allow_reserved},
+            {
+                "allow_reserved": allow_reserved,
+                "allow_missing_files": allow_missing_files,
+            },
         )
     )
 
@@ -112,11 +120,24 @@ def check(schema):
         "Should only be set when building the Glean library itself."
     ),
 )
-def glinter(input, allow_reserved):
+@click.option(
+    "--allow-missing-files",
+    is_flag=True,
+    help=("Do not treat missing input files as an error."),
+)
+def glinter(input, allow_reserved, allow_missing_files):
     """
     Runs a linter over the metrics.
     """
-    sys.exit(lint.glinter([Path(x) for x in input], {"allow_reserved": allow_reserved}))
+    sys.exit(
+        lint.glinter(
+            [Path(x) for x in input],
+            {
+                "allow_reserved": allow_reserved,
+                "allow_missing_files": allow_missing_files,
+            },
+        )
+    )
 
 
 @click.group()

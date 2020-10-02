@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* **Breaking change:** `glean_parser` will now return an error code when any of the input files do not exist (unless the `--allow-missing-files` flag is passed).
+
 1.28.6 (2020-09-24)
 -------------------
 

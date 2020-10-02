@@ -368,7 +368,11 @@ def lint_metrics(
     return nits
 
 
-def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
+def lint_yaml_files(
+    input_filepaths: Iterable[Path],
+    file=sys.stderr,
+    parser_config: Dict[str, Any] = None,
+) -> List:
     """
     Performs glinter YAML lint on a set of files.
 
@@ -377,10 +381,16 @@ def lint_yaml_files(input_filepaths: Iterable[Path], file=sys.stderr) -> List:
     :returns: List of nits.
     """
 
+    if parser_config is None:
+        parser_config = {}
+
     # Generic type since the actual type comes from yamllint, which we don't
     # control.
     nits: List = []
     for path in input_filepaths:
+        if not path.is_file() and parser_config.get("allow_missing_files", False):
+            continue
+
         # yamllint needs both the file content and the path.
         file_content = None
         with path.open("r", encoding="utf-8") as fd:
@@ -416,7 +426,7 @@ def glinter(
     if parser_config is None:
         parser_config = {}
 
-    if lint_yaml_files(input_filepaths, file=file):
+    if lint_yaml_files(input_filepaths, file=file, parser_config=parser_config):
         return 1
 
     objs = parser.parse_objects(input_filepaths, parser_config)
