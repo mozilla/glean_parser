@@ -13,6 +13,9 @@ from glean_parser import parser
 import util
 
 
+import pytest
+
+
 ROOT = Path(__file__).parent
 
 
@@ -293,3 +296,16 @@ def test_expires_too_far_in_the_future():
 
     assert len(nits) == 1
     assert set(["EXPIRATION_DATE_TOO_FAR"]) == set(v.check_name for v in nits)
+
+
+def test_translate_missing_input_files(tmpdir):
+    with pytest.raises(FileNotFoundError):
+        lint.glinter(
+            [ROOT / "data" / "missing.yaml"],
+            parser_config={"allow_reserved": True},
+        )
+
+    assert 0 == lint.glinter(
+        [ROOT / "data" / "missing.yaml"],
+        parser_config={"allow_reserved": True, "allow_missing_files": True},
+    )
