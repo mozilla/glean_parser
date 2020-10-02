@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.util &#8212; Glean Parser 1.28.7.dev2+g155e7ea documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.28.7.dev3+ge90b52c documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -148,13 +148,11 @@
 <span class="sd">    :param path: `pathlib.Path` object</span>
 <span class="sd">    :rtype object: The tree of objects as a result of parsing the file.</span>
 <span class="sd">    :raises ValueError: The file is neither a .json, .yml or .yaml file.</span>
+<span class="sd">    :raises FileNotFoundError: The file does not exist.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># If in py.test, support bits of literal JSON/YAML content</span>
     <span class="k">if</span> <span class="n">TESTING_MODE</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-        <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.json&quot;</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>

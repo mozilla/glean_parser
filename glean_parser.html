@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 1.28.7.dev2+g155e7ea documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.28.7.dev3+ge90b52c documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -289,7 +289,7 @@ code.</p></li>
 
 <dl class="py function">
 <dt id="glean_parser.lint.lint_yaml_files">
-<code class="sig-prename descclassname">glean_parser.lint.</code><code class="sig-name descname">lint_yaml_files</code><span class="sig-paren">(</span><em class="sig-param">input_filepaths: Iterable[pathlib.Path], file=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em><span class="sig-paren">)</span> &#x2192; List<a class="reference internal" href="_modules/glean_parser/lint.html#lint_yaml_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.lint_yaml_files" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">glean_parser.lint.</code><code class="sig-name descname">lint_yaml_files</code><span class="sig-paren">(</span><em class="sig-param">input_filepaths: Iterable[pathlib.Path], file=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;, parser_config: Dict[str, Any] = None</em><span class="sig-paren">)</span> &#x2192; List<a class="reference internal" href="_modules/glean_parser/lint.html#lint_yaml_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.lint.lint_yaml_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs glinter YAML lint on a set of files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -874,6 +874,8 @@ Supported keys are:</p>
 This is useful when you want to retain the original “disabled”
 value from the <cite>metrics.yaml</cite>, rather than having it overridden when
 the metric expires.</p></li>
+<li><p><cite>allow_missing_files</cite>: Do not raise a <cite>FileNotFoundError</cite> if any of
+the input <cite>filepaths</cite> do not exist.</p></li>
 </ul>
 </p></li>
 </ul>
@@ -1159,7 +1161,10 @@ extension.</p>
 <dd class="field-even"><p>The tree of objects as a result of parsing the file.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – The file is neither a .json, .yml or .yaml file.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – The file is neither a .json, .yml or .yaml file.</p></li>
+<li><p><strong>FileNotFoundError</strong> – The file does not exist.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
