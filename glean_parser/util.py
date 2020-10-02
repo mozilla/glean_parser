@@ -114,13 +114,11 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
     :param path: `pathlib.Path` object
     :rtype object: The tree of objects as a result of parsing the file.
     :raises ValueError: The file is neither a .json, .yml or .yaml file.
+    :raises FileNotFoundError: The file does not exist.
     """
     # If in py.test, support bits of literal JSON/YAML content
     if TESTING_MODE and isinstance(path, dict):
         return path
-
-    if not path.is_file():
-        return {}
 
     if path.suffix == ".json":
         with path.open("r", encoding="utf-8") as fd:

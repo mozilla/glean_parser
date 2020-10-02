@@ -306,7 +306,7 @@ def test_snake_case_enforcement():
 
     for content in contents:
         util.add_required(content)
-        errors = list(parser._load_file(content))
+        errors = list(parser._load_file(content, {}))
         assert len(errors) == 1
 
 
