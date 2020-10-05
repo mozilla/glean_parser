@@ -376,5 +376,5 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'EventMetricType<exampleKeys> by lazy { EventMetricType<exampleKeys>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
+        expected = 'EventMetricType<exampleKeys> by lazy { // generated from event.example EventMetricType<exampleKeys>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
         assert expected in content
