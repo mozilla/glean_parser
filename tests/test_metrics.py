@@ -171,3 +171,19 @@ def test_reserved_extra_keys():
         extra_keys={"glean.internal": {"description": "foo"}},
         _config={"allow_reserved": True},
     )
+
+
+def test_no_unit():
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=[42],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        extra_keys={"glean.internal": {"description": "foo"}},
+        _config={"allow_reserved": True},
+    )
+
+    assert not hasattr(event, "unit")

@@ -52,7 +52,7 @@ class Metric:
         disabled: bool = False,
         lifetime: str = "ping",
         send_in_pings: Optional[List[str]] = None,
-        unit: str = "",
+        unit: Optional[str] = None,
         gecko_datapoint: str = "",
         no_lint: Optional[List[str]] = None,
         data_sensitivity: Optional[List[str]] = None,
@@ -78,7 +78,8 @@ class Metric:
         if send_in_pings is None:
             send_in_pings = ["default"]
         self.send_in_pings = send_in_pings
-        self.unit = unit
+        if unit is not None:
+            self.unit = unit
         self.gecko_datapoint = gecko_datapoint
         if no_lint is None:
             no_lint = []
