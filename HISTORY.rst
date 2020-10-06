@@ -7,6 +7,7 @@ Unreleased
 
 * **Breaking change:** `glean_parser` will now return an error code when any of the input files do not exist (unless the `--allow-missing-files` flag is passed).
 * Generated code now includes a comment next to each metric containing the name of the metric in its original `snake_case` form.
+* When metrics don't provide a `unit` parameter, it is not included in the output (as provided by probe-scraper).
 
 1.28.6 (2020-09-24)
 -------------------
