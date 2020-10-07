@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Glean Parser 1.28.7.dev7+g94ca005 documentation</title>
+    <title>History &#8212; Glean Parser 1.28.7.dev8+g89b2c58 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,26 +36,29 @@
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="unreleased">
 <h2>Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id1">
+<h2>1.29.0 (2020-10-07)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> <cite>glean_parser</cite> will now return an error code when any of the input files do not exist (unless the <cite>–allow-missing-files</cite> flag is passed).</p></li>
 <li><p>Generated code now includes a comment next to each metric containing the name of the metric in its original <cite>snake_case</cite> form.</p></li>
 <li><p>When metrics don’t provide a <cite>unit</cite> parameter, it is not included in the output (as provided by probe-scraper).</p></li>
 </ul>
 </div>
-<div class="section" id="id1">
-<h2>1.28.6 (2020-09-24)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h2>1.28.6 (2020-09-24)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Ensure Kotlin arguments are deterministically ordered</p></li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h2>1.28.5 (2020-09-14)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>1.28.5 (2020-09-14)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fix deploy step to update pip before deploying to pypi.</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>1.28.4 (2020-09-14)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2>1.28.4 (2020-09-14)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The <cite>SUPERFLUOUS_NO_LINT</cite> warning has been removed from the glinter.
 It likely did more harm than good, and makes it hard to make
@@ -70,72 +73,72 @@ These are both functions that take the <cite>expires</cite> value of the metric 
 These will allow FOG to provide custom validation for its version-based <cite>expires</cite> values.</p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>1.28.3 (2020-07-28)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h2>1.28.3 (2020-07-28)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Support HashSet and Dictionary in the C# generated code.</p></li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h2>1.28.2 (2020-07-28)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>1.28.2 (2020-07-28)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Generate valid C# code when using Labeled metric types.</p></li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h2>1.28.1 (2020-07-24)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>1.28.1 (2020-07-24)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Add missing column to correctly render markdown tables in generated documentation.</p></li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h2>1.28.0 (2020-07-23)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h2>1.28.0 (2020-07-23)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> The internal ping <cite>deletion-request</cite> was misnamed in pings.py causing the linter to not allow use of the correctly named ping for adding legacy ids to. Consuming apps will need to update their metrics.yaml if they are using <cite>deletion_request</cite> in any <cite>send_in_pings</cite> to <cite>deletion-request</cite> after updating.</p></li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h2>1.27.0 (2020-07-21)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>1.27.0 (2020-07-21)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Rename the <cite>data_category</cite> field to <cite>data_sensitivity</cite> to be clearer.</p></li>
 </ul>
 </div>
-<div class="section" id="id9">
-<h2>1.26.0 (2020-07-21)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id10">
+<h2>1.26.0 (2020-07-21)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add support for JWE metric types.</p></li>
 <li><p>Add a <cite>data_sensitivity</cite> field to all metrics for specifying the type of data collected in the field.</p></li>
 </ul>
 </div>
-<div class="section" id="id10">
-<h2>1.25.0 (2020-07-17)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h2>1.25.0 (2020-07-17)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add support for generating C# code.</p></li>
 <li><p>BUGFIX: The memory unit is now correctly passed to the MemoryDistribution
 metric type in Swift.</p></li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h2>1.24.0 (2020-06-30)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h2>1.24.0 (2020-06-30)<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: look for metrics in send_if_empty pings. Metrics for these kinds of pings were being ignored.</p></li>
 </ul>
 </div>
-<div class="section" id="id12">
-<h2>1.23.0 (2020-06-27)<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id13">
+<h2>1.23.0 (2020-06-27)<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for Python 3.5 has been dropped.</p></li>
 <li><p>BUGFIX: The ordering of event extra keys will now match with their enum, fixing a serious bug where keys of extras may not match the correct values in the data payload.  See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1648768">https://bugzilla.mozilla.org/show_bug.cgi?id=1648768</a>.</p></li>
 </ul>
 </div>
-<div class="section" id="id13">
-<h2>1.22.0 (2020-05-28)<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id14">
+<h2>1.22.0 (2020-05-28)<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> (Swift only) Combine all metrics and pings into a single generated file <cite>Metrics.swift</cite>.</p></li>
 </ul>
 </div>
-<div class="section" id="id14">
-<h2>1.21.0 (2020-05-25)<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id15">
+<h2>1.21.0 (2020-05-25)<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><cite>glinter</cite> messages have been improved with more details and to be more
 actionable.</p></li>
@@ -143,32 +146,32 @@ actionable.</p></li>
 <li><p>BUGFIX: the <cite>Lifetime</cite> enum values now match the values of the implementation in mozilla/glean.</p></li>
 </ul>
 </div>
-<div class="section" id="id15">
-<h2>1.20.4 (2020-05-07)<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h2>1.20.4 (2020-05-07)<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: yamllint errors are now reported using the correct file name.</p></li>
 </ul>
 </div>
-<div class="section" id="id16">
-<h2>1.20.3 (2020-05-06)<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id17">
+<h2>1.20.3 (2020-05-06)<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for using <cite>timing_distribution</cite>’s <cite>time_unit</cite> parameter to control the range of acceptable values is documented. The default unit for this use case is <cite>nanosecond</cite> to avoid creating a breaking change.  See [bug 1630997](<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1630997">https://bugzilla.mozilla.org/show_bug.cgi?id=1630997</a>) for more information.</p></li>
 </ul>
 </div>
-<div class="section" id="id17">
-<h2>1.20.2 (2020-04-24)<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id18">
+<h2>1.20.2 (2020-04-24)<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Dependencies that depend on the version of Python being used are now specified using the <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies">Declaring platform specific dependencies syntax in setuptools</a>. This means that more recent versions of dependencies are likely to be installed on Python 3.6 and later, and unnecessary backport libraries won’t be installed on more recent Python versions.</p></li>
 </ul>
 </div>
-<div class="section" id="id18">
-<h2>1.20.1 (2020-04-21)<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id19">
+<h2>1.20.1 (2020-04-21)<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The minimum version of the runtime dependencies has been lowered to increase compatibility with other tools.  These minimum versions are now tested in CI, in addition to testing the latest versions of the dependencies that was already happening in CI.</p></li>
 </ul>
 </div>
-<div class="section" id="id19">
-<h2>1.20.0 (2020-04-15)<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id20">
+<h2>1.20.0 (2020-04-15)<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> glinter errors found during the <cite>translate</cite> command will now return an error code. glinter warnings will be displayed, but not return an error code.</p></li>
 <li><p><cite>glean_parser</cite> now produces a linter warning when <cite>user</cite> lifetime metrics are
@@ -176,8 +179,8 @@ set to expire. See [bug 1604854](<a class="reference external" href="https://bug
 for additional context.</p></li>
 </ul>
 </div>
-<div class="section" id="id20">
-<h2>1.19.0 (2020-03-18)<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id21">
+<h2>1.19.0 (2020-03-18)<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> The regular expression used to validate labels is
 stricter and more correct.</p></li>
@@ -190,22 +193,22 @@ different language targets.</p></li>
 <li><p>BUGFIX: glean_parser now works on 32-bit Windows.</p></li>
 </ul>
 </div>
-<div class="section" id="id21">
-<h2>1.18.3 (2020-02-24)<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id22">
+<h2>1.18.3 (2020-02-24)<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Dropped the ‘inflection’ dependency.</p></li>
 <li><p>Constrained the ‘zipp’ and ‘MarkupSafe’ transitive dependencies to versions that
 support Python 3.5.</p></li>
 </ul>
 </div>
-<div class="section" id="id22">
-<h2>1.18.2 (2020-02-14)<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id23">
+<h2>1.18.2 (2020-02-14)<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Fix rendering of first element of reason list.</p></li>
 </ul>
 </div>
-<div class="section" id="id23">
-<h2>1.18.1 (2020-02-14)<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h2>1.18.1 (2020-02-14)<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Reason codes are displayed in markdown output for built-in pings as
 well.</p></li>
@@ -214,36 +217,36 @@ well.</p></li>
 private members.</p></li>
 </ul>
 </div>
-<div class="section" id="id24">
-<h2>1.18.0 (2020-02-13)<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id25">
+<h2>1.18.0 (2020-02-13)<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Breaking Change (Java API)</strong> Have the metrics names in Java match the names in Kotlin.
 See [Bug 1588060](<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1588060">https://bugzilla.mozilla.org/show_bug.cgi?id=1588060</a>).</p></li>
 <li><p>The reasons a ping are sent are now included in the generated markdown documentation.</p></li>
 </ul>
 </div>
-<div class="section" id="id25">
-<h2>1.17.3 (2020-02-05)<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id26">
+<h2>1.17.3 (2020-02-05)<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: The version of Jinja2 now specifies &lt; 3.0, since that version no
 longer supports Python 3.5.</p></li>
 </ul>
 </div>
-<div class="section" id="id26">
-<h2>1.17.2 (2020-02-05)<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id27">
+<h2>1.17.2 (2020-02-05)<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Fixes an import error in generated Kotlin code.</p></li>
 </ul>
 </div>
-<div class="section" id="id27">
-<h2>1.17.1 (2020-02-05)<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id28">
+<h2>1.17.1 (2020-02-05)<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Generated Swift code now includes <cite>import Glean</cite>, unless generating
 for a Glean-internal build.</p></li>
 </ul>
 </div>
-<div class="section" id="id28">
-<h2>1.17.0 (2020-02-03)<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id29">
+<h2>1.17.0 (2020-02-03)<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Remove default schema URL from <cite>validate_ping</cite></p></li>
 <li><p>Make <cite>schema</cite> argument required for CLI</p></li>
@@ -251,65 +254,65 @@ for a Glean-internal build.</p></li>
 <li><p>BUGFIX: Restore order of fields in generated Swift code</p></li>
 </ul>
 </div>
-<div class="section" id="id29">
-<h2>1.16.0 (2020-01-15)<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id30">
+<h2>1.16.0 (2020-01-15)<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for <cite>reason</cite> codes on pings was added.</p></li>
 </ul>
 </div>
-<div class="section" id="id30">
-<h2>1.15.6 (2020-02-06)<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id31">
+<h2>1.15.6 (2020-02-06)<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: The version of Jinja2 now specifies &lt; 3.0, since that version no
 longer supports Python 3.5 (backported from 1.17.3).</p></li>
 </ul>
 </div>
-<div class="section" id="id31">
-<h2>1.15.5 (2019-12-19)<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id32">
+<h2>1.15.5 (2019-12-19)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Also allow the legacy name <cite>all_pings</cite> for <cite>send_in_pings</cite> parameter on metrics</p></li>
 </ul>
 </div>
-<div class="section" id="id32">
-<h2>1.15.4 (2019-12-19)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id33">
+<h2>1.15.4 (2019-12-19)<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Also allow the legacy name <cite>all_pings</cite></p></li>
 </ul>
 </div>
-<div class="section" id="id33">
-<h2>1.15.3 (2019-12-13)<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id34">
+<h2>1.15.3 (2019-12-13)<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add project title to markdown template.</p></li>
 <li><p>Remove “Sorry about that” from markdown template.</p></li>
 <li><p>BUGFIX: Replace dashes in variable names to force proper naming</p></li>
 </ul>
 </div>
-<div class="section" id="id34">
-<h2>1.15.2 (2019-12-12)<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id35">
+<h2>1.15.2 (2019-12-12)<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Use a pure Python library for iso8601 so there is no compilation required.</p></li>
 </ul>
 </div>
-<div class="section" id="id35">
-<h2>1.15.1 (2019-12-12)<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id36">
+<h2>1.15.1 (2019-12-12)<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Add some additional ping names to the non-kebab-case allow list.</p></li>
 </ul>
 </div>
-<div class="section" id="id36">
-<h2>1.15.0 (2019-12-12)<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id37">
+<h2>1.15.0 (2019-12-12)<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Restrict new pings names to be kebab-case and change <cite>all_pings</cite> to <cite>all-pings</cite></p></li>
 </ul>
 </div>
-<div class="section" id="id37">
-<h2>1.14.0 (2019-12-06)<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id38">
+<h2>1.14.0 (2019-12-06)<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>glean_parser now supports Python versions 3.5, 3.6, 3.7 and 3.8.</p></li>
 </ul>
 </div>
-<div class="section" id="id38">
-<h2>1.13.0 (2019-12-04)<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id39">
+<h2>1.13.0 (2019-12-04)<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The <cite>translate</cite> command will no longer clear extra files in the output directory.</p></li>
 <li><p>BUGFIX: Ensure all newlines in comments are prefixed with comment markers</p></li>
@@ -317,21 +320,21 @@ longer supports Python 3.5 (backported from 1.17.3).</p></li>
 <li><p>Generate documentation for pings that are sent if empty</p></li>
 </ul>
 </div>
-<div class="section" id="id39">
-<h2>1.12.0 (2019-11-27)<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id40">
+<h2>1.12.0 (2019-11-27)<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Reserve the <cite>deletion_request</cite> ping name</p></li>
 <li><p>Added a new flag <cite>send_if_empty</cite> for pings</p></li>
 </ul>
 </div>
-<div class="section" id="id40">
-<h2>1.11.0 (2019-11-13)<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id41">
+<h2>1.11.0 (2019-11-13)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The <cite>glinter</cite> command now performs <cite>yamllint</cite> validation on registry files.</p></li>
 </ul>
 </div>
-<div class="section" id="id41">
-<h2>1.10.0 (2019-11-11)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id42">
+<h2>1.10.0 (2019-11-11)<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The Kotlin linter <cite>detekt</cite> is now run during CI, and for local
 testing if installed.</p></li>
@@ -344,8 +347,8 @@ removed. This includes <cite>enumeration</cite>, <cite>rate</cite>, <cite>usage<
 well as many labeled metrics that don’t exist.</p></li>
 </ul>
 </div>
-<div class="section" id="id42">
-<h2>1.9.5 (2019-10-22)<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id43">
+<h2>1.9.5 (2019-10-22)<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Allow a Swift lint for generated code</p></li>
 <li><p>New lint: Restrict what metric can go into the ‘baseline’ ping</p></li>
@@ -353,65 +356,65 @@ well as many labeled metrics that don’t exist.</p></li>
 <li><p>BUGFIX: change Labeled types labels from lists to sets.</p></li>
 </ul>
 </div>
-<div class="section" id="id43">
-<h2>1.9.4 (2019-10-16)<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id44">
+<h2>1.9.4 (2019-10-16)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Use lists instead of sets in Labeled types labels to ensure that
 the order of the labels passed to the <cite>metrics.yaml</cite> is kept.</p></li>
 <li><p><cite>glinter</cite> will now check for duplicate labels and error if there are any.</p></li>
 </ul>
 </div>
-<div class="section" id="id44">
-<h2>1.9.3 (2019-10-09)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id45">
+<h2>1.9.3 (2019-10-09)<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add labels from Labeled types to the Extra column in the Markdown template.</p></li>
 </ul>
 </div>
-<div class="section" id="id45">
-<h2>1.9.2 (2019-10-08)<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id46">
+<h2>1.9.2 (2019-10-08)<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: Don’t call <cite>is_internal_metric</cite> on <cite>Ping</cite> objects.</p></li>
 </ul>
 </div>
-<div class="section" id="id46">
-<h2>1.9.1 (2019-10-07)<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id47">
+<h2>1.9.1 (2019-10-07)<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Don’t include Glean internal metrics in the generated markdown.</p></li>
 </ul>
 </div>
-<div class="section" id="id47">
-<h2>1.9.0 (2019-10-04)<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id48">
+<h2>1.9.0 (2019-10-04)<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Glinter now warns when bug numbers (rather than URLs) are used.</p></li>
 <li><p>BUGFIX: add <cite>HistogramType</cite> and <cite>MemoryUnit</cite> imports in Kotlin generated code.</p></li>
 </ul>
 </div>
-<div class="section" id="id48">
-<h2>1.8.4 (2019-10-02)<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id49">
+<h2>1.8.4 (2019-10-02)<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Removed unsupported labeled metric types.</p></li>
 </ul>
 </div>
-<div class="section" id="id49">
-<h2>1.8.3 (2019-10-02)<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id50">
+<h2>1.8.3 (2019-10-02)<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Fix indentation for generated Swift code</p></li>
 </ul>
 </div>
-<div class="section" id="id50">
-<h2>1.8.2 (2019-10-01)<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id51">
+<h2>1.8.2 (2019-10-01)<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Created labeled metrics and events in Swift code and wrap it in a configured namespace</p></li>
 </ul>
 </div>
-<div class="section" id="id51">
-<h2>1.8.1 (2019-09-27)<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id52">
+<h2>1.8.1 (2019-09-27)<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: <cite>memory_unit</cite> is now passed to the Kotlin generator.</p></li>
 </ul>
 </div>
-<div class="section" id="id52">
-<h2>1.8.0 (2019-09-26)<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id53">
+<h2>1.8.0 (2019-09-26)<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>A new parser config, <cite>do_not_disable_expired</cite>, was added to turn off the
 feature that expired metrics are automatically disabled. This is useful if you
@@ -420,22 +423,22 @@ file.</p></li>
 <li><p><cite>glinter</cite> will now report about superfluous <cite>no_lint</cite> entries.</p></li>
 </ul>
 </div>
-<div class="section" id="id53">
-<h2>1.7.0 (2019-09-24)<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id54">
+<h2>1.7.0 (2019-09-24)<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>A “<cite>glinter</cite>” tool is now included to find common mistakes in metric naming and setup.
 This check is run during <cite>translate</cite> and warnings will be displayed.
 ⚠ These warnings will be treated as errors in a future revision.</p></li>
 </ul>
 </div>
-<div class="section" id="id54">
-<h2>1.6.1 (2019-09-17)<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id55">
+<h2>1.6.1 (2019-09-17)<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: <cite>GleanGeckoMetricsMapping</cite> must include <cite>LabeledMetricType</cite> and <cite>CounterMetricType</cite>.</p></li>
 </ul>
 </div>
-<div class="section" id="id55">
-<h2>1.6.0 (2019-09-17)<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id56">
+<h2>1.6.0 (2019-09-17)<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>NEW: Support for outputting metrics in Swift.</p></li>
 <li><p>BUGFIX: Provides a helpful error message when <cite>geckoview_datapoint</cite> is used on an metric type that doesn’t support GeckoView exfiltration.</p></li>
@@ -443,52 +446,52 @@ This check is run during <cite>translate</cite> and warnings will be displayed.
 <li><p>Introduce a ‘Swift’ output generator.</p></li>
 </ul>
 </div>
-<div class="section" id="id56">
-<h2>1.4.1 (2019-08-28)<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id57">
+<h2>1.4.1 (2019-08-28)<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Documentation only.</p></li>
 </ul>
 </div>
-<div class="section" id="id57">
-<h2>1.4.0 (2019-08-27)<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id58">
+<h2>1.4.0 (2019-08-27)<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Added support for generating markdown documentation from <cite>metrics.yaml</cite> files.</p></li>
 </ul>
 </div>
-<div class="section" id="id58">
-<h2>1.3.0 (2019-08-22)<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id59">
+<h2>1.3.0 (2019-08-22)<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><cite>quantity</cite> metric type has been added.</p></li>
 </ul>
 </div>
-<div class="section" id="id59">
-<h2>1.2.1 (2019-08-13)<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id60">
+<h2>1.2.1 (2019-08-13)<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>BUGFIX: <cite>includeClientId</cite> was not being output for PingType.</p></li>
 </ul>
 </div>
-<div class="section" id="id60">
-<h2>1.2.0 (2019-08-13)<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id61">
+<h2>1.2.0 (2019-08-13)<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><cite>memory_distribution</cite> metric type has been added.</p></li>
 <li><p><cite>custom_distribution</cite> metric type has been added.</p></li>
 <li><p><cite>labeled_timespan</cite> is no longer an allowed metric type.</p></li>
 </ul>
 </div>
-<div class="section" id="id61">
-<h2>1.1.0 (2019-08-05)<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id62">
+<h2>1.1.0 (2019-08-05)<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add a special <cite>all_pings</cite> value to <cite>send_in_pings</cite>.</p></li>
 </ul>
 </div>
-<div class="section" id="id62">
-<h2>1.0.0 (2019-07-29)<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id63">
+<h2>1.0.0 (2019-07-29)<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>First release to start following strict semver.</p></li>
 </ul>
 </div>
-<div class="section" id="id63">
-<h2>0.1.0 (2018-10-15)<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id64">
+<h2>0.1.0 (2018-10-15)<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>First release on PyPI.</p></li>
 </ul>
@@ -523,69 +526,70 @@ This check is run during <cite>translate</cite> and warnings will be displayed.
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#unreleased">Unreleased</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">1.28.6 (2020-09-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">1.28.5 (2020-09-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">1.28.4 (2020-09-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">1.28.3 (2020-07-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">1.28.2 (2020-07-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id6">1.28.1 (2020-07-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id7">1.28.0 (2020-07-23)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">1.27.0 (2020-07-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id9">1.26.0 (2020-07-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id10">1.25.0 (2020-07-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id11">1.24.0 (2020-06-30)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id12">1.23.0 (2020-06-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id13">1.22.0 (2020-05-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">1.21.0 (2020-05-25)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id15">1.20.4 (2020-05-07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id16">1.20.3 (2020-05-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id17">1.20.2 (2020-04-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id18">1.20.1 (2020-04-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id19">1.20.0 (2020-04-15)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id20">1.19.0 (2020-03-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id21">1.18.3 (2020-02-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id22">1.18.2 (2020-02-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id23">1.18.1 (2020-02-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id24">1.18.0 (2020-02-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id25">1.17.3 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id26">1.17.2 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id27">1.17.1 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id28">1.17.0 (2020-02-03)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id29">1.16.0 (2020-01-15)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id30">1.15.6 (2020-02-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id31">1.15.5 (2019-12-19)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id32">1.15.4 (2019-12-19)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id33">1.15.3 (2019-12-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id34">1.15.2 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id35">1.15.1 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id36">1.15.0 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id37">1.14.0 (2019-12-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id38">1.13.0 (2019-12-04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id39">1.12.0 (2019-11-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id40">1.11.0 (2019-11-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id41">1.10.0 (2019-11-11)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id42">1.9.5 (2019-10-22)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id43">1.9.4 (2019-10-16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id44">1.9.3 (2019-10-09)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id45">1.9.2 (2019-10-08)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id46">1.9.1 (2019-10-07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id47">1.9.0 (2019-10-04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id48">1.8.4 (2019-10-02)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id49">1.8.3 (2019-10-02)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id50">1.8.2 (2019-10-01)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id51">1.8.1 (2019-09-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id52">1.8.0 (2019-09-26)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id53">1.7.0 (2019-09-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id54">1.6.1 (2019-09-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id55">1.6.0 (2019-09-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id56">1.4.1 (2019-08-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id57">1.4.0 (2019-08-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id58">1.3.0 (2019-08-22)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id59">1.2.1 (2019-08-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id60">1.2.0 (2019-08-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id61">1.1.0 (2019-08-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id62">1.0.0 (2019-07-29)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id63">0.1.0 (2018-10-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.29.0 (2020-10-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.28.6 (2020-09-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">1.28.5 (2020-09-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">1.28.4 (2020-09-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">1.28.3 (2020-07-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">1.28.2 (2020-07-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">1.28.1 (2020-07-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">1.28.0 (2020-07-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">1.27.0 (2020-07-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">1.26.0 (2020-07-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">1.25.0 (2020-07-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">1.24.0 (2020-06-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">1.23.0 (2020-06-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">1.22.0 (2020-05-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">1.21.0 (2020-05-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">1.20.4 (2020-05-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">1.20.3 (2020-05-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">1.20.2 (2020-04-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">1.20.1 (2020-04-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">1.20.0 (2020-04-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">1.19.0 (2020-03-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">1.18.3 (2020-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id23">1.18.2 (2020-02-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">1.18.1 (2020-02-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id25">1.18.0 (2020-02-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">1.17.3 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id27">1.17.2 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id28">1.17.1 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">1.17.0 (2020-02-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id30">1.16.0 (2020-01-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">1.15.6 (2020-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">1.15.5 (2019-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id33">1.15.4 (2019-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id34">1.15.3 (2019-12-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id35">1.15.2 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id36">1.15.1 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id37">1.15.0 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id38">1.14.0 (2019-12-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id39">1.13.0 (2019-12-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id40">1.12.0 (2019-11-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id41">1.11.0 (2019-11-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id42">1.10.0 (2019-11-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id43">1.9.5 (2019-10-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id44">1.9.4 (2019-10-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id45">1.9.3 (2019-10-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id46">1.9.2 (2019-10-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id47">1.9.1 (2019-10-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id48">1.9.0 (2019-10-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id49">1.8.4 (2019-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id50">1.8.3 (2019-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id51">1.8.2 (2019-10-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id52">1.8.1 (2019-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id53">1.8.0 (2019-09-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id54">1.7.0 (2019-09-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id55">1.6.1 (2019-09-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id56">1.6.0 (2019-09-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id57">1.4.1 (2019-08-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id58">1.4.0 (2019-08-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id59">1.3.0 (2019-08-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id60">1.2.1 (2019-08-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id61">1.2.0 (2019-08-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id62">1.1.0 (2019-08-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id63">1.0.0 (2019-07-29)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id64">0.1.0 (2018-10-15)</a></li>
 </ul>
 </li>
 </ul>
