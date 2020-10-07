@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Glean Parser 1.28.7.dev5+g75ff104 documentation</title>
+    <title>History &#8212; Glean Parser 1.28.7.dev7+g94ca005 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -39,6 +39,7 @@
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> <cite>glean_parser</cite> will now return an error code when any of the input files do not exist (unless the <cite>–allow-missing-files</cite> flag is passed).</p></li>
 <li><p>Generated code now includes a comment next to each metric containing the name of the metric in its original <cite>snake_case</cite> form.</p></li>
+<li><p>When metrics don’t provide a <cite>unit</cite> parameter, it is not included in the output (as provided by probe-scraper).</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
