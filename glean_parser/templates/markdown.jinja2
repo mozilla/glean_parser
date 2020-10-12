@@ -58,8 +58,10 @@ This ping includes the [client id](https://mozilla.github.io/glean/book/user/pin
 {% endfor %}
 
 {% endif %}
+All Glean pings contain built-in metrics in the [`ping_info`](https://mozilla.github.io/glean/book/user/pings/index.html#the-ping_info-section) and [`client_info`](https://mozilla.github.io/glean/book/user/pings/index.html#the-client_info-section) sections.
+
 {% if metrics_by_pings[ping_name] %}
-The following metrics are added to the ping:
+In addition to those built-in metrics, the following metrics are added to the ping:
 
 | Name | Type | Description | Data reviews | Extras | Expiration | [Data Sensitivity](https://wiki.mozilla.org/Firefox/Data_Collection) |
 | --- | --- | --- | --- | --- | --- | --- |
