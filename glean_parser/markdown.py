@@ -126,14 +126,20 @@ def ping_review_title(data_url: str, index: int) -> str:
     """
     Return a title for a data review in a readable form.
     """
-    query = urlsplit(data_url).query
-    fragment = urlsplit(data_url).fragment
+    url_object = urlsplit(data_url)
+
+    # Bugzilla urls like `https://bugzilla.mozilla.org/show_bug.cgi?id=1581647`
+    query = url_object.query
     params = parse_qs(query)
 
+    # GitHub urls like `https://github.com/mozilla-mobile/fenix/pull/1707`
+    path = url_object.path
+    short_url = path[1:].replace('/pull/', '#')
+
     if (params and params['id']):
-        return f"Bug: {params['id'][0]}"
-    elif (fragment):
-        return data_url
+        return f"Bug {params['id'][0]}"
+    elif (url_object.netloc == 'github.com'):
+        return short_url
 
     return f"Review {index}"
 
