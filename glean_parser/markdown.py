@@ -10,6 +10,7 @@ Outputter to generate Markdown documentation for metrics.
 
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
+from urllib.parse import urlsplit, parse_qs
 
 
 from . import metrics
@@ -17,7 +18,6 @@ from . import pings
 from . import util
 from collections import defaultdict
 
-from urllib.parse import urlsplit, parse_qs
 
 def extra_info(obj: Union[metrics.Metric, pings.Ping]) -> List[Tuple[str, str]]:
     """

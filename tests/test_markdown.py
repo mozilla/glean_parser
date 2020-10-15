@@ -139,6 +139,29 @@ def test_metrics_docs():
     )
 
 
+def test_review_title():
+    index = 1
+
+    assert (
+        markdown.ping_review_title(
+            "https://bugzilla.mozilla.org/show_bug.cgi?id=1581647#c9",
+            index
+        ) == "Bug: 1581647"
+    )
+    assert (
+        markdown.ping_review_title(
+            "https://bugzilla.mozilla.org/show_bug.cgi?id=1581647",
+            index
+        ) == "Bug: 1581647"
+    )
+    assert (
+        markdown.ping_review_title(
+            "mozilla-mobile/fenix#1707",
+            index
+        ) == "mozilla-mobile/fenix#1707"
+    )
+
+
 def test_reasons(tmpdir):
     tmpdir = Path(str(tmpdir))
 
