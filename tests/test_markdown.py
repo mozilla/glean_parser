@@ -146,7 +146,7 @@ def test_review_title():
         markdown.ping_review_title(
             "https://bugzilla.mozilla.org/show_bug.cgi?id=1581647",
             index
-        ) == "Bug: 1581647"
+        ) == "Bug 1581647"
     )
     assert (
         markdown.ping_review_title(
