@@ -17,6 +17,7 @@ from . import pings
 from . import util
 from collections import defaultdict
 
+from urllib.parse import urlsplit, parse_qs
 
 def extra_info(obj: Union[metrics.Metric, pings.Ping]) -> List[Tuple[str, str]]:
     """
@@ -121,6 +122,22 @@ def ping_data_reviews(
         return None
 
 
+def ping_review_title(data_url: str, index: int) -> str:
+    """
+    Return a title for a data review in a readable form.
+    """
+    query = urlsplit(data_url).query
+    fragment = urlsplit(data_url).fragment
+    params = parse_qs(query)
+
+    if (params and params['id']):
+        return f"Bug: {params['id'][0]}"
+    elif (fragment):
+        return data_url
+
+    return f"Review {index}"
+
+
 def ping_bugs(
     ping_name: str, custom_pings_cache: Optional[Dict[str, pings.Ping]] = None
 ) -> Optional[List[str]]:
@@ -222,6 +239,7 @@ def output_markdown(
             ("ping_docs", ping_docs),
             ("ping_reasons", lambda x: ping_reasons(x, custom_pings_cache)),
             ("ping_data_reviews", lambda x: ping_data_reviews(x, custom_pings_cache)),
+            ("ping_review_title", ping_review_title),
             ("ping_bugs", lambda x: ping_bugs(x, custom_pings_cache)),
             (
                 "ping_include_client_id",
