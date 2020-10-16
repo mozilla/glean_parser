@@ -124,7 +124,10 @@ def ping_data_reviews(
 
 def ping_review_title(data_url: str, index: int) -> str:
     """
-    Return a title for a data review in a readable form.
+    Return a title for a data review in human readable form.
+
+    :param data_url: A url for data review.
+    :param index: Position of the data review on list (e.g: 1, 2, 3...).
     """
     url_object = urlsplit(data_url)
 
