@@ -144,22 +144,17 @@ def test_review_title():
 
     assert (
         markdown.ping_review_title(
-            "https://bugzilla.mozilla.org/show_bug.cgi?id=1581647",
-            index
-        ) == "Bug 1581647"
+            "https://bugzilla.mozilla.org/show_bug.cgi?id=1581647", index
+        )
+        == "Bug 1581647"
     )
     assert (
         markdown.ping_review_title(
-            "https://github.com/mozilla-mobile/fenix/pull/1707",
-            index
-        ) == "mozilla-mobile/fenix#1707"
+            "https://github.com/mozilla-mobile/fenix/pull/1707", index
+        )
+        == "mozilla-mobile/fenix#1707"
     )
-    assert (
-        markdown.ping_review_title(
-            "http://example.com/reviews",
-            index
-        ) == "Review 1"
-    )
+    assert markdown.ping_review_title("http://example.com/reviews", index) == "Review 1"
 
 
 def test_reasons(tmpdir):

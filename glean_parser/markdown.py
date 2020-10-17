@@ -137,11 +137,11 @@ def ping_review_title(data_url: str, index: int) -> str:
 
     # GitHub urls like `https://github.com/mozilla-mobile/fenix/pull/1707`
     path = url_object.path
-    short_url = path[1:].replace('/pull/', '#')
+    short_url = path[1:].replace("/pull/", "#")
 
-    if (params and params['id']):
+    if params and params["id"]:
         return f"Bug {params['id'][0]}"
-    elif (url_object.netloc == 'github.com'):
+    elif url_object.netloc == "github.com":
         return short_url
 
     return f"Review {index}"
