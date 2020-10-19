@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 1.29.1.dev3+g5102e03 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 1.29.1.dev4+g1cabbbe documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -384,6 +384,20 @@ built-in ping.</p>
 <dt id="glean_parser.markdown.ping_reasons">
 <code class="sig-prename descclassname">glean_parser.markdown.</code><code class="sig-name descname">ping_reasons</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ping_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">custom_pings_cache</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping">glean_parser.pings.Ping</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span><a class="reference internal" href="_modules/glean_parser/markdown.html#ping_reasons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.markdown.ping_reasons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the reasons dictionary for the ping.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="glean_parser.markdown.ping_review_title">
+<code class="sig-prename descclassname">glean_parser.markdown.</code><code class="sig-name descname">ping_review_title</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/glean_parser/markdown.html#ping_review_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#glean_parser.markdown.ping_review_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a title for a data review in human readable form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_url</strong> – A url for data review.</p></li>
+<li><p><strong>index</strong> – Position of the data review on list (e.g: 1, 2, 3…).</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
