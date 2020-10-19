@@ -70,7 +70,7 @@ In addition to those built-in metrics, the following metrics are added to the pi
 {{- '['}}{{ metric.type }}]({{ metric.type|metrics_docs }}) |
 {{- metric.description|replace("\n", " ") }} |
 {%- for data_review in metric.data_reviews %}
-[{{ loop.index }}]({{ data_review }}){{ ", " if not loop.last }}
+[{{ data_review|ping_review_title(loop.index) }}]({{ data_review }}){{ ", " if not loop.last }}
 {%- endfor -%} |
 {%- if metric|extra_info -%}
 <ul>
