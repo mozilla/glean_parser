@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* BUGFIX: Linter output can now be redirected correctly (1675771).
+
 1.29.0 (2020-10-07)
 -------------------
 

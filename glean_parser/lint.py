@@ -402,7 +402,7 @@ def lint_yaml_files(
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
         for (path, p) in nits:
-            print(f"{path} ({p.line}:{p.column}) - {p.message}")
+            print(f"{path} ({p.line}:{p.column}) - {p.message}", file=file)
         print("", file=file)
         print("Please fix the above nits to continue.", file=file)
 
