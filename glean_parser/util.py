@@ -66,13 +66,27 @@ class _NoDatesSafeLoader(yaml.SafeLoader):
 _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
+class SafeLineLoader(_NoDatesSafeLoader):
+    """
+    Return line number.
+    Source: https://stackoverflow.com/questions/13319067/parsing-yaml-return-with-line-number
+    """
+
+    def construct_mapping(self, node, deep=False):
+        mapping = super(SafeLineLoader, self).construct_mapping(
+            node, deep=deep)
+
+        mapping['defined_in'] = str(node.start_mark.line + 1)
+        return mapping
+
+
 if sys.version_info < (3, 7):
     # In Python prior to 3.7, dictionary order is not preserved. However, we
     # want the metrics to appear in the output in the same order as they are in
     # the metrics.yaml file, so on earlier versions of Python we must use an
     # OrderedDict object.
     def ordered_yaml_load(stream):
-        class OrderedLoader(_NoDatesSafeLoader):
+        class OrderedLoader(SafeLineLoader):
             pass
 
         def construct_mapping(loader, node):
@@ -100,7 +114,7 @@ if sys.version_info < (3, 7):
 else:
 
     def ordered_yaml_load(stream):
-        return yaml.load(stream, Loader=_NoDatesSafeLoader)
+        return yaml.load(stream, Loader=SafeLineLoader)
 
     def ordered_yaml_dump(data, **kwargs):
         return yaml.dump(data, **kwargs)
@@ -128,7 +142,7 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
             if ordered_dict:
                 return ordered_yaml_load(fd)
             else:
-                return yaml.load(fd, Loader=_NoDatesSafeLoader)
+                return yaml.load(fd, Loader=SafeLineLoader)
     else:
         raise ValueError(f"Unknown file extension {path.suffix}")
 

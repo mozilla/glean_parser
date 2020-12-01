@@ -45,6 +45,7 @@ class Metric:
         name: str,
         bugs: List[str],
         description: str,
+        defined_in: str,  # line number
         notification_emails: List[str],
         expires: Any,
         data_reviews: Optional[List[str]] = None,
@@ -67,6 +68,7 @@ class Metric:
         self.name = name
         self.bugs = bugs
         self.description = description
+        self.defined_in = defined_in
         self.notification_emails = notification_emails
         self.expires = expires
         if data_reviews is None:

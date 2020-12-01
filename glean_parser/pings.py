@@ -22,6 +22,7 @@ class Ping:
         self,
         name: str,
         description: str,
+        defined_in: str,  # line number
         bugs: List[str],
         notification_emails: List[str],
         data_reviews: Optional[List[str]] = None,
@@ -35,6 +36,7 @@ class Ping:
 
         self.name = name
         self.description = description
+        self.defined_in = defined_in
         self.bugs = bugs
         self.notification_emails = notification_emails
         if data_reviews is None:
