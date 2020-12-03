@@ -8,7 +8,7 @@
 Classes for managing the description of pings.
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 
 from . import util
@@ -22,7 +22,7 @@ class Ping:
         self,
         name: str,
         description: str,
-        defined_in: str,  # line number
+        defined_in: Any,
         bugs: List[str],
         notification_emails: List[str],
         data_reviews: Optional[List[str]] = None,

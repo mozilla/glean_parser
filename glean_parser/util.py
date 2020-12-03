@@ -68,15 +68,23 @@ _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 class SafeLineLoader(_NoDatesSafeLoader):
     """
-    Return line number.
+    Map line number to yaml nodes.
     Source: https://stackoverflow.com/questions/13319067/parsing-yaml-return-with-line-number
     """
 
     def construct_mapping(self, node, deep=False):
         mapping = super(SafeLineLoader, self).construct_mapping(
             node, deep=deep)
+        line_number = {"line": str(node.start_mark.line)}
 
-        mapping['defined_in'] = str(node.start_mark.line + 1)
+        for value in node.value:
+            if value[0].value != "$schema":
+                # pings
+                if node.start_mark.column == 2 and value[0].value == "description":
+                    mapping['defined_in'] = line_number
+                # metrics
+                if node.start_mark.column == 4 and value[0].value == "type":
+                    mapping['defined_in'] = line_number
         return mapping
 
 

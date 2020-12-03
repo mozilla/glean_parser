@@ -45,7 +45,7 @@ class Metric:
         name: str,
         bugs: List[str],
         description: str,
-        defined_in: str,  # line number
+        defined_in: Any,  # line number
         notification_emails: List[str],
         expires: Any,
         data_reviews: Optional[List[str]] = None,
