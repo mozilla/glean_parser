@@ -144,11 +144,6 @@ definitions:
           Descriptions may contain [markdown
           syntax](https://www.markdownguide.org/basic-syntax/).
         type: string
-
-      defined_in:
-        title: The line number that the metric was defined in
-        description: TBD
-        type: object 
          
       lifetime:
         title: Lifetime

@@ -138,4 +138,4 @@ additionalProperties:
     - notification_emails
     - data_reviews
 
-  additionalProperties: true
+  additionalProperties: false

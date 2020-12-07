@@ -8,7 +8,7 @@
 Classes for managing the description of pings.
 """
 
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional
 
 
 from . import util
@@ -22,9 +22,9 @@ class Ping:
         self,
         name: str,
         description: str,
-        defined_in: Any,
         bugs: List[str],
         notification_emails: List[str],
+        defined_in: Optional[str] = None,
         data_reviews: Optional[List[str]] = None,
         include_client_id: bool = False,
         send_if_empty: bool = False,
@@ -53,7 +53,7 @@ class Ping:
         if not _validated:
             data: Dict[str, util.JSONType] = {
                 "$schema": parser.PINGS_ID,
-                self.name: self.serialize(),
+                self.name: self._serialize_input(),
             }
             for error in parser.validate(data):
                 raise ValueError(error)
@@ -75,6 +75,11 @@ class Ping:
         d = self.__dict__.copy()
         del d["name"]
         return d
+
+    def _serialize_input(self) -> Dict[str, util.JSONType]:
+        d = self.serialize()
+        modified_dict = util.remove_output_params(d, "defined_in")
+        return modified_dict
 
     def identifier(self) -> str:
         """

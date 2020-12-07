@@ -45,9 +45,9 @@ class Metric:
         name: str,
         bugs: List[str],
         description: str,
-        defined_in: Any,  # line number
         notification_emails: List[str],
         expires: Any,
+        defined_in: Optional[str] = None,
         data_reviews: Optional[List[str]] = None,
         version: int = 0,
         disabled: bool = False,
@@ -96,7 +96,7 @@ class Metric:
         if not _validated:
             data = {
                 "$schema": parser.METRICS_ID,
-                self.category: {self.name: self.serialize()},
+                self.category: {self.name: self._serialize_input()},
             }  # type: Dict[str, util.JSONType]
             for error in parser.validate(data):
                 raise ValueError(error)
@@ -169,6 +169,11 @@ class Metric:
         del d["name"]
         del d["category"]
         return d
+
+    def _serialize_input(self) -> Dict[str, util.JSONType]:
+        d = self.serialize()
+        modified_dict = util.remove_output_params(d, "defined_in")
+        return modified_dict
 
     def identifier(self) -> str:
         """
