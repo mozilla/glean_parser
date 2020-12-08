@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from collections import OrderedDict
-import copy
 import datetime
 import functools
 import json
@@ -69,21 +68,28 @@ _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 class SafeLineLoader(_NoDatesSafeLoader):
     """
-    Map line number to yaml nodes.
-    https://stackoverflow.com/questions/13319067/parsing-yaml-return-with-line-number
+    Map line number to ping and metric yaml nodes.
+
+    There are a few specific places we can map the line number to:
+    only add line number to ping/metric node, and map it at the
+    *property* level so that it won’t fail schema validation.
+    Since the file structures for pings.yaml and metrics.yaml
+    are different, and yamllint is run on the input which enforces
+    2-space tab width, the logic to find the right nodes to map
+    to is defined in construct_mapping().
     """
 
     def construct_mapping(self, node, deep=False):
-        mapping = super(SafeLineLoader, self).construct_mapping(
-            node, deep=deep)
+        mapping = super(SafeLineLoader, self).construct_mapping(node, deep=deep)
+
         for value in node.value:
             if value[0].value != "$schema":
-                # pings
+                # pings.yaml
                 if node.start_mark.column == 2 and value[0].value == "description":
-                    mapping['defined_in'] = str(node.start_mark.line)
-                # metrics
+                    mapping["defined_in"] = {"line": str(node.start_mark.line)}
+                # metrics.yaml
                 if node.start_mark.column == 4 and value[0].value == "type":
-                    mapping['defined_in'] = str(node.start_mark.line)
+                    mapping["defined_in"] = {"line": str(node.start_mark.line)}
         return mapping
 
 
@@ -127,12 +133,15 @@ else:
         return yaml.dump(data, **kwargs)
 
 
-def load_yaml_or_json(path: Path, ordered_dict: bool = False):
+def load_yaml_or_json(
+    path: Path, ordered_dict: bool = False, add_line_number: bool = False
+):
     """
     Load the content from either a .json or .yaml file, based on the filename
     extension.
 
     :param path: `pathlib.Path` object
+    :param add_line_number: Add line number to output if True
     :rtype object: The tree of objects as a result of parsing the file.
     :raises ValueError: The file is neither a .json, .yml or .yaml file.
     :raises FileNotFoundError: The file does not exist.
@@ -141,15 +150,20 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
     if TESTING_MODE and isinstance(path, dict):
         return path
 
+    content = {}
     if path.suffix == ".json":
         with path.open("r", encoding="utf-8") as fd:
-            return json.load(fd)
+            content = json.load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
         with path.open("r", encoding="utf-8") as fd:
             if ordered_dict:
-                return ordered_yaml_load(fd)
+                content = ordered_yaml_load(fd)
             else:
-                return yaml.load(fd, Loader=SafeLineLoader)
+                content = yaml.load(fd, Loader=SafeLineLoader)
+        if add_line_number:
+            return content
+        else:
+            return remove_output_params(content, "defined_in")
     else:
         raise ValueError(f"Unknown file extension {path.suffix}")
 
@@ -422,15 +436,17 @@ def report_validation_errors(all_objects):
 
 def remove_output_params(d, output_params):
     """
-    Removes output-only params, such as "defined_in",
+    Remove output-only params, such as "defined_in",
     in order to validate the output against the input schema.
     """
-    for key, value in copy.deepcopy(d).items():
-        if key is output_params:
-            del d[key]
-        elif isinstance(value, dict):
-            remove_output_params(d[key], output_params)
-    return d
+    modified_dict = {}
+    for key, value in d.items():
+        if key is not output_params:
+            if isinstance(value, dict):
+                modified_dict[key] = remove_output_params(value, output_params)
+            else:
+                modified_dict[key] = value
+    return modified_dict
 
 
 # Names of metric parameters to pass to constructors.

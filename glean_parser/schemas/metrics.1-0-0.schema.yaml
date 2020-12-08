@@ -144,7 +144,7 @@ definitions:
           Descriptions may contain [markdown
           syntax](https://www.markdownguide.org/basic-syntax/).
         type: string
-         
+
       lifetime:
         title: Lifetime
         description: |

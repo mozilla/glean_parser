@@ -9,7 +9,6 @@ Code for parsing metrics.yaml files.
 """
 
 from collections import OrderedDict
-import copy
 import functools
 from pathlib import Path
 import textwrap
@@ -63,7 +62,9 @@ def _load_file(
     `parser_config["allow_missing_files"]` is `True`.
     """
     try:
-        content = util.load_yaml_or_json(filepath, ordered_dict=True)
+        content = util.load_yaml_or_json(
+            filepath, ordered_dict=True, add_line_number=True
+        )
     except FileNotFoundError:
         if not parser_config.get("allow_missing_files", False):
             raise
@@ -89,7 +90,7 @@ def _load_file(
 
     filetype = FILE_TYPES.get(schema_key)
 
-    modified_content = util.remove_output_params(copy.deepcopy(content), "defined_in")
+    modified_content = util.remove_output_params(content, "defined_in")
     for error in validate(modified_content, filepath):
         content = {}
         yield error

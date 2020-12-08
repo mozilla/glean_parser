@@ -182,3 +182,17 @@ def test_external_translator(tmpdir):
     expected_keys = set(content.keys()) - set(["$schema"])
 
     assert set(x.name for x in tmpdir.iterdir()) == expected_keys
+
+
+def test_loading_line_number():
+    pings = load_yaml_or_json(ROOT / "data" / "pings.yaml", add_line_number=True)
+    metrics = load_yaml_or_json(ROOT / "data" / "core.yaml", add_line_number=True)
+    invalid = load_yaml_or_json(
+        ROOT / "data" / "invalid_pings.yaml", add_line_number=True
+    )
+    no_line_number_pings = load_yaml_or_json(ROOT / "data" / "pings.yaml")
+
+    assert pings["custom-ping"]["defined_in"]["line"] == "7"
+    assert metrics["core_ping"]["seq"]["defined_in"]["line"] == "27"
+    assert invalid["custom-ping"].get("defined_in") is None
+    assert no_line_number_pings["custom-ping"].get("defined_in") is None

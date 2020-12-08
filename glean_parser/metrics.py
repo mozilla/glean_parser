@@ -47,7 +47,6 @@ class Metric:
         description: str,
         notification_emails: List[str],
         expires: Any,
-        defined_in: Optional[str] = None,
         data_reviews: Optional[List[str]] = None,
         version: int = 0,
         disabled: bool = False,
@@ -57,6 +56,7 @@ class Metric:
         gecko_datapoint: str = "",
         no_lint: Optional[List[str]] = None,
         data_sensitivity: Optional[List[str]] = None,
+        defined_in: Optional[Dict] = None,
         _config: Dict[str, Any] = None,
         _validated: bool = False,
     ):
@@ -68,7 +68,6 @@ class Metric:
         self.name = name
         self.bugs = bugs
         self.description = description
-        self.defined_in = defined_in
         self.notification_emails = notification_emails
         self.expires = expires
         if data_reviews is None:
@@ -90,6 +89,7 @@ class Metric:
             self.data_sensitivity = [
                 getattr(DataSensitivity, x) for x in data_sensitivity
             ]
+        self.defined_in = defined_in
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).

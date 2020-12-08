@@ -24,11 +24,11 @@ class Ping:
         description: str,
         bugs: List[str],
         notification_emails: List[str],
-        defined_in: Optional[str] = None,
         data_reviews: Optional[List[str]] = None,
         include_client_id: bool = False,
         send_if_empty: bool = False,
         reasons: Dict[str, str] = None,
+        defined_in: Optional[Dict] = None,
         _validated: bool = False,
     ):
         # Avoid cyclical import
@@ -36,7 +36,7 @@ class Ping:
 
         self.name = name
         self.description = description
-        self.defined_in = defined_in
+
         self.bugs = bugs
         self.notification_emails = notification_emails
         if data_reviews is None:
@@ -47,6 +47,7 @@ class Ping:
         if reasons is None:
             reasons = {}
         self.reasons = reasons
+        self.defined_in = defined_in
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
