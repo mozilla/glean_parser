@@ -565,7 +565,10 @@ def test_memory_distribution():
     errors = list(all_metrics)
     assert len(errors) == 0
     assert len(all_metrics.value) == 1
-    all_metrics.value["category"]["metric"].memory_unit == metrics.MemoryUnit.megabyte
+    assert (
+        all_metrics.value["category"]["metric"].memory_unit
+        == metrics.MemoryUnit.megabyte
+    )
 
 
 def test_quantity():
@@ -598,7 +601,7 @@ def test_quantity():
     errors = list(all_metrics)
     assert len(errors) == 0
     assert len(all_metrics.value) == 1
-    all_metrics.value["category"]["metric"].unit == "pixel"
+    assert all_metrics.value["category"]["metric"].unit == "pixel"
 
 
 def test_do_not_disable_expired():
