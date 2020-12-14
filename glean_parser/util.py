@@ -66,39 +66,12 @@ class _NoDatesSafeLoader(yaml.SafeLoader):
 _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
-class SafeLineLoader(_NoDatesSafeLoader):
-    """
-    Map line number to ping and metric yaml nodes.
-
-    There are a few specific places we can map the line number to:
-    only add line number to ping/metric node, and map it at the
-    *property* level so that it won’t fail schema validation.
-    Since the file structures for pings.yaml and metrics.yaml
-    are different, and yamllint is run on the input which enforces
-    2-space tab width, the logic to find the right nodes to map
-    to is defined in construct_mapping().
-    """
-
-    def construct_mapping(self, node, deep=False):
-        mapping = super(SafeLineLoader, self).construct_mapping(node, deep=deep)
-
-        for value in node.value:
-            if value[0].value != "$schema":
-                # pings.yaml
-                if node.start_mark.column == 2 and value[0].value == "description":
-                    mapping["defined_in"] = {"line": str(node.start_mark.line)}
-                # metrics.yaml
-                if node.start_mark.column == 4 and value[0].value == "type":
-                    mapping["defined_in"] = {"line": str(node.start_mark.line)}
-        return mapping
-
-
 def yaml_load(stream):
     """
-    Map line number to yaml nodes and preserve the order of metrics.
+    Map line number to yaml nodes and preserve the order of output.
     """
 
-    class SafeLineLoader2(_NoDatesSafeLoader):
+    class SafeLineLoader(_NoDatesSafeLoader):
         pass
 
     def _construct_mapping_adding_line(loader, node):
@@ -107,10 +80,10 @@ def yaml_load(stream):
         mapping.defined_in = {"line": node.start_mark.line}
         return mapping
 
-    SafeLineLoader2.add_constructor(
+    SafeLineLoader.add_constructor(
         yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_mapping_adding_line
     )
-    return yaml.load(stream, SafeLineLoader2)
+    return yaml.load(stream, SafeLineLoader)
 
 
 if sys.version_info < (3, 7):

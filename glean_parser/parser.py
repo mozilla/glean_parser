@@ -88,8 +88,7 @@ def _load_file(
 
     filetype = FILE_TYPES.get(schema_key)
 
-    modified_content = util.remove_output_params(content, "defined_in")
-    for error in validate(modified_content, filepath):
+    for error in validate(content, filepath):
         content = {}
         yield error
 
