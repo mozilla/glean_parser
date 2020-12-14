@@ -93,24 +93,31 @@ class SafeLineLoader(_NoDatesSafeLoader):
         return mapping
 
 
+def yaml_load(stream):
+    """
+    Map line number to yaml nodes and preserve the order of metrics.
+    """
+
+    class SafeLineLoader2(_NoDatesSafeLoader):
+        pass
+
+    def _construct_mapping_adding_line(loader, node):
+        loader.flatten_mapping(node)
+        mapping = OrderedDict(loader.construct_pairs(node))
+        mapping.defined_in = {"line": node.start_mark.line}
+        return mapping
+
+    SafeLineLoader2.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_mapping_adding_line
+    )
+    return yaml.load(stream, SafeLineLoader2)
+
+
 if sys.version_info < (3, 7):
     # In Python prior to 3.7, dictionary order is not preserved. However, we
     # want the metrics to appear in the output in the same order as they are in
     # the metrics.yaml file, so on earlier versions of Python we must use an
     # OrderedDict object.
-    def ordered_yaml_load(stream):
-        class OrderedLoader(SafeLineLoader):
-            pass
-
-        def construct_mapping(loader, node):
-            loader.flatten_mapping(node)
-            return OrderedDict(loader.construct_pairs(node))
-
-        OrderedLoader.add_constructor(
-            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping
-        )
-        return yaml.load(stream, OrderedLoader)
-
     def ordered_yaml_dump(data, **kwargs):
         class OrderedDumper(yaml.Dumper):
             pass
@@ -126,22 +133,16 @@ if sys.version_info < (3, 7):
 
 else:
 
-    def ordered_yaml_load(stream):
-        return yaml.load(stream, Loader=SafeLineLoader)
-
     def ordered_yaml_dump(data, **kwargs):
         return yaml.dump(data, **kwargs)
 
 
-def load_yaml_or_json(
-    path: Path, ordered_dict: bool = False, add_line_number: bool = False
-):
+def load_yaml_or_json(path: Path):
     """
     Load the content from either a .json or .yaml file, based on the filename
     extension.
 
     :param path: `pathlib.Path` object
-    :param add_line_number: Add line number to output if True
     :rtype object: The tree of objects as a result of parsing the file.
     :raises ValueError: The file is neither a .json, .yml or .yaml file.
     :raises FileNotFoundError: The file does not exist.
@@ -150,20 +151,12 @@ def load_yaml_or_json(
     if TESTING_MODE and isinstance(path, dict):
         return path
 
-    content = {}
     if path.suffix == ".json":
         with path.open("r", encoding="utf-8") as fd:
-            content = json.load(fd)
+            return json.load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
         with path.open("r", encoding="utf-8") as fd:
-            if ordered_dict:
-                content = ordered_yaml_load(fd)
-            else:
-                content = yaml.load(fd, Loader=SafeLineLoader)
-        if add_line_number:
-            return content
-        else:
-            return remove_output_params(content, "defined_in")
+            return yaml_load(fd)
     else:
         raise ValueError(f"Unknown file extension {path.suffix}")
 
@@ -442,10 +435,7 @@ def remove_output_params(d, output_params):
     modified_dict = {}
     for key, value in d.items():
         if key is not output_params:
-            if isinstance(value, dict):
-                modified_dict[key] = remove_output_params(value, output_params)
-            else:
-                modified_dict[key] = value
+            modified_dict[key] = value
     return modified_dict
 
 

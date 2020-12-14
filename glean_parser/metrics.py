@@ -148,6 +148,7 @@ class Metric:
         return cls.metric_types[metric_type](
             category=category,
             name=name,
+            defined_in=getattr(metric_info, "defined_in", None),
             _validated=validated,
             _config=config,
             **metric_info,

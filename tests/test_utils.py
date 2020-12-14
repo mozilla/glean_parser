@@ -3,7 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-from glean_parser.util import to_camel_case, remove_output_params
+from glean_parser.util import to_camel_case
 
 
 def test_camel_case_first_lowercase():
@@ -29,19 +29,3 @@ def test_camel_case_numbers():
 def test_camel_case_expected():
     assert "easyOne" == to_camel_case("easy_one", False)
     assert "moreInvolved1" == to_camel_case("more_involved_1", False)
-
-
-def test_removing_output_params():
-    d = {
-        "name": "test dict",
-        "nested": {
-            "defined_in": {"line": "42"},
-            "more_nested": {"defined_in": {"line": "67"}, "abc": "xyz"},
-        },
-    }
-
-    output_removed_d = {"name": "test dict", "nested": {"more_nested": {"abc": "xyz"}}}
-
-    test = remove_output_params(d, "defined_in")
-
-    assert test == output_removed_d
