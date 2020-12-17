@@ -5,6 +5,11 @@ History
 Unreleased
 ----------
 
+* Add the line number that metrics and pings were originally defined in the yaml files. 
+
+1.29.1 (2020-12-17)
+-------------------
+
 * BUGFIX: Linter output can now be redirected correctly (1675771).
 
 1.29.0 (2020-10-07)
