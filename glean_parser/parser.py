@@ -62,7 +62,7 @@ def _load_file(
     `parser_config["allow_missing_files"]` is `True`.
     """
     try:
-        content = util.load_yaml_or_json(filepath, ordered_dict=True)
+        content = util.load_yaml_or_json(filepath)
     except FileNotFoundError:
         if not parser_config.get("allow_missing_files", False):
             raise
@@ -277,7 +277,9 @@ def _instantiate_pings(
             raise TypeError(f"Invalid content for ping {ping_key}")
         ping_val["name"] = ping_key
         try:
-            ping_obj = Ping(**ping_val)
+            ping_obj = Ping(
+                defined_in=getattr(ping_val, "defined_in", None), **ping_val
+            )
         except Exception as e:
             yield util.format_error(filepath, f"On instance '{ping_key}'", str(e))
             continue

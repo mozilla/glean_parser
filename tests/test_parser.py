@@ -5,7 +5,6 @@
 
 from pathlib import Path
 import re
-import sys
 import textwrap
 
 import pytest
@@ -66,21 +65,6 @@ def test_parser_schema_violation():
     expected_errors = [
         """
         ```
-        gleantest:
-          test_event:
-            type: event
-        ```
-
-        Missing required properties: bugs, data_reviews, description, expires,
-        notification_emails
-
-        Documentation for this node:
-            Describes a single metric.
-
-            See https://mozilla.github.io/glean_parser/metrics-yaml.html
-        """,
-        """
-        ```
         gleantest.lifetime:
           test_counter_inv_lt:
             lifetime: user2
@@ -133,116 +117,70 @@ def test_parser_schema_violation():
         of the given schemas
         'very_long_metric_name_this_is_too_long_s_well' is too long
         """,
+        """
+        ```
+        gleantest:
+          test_event:
+            type: event
+        ```
+
+        Missing required properties: bugs, data_reviews, description, expires,
+        notification_emails
+
+        Documentation for this node:
+            Describes a single metric.
+
+            See https://mozilla.github.io/glean_parser/metrics-yaml.html
+        """,
+        """
+        ```
+        gleantest.event:
+            event_too_many_extras:
+            extra_keys:
+                key_1:
+                description: Sample extra key
+                key_2:
+                description: Sample extra key
+                key_3:
+                description: Sample extra key
+                key_4:
+                description: Sample extra key
+                key_5:
+                description: Sample extra key
+                key_6:
+                description: Sample extra key
+                key_7:
+                description: Sample extra key
+                key_8:
+                description: Sample extra key
+                key_9:
+                description: Sample extra key
+                key_10:
+                description: Sample extra key
+                key_11:
+                description: Sample extra key
+        ```
+        OrderedDict([('key_1', OrderedDict([('description', 'Sample extra
+        key')])), ('key_2', OrderedDict([('description', 'Sample extra
+        key')])), ('key_3', OrderedDict([('description', 'Sample extra
+        key')])), ('key_4', OrderedDict([('description', 'Sample extra
+        key')])), ('key_5', OrderedDict([('description', 'Sample extra
+        key')])), ('key_6', OrderedDict([('description', 'Sample extra
+        key')])), ('key_7', OrderedDict([('description', 'Sample extra
+        key')])), ('key_8', OrderedDict([('description', 'Sample extra
+        key')])), ('key_9', OrderedDict([('description', 'Sample extra
+        key')])), ('key_10', OrderedDict([('description', 'Sample extra
+        key')])), ('key_11', OrderedDict([('description', 'Sample extra
+        key')]))]) has too many properties
+        Documentation for this node:
+            The acceptable keys on the "extra" object sent with events. This is an
+            object mapping the key to an object containing metadata about the key.
+            A maximum of 10 extra keys is allowed.
+            This metadata object has the following keys:
+                - `description`: **Required.** A description of the key.
+            Valid when `type`_ is `event`.
+        """,
     ]
-
-    # The validator reports a different error based on the python version, so
-    # we need to provide two copies for this to work.
-    if sys.version_info < (3, 7):
-        expected_errors.append(
-            """
-            ```
-            gleantest.event:
-              event_too_many_extras:
-                extra_keys:
-                  key_1:
-                    description: Sample extra key
-                  key_2:
-                    description: Sample extra key
-                  key_3:
-                    description: Sample extra key
-                  key_4:
-                    description: Sample extra key
-                  key_5:
-                    description: Sample extra key
-                  key_6:
-                    description: Sample extra key
-                  key_7:
-                    description: Sample extra key
-                  key_8:
-                    description: Sample extra key
-                  key_9:
-                    description: Sample extra key
-                  key_10:
-                    description: Sample extra key
-                  key_11:
-                    description: Sample extra key
-            ```
-
-            OrderedDict([('key_1', OrderedDict([('description', 'Sample extra
-            key')])), ('key_2', OrderedDict([('description', 'Sample extra
-            key')])), ('key_3', OrderedDict([('description', 'Sample extra
-            key')])), ('key_4', OrderedDict([('description', 'Sample extra
-            key')])), ('key_5', OrderedDict([('description', 'Sample extra
-            key')])), ('key_6', OrderedDict([('description', 'Sample extra
-            key')])), ('key_7', OrderedDict([('description', 'Sample extra
-            key')])), ('key_8', OrderedDict([('description', 'Sample extra
-            key')])), ('key_9', OrderedDict([('description', 'Sample extra
-            key')])), ('key_10', OrderedDict([('description', 'Sample extra
-            key')])), ('key_11', OrderedDict([('description', 'Sample extra
-            key')]))]) has too many properties
-
-            Documentation for this node:
-                The acceptable keys on the "extra" object sent with events. This is an
-                object mapping the key to an object containing metadata about the key.
-                A maximum of 10 extra keys is allowed.
-                This metadata object has the following keys:
-
-                  - `description`: **Required.** A description of the key.
-
-                Valid when `type`_ is `event`.
-            """
-        )
-    else:
-        expected_errors.append(
-            """
-            ```
-            gleantest.event:
-              event_too_many_extras:
-                extra_keys:
-                  key_1:
-                    description: Sample extra key
-                  key_10:
-                    description: Sample extra key
-                  key_11:
-                    description: Sample extra key
-                  key_2:
-                    description: Sample extra key
-                  key_3:
-                    description: Sample extra key
-                  key_4:
-                    description: Sample extra key
-                  key_5:
-                    description: Sample extra key
-                  key_6:
-                    description: Sample extra key
-                  key_7:
-                    description: Sample extra key
-                  key_8:
-                    description: Sample extra key
-                  key_9:
-                    description: Sample extra key
-            ```
-
-            {'key_1': {'description': 'Sample extra key'}, 'key_2':
-            {'description': 'Sample extra key'}, 'key_3': {'description': 'Sample
-            extra key'}, 'key_4': {'description': 'Sample extra key'}, 'key_5':
-            {'description': 'Sample extra key'}, 'key_6': {'description': 'Sample
-            extra key'}, 'key_7': {'description': 'Sample extra key'}, 'key_8':
-            {'description': 'Sample extra key'}, 'key_9': {'description': 'Sample
-            extra key'}, 'key_10': {'description': 'Sample extra key'}, 'key_11':
-            {'description': 'Sample extra key'}} has too many properties
-
-            Documentation for this node:
-                The acceptable keys on the "extra" object sent with events. This is an
-                object mapping the key to an object containing metadata about the key.
-                A maximum of 10 extra keys is allowed.
-                This metadata object has the following keys:
-
-                  - `description`: **Required.** A description of the key.
-
-                Valid when `type`_ is `event`.
-            """
-        )
 
     expected_errors = set(
         re.sub(r"\s", "", _utils.indent(textwrap.dedent(x)).strip())

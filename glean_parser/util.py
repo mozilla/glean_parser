@@ -66,47 +66,41 @@ class _NoDatesSafeLoader(yaml.SafeLoader):
 _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
-if sys.version_info < (3, 7):
-    # In Python prior to 3.7, dictionary order is not preserved. However, we
-    # want the metrics to appear in the output in the same order as they are in
-    # the metrics.yaml file, so on earlier versions of Python we must use an
-    # OrderedDict object.
-    def ordered_yaml_load(stream):
-        class OrderedLoader(_NoDatesSafeLoader):
-            pass
+def yaml_load(stream):
+    """
+    Map line number to yaml nodes, and preserve the order
+    of metrics as they appear in the metrics.yaml file.
+    """
 
-        def construct_mapping(loader, node):
-            loader.flatten_mapping(node)
-            return OrderedDict(loader.construct_pairs(node))
+    class SafeLineLoader(_NoDatesSafeLoader):
+        pass
 
-        OrderedLoader.add_constructor(
-            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_mapping
+    def _construct_mapping_adding_line(loader, node):
+        loader.flatten_mapping(node)
+        mapping = OrderedDict(loader.construct_pairs(node))
+        mapping.defined_in = {"line": node.start_mark.line}
+        return mapping
+
+    SafeLineLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_mapping_adding_line
+    )
+    return yaml.load(stream, SafeLineLoader)
+
+
+def ordered_yaml_dump(data, **kwargs):
+    class OrderedDumper(yaml.Dumper):
+        pass
+
+    def _dict_representer(dumper, data):
+        return dumper.represent_mapping(
+            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
         )
-        return yaml.load(stream, OrderedLoader)
 
-    def ordered_yaml_dump(data, **kwargs):
-        class OrderedDumper(yaml.Dumper):
-            pass
-
-        def _dict_representer(dumper, data):
-            return dumper.represent_mapping(
-                yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
-            )
-
-        OrderedDumper.add_representer(OrderedDict, _dict_representer)
-        return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
+    OrderedDumper.add_representer(OrderedDict, _dict_representer)
+    return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
 
 
-else:
-
-    def ordered_yaml_load(stream):
-        return yaml.load(stream, Loader=_NoDatesSafeLoader)
-
-    def ordered_yaml_dump(data, **kwargs):
-        return yaml.dump(data, **kwargs)
-
-
-def load_yaml_or_json(path: Path, ordered_dict: bool = False):
+def load_yaml_or_json(path: Path):
     """
     Load the content from either a .json or .yaml file, based on the filename
     extension.
@@ -125,10 +119,7 @@ def load_yaml_or_json(path: Path, ordered_dict: bool = False):
             return json.load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
         with path.open("r", encoding="utf-8") as fd:
-            if ordered_dict:
-                return ordered_yaml_load(fd)
-            else:
-                return yaml.load(fd, Loader=_NoDatesSafeLoader)
+            return yaml_load(fd)
     else:
         raise ValueError(f"Unknown file extension {path.suffix}")
 
@@ -397,6 +388,18 @@ def report_validation_errors(all_objects):
         print("=" * 78, file=sys.stderr)
         print(error, file=sys.stderr)
     return found_error
+
+
+def remove_output_params(d, output_params):
+    """
+    Remove output-only params, such as "defined_in",
+    in order to validate the output against the input schema.
+    """
+    modified_dict = {}
+    for key, value in d.items():
+        if key is not output_params:
+            modified_dict[key] = value
+    return modified_dict
 
 
 # Names of metric parameters to pass to constructors.
