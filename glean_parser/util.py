@@ -68,7 +68,8 @@ _NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 def yaml_load(stream):
     """
-    Map line number to yaml nodes and preserve the order of output.
+    Map line number to yaml nodes, and preserve the order
+    of metrics as they appear in the metrics.yaml file.
     """
 
     class SafeLineLoader(_NoDatesSafeLoader):
@@ -86,28 +87,17 @@ def yaml_load(stream):
     return yaml.load(stream, SafeLineLoader)
 
 
-if sys.version_info < (3, 7):
-    # In Python prior to 3.7, dictionary order is not preserved. However, we
-    # want the metrics to appear in the output in the same order as they are in
-    # the metrics.yaml file, so on earlier versions of Python we must use an
-    # OrderedDict object.
-    def ordered_yaml_dump(data, **kwargs):
-        class OrderedDumper(yaml.Dumper):
-            pass
+def ordered_yaml_dump(data, **kwargs):
+    class OrderedDumper(yaml.Dumper):
+        pass
 
-        def _dict_representer(dumper, data):
-            return dumper.represent_mapping(
-                yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
-            )
+    def _dict_representer(dumper, data):
+        return dumper.represent_mapping(
+            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
+        )
 
-        OrderedDumper.add_representer(OrderedDict, _dict_representer)
-        return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
-
-
-else:
-
-    def ordered_yaml_dump(data, **kwargs):
-        return yaml.dump(data, **kwargs)
+    OrderedDumper.add_representer(OrderedDict, _dict_representer)
+    return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
 
 
 def load_yaml_or_json(path: Path):
