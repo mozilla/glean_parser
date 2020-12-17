@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.util &#8212; Glean Parser 1.29.1.dev13+gd61263d documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 1.29.1.dev14+g10a52e5 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -100,47 +100,41 @@
 <span class="n">_NoDatesSafeLoader</span><span class="o">.</span><span class="n">remove_implicit_resolver</span><span class="p">(</span><span class="s2">&quot;tag:yaml.org,2002:timestamp&quot;</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-    <span class="c1"># In Python prior to 3.7, dictionary order is not preserved. However, we</span>
-    <span class="c1"># want the metrics to appear in the output in the same order as they are in</span>
-    <span class="c1"># the metrics.yaml file, so on earlier versions of Python we must use an</span>
-    <span class="c1"># OrderedDict object.</span>
-    <span class="k">def</span> <span class="nf">ordered_yaml_load</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
-        <span class="k">class</span> <span class="nc">OrderedLoader</span><span class="p">(</span><span class="n">_NoDatesSafeLoader</span><span class="p">):</span>
-            <span class="k">pass</span>
+<div class="viewcode-block" id="yaml_load"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.yaml_load">[docs]</a><span class="k">def</span> <span class="nf">yaml_load</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Map line number to yaml nodes, and preserve the order</span>
+<span class="sd">    of metrics as they appear in the metrics.yaml file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">construct_mapping</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-            <span class="n">loader</span><span class="o">.</span><span class="n">flatten_mapping</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">construct_pairs</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+    <span class="k">class</span> <span class="nc">SafeLineLoader</span><span class="p">(</span><span class="n">_NoDatesSafeLoader</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-        <span class="n">OrderedLoader</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span>
-            <span class="n">yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span><span class="p">,</span> <span class="n">construct_mapping</span>
+    <span class="k">def</span> <span class="nf">_construct_mapping_adding_line</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">loader</span><span class="o">.</span><span class="n">flatten_mapping</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">construct_pairs</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+        <span class="n">mapping</span><span class="o">.</span><span class="n">defined_in</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;line&quot;</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">start_mark</span><span class="o">.</span><span class="n">line</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">mapping</span>
+
+    <span class="n">SafeLineLoader</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span><span class="p">,</span> <span class="n">_construct_mapping_adding_line</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">SafeLineLoader</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ordered_yaml_dump"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ordered_yaml_dump">[docs]</a><span class="k">def</span> <span class="nf">ordered_yaml_dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">OrderedDumper</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">Dumper</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_dict_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">OrderedLoader</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">ordered_yaml_dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">class</span> <span class="nc">OrderedDumper</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">Dumper</span><span class="p">):</span>
-            <span class="k">pass</span>
-
-        <span class="k">def</span> <span class="nf">_dict_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">dumper</span><span class="o">.</span><span class="n">represent_mapping</span><span class="p">(</span>
-                <span class="n">yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">)</span>
-
-        <span class="n">OrderedDumper</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">_dict_representer</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">OrderedDumper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">OrderedDumper</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">_dict_representer</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Dumper</span><span class="o">=</span><span class="n">OrderedDumper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<span class="k">else</span><span class="p">:</span>
-
-<div class="viewcode-block" id="ordered_yaml_load"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ordered_yaml_load">[docs]</a>    <span class="k">def</span> <span class="nf">ordered_yaml_load</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">_NoDatesSafeLoader</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ordered_yaml_dump"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.ordered_yaml_dump">[docs]</a>    <span class="k">def</span> <span class="nf">ordered_yaml_dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="load_yaml_or_json"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.load_yaml_or_json">[docs]</a><span class="k">def</span> <span class="nf">load_yaml_or_json</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">ordered_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="load_yaml_or_json"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.load_yaml_or_json">[docs]</a><span class="k">def</span> <span class="nf">load_yaml_or_json</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the content from either a .json or .yaml file, based on the filename</span>
 <span class="sd">    extension.</span>
@@ -159,10 +153,7 @@
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;.yml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;.yamlx&quot;</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ordered_dict</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">ordered_yaml_load</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">_NoDatesSafeLoader</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">yaml_load</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown file extension </span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
@@ -431,6 +422,18 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">found_error</span></div>
+
+
+<div class="viewcode-block" id="remove_output_params"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.remove_output_params">[docs]</a><span class="k">def</span> <span class="nf">remove_output_params</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">output_params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove output-only params, such as &quot;defined_in&quot;,</span>
+<span class="sd">    in order to validate the output against the input schema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">modified_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">output_params</span><span class="p">:</span>
+            <span class="n">modified_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">modified_dict</span></div>
 
 
 <span class="c1"># Names of metric parameters to pass to constructors.</span>
