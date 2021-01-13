@@ -5,7 +5,8 @@ History
 Unreleased
 ----------
 
-* Add the line number that metrics and pings were originally defined in the yaml files. 
+* **Breaking change:** It is now an error to use bug numbers (rather than URLs) in ping definitions.
+* Add the line number that metrics and pings were originally defined in the yaml files.
 
 1.29.1 (2020-12-17)
 -------------------

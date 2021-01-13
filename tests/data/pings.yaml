@@ -9,7 +9,7 @@ custom-ping:
     This is a custom ping
   include_client_id: false
   bugs:
-    - 1137353
+    - http://bugzilla.mozilla.com/1137353
   data_reviews:
     - http://nowhere.com/reviews
   notification_emails:
@@ -26,7 +26,7 @@ really-custom-ping:
     cillum dolore eu fugiat nulla pariatur.
   include_client_id: true
   bugs:
-    - 1137353
+    - http://bugzilla.mozilla.com/1137353
   data_reviews:
     - http://nowhere.com/reviews
   notification_emails:
@@ -38,7 +38,7 @@ custom-ping-might-be-empty:
   include_client_id: true
   send_if_empty: true
   bugs:
-    - 1137353
+    - http://bugzilla.mozilla.com/1137353
   data_reviews:
     - http://nowhere.com/reviews
   notification_emails:

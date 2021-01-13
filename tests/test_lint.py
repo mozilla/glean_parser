@@ -309,3 +309,50 @@ def test_translate_missing_input_files(tmpdir):
         [ROOT / "data" / "missing.yaml"],
         parser_config={"allow_reserved": True, "allow_missing_files": True},
     )
+
+
+def test_bug_number_pings():
+    """Test that a `expires` dates too far in the future generates warnings"""
+    contents = [{"ping": {"bugs": [12345]}}]
+
+    contents = [util.add_required_ping(x) for x in contents]
+    all_pings = parser.parse_objects(contents)
+
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+
+    assert len(nits) == 1
+    print(nits)
+    assert set(["BUG_NUMBER"]) == set(v.check_name for v in nits)
+
+
+def test_bug_number_pings_no_lint():
+    """Test that a `expires` dates too far in the future generates warnings"""
+    contents = [{"ping": {"bugs": [12345], "no_lint": ["BUG_NUMBER"]}}]
+
+    contents = [util.add_required_ping(x) for x in contents]
+    all_pings = parser.parse_objects(contents)
+
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+
+    assert len(nits) == 0
+
+
+def test_bug_number_pings_global_no_lint():
+    """Test that a `expires` dates too far in the future generates warnings"""
+    contents = [{"ping": {"bugs": [12345]}, "no_lint": ["BUG_NUMBER"]}]
+
+    contents = [util.add_required_ping(x) for x in contents]
+    all_pings = parser.parse_objects(contents)
+
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+
+    assert len(nits) == 0

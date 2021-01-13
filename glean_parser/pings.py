@@ -29,6 +29,7 @@ class Ping:
         send_if_empty: bool = False,
         reasons: Dict[str, str] = None,
         defined_in: Optional[Dict] = None,
+        no_lint: Optional[List[str]] = None,
         _validated: bool = False,
     ):
         # Avoid cyclical import
@@ -48,6 +49,9 @@ class Ping:
             reasons = {}
         self.reasons = reasons
         self.defined_in = defined_in
+        if no_lint is None:
+            no_lint = []
+        self.no_lint = no_lint
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).
