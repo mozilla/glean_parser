@@ -263,6 +263,7 @@ def _instantiate_pings(
     objects.
     """
     global_no_lint = content.get("no_lint", [])
+    assert isinstance(global_no_lint, list)
 
     for ping_key, ping_val in content.items():
         if ping_key.startswith("$"):
