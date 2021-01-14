@@ -309,3 +309,29 @@ def test_translate_missing_input_files(tmpdir):
         [ROOT / "data" / "missing.yaml"],
         parser_config={"allow_reserved": True, "allow_missing_files": True},
     )
+
+
+@pytest.mark.parametrize(
+    "content,num_nits",
+    [
+        ({"ping": {"bugs": [12345]}}, 1),
+        ({"ping": {"bugs": [12345], "no_lint": ["BUG_NUMBER"]}}, 0),
+        ({"ping": {"bugs": [12345]}, "no_lint": ["BUG_NUMBER"]}, 0),
+    ],
+)
+def test_bug_number_pings(content, num_nits):
+    """
+    Test that using bug numbers (rather than URLs) in pings produce linting
+    errors.
+    """
+    content = util.add_required_ping(content)
+    all_pings = parser.parse_objects([content])
+
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["BUG_NUMBER"]) == set(v.check_name for v in nits)

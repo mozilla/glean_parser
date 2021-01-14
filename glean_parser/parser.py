@@ -262,8 +262,13 @@ def _instantiate_pings(
     Load a list of pings.yaml files, convert the JSON information into Ping
     objects.
     """
+    global_no_lint = content.get("no_lint", [])
+    assert isinstance(global_no_lint, list)
+
     for ping_key, ping_val in content.items():
         if ping_key.startswith("$"):
+            continue
+        if ping_key == "no_lint":
             continue
         if not config.get("allow_reserved"):
             if ping_key in RESERVED_PING_NAMES:
@@ -283,6 +288,9 @@ def _instantiate_pings(
         except Exception as e:
             yield util.format_error(filepath, f"On instance '{ping_key}'", str(e))
             continue
+
+        if ping_obj is not None:
+            ping_obj.no_lint = list(set(ping_obj.no_lint + global_no_lint))
 
         already_seen = sources.get(ping_key)
         if already_seen is not None:

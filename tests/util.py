@@ -33,9 +33,12 @@ def add_required_ping(chunk):
         "description": "DESCRIPTION...",
         "notification_emails": ["nobody@nowhere.com"],
         "data_reviews": ["https://nowhere.com/review/"],
+        "include_client_id": True,
     }
 
-    for ping in chunk.values():
+    for ping_name, ping in chunk.items():
+        if ping_name == "no_lint":
+            continue
         for default_name, default_val in DEFAULTS.items():
             if default_name not in ping:
                 ping[default_name] = default_val
