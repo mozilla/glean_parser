@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.29.1.dev18+gc7ca2f0 documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.29.1.dev19+ga4561be documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -295,8 +295,13 @@
 <span class="sd">    Load a list of pings.yaml files, convert the JSON information into Ping</span>
 <span class="sd">    objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">global_no_lint</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;no_lint&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">global_no_lint</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">ping_key</span><span class="p">,</span> <span class="n">ping_val</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">ping_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">ping_key</span> <span class="o">==</span> <span class="s2">&quot;no_lint&quot;</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">ping_key</span> <span class="ow">in</span> <span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
@@ -316,6 +321,9 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;On instance &#39;</span><span class="si">{</span><span class="n">ping_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">ping_obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ping_obj</span><span class="o">.</span><span class="n">no_lint</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ping_obj</span><span class="o">.</span><span class="n">no_lint</span> <span class="o">+</span> <span class="n">global_no_lint</span><span class="p">))</span>
 
         <span class="n">already_seen</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ping_key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">already_seen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

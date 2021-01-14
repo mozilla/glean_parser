@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev18+gc7ca2f0 documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev19+ga4561be documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -131,7 +131,7 @@ entirety below:</p>
   <span class="nt">allOf</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">anyOf</span><span class="p">:</span>
         <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/kebab_case&quot;</span>
-        <span class="p p-Indicator">-</span> <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">]</span>
+        <span class="p p-Indicator">-</span> <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;no_lint&#39;</span><span class="p p-Indicator">]</span>
     <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
         <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;all-pings&#39;</span><span class="p p-Indicator">]</span>
 
@@ -139,6 +139,14 @@ entirety below:</p>
   <span class="nt">$schema</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
+
+  <span class="nt">no_lint</span><span class="p">:</span>
+    <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip globally</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">This parameter lists any lint checks to skip for this whole file.</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+    <span class="nt">items</span><span class="p">:</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
 <span class="nt">additionalProperties</span><span class="p">:</span>
   <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
@@ -199,7 +207,7 @@ entirety below:</p>
       <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">items</span><span class="p">:</span>
         <span class="nt">anyOf</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>  <span class="c1"># Keep supporting integer for backward-compat</span>
           <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
             <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
 
@@ -227,6 +235,14 @@ entirety below:</p>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
         <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
       <span class="nt">additionalProperties</span><span class="p">:</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+
+    <span class="nt">no_lint</span><span class="p">:</span>
+      <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip</span>
+      <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+        <span class="no">This parameter lists any lint checks to skip for this metric only.</span>
+      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+      <span class="nt">items</span><span class="p">:</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
 
   <span class="nt">required</span><span class="p">:</span>
