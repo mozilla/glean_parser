@@ -25,10 +25,8 @@ from . import util
 ROOT_DIR = Path(__file__).parent
 SCHEMAS_DIR = ROOT_DIR / "schemas"
 
-METRICS_ID = "moz://mozilla.org/schemas/glean/metrics/1-0-0"
-PINGS_ID = "moz://mozilla.org/schemas/glean/pings/1-0-0"
-
-FILE_TYPES = {METRICS_ID: "metrics", PINGS_ID: "pings"}
+METRICS_ID = "moz://mozilla.org/schemas/glean/metrics/2-0-0"
+PINGS_ID = "moz://mozilla.org/schemas/glean/pings/2-0-0"
 
 
 def _update_validator(validator):
@@ -86,7 +84,14 @@ def _load_file(
     if not isinstance(schema_key, str):
         raise TypeError(f"Invalid schema key {schema_key}")
 
-    filetype = FILE_TYPES.get(schema_key)
+    filetype: Optional[str] = None
+    try:
+        filetype = schema_key.split("/")[-2]
+    except IndexError:
+        filetype = None
+
+    if filetype not in ("metrics", "pings"):
+        filetype = None
 
     for error in validate(content, filepath):
         content = {}
@@ -283,7 +288,9 @@ def _instantiate_pings(
         ping_val["name"] = ping_key
         try:
             ping_obj = Ping(
-                defined_in=getattr(ping_val, "defined_in", None), **ping_val
+                defined_in=getattr(ping_val, "defined_in", None),
+                _validated=True,
+                **ping_val,
             )
         except Exception as e:
             yield util.format_error(filepath, f"On instance '{ping_key}'", str(e))

@@ -92,7 +92,7 @@ def test_metric_type_name():
         type="boolean",
         category="category",
         name="metric",
-        bugs=[42],
+        bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
@@ -103,7 +103,7 @@ def test_metric_type_name():
         name="custom",
         description="description...",
         include_client_id=True,
-        bugs=[42],
+        bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@nowhere.com"],
     )
     assert swift.type_name(ping) == "Ping<NoReasonCodes>"
@@ -112,7 +112,7 @@ def test_metric_type_name():
         name="custom",
         description="description...",
         include_client_id=True,
-        bugs=[42],
+        bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@nowhere.com"],
         reasons={"foo": "foolicious", "bar": "barlicious"},
     )

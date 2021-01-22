@@ -5,6 +5,15 @@ History
 Unreleased
 ----------
 
+* New versions 2.0.0 of the `metrics.yaml` and `pings.yaml` schemas now ship with `glean_parser`.
+  These schemas are different from version 1.0.0 in the following ways:
+
+  - Bugs must be specified as URLs.  Bug numbers are disallowed.
+  - The legacy ping names containing underscores are no longer allowed.
+    These included `deletion_request`, `bookmarks_sync`, `history_sync`, `session_end`, `all_pings`, `glean_*`).
+    In these cases, the `_` should be replaced with `-`.
+
+  To upgrade your app or library to use the new schema, replace the version in the `$schema` value with `2-0-0`.
 * **Breaking change:** It is now an error to use bug numbers (rather than URLs) in ping definitions.
 * Add the line number that metrics and pings were originally defined in the yaml files.
 
