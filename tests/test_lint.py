@@ -335,3 +335,84 @@ def test_bug_number_pings(content, num_nits):
     assert len(nits) == num_nits
     if num_nits > 0:
         assert set(["BUG_NUMBER"]) == set(v.check_name for v in nits)
+
+
+def test_short_category():
+    """A category name is too short"""
+    contents = [
+        {
+            "ab": {
+                "name": {
+                    "type": "counter",
+                }
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert set(["SHORT_NAME"]) == set(v.check_name for v in nits)
+
+
+def test_short_name():
+    """A metric name is too short"""
+    contents = [
+        {
+            "abc": {
+                "ab": {
+                    "type": "counter",
+                }
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert set(["SHORT_NAME"]) == set(v.check_name for v in nits)
+
+
+def test_short_label():
+    """A label is too short"""
+    contents = [{"abc": {"abc": {"type": "labeled_counter", "labels": ["a", "c"]}}}]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    assert set(["SHORT_LABEL"]) == set(v.check_name for v in nits)
+
+
+def test_short_ping():
+    """A ping name is too short"""
+    contents = [{"ab": {}}]
+
+    contents = [util.add_required_ping(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == 1
+    print([str(x) for x in nits])
+    assert set(["SHORT_NAME"]) == set(v.check_name for v in nits)

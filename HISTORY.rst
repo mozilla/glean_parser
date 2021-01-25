@@ -5,6 +5,10 @@ History
 Unreleased
 ----------
 
+* New glinter warnings were added (see bug 1682980):
+  - `SHORT_NAME`: When a category name, metric name or ping name is less than 3 characters.
+  - `SHORT_LABEL`: When a label is less than 2 characters.
+  - `SHORT_REASON`: When a ping reason is less than 2 characters.
 * **Breaking change:** It is now an error to use bug numbers (rather than URLs) in ping definitions.
 * Add the line number that metrics and pings were originally defined in the yaml files.
 

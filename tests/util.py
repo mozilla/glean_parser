@@ -29,7 +29,7 @@ def add_required(chunk):
 
 def add_required_ping(chunk):
     DEFAULTS = {
-        "bugs": [0],
+        "bugs": ["http://bugzilla.mozilla.org/12345678"],
         "description": "DESCRIPTION...",
         "notification_emails": ["nobody@nowhere.com"],
         "data_reviews": ["https://nowhere.com/review/"],

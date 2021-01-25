@@ -198,6 +198,19 @@ def check_category_generic(
         )
 
 
+def check_category_short_name(
+    category_name: str, metrics: Iterable[metrics.Metric]
+) -> LintGenerator:
+    """
+    The category name is too short.
+    """
+    if len(category_name) < 3:
+        yield (
+            f"Category '{category_name}' is too short. "
+            f"It should be at least 3 characters."
+        )
+
+
 def check_bug_number(
     metric: Union[metrics.Metric, pings.Ping], parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -262,6 +275,39 @@ def check_expired_metric(
         yield ("Metric has expired. Please consider removing it.")
 
 
+def check_short_name(
+    metric: Union[metrics.Metric, pings.Ping], parser_config: Dict[str, Any]
+) -> LintGenerator:
+    if len(metric.name) < 3:
+        yield (
+            f"Metric name '{metric.name}' is too short. "
+            f"It should be at least 3 characters."
+        )
+
+
+def check_short_label(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    labels = [x for x in (getattr(metric, "labels", None) or []) if len(x) < 2]
+    if len(labels):
+        yield (
+            f"On metric '{metric.category}.{metric.name}', "
+            f"labels '{_english_list(labels)}' are too short. "
+            f"They should be at least 2 characters."
+        )
+
+
+def check_short_reason(
+    ping: pings.Ping, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    for reason in getattr(ping, "reasons", []):
+        if len(reason) < 2:
+            yield (
+                f"On ping '{ping.name}', reason '{reason}' is too short. "
+                f"It should be at least 2 characters."
+            )
+
+
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
 CATEGORY_CHECKS: Dict[
@@ -269,6 +315,7 @@ CATEGORY_CHECKS: Dict[
 ] = {
     "COMMON_PREFIX": (check_common_prefix, CheckType.error),
     "CATEGORY_GENERIC": (check_category_generic, CheckType.error),
+    "SHORT_NAME": (check_category_short_name, CheckType.warning),
 }
 
 
@@ -284,6 +331,8 @@ METRIC_CHECKS: Dict[
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
+    "SHORT_NAME": (check_short_name, CheckType.warning),
+    "SHORT_LABEL": (check_short_label, CheckType.warning),
 }
 
 
@@ -293,6 +342,8 @@ PING_CHECKS: Dict[
     str, Tuple[Callable[[pings.Ping, dict], LintGenerator], CheckType]
 ] = {
     "BUG_NUMBER": (check_bug_number, CheckType.error),
+    "SHORT_NAME": (check_short_name, CheckType.warning),
+    "SHORT_REASON": (check_short_reason, CheckType.warning),
 }
 
 
