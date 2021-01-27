@@ -7,7 +7,7 @@ collect.
 The top-level of the file must contain the following key-value pair to indicate
 that it is a Glean ``metrics.yaml`` file::
 
-   $schema: moz://mozilla.org/schemas/glean/metrics/1-0-0
+   $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
 The other keys at the top level of the file are category names. Category names
 must be in ``snake_case``, but may also contain ``.`` to indicate *ad hoc*
@@ -58,5 +58,5 @@ JSON Schema
 There is a formal schema for validating ``metrics.yaml`` files, included in its
 entirety below:
 
-.. literalinclude:: ../glean_parser/schemas/metrics.1-0-0.schema.yaml
+.. literalinclude:: ../glean_parser/schemas/metrics.2-0-0.schema.yaml
    :language: yaml

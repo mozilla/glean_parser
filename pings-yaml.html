@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev24+g3c8b83b documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev25+g942a992 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file defines what pings your application will collect.</p>
 <p>The top-level of the file must contain the following key-value pair to indicate
 that it is a Glean <code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$schema: moz://mozilla.org/schemas/glean/pings/1-0-0
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
 </pre></div>
 </div>
 <p>The other keys at the top level of the file are ping names.
@@ -75,9 +75,7 @@ be contacted.</p>
 <p>A list of bugs (e.g. Bugzilla and Github) that are relevant to this
 ping, e.g., tracking its original implementation or later changes to
 it.</p>
-<p>If a number, it is an ID to an issue in the default tracker (e.g.
-Mozilla’s Bugzilla instance). If a string, it must be a URI to a bug
-page in a tracker.</p>
+<p>It must be a URI to a bug page in a tracker.</p>
 </div>
 <div class="section" id="data-reviews">
 <span id="id6"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
@@ -110,7 +108,7 @@ entirety below:</p>
   <span class="no">ping. The values contain metadata about that ping. Ping names must be</span>
   <span class="no">kebab-case per https://docs.telemetry.mozilla.org/cookbooks/new_ping.html</span>
 
-<span class="nt">$id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">moz://mozilla.org/schemas/glean/pings/1-0-0</span>
+<span class="nt">$id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">moz://mozilla.org/schemas/glean/pings/2-0-0</span>
 
 <span class="nt">definitions</span><span class="p">:</span>
   <span class="nt">dotted_snake_case</span><span class="p">:</span>
@@ -119,11 +117,7 @@ entirety below:</p>
     <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
   <span class="nt">kebab_case</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="c1"># Bug 1601270; we allow 3 specific existing snake_cased ping names for now,</span>
-    <span class="c1"># but these special cases can be removed once the number of legacy clients</span>
-    <span class="c1"># sufficiently dwindles, likely in 2020H2.</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z][a-z0-9-]{0,29}$\</span>
-      <span class="s">|^deletion_request$|^bookmarks_sync$|^history_sync$|^session_end$|^all_pings$|^glean_.*$&quot;</span>
+    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z][a-z0-9-]{0,29}$&quot;</span>
 
 <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
 
@@ -200,16 +194,12 @@ entirety below:</p>
         <span class="no">ping, e.g., tracking its original implementation or later changes to</span>
         <span class="no">it.</span>
 
-        <span class="no">If a number, it is an ID to an issue in the default tracker (e.g.</span>
-        <span class="no">Mozilla&#39;s Bugzilla instance). If a string, it must be a URI to a bug</span>
-        <span class="no">page in a tracker.</span>
+        <span class="no">It must be a URI to a bug page in a tracker.</span>
       <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
       <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">items</span><span class="p">:</span>
-        <span class="nt">anyOf</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>  <span class="c1"># Keep supporting integer for backward-compat</span>
-          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-            <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+        <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
 
     <span class="nt">data_reviews</span><span class="p">:</span>
       <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Review references</span>

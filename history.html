@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Glean Parser 1.29.1.dev24+g3c8b83b documentation</title>
+    <title>History &#8212; Glean Parser 1.29.1.dev25+g942a992 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -35,7 +35,17 @@
 <h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="unreleased">
 <h2>Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>New versions 2.0.0 of the <cite>metrics.yaml</cite> and <cite>pings.yaml</cite> schemas now ship with <cite>glean_parser</cite>.
+These schemas are different from version 1.0.0 in the following ways:</p>
 <ul class="simple">
+<li><p>Bugs must be specified as URLs.  Bug numbers are disallowed.</p></li>
+<li><p>The legacy ping names containing underscores are no longer allowed.
+These included <cite>deletion_request</cite>, <cite>bookmarks_sync</cite>, <cite>history_sync</cite>, <cite>session_end</cite>, <cite>all_pings</cite>, <cite>glean_*</cite>).
+In these cases, the <cite>_</cite> should be replaced with <cite>-</cite>.</p></li>
+</ul>
+<p>To upgrade your app or library to use the new schema, replace the version in the <cite>$schema</cite> value with <cite>2-0-0</cite>.</p>
+</li>
 <li><p><strong>Breaking change:</strong> It is now an error to use bug numbers (rather than URLs) in ping definitions.</p></li>
 <li><p>Add the line number that metrics and pings were originally defined in the yaml files.</p></li>
 </ul>

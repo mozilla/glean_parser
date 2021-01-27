@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.parser &#8212; Glean Parser 1.29.1.dev24+g3c8b83b documentation</title>
+    <title>glean_parser.parser &#8212; Glean Parser 1.29.1.dev25+g942a992 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -58,10 +58,8 @@
 <span class="n">ROOT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 <span class="n">SCHEMAS_DIR</span> <span class="o">=</span> <span class="n">ROOT_DIR</span> <span class="o">/</span> <span class="s2">&quot;schemas&quot;</span>
 
-<span class="n">METRICS_ID</span> <span class="o">=</span> <span class="s2">&quot;moz://mozilla.org/schemas/glean/metrics/1-0-0&quot;</span>
-<span class="n">PINGS_ID</span> <span class="o">=</span> <span class="s2">&quot;moz://mozilla.org/schemas/glean/pings/1-0-0&quot;</span>
-
-<span class="n">FILE_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="n">METRICS_ID</span><span class="p">:</span> <span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="n">PINGS_ID</span><span class="p">:</span> <span class="s2">&quot;pings&quot;</span><span class="p">}</span>
+<span class="n">METRICS_ID</span> <span class="o">=</span> <span class="s2">&quot;moz://mozilla.org/schemas/glean/metrics/2-0-0&quot;</span>
+<span class="n">PINGS_ID</span> <span class="o">=</span> <span class="s2">&quot;moz://mozilla.org/schemas/glean/pings/2-0-0&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_update_validator</span><span class="p">(</span><span class="n">validator</span><span class="p">):</span>
@@ -119,7 +117,14 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid schema key </span><span class="si">{</span><span class="n">schema_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">filetype</span> <span class="o">=</span> <span class="n">FILE_TYPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">schema_key</span><span class="p">)</span>
+    <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="n">schema_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">filetype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;pings&quot;</span><span class="p">):</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">validate</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
         <span class="n">content</span> <span class="o">=</span> <span class="p">{}</span>
@@ -316,7 +321,9 @@
         <span class="n">ping_val</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ping_key</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ping_obj</span> <span class="o">=</span> <span class="n">Ping</span><span class="p">(</span>
-                <span class="n">defined_in</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ping_val</span><span class="p">,</span> <span class="s2">&quot;defined_in&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="o">**</span><span class="n">ping_val</span>
+                <span class="n">defined_in</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">ping_val</span><span class="p">,</span> <span class="s2">&quot;defined_in&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">_validated</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">ping_val</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">util</span><span class="o">.</span><span class="n">format_error</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;On instance &#39;</span><span class="si">{</span><span class="n">ping_key</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
