@@ -324,6 +324,7 @@ def test_bug_number_pings(content, num_nits):
     Test that using bug numbers (rather than URLs) in pings produce linting
     errors.
     """
+    content["$schema"] = "moz://mozilla.org/schemas/glean/pings/1-0-0"
     content = util.add_required_ping(content)
     all_pings = parser.parse_objects([content])
 

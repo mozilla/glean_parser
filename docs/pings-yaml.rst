@@ -6,7 +6,7 @@ The ``pings.yaml`` file defines what pings your application will collect.
 The top-level of the file must contain the following key-value pair to indicate
 that it is a Glean ``pings.yaml`` file::
 
-   $schema: moz://mozilla.org/schemas/glean/pings/1-0-0
+   $schema: moz://mozilla.org/schemas/glean/pings/2-0-0
 
 The other keys at the top level of the file are ping names.
 Ping names must be in ``kebab-case``.
@@ -35,5 +35,5 @@ JSON Schema
 There is a formal schema for validating ``pings.yaml`` files, included in its
 entirety below:
 
-.. literalinclude:: ../glean_parser/schemas/pings.1-0-0.schema.yaml
+.. literalinclude:: ../glean_parser/schemas/pings.2-0-0.schema.yaml
    :language: yaml

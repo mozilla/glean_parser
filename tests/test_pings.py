@@ -56,7 +56,10 @@ def test_snake_case_ping_name():
 
 
 def test_legacy_snake_case_ping_name():
-    content = {"bookmarks_sync": {"include_client_id": True}}
+    content = {
+        "bookmarks_sync": {"include_client_id": True},
+        "$schema": "moz://mozilla.org/schemas/glean/pings/1-0-0",
+    }
 
     util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))

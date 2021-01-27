@@ -201,7 +201,6 @@ def test_parser_empty():
 def test_invalid_schema():
     all_metrics = parser.parse_objects([{"$schema": "This is wrong"}])
     errors = list(all_metrics)
-    print(errors)
     assert any("key must be one of" in str(e) for e in errors)
 
 
@@ -597,3 +596,35 @@ def test_custom_expires():
         # Double-check that parsing without custom functions breaks
         all_metrics = parser.parse_objects(contents)
         errors = list(all_metrics)
+
+
+def test_historical_versions():
+    """
+    Make sure we can load the correct version of the schema and it will
+    correctly reject or not reject entries based on that.
+    """
+    contents = [
+        {
+            "$schema": "moz://mozilla.org/schemas/glean/metrics/1-0-0",
+            "category": {"metric": {"type": "event", "bugs": [42]}},
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    contents = [
+        {
+            "$schema": "moz://mozilla.org/schemas/glean/metrics/2-0-0",
+            "category": {"metric": {"type": "event", "bugs": [42]}},
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+
+    errors = list(all_metrics)
+    assert len(errors) == 1
