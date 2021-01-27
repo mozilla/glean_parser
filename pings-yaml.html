@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev25+g942a992 documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 1.29.1.dev26+g1fa8df5 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -76,6 +76,7 @@ be contacted.</p>
 ping, e.g., tracking its original implementation or later changes to
 it.</p>
 <p>It must be a URI to a bug page in a tracker.</p>
+<p>Prior to version 2.0.0 of the schema, bugs could also be integers.</p>
 </div>
 <div class="section" id="data-reviews">
 <span id="id6"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
@@ -115,6 +116,8 @@ entirety below:</p>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$&quot;</span>
     <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
+  <span class="c1"># Prior to version 2.0.0 of the schema, special ping names with underscores</span>
+  <span class="c1"># were also supported.</span>
   <span class="nt">kebab_case</span><span class="p">:</span>
     <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
     <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z][a-z0-9-]{0,29}$&quot;</span>
@@ -195,6 +198,8 @@ entirety below:</p>
         <span class="no">it.</span>
 
         <span class="no">It must be a URI to a bug page in a tracker.</span>
+
+        <span class="no">Prior to version 2.0.0 of the schema, bugs could also be integers.</span>
       <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
       <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
       <span class="nt">items</span><span class="p">:</span>
