@@ -32,7 +32,7 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/mdboom/glean_parser
+    $ git clone https://github.com/mozilla/glean_parser.git
 
 Or download the `tarball`_:
 
