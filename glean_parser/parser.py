@@ -240,6 +240,9 @@ def _instantiate_metrics(
             if metric_obj is not None:
                 metric_obj.no_lint = list(set(metric_obj.no_lint + global_no_lint))
 
+            if isinstance(filepath, Path):
+                metric_obj.defined_in["filepath"] = str(filepath)
+
             already_seen = sources.get((category_key, metric_key))
             if already_seen is not None:
                 # We've seen this metric name already
@@ -298,6 +301,9 @@ def _instantiate_pings(
 
         if ping_obj is not None:
             ping_obj.no_lint = list(set(ping_obj.no_lint + global_no_lint))
+
+        if isinstance(filepath, Path) and ping_obj.defined_in is not None:
+            ping_obj.defined_in["filepath"] = str(filepath)
 
         already_seen = sources.get(ping_key)
         if already_seen is not None:
