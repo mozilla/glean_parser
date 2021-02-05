@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+2.0.0 (2021-02-05)
+------------------
+
 * New versions 2.0.0 of the `metrics.yaml` and `pings.yaml` schemas now ship with `glean_parser`.
   These schemas are different from version 1.0.0 in the following ways:
 
