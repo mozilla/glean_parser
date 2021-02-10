@@ -20,7 +20,8 @@ new {{ obj.type|class_name }}({
 // where do not have access to the global object (i.e. window);
 var {{ category_name|camelize }};
 
-// UMD template based on: https://github.com/umdjs/umd/blob/master/templates/returnExports.js
+// Universal Module Definition (UMD) template based on:
+// https://github.com/umdjs/umd/blob/master/templates/returnExports.js
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
