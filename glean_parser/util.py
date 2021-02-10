@@ -402,19 +402,18 @@ def remove_output_params(d, output_params):
     return modified_dict
 
 
-# Names of metric parameters to pass to constructors.
-# This includes only things that the language bindings care about, not things
-# that are metadata-only or are resolved into other parameters at parse time.
-# **CAUTION**: This list needs to be in the order the Swift type constructors
-# expects them. (The other language bindings don't care about the order). The
-# `test_order_of_fields` test checks that the generated code is valid.
-# **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**
-extra_metric_args = [
+# Names of  parameters to pass to all metrics constructors constructors.
+common_metric_args = [
     "category",
     "name",
     "send_in_pings",
     "lifetime",
     "disabled",
+]
+
+
+# Names of parameters that only apply to some of the metrics types.
+extra_metric_args = [
     "time_unit",
     "memory_unit",
     "allowed_extra_keys",
@@ -426,8 +425,17 @@ extra_metric_args = [
 ]
 
 
+# This includes only things that the language bindings care about, not things
+# that are metadata-only or are resolved into other parameters at parse time.
+# **CAUTION**: This list needs to be in the order the Swift type constructors
+# expects them. (The other language bindings don't care about the order). The
+# `test_order_of_fields` test checks that the generated code is valid.
+# **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**
+metric_args = common_metric_args + extra_metric_args
+
+
 # Names of ping parameters to pass to constructors.
-extra_ping_args = [
+ping_args = [
     "include_client_id",
     "send_if_empty",
     "name",
@@ -436,6 +444,4 @@ extra_ping_args = [
 
 
 # Names of parameters to pass to both metric and ping constructors (no duplicates).
-extra_args = extra_metric_args + [
-    v for v in extra_ping_args if v not in extra_metric_args
-]
+extra_args = metric_args + [v for v in ping_args if v not in metric_args]
