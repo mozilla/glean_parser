@@ -412,7 +412,7 @@ common_metric_args = [
 ]
 
 
-# Names of paraters that only apply to some of the metrics types.
+# Names of parameters that only apply to some of the metrics types.
 extra_metric_args = [
     "time_unit",
     "memory_unit",

@@ -6,6 +6,7 @@ Unreleased
 ----------
 
 * Add support for generating Javascript code.
+  * The templates added generate metrics and pings code for Glean.js.
 
 2.0.0 (2021-02-05)
 ------------------
