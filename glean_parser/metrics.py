@@ -57,6 +57,7 @@ class Metric:
         no_lint: Optional[List[str]] = None,
         data_sensitivity: Optional[List[str]] = None,
         defined_in: Optional[Dict] = None,
+        telemetry_mirror: Optional[str] = None,
         _config: Dict[str, Any] = None,
         _validated: bool = False,
     ):
@@ -90,6 +91,8 @@ class Metric:
                 getattr(DataSensitivity, x) for x in data_sensitivity
             ]
         self.defined_in = defined_in
+        if telemetry_mirror is not None:
+            self.telemetry_mirror = telemetry_mirror
 
         # _validated indicates whether this metric has already been jsonschema
         # validated (but not any of the Python-level validation).

@@ -628,3 +628,22 @@ def test_historical_versions():
 
     errors = list(all_metrics)
     assert len(errors) == 1
+
+
+def test_telemetry_mirror():
+    """
+    Ensure that telemetry_mirror makes it into the parsed metric definition.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "telemetry_mirror.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    assert (
+        all_metrics.value["telemetry.mirrored"]["parses_fine"].telemetry_mirror
+        == "telemetry.test.string_kind"
+    )
