@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+2.1.0 (2021-02-10)
+------------------
+
 * Add support for generating Javascript code.
   * The templates added generate metrics and pings code for Glean.js.
 
