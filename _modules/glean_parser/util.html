@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.util &#8212; Glean Parser 1.29.1.dev28+gb7ce5af documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 2.0.1.dev1+g95687d2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -435,19 +435,18 @@
     <span class="k">return</span> <span class="n">modified_dict</span></div>
 
 
-<span class="c1"># Names of metric parameters to pass to constructors.</span>
-<span class="c1"># This includes only things that the language bindings care about, not things</span>
-<span class="c1"># that are metadata-only or are resolved into other parameters at parse time.</span>
-<span class="c1"># **CAUTION**: This list needs to be in the order the Swift type constructors</span>
-<span class="c1"># expects them. (The other language bindings don&#39;t care about the order). The</span>
-<span class="c1"># `test_order_of_fields` test checks that the generated code is valid.</span>
-<span class="c1"># **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**</span>
-<span class="n">extra_metric_args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="c1"># Names of  parameters to pass to all metrics constructors constructors.</span>
+<span class="n">common_metric_args</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;category&quot;</span><span class="p">,</span>
     <span class="s2">&quot;name&quot;</span><span class="p">,</span>
     <span class="s2">&quot;send_in_pings&quot;</span><span class="p">,</span>
     <span class="s2">&quot;lifetime&quot;</span><span class="p">,</span>
     <span class="s2">&quot;disabled&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Names of parameters that only apply to some of the metrics types.</span>
+<span class="n">extra_metric_args</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;time_unit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;memory_unit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;allowed_extra_keys&quot;</span><span class="p">,</span>
@@ -459,8 +458,17 @@
 <span class="p">]</span>
 
 
+<span class="c1"># This includes only things that the language bindings care about, not things</span>
+<span class="c1"># that are metadata-only or are resolved into other parameters at parse time.</span>
+<span class="c1"># **CAUTION**: This list needs to be in the order the Swift type constructors</span>
+<span class="c1"># expects them. (The other language bindings don&#39;t care about the order). The</span>
+<span class="c1"># `test_order_of_fields` test checks that the generated code is valid.</span>
+<span class="c1"># **DO NOT CHANGE THE ORDER OR ADD NEW FIELDS IN THE MIDDLE**</span>
+<span class="n">metric_args</span> <span class="o">=</span> <span class="n">common_metric_args</span> <span class="o">+</span> <span class="n">extra_metric_args</span>
+
+
 <span class="c1"># Names of ping parameters to pass to constructors.</span>
-<span class="n">extra_ping_args</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">ping_args</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;include_client_id&quot;</span><span class="p">,</span>
     <span class="s2">&quot;send_if_empty&quot;</span><span class="p">,</span>
     <span class="s2">&quot;name&quot;</span><span class="p">,</span>
@@ -469,9 +477,7 @@
 
 
 <span class="c1"># Names of parameters to pass to both metric and ping constructors (no duplicates).</span>
-<span class="n">extra_args</span> <span class="o">=</span> <span class="n">extra_metric_args</span> <span class="o">+</span> <span class="p">[</span>
-    <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">extra_ping_args</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">extra_metric_args</span>
-<span class="p">]</span>
+<span class="n">extra_args</span> <span class="o">=</span> <span class="n">metric_args</span> <span class="o">+</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ping_args</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric_args</span><span class="p">]</span>
 </pre></div>
 
           </div>

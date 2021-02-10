@@ -12,6 +12,14 @@ glean\_parser.csharp module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.javascript module
+-------------------------------
+
+.. automodule:: glean_parser.javascript
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.kotlin module
 ---------------------------
 
