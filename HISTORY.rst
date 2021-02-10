@@ -5,6 +5,8 @@ History
 Unreleased
 ----------
 
+* Add support for generating Javascript code.
+
 2.0.0 (2021-02-05)
 ------------------
 
