@@ -401,6 +401,7 @@ def remove_output_params(d, output_params):
             modified_dict[key] = value
     return modified_dict
 
+
 # Names of  parameters to pass to all metrics constructors constructors.
 common_metric_args = [
     "category",
@@ -443,6 +444,4 @@ ping_args = [
 
 
 # Names of parameters to pass to both metric and ping constructors (no duplicates).
-extra_args = metric_args + [
-    v for v in ping_args if v not in metric_args
-]
+extra_args = metric_args + [v for v in ping_args if v not in metric_args]

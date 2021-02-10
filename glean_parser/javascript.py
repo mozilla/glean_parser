@@ -10,7 +10,6 @@ Outputter to generate Javascript code for metrics.
 
 import enum
 import json
-from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union  # noqa
 
@@ -45,15 +44,14 @@ def class_name(obj_type: str) -> str:
     return "Glean._private." + class_name
 
 
-def args(obj_type: str) -> str:
+def args(obj_type: str) -> Dict[str, object]:
     """
     Returns the list of arguments for each object type.
     """
     if obj_type == "ping":
-        return { "common": util.ping_args, "extra": [] }
+        return {"common": util.ping_args, "extra": []}
 
-    return { "common": util.common_metric_args, "extra": util.extra_metric_args }
-
+    return {"common": util.common_metric_args, "extra": util.extra_metric_args}
 
 
 def output_javascript(
@@ -67,11 +65,11 @@ def output_javascript(
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 
-        - `namespace`: The identifier of the global variable we will assign the generated object to.
-                       This will only have and effect on Qt and static web site situations.
-        - `glean_namespace`: The identifier of the global variable the Glean API is assigned to.
-                             The default is `Glean`.
-          code.
+        - `namespace`: The identifier of the global variable to assign to.
+                       This will only have and effect for Qt and static web sites.
+                       Default is `GleanAssets`.
+        - `glean_namespace`: The identifier of the global variable Glean is assigned.
+                             Default is `Glean`.
     """
 
     if options is None:
