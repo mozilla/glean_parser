@@ -18,8 +18,8 @@ import {{ namespace_package }}.BuildConfig
 internal object GleanBuildInfo {
     val buildInfo: BuildInfo by lazy {
         BuildInfo(
-            BuildConfig.VERSION_CODE.toString(),
-            BuildConfig.VERSION_NAME
+            versionCode = BuildConfig.VERSION_CODE.toString(),
+            versionName = BuildConfig.VERSION_NAME
         )
     }
 }
