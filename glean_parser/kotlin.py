@@ -221,7 +221,7 @@ def output_kotlin(
 
     namespace = options.get("namespace", "GleanMetrics")
     glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
-    namespace_package = namespace[:namespace.rfind(".")]
+    namespace_package = namespace[: namespace.rfind(".")]
 
     # Write out the special "build info" object
     template = util.get_jinja2_template(
