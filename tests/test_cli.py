@@ -50,6 +50,7 @@ def test_translate(tmpdir):
             "Environment.kt",
             "DottedCategory.kt",
             "GleanInternalMetrics.kt",
+            "GleanBuildInfo.kt",
         ]
     )
     for filename in os.listdir(str(tmpdir)):

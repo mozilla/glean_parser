@@ -74,6 +74,7 @@ def test_parser(tmpdir):
             "Environment.kt",
             "DottedCategory.kt",
             "GleanInternalMetrics.kt",
+            "GleanBuildInfo.kt",
         ]
     )
 
@@ -107,7 +108,9 @@ def test_ping_parser(tmpdir):
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Pings.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Pings.kt", "GleanBuildInfo.kt"]
+    )
 
     # Make sure descriptions made it in
     with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:
@@ -202,7 +205,9 @@ def test_duplicate(tmpdir):
         ROOT / "data" / "duplicate_labeled.yaml", "kotlin", tmpdir, {"namespace": "Foo"}
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Category.kt", "GleanBuildInfo.kt"]
+    )
 
     with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
@@ -227,7 +232,9 @@ def test_glean_namespace(tmpdir):
         {"namespace": "Foo", "glean_namespace": "Bar"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Category.kt", "GleanBuildInfo.kt"]
+    )
 
     with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
@@ -251,6 +258,7 @@ def test_gecko_datapoints(tmpdir):
         "GfxInfoAdapter.kt",
         "PagePerf.kt",
         "NonGeckoMetrics.kt",
+        "GleanBuildInfo.kt",
     ]
     assert set(x.name for x in tmpdir.iterdir()) == set(
         ["GleanGeckoMetricsMapping.kt"] + metrics_files
@@ -346,7 +354,9 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Event.kt", "GleanBuildInfo.kt"]
+    )
 
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
@@ -371,7 +381,9 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Event.kt", "GleanBuildInfo.kt"]
+    )
 
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
