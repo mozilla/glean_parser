@@ -35,7 +35,7 @@ def test_translate_missing_directory(tmpdir):
         parser_config={"allow_reserved": True},
     )
 
-    assert len(list(output.iterdir())) == 5
+    assert len(list(output.iterdir())) == 6
 
 
 def test_translate_missing_input_files(tmpdir):
@@ -67,11 +67,11 @@ def test_translate_remove_obsolete_kotlin_files(tmpdir):
         parser_config={"allow_reserved": True},
     )
 
-    assert len(list(output.iterdir())) == 5
+    assert len(list(output.iterdir())) == 6
 
     translate.translate(ROOT / "data" / "smaller.yaml", "kotlin", output)
 
-    assert len(list(output.iterdir())) == 1
+    assert len(list(output.iterdir())) == 2
 
 
 def test_translate_retains_existing_markdown_files(tmpdir):
@@ -153,7 +153,7 @@ def test_translate_dont_remove_extra_files(tmpdir):
         parser_config={"allow_reserved": True},
     )
 
-    assert len(list(output.iterdir())) == 6
+    assert len(list(output.iterdir())) == 7
     assert "extra.txt" in [str(x.name) for x in output.iterdir()]
 
 
