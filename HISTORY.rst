@@ -5,6 +5,9 @@ History
 Unreleased
 ----------
 
+2.2.0 (2021-02-11)
+------------------
+
 * The Kotlin generator now generates static build information that can be passed
   into `Glean.initialize` to avoid calling the package manager at runtime.
 
