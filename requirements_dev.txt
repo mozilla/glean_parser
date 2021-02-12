@@ -5,7 +5,7 @@ flake8-bugbear==20.11.1
 m2r==0.2.1
 mypy==0.800
 pip
-pytest-runner==5.2
+pytest-runner==5.3.0
 pytest==6.2.2
 Sphinx==3.4.3
 twine==3.3.0
