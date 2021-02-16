@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>History &#8212; Glean Parser 2.2.1.dev3+g5063680 documentation</title>
+    <title>Changelog &#8212; Glean Parser 2.2.1.dev4+gdf56994 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,8 +31,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="history">
-<h1>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="unreleased">
 <h2>Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -40,31 +40,39 @@
 <h2>2.2.0 (2021-02-11)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>The Kotlin generator now generates static build information that can be passed
-into <cite>Glean.initialize</cite> to avoid calling the package manager at runtime.</p></li>
+into <code class="docutils literal notranslate"><span class="pre">Glean.initialize</span></code> to avoid calling the package manager at runtime.</p></li>
 </ul>
 </div>
 <div class="section" id="id2">
 <h2>2.1.0 (2021-02-10)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Add support for generating Javascript code.
-* The templates added generate metrics and pings code for Glean.js.</p></li>
+<li><p>Add support for generating Javascript code.</p>
+<ul>
+<li><p>The templates added generate metrics and pings code for Glean.js.</p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h2>2.0.0 (2021-02-05)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>New versions 2.0.0 of the <cite>metrics.yaml</cite> and <cite>pings.yaml</cite> schemas now ship with <cite>glean_parser</cite>.
-These schemas are different from version 1.0.0 in the following ways:</p>
+<li><p>New versions 2.0.0 of the <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> schemas now ship
+with <code class="docutils literal notranslate"><span class="pre">glean_parser</span></code>. These schemas are different from version 1.0.0 in the
+following ways:</p>
 <ul class="simple">
-<li><p>Bugs must be specified as URLs.  Bug numbers are disallowed.</p></li>
-<li><p>The legacy ping names containing underscores are no longer allowed.
-These included <cite>deletion_request</cite>, <cite>bookmarks_sync</cite>, <cite>history_sync</cite>, <cite>session_end</cite>, <cite>all_pings</cite>, <cite>glean_*</cite>).
-In these cases, the <cite>_</cite> should be replaced with <cite>-</cite>.</p></li>
+<li><p>Bugs must be specified as URLs. Bug numbers are disallowed.</p></li>
+<li><p>The legacy ping names containing underscores are no longer allowed. These
+included <code class="docutils literal notranslate"><span class="pre">deletion_request</span></code>, <code class="docutils literal notranslate"><span class="pre">bookmarks_sync</span></code>, <code class="docutils literal notranslate"><span class="pre">history_sync</span></code>,
+<code class="docutils literal notranslate"><span class="pre">session_end</span></code>, <code class="docutils literal notranslate"><span class="pre">all_pings</span></code>, <code class="docutils literal notranslate"><span class="pre">glean_*</span></code>). In these cases, the <code class="docutils literal notranslate"><span class="pre">_</span></code> should be
+replaced with <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p></li>
 </ul>
-<p>To upgrade your app or library to use the new schema, replace the version in the <cite>$schema</cite> value with <cite>2-0-0</cite>.</p>
+<p>To upgrade your app or library to use the new schema, replace the version in
+the <code class="docutils literal notranslate"><span class="pre">$schema</span></code> value with <code class="docutils literal notranslate"><span class="pre">2-0-0</span></code>.</p>
 </li>
-<li><p><strong>Breaking change:</strong> It is now an error to use bug numbers (rather than URLs) in ping definitions.</p></li>
-<li><p>Add the line number that metrics and pings were originally defined in the yaml files.</p></li>
+<li><p><strong>Breaking change:</strong> It is now an error to use bug numbers (rather than URLs)
+in ping definitions.</p></li>
+<li><p>Add the line number that metrics and pings were originally defined in the yaml
+files.</p></li>
 </ul>
 </div>
 <div class="section" id="id4">
@@ -76,9 +84,13 @@ In these cases, the <cite>_</cite> should be replaced with <cite>-</cite>.</p></
 <div class="section" id="id5">
 <h2>1.29.0 (2020-10-07)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Breaking change:</strong> <cite>glean_parser</cite> will now return an error code when any of the input files do not exist (unless the <cite>–allow-missing-files</cite> flag is passed).</p></li>
-<li><p>Generated code now includes a comment next to each metric containing the name of the metric in its original <cite>snake_case</cite> form.</p></li>
-<li><p>When metrics don’t provide a <cite>unit</cite> parameter, it is not included in the output (as provided by probe-scraper).</p></li>
+<li><p><strong>Breaking change:</strong> <code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> will now return an error code when any of
+the input files do not exist (unless the <code class="docutils literal notranslate"><span class="pre">--allow-missing-files</span></code> flag is
+passed).</p></li>
+<li><p>Generated code now includes a comment next to each metric containing the name
+of the metric in its original <code class="docutils literal notranslate"><span class="pre">snake_case</span></code> form.</p></li>
+<li><p>When metrics don’t provide a <code class="docutils literal notranslate"><span class="pre">unit</span></code> parameter, it is not included in the
+output (as provided by probe-scraper).</p></li>
 </ul>
 </div>
 <div class="section" id="id6">
@@ -96,60 +108,68 @@ In these cases, the <cite>_</cite> should be replaced with <cite>-</cite>.</p></
 <div class="section" id="id8">
 <h2>1.28.4 (2020-09-14)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The <cite>SUPERFLUOUS_NO_LINT</cite> warning has been removed from the glinter.
+<li><p>The <code class="docutils literal notranslate"><span class="pre">SUPERFLUOUS_NO_LINT</span></code> warning has been removed from the glinter.
 It likely did more harm than good, and makes it hard to make
-<cite>metrics.yaml</cite> files that pass across different versions of <cite>glean_parser</cite>.</p></li>
-<li><p>Expired metrics will now produce a linter warning, <cite>EXPIRED_METRIC</cite>.</p></li>
-<li><p>Expiry dates that are more than 730 days (~2 years) in the future will produce a linter warning,
-<cite>EXPIRATION_DATE_TOO_FAR</cite>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files that pass across different versions of
+<code class="docutils literal notranslate"><span class="pre">glean_parser</span></code>.</p></li>
+<li><p>Expired metrics will now produce a linter warning, <code class="docutils literal notranslate"><span class="pre">EXPIRED_METRIC</span></code>.</p></li>
+<li><p>Expiry dates that are more than 730 days (~2 years) in the future
+will produce a linter warning, <code class="docutils literal notranslate"><span class="pre">EXPIRATION_DATE_TOO_FAR</span></code>.</p></li>
 <li><p>Allow using the Quantity metric type outside of Gecko.</p></li>
-<li><p>New parser configs <cite>custom_is_expired</cite> and <cite>custom_validate_expires</cite> added.
-These are both functions that take the <cite>expires</cite> value of the metric and return a bool.
-(See <cite>Metric.is_expired</cite> and <cite>Metric.validate_expires</cite>).
-These will allow FOG to provide custom validation for its version-based <cite>expires</cite> values.</p></li>
+<li><p>New parser configs <code class="docutils literal notranslate"><span class="pre">custom_is_expired</span></code> and <code class="docutils literal notranslate"><span class="pre">custom_validate_expires</span></code>
+added. These are both functions that take the <code class="docutils literal notranslate"><span class="pre">expires</span></code> value of the
+metric and return a bool. (See <code class="docutils literal notranslate"><span class="pre">Metric.is_expired</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Metric.validate_expires</span></code>). These will allow FOG to provide custom
+validation for its version-based <code class="docutils literal notranslate"><span class="pre">expires</span></code> values.</p></li>
 </ul>
 </div>
 <div class="section" id="id9">
 <h2>1.28.3 (2020-07-28)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Support HashSet and Dictionary in the C# generated code.</p></li>
+<li><p>BUGFIX: Support HashSet and Dictionary in the C## generated code.</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
 <h2>1.28.2 (2020-07-28)<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Generate valid C# code when using Labeled metric types.</p></li>
+<li><p>BUGFIX: Generate valid C## code when using Labeled metric types.</p></li>
 </ul>
 </div>
 <div class="section" id="id11">
 <h2>1.28.1 (2020-07-24)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Add missing column to correctly render markdown tables in generated documentation.</p></li>
+<li><p>BUGFIX: Add missing column to correctly render markdown tables in generated
+documentation.</p></li>
 </ul>
 </div>
 <div class="section" id="id12">
 <h2>1.28.0 (2020-07-23)<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Breaking change:</strong> The internal ping <cite>deletion-request</cite> was misnamed in pings.py causing the linter to not allow use of the correctly named ping for adding legacy ids to. Consuming apps will need to update their metrics.yaml if they are using <cite>deletion_request</cite> in any <cite>send_in_pings</cite> to <cite>deletion-request</cite> after updating.</p></li>
+<li><p><strong>Breaking change:</strong> The internal ping <code class="docutils literal notranslate"><span class="pre">deletion-request</span></code> was misnamed in
+pings.py causing the linter to not allow use of the correctly named ping for
+adding legacy ids to. Consuming apps will need to update their metrics.yaml if
+they are using <code class="docutils literal notranslate"><span class="pre">deletion_request</span></code> in any <code class="docutils literal notranslate"><span class="pre">send_in_pings</span></code> to <code class="docutils literal notranslate"><span class="pre">deletion-request</span></code>
+after updating.</p></li>
 </ul>
 </div>
 <div class="section" id="id13">
 <h2>1.27.0 (2020-07-21)<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Rename the <cite>data_category</cite> field to <cite>data_sensitivity</cite> to be clearer.</p></li>
+<li><p>Rename the <code class="docutils literal notranslate"><span class="pre">data_category</span></code> field to <code class="docutils literal notranslate"><span class="pre">data_sensitivity</span></code> to be clearer.</p></li>
 </ul>
 </div>
 <div class="section" id="id14">
 <h2>1.26.0 (2020-07-21)<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Add support for JWE metric types.</p></li>
-<li><p>Add a <cite>data_sensitivity</cite> field to all metrics for specifying the type of data collected in the field.</p></li>
+<li><p>Add a <code class="docutils literal notranslate"><span class="pre">data_sensitivity</span></code> field to all metrics for specifying the type of data
+collected in the field.</p></li>
 </ul>
 </div>
 <div class="section" id="id15">
 <h2>1.25.0 (2020-07-17)<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Add support for generating C# code.</p></li>
+<li><p>Add support for generating C## code.</p></li>
 <li><p>BUGFIX: The memory unit is now correctly passed to the MemoryDistribution
 metric type in Swift.</p></li>
 </ul>
@@ -157,29 +177,34 @@ metric type in Swift.</p></li>
 <div class="section" id="id16">
 <h2>1.24.0 (2020-06-30)<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: look for metrics in send_if_empty pings. Metrics for these kinds of pings were being ignored.</p></li>
+<li><p>BUGFIX: look for metrics in send_if_empty pings. Metrics for these kinds of
+pings were being ignored.</p></li>
 </ul>
 </div>
 <div class="section" id="id17">
 <h2>1.23.0 (2020-06-27)<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Support for Python 3.5 has been dropped.</p></li>
-<li><p>BUGFIX: The ordering of event extra keys will now match with their enum, fixing a serious bug where keys of extras may not match the correct values in the data payload.  See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1648768">https://bugzilla.mozilla.org/show_bug.cgi?id=1648768</a>.</p></li>
+<li><p>BUGFIX: The ordering of event extra keys will now match with their enum,
+fixing a serious bug where keys of extras may not match the correct values in
+the data payload. See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1648768">https://bugzilla.mozilla.org/show_bug.cgi?id=1648768</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="id18">
 <h2>1.22.0 (2020-05-28)<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Breaking change:</strong> (Swift only) Combine all metrics and pings into a single generated file <cite>Metrics.swift</cite>.</p></li>
+<li><p><strong>Breaking change:</strong> (Swift only) Combine all metrics and pings into a single
+generated file <code class="docutils literal notranslate"><span class="pre">Metrics.swift</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id19">
 <h2>1.21.0 (2020-05-25)<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><cite>glinter</cite> messages have been improved with more details and to be more
+<li><p><code class="docutils literal notranslate"><span class="pre">glinter</span></code> messages have been improved with more details and to be more
 actionable.</p></li>
-<li><p>A maximum of 10 <cite>extra_keys</cite> is now enforced for <cite>event</cite> metric types.</p></li>
-<li><p>BUGFIX: the <cite>Lifetime</cite> enum values now match the values of the implementation in mozilla/glean.</p></li>
+<li><p>A maximum of 10 <code class="docutils literal notranslate"><span class="pre">extra_keys</span></code> is now enforced for <code class="docutils literal notranslate"><span class="pre">event</span></code> metric types.</p></li>
+<li><p>BUGFIX: the <code class="docutils literal notranslate"><span class="pre">Lifetime</span></code> enum values now match the values of the implementation
+in mozilla/glean.</p></li>
 </ul>
 </div>
 <div class="section" id="id20">
@@ -191,28 +216,43 @@ actionable.</p></li>
 <div class="section" id="id21">
 <h2>1.20.3 (2020-05-06)<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Support for using <cite>timing_distribution</cite>’s <cite>time_unit</cite> parameter to control the range of acceptable values is documented. The default unit for this use case is <cite>nanosecond</cite> to avoid creating a breaking change.  See [bug 1630997](<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1630997">https://bugzilla.mozilla.org/show_bug.cgi?id=1630997</a>) for more information.</p></li>
+<li><p>Support for using <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>’s <code class="docutils literal notranslate"><span class="pre">time_unit</span></code> parameter to control
+the range of acceptable values is documented. The default unit for this use
+case is <code class="docutils literal notranslate"><span class="pre">nanosecond</span></code> to avoid creating a breaking change. See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1630997">bug
+1630997</a> for more
+information.</p></li>
 </ul>
 </div>
 <div class="section" id="id22">
 <h2>1.20.2 (2020-04-24)<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Dependencies that depend on the version of Python being used are now specified using the <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies">Declaring platform specific dependencies syntax in setuptools</a>. This means that more recent versions of dependencies are likely to be installed on Python 3.6 and later, and unnecessary backport libraries won’t be installed on more recent Python versions.</p></li>
+<li><p>Dependencies that depend on the version of Python being used are now specified
+using the <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html##declaring-platform-specific-dependencies">Declaring platform specific dependencies syntax in
+setuptools</a>.
+This means that more recent versions of dependencies are likely to be
+installed on Python 3.6 and later, and unnecessary backport libraries won’t
+be installed on more recent Python versions.</p></li>
 </ul>
 </div>
 <div class="section" id="id23">
 <h2>1.20.1 (2020-04-21)<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The minimum version of the runtime dependencies has been lowered to increase compatibility with other tools.  These minimum versions are now tested in CI, in addition to testing the latest versions of the dependencies that was already happening in CI.</p></li>
+<li><p>The minimum version of the runtime dependencies has been lowered to increase
+compatibility with other tools. These minimum versions are now tested in CI,
+in addition to testing the latest versions of the dependencies that was
+already happening in CI.</p></li>
 </ul>
 </div>
 <div class="section" id="id24">
 <h2>1.20.0 (2020-04-15)<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Breaking change:</strong> glinter errors found during the <cite>translate</cite> command will now return an error code. glinter warnings will be displayed, but not return an error code.</p></li>
-<li><p><cite>glean_parser</cite> now produces a linter warning when <cite>user</cite> lifetime metrics are
-set to expire. See [bug 1604854](<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1604854">https://bugzilla.mozilla.org/show_bug.cgi?id=1604854</a>)
-for additional context.</p></li>
+<li><p><strong>Breaking change:</strong> glinter errors found during the <code class="docutils literal notranslate"><span class="pre">translate</span></code> command will
+now return an error code. glinter warnings will be displayed, but not return
+an error code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> now produces a linter warning when <code class="docutils literal notranslate"><span class="pre">user</span></code> lifetime metrics are
+set to expire. See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1604854">bug
+1604854</a> for additional
+context.</p></li>
 </ul>
 </div>
 <div class="section" id="id25">
@@ -220,21 +260,24 @@ for additional context.</p></li>
 <ul class="simple">
 <li><p><strong>Breaking change:</strong> The regular expression used to validate labels is
 stricter and more correct.</p></li>
-<li><p>Add more information about pings to markdown documentation:
-* State whether the ping includes client id;
-* Add list of data review links;
-* Add list of related bugs links.</p></li>
-<li><p><cite>glean_parser</cite> now makes it easier to write external translation functions for
-different language targets.</p></li>
-<li><p>BUGFIX: glean_parser now works on 32-bit Windows.</p></li>
+<li><p>Add more information about pings to markdown documentation:</p>
+<ul>
+<li><p>State whether the ping includes client id;</p></li>
+<li><p>Add list of data review links;</p></li>
+<li><p>Add list of related bugs links.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> now makes it easier to write external translation
+functions for different language targets.</p></li>
+<li><p>BUGFIX: <code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> now works on 32-bit Windows.</p></li>
 </ul>
 </div>
 <div class="section" id="id26">
 <h2>1.18.3 (2020-02-24)<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Dropped the ‘inflection’ dependency.</p></li>
-<li><p>Constrained the ‘zipp’ and ‘MarkupSafe’ transitive dependencies to versions that
-support Python 3.5.</p></li>
+<li><p>Dropped the <code class="docutils literal notranslate"><span class="pre">inflection</span></code> dependency.</p></li>
+<li><p>Constrained the <code class="docutils literal notranslate"><span class="pre">zipp</span></code> and <code class="docutils literal notranslate"><span class="pre">MarkupSafe</span></code> transitive dependencies to versions
+that support Python 3.5.</p></li>
 </ul>
 </div>
 <div class="section" id="id27">
@@ -246,19 +289,22 @@ support Python 3.5.</p></li>
 <div class="section" id="id28">
 <h2>1.18.1 (2020-02-14)<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Reason codes are displayed in markdown output for built-in pings as
-well.</p></li>
-<li><p>BUGFIX: Reason descriptions are indented correctly in markdown output.</p></li>
-<li><p>BUGFIX: To avoid a compiler error, the &#64;JvmName annotation isn’t added to
-private members.</p></li>
+<li><p>BUGFIX: Reason codes are displayed in markdown output for built-in
+pings as well.</p></li>
+<li><p>BUGFIX: Reason descriptions are indented correctly in markdown
+output.</p></li>
+<li><p>BUGFIX: To avoid a compiler error, the <code class="docutils literal notranslate"><span class="pre">&#64;JvmName</span></code> annotation isn’t
+added to private members.</p></li>
 </ul>
 </div>
 <div class="section" id="id29">
 <h2>1.18.0 (2020-02-13)<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Breaking Change (Java API)</strong> Have the metrics names in Java match the names in Kotlin.
-See [Bug 1588060](<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1588060">https://bugzilla.mozilla.org/show_bug.cgi?id=1588060</a>).</p></li>
-<li><p>The reasons a ping are sent are now included in the generated markdown documentation.</p></li>
+<li><p><strong>Breaking Change (Java API)</strong> Have the metrics names in Java match the names
+in Kotlin. See <a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1588060">Bug
+1588060</a>.</p></li>
+<li><p>The reasons a ping are sent are now included in the generated markdown
+documentation.</p></li>
 </ul>
 </div>
 <div class="section" id="id30">
@@ -277,15 +323,15 @@ longer supports Python 3.5.</p></li>
 <div class="section" id="id32">
 <h2>1.17.1 (2020-02-05)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Generated Swift code now includes <cite>import Glean</cite>, unless generating
+<li><p>BUGFIX: Generated Swift code now includes <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">Glean</span></code>, unless generating
 for a Glean-internal build.</p></li>
 </ul>
 </div>
 <div class="section" id="id33">
 <h2>1.17.0 (2020-02-03)<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Remove default schema URL from <cite>validate_ping</cite></p></li>
-<li><p>Make <cite>schema</cite> argument required for CLI</p></li>
+<li><p>Remove default schema URL from <code class="docutils literal notranslate"><span class="pre">validate_ping</span></code></p></li>
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">schema</span></code> argument required for CLI</p></li>
 <li><p>BUGFIX: Avoid default import in Swift code for Glean itself</p></li>
 <li><p>BUGFIX: Restore order of fields in generated Swift code</p></li>
 </ul>
@@ -293,7 +339,7 @@ for a Glean-internal build.</p></li>
 <div class="section" id="id34">
 <h2>1.16.0 (2020-01-15)<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Support for <cite>reason</cite> codes on pings was added.</p></li>
+<li><p>Support for <code class="docutils literal notranslate"><span class="pre">reason</span></code> codes on pings was added.</p></li>
 </ul>
 </div>
 <div class="section" id="id35">
@@ -306,13 +352,14 @@ longer supports Python 3.5 (backported from 1.17.3).</p></li>
 <div class="section" id="id36">
 <h2>1.15.5 (2019-12-19)<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Also allow the legacy name <cite>all_pings</cite> for <cite>send_in_pings</cite> parameter on metrics</p></li>
+<li><p>BUGFIX: Also allow the legacy name <code class="docutils literal notranslate"><span class="pre">all_pings</span></code> for <code class="docutils literal notranslate"><span class="pre">send_in_pings</span></code> parameter
+on metrics</p></li>
 </ul>
 </div>
 <div class="section" id="id37">
 <h2>1.15.4 (2019-12-19)<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Also allow the legacy name <cite>all_pings</cite></p></li>
+<li><p>BUGFIX: Also allow the legacy name <code class="docutils literal notranslate"><span class="pre">all_pings</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="id38">
@@ -326,7 +373,8 @@ longer supports Python 3.5 (backported from 1.17.3).</p></li>
 <div class="section" id="id39">
 <h2>1.15.2 (2019-12-12)<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Use a pure Python library for iso8601 so there is no compilation required.</p></li>
+<li><p>BUGFIX: Use a pure Python library for iso8601 so there is no compilation
+required.</p></li>
 </ul>
 </div>
 <div class="section" id="id40">
@@ -338,19 +386,21 @@ longer supports Python 3.5 (backported from 1.17.3).</p></li>
 <div class="section" id="id41">
 <h2>1.15.0 (2019-12-12)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Restrict new pings names to be kebab-case and change <cite>all_pings</cite> to <cite>all-pings</cite></p></li>
+<li><p>Restrict new pings names to be kebab-case and change <code class="docutils literal notranslate"><span class="pre">all_pings</span></code> to
+<code class="docutils literal notranslate"><span class="pre">all-pings</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="id42">
 <h2>1.14.0 (2019-12-06)<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>glean_parser now supports Python versions 3.5, 3.6, 3.7 and 3.8.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> now supports Python versions 3.5, 3.6, 3.7 and 3.8.</p></li>
 </ul>
 </div>
 <div class="section" id="id43">
 <h2>1.13.0 (2019-12-04)<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The <cite>translate</cite> command will no longer clear extra files in the output directory.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">translate</span></code> command will no longer clear extra files in the output
+directory.</p></li>
 <li><p>BUGFIX: Ensure all newlines in comments are prefixed with comment markers</p></li>
 <li><p>BUGFIX: Escape Swift keywords in variable names in generated code</p></li>
 <li><p>Generate documentation for pings that are sent if empty</p></li>
@@ -359,35 +409,35 @@ longer supports Python 3.5 (backported from 1.17.3).</p></li>
 <div class="section" id="id44">
 <h2>1.12.0 (2019-11-27)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Reserve the <cite>deletion_request</cite> ping name</p></li>
-<li><p>Added a new flag <cite>send_if_empty</cite> for pings</p></li>
+<li><p>Reserve the <code class="docutils literal notranslate"><span class="pre">deletion_request</span></code> ping name</p></li>
+<li><p>Added a new flag <code class="docutils literal notranslate"><span class="pre">send_if_empty</span></code> for pings</p></li>
 </ul>
 </div>
 <div class="section" id="id45">
 <h2>1.11.0 (2019-11-13)<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The <cite>glinter</cite> command now performs <cite>yamllint</cite> validation on registry files.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">glinter</span></code> command now performs <code class="docutils literal notranslate"><span class="pre">yamllint</span></code> validation on registry files.</p></li>
 </ul>
 </div>
 <div class="section" id="id46">
 <h2>1.10.0 (2019-11-11)<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The Kotlin linter <cite>detekt</cite> is now run during CI, and for local
+<li><p>The Kotlin linter <code class="docutils literal notranslate"><span class="pre">detekt</span></code> is now run during CI, and for local
 testing if installed.</p></li>
-<li><p>Python 3.8 is now tested in CI (in addition to Python 3.7).
-Using <cite>tox</cite> for this doesn’t work in modern versions of CircleCI, so
-the <cite>tox</cite> configuration has been removed.</p></li>
-<li><p><cite>yamllint</cite> has been added to test the YAML files on CI.</p></li>
-<li><p>⚠ Metric types that don’t yet have implementations in glean-core have been
-removed. This includes <cite>enumeration</cite>, <cite>rate</cite>, <cite>usage</cite>, and <cite>use_counter</cite>, as
-well as many labeled metrics that don’t exist.</p></li>
+<li><p>Python 3.8 is now tested in CI (in addition to Python 3.7). Using
+<code class="docutils literal notranslate"><span class="pre">tox</span></code> for this doesn’t work in modern versions of CircleCI, so the
+<code class="docutils literal notranslate"><span class="pre">tox</span></code> configuration has been removed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yamllint</span></code> has been added to test the YAML files on CI.</p></li>
+<li><p>⚠ Metric types that don’t yet have implementations in glean-core
+have been removed. This includes <code class="docutils literal notranslate"><span class="pre">enumeration</span></code>, <code class="docutils literal notranslate"><span class="pre">rate</span></code>, <code class="docutils literal notranslate"><span class="pre">usage</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">use_counter</span></code>, as well as many labeled metrics that don’t exist.</p></li>
 </ul>
 </div>
 <div class="section" id="id47">
 <h2>1.9.5 (2019-10-22)<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Allow a Swift lint for generated code</p></li>
-<li><p>New lint: Restrict what metric can go into the ‘baseline’ ping</p></li>
+<li><p>New lint: Restrict what metric can go into the <code class="docutils literal notranslate"><span class="pre">baseline</span></code> ping</p></li>
 <li><p>New lint: Warn for slight misspellings in ping names</p></li>
 <li><p>BUGFIX: change Labeled types labels from lists to sets.</p></li>
 </ul>
@@ -395,9 +445,9 @@ well as many labeled metrics that don’t exist.</p></li>
 <div class="section" id="id48">
 <h2>1.9.4 (2019-10-16)<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Use lists instead of sets in Labeled types labels to ensure that
-the order of the labels passed to the <cite>metrics.yaml</cite> is kept.</p></li>
-<li><p><cite>glinter</cite> will now check for duplicate labels and error if there are any.</p></li>
+<li><p>Use lists instead of sets in Labeled types labels to ensure that the order of
+the labels passed to the <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> is kept.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glinter</span></code> will now check for duplicate labels and error if there are any.</p></li>
 </ul>
 </div>
 <div class="section" id="id49">
@@ -409,7 +459,7 @@ the order of the labels passed to the <cite>metrics.yaml</cite> is kept.</p></li
 <div class="section" id="id50">
 <h2>1.9.2 (2019-10-08)<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: Don’t call <cite>is_internal_metric</cite> on <cite>Ping</cite> objects.</p></li>
+<li><p>BUGFIX: Don’t call <code class="docutils literal notranslate"><span class="pre">is_internal_metric</span></code> on <code class="docutils literal notranslate"><span class="pre">Ping</span></code> objects.</p></li>
 </ul>
 </div>
 <div class="section" id="id51">
@@ -422,7 +472,7 @@ the order of the labels passed to the <cite>metrics.yaml</cite> is kept.</p></li
 <h2>1.9.0 (2019-10-04)<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Glinter now warns when bug numbers (rather than URLs) are used.</p></li>
-<li><p>BUGFIX: add <cite>HistogramType</cite> and <cite>MemoryUnit</cite> imports in Kotlin generated code.</p></li>
+<li><p>BUGFIX: add <code class="docutils literal notranslate"><span class="pre">HistogramType</span></code> and <code class="docutils literal notranslate"><span class="pre">MemoryUnit</span></code> imports in Kotlin generated code.</p></li>
 </ul>
 </div>
 <div class="section" id="id53">
@@ -440,45 +490,49 @@ the order of the labels passed to the <cite>metrics.yaml</cite> is kept.</p></li
 <div class="section" id="id55">
 <h2>1.8.2 (2019-10-01)<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Created labeled metrics and events in Swift code and wrap it in a configured namespace</p></li>
+<li><p>Created labeled metrics and events in Swift code and wrap it in a
+configured namespace</p></li>
 </ul>
 </div>
 <div class="section" id="id56">
 <h2>1.8.1 (2019-09-27)<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: <cite>memory_unit</cite> is now passed to the Kotlin generator.</p></li>
+<li><p>BUGFIX: <code class="docutils literal notranslate"><span class="pre">memory_unit</span></code> is now passed to the Kotlin generator.</p></li>
 </ul>
 </div>
 <div class="section" id="id57">
 <h2>1.8.0 (2019-09-26)<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>A new parser config, <cite>do_not_disable_expired</cite>, was added to turn off the
+<li><p>A new parser config, <code class="docutils literal notranslate"><span class="pre">do_not_disable_expired</span></code>, was added to turn off the
 feature that expired metrics are automatically disabled. This is useful if you
-want to retain the disabled value that is explicitly in the <cite>metrics.yaml</cite>
+want to retain the disabled value that is explicitly in the <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code>
 file.</p></li>
-<li><p><cite>glinter</cite> will now report about superfluous <cite>no_lint</cite> entries.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glinter</span></code> will now report about superfluous <code class="docutils literal notranslate"><span class="pre">no_lint</span></code> entries.</p></li>
 </ul>
 </div>
 <div class="section" id="id58">
 <h2>1.7.0 (2019-09-24)<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>A “<cite>glinter</cite>” tool is now included to find common mistakes in metric naming and setup.
-This check is run during <cite>translate</cite> and warnings will be displayed.
-⚠ These warnings will be treated as errors in a future revision.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">glinter</span></code> tool is now included to find common mistakes in metric naming
+and setup. This check is run during <code class="docutils literal notranslate"><span class="pre">translate</span></code> and warnings will be
+displayed. ⚠ These warnings will be treated as errors in a future revision.</p></li>
 </ul>
 </div>
 <div class="section" id="id59">
 <h2>1.6.1 (2019-09-17)<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: <cite>GleanGeckoMetricsMapping</cite> must include <cite>LabeledMetricType</cite> and <cite>CounterMetricType</cite>.</p></li>
+<li><p>BUGFIX: <code class="docutils literal notranslate"><span class="pre">GleanGeckoMetricsMapping</span></code> must include <code class="docutils literal notranslate"><span class="pre">LabeledMetricType</span></code>
+and <code class="docutils literal notranslate"><span class="pre">CounterMetricType</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id60">
 <h2>1.6.0 (2019-09-17)<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>NEW: Support for outputting metrics in Swift.</p></li>
-<li><p>BUGFIX: Provides a helpful error message when <cite>geckoview_datapoint</cite> is used on an metric type that doesn’t support GeckoView exfiltration.</p></li>
-<li><p>Generate a lookup table for Gecko categorical histograms in <cite>GleanGeckoMetricsMapping</cite>.</p></li>
+<li><p>BUGFIX: Provides a helpful error message when <code class="docutils literal notranslate"><span class="pre">geckoview_datapoint</span></code> is used on
+an metric type that doesn’t support GeckoView exfiltration.</p></li>
+<li><p>Generate a lookup table for Gecko categorical histograms in
+<code class="docutils literal notranslate"><span class="pre">GleanGeckoMetricsMapping</span></code>.</p></li>
 <li><p>Introduce a ‘Swift’ output generator.</p></li>
 </ul>
 </div>
@@ -491,33 +545,33 @@ This check is run during <cite>translate</cite> and warnings will be displayed.
 <div class="section" id="id62">
 <h2>1.4.0 (2019-08-27)<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Added support for generating markdown documentation from <cite>metrics.yaml</cite> files.</p></li>
+<li><p>Added support for generating markdown documentation from <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files.</p></li>
 </ul>
 </div>
 <div class="section" id="id63">
 <h2>1.3.0 (2019-08-22)<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><cite>quantity</cite> metric type has been added.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quantity</span></code> metric type has been added.</p></li>
 </ul>
 </div>
 <div class="section" id="id64">
 <h2>1.2.1 (2019-08-13)<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>BUGFIX: <cite>includeClientId</cite> was not being output for PingType.</p></li>
+<li><p>BUGFIX: <code class="docutils literal notranslate"><span class="pre">includeClientId</span></code> was not being output for PingType.</p></li>
 </ul>
 </div>
 <div class="section" id="id65">
 <h2>1.2.0 (2019-08-13)<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><cite>memory_distribution</cite> metric type has been added.</p></li>
-<li><p><cite>custom_distribution</cite> metric type has been added.</p></li>
-<li><p><cite>labeled_timespan</cite> is no longer an allowed metric type.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory_distribution</span></code> metric type has been added.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">custom_distribution</span></code> metric type has been added.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">labeled_timespan</span></code> is no longer an allowed metric type.</p></li>
 </ul>
 </div>
 <div class="section" id="id66">
 <h2>1.1.0 (2019-08-05)<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Add a special <cite>all_pings</cite> value to <cite>send_in_pings</cite>.</p></li>
+<li><p>Add a special <code class="docutils literal notranslate"><span class="pre">all_pings</span></code> value to <code class="docutils literal notranslate"><span class="pre">send_in_pings</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id67">
@@ -560,7 +614,7 @@ This check is run during <cite>translate</cite> and warnings will be displayed.
 <li class="toctree-l1"><a class="reference internal" href="modules.html">glean_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">History</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#unreleased">Unreleased</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">2.2.0 (2021-02-11)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">2.1.0 (2021-02-10)</a></li>
@@ -665,14 +719,14 @@ This check is run during <cite>translate</cite> and warnings will be displayed.
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Michael Droettboom.
+      &copy;2018-2021, Michael Droettboom.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/history.rst.txt"
+      <a href="_sources/history.md.txt"
           rel="nofollow">Page source</a>
     </div>
 
