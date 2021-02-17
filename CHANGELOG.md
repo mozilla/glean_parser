@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Leverage the `glean_namespace` to provide correct import when building for Javascript.
+
 ## 2.2.0 (2021-02-11)
 
 - The Kotlin generator now generates static build information that can be passed

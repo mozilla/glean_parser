@@ -67,16 +67,16 @@ def output_javascript(
 
         - `namespace`: The identifier of the global variable to assign to.
                        This will only have and effect for Qt and static web sites.
-                       Default is `GleanAssets`.
-        - `glean_namespace`: The identifier of the global variable Glean is assigned.
-                             Default is `Glean`.
+                       Default is `gleanAssets`.
+        - `glean_namespace`: Which version of the `@mozilla/glean` to import,
+                             options are `webext` or `qt`. Default is `webext`.
     """
 
     if options is None:
         options = {}
 
     namespace = options.get("namespace", "gleanAssets")
-    glean_namespace = options.get("glean_namespace", "Glean")
+    glean_namespace = options.get("glean_namespace", "webext")
 
     template = util.get_jinja2_template(
         "javascript.jinja2",
