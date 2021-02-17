@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.3.0 (2021-02-17)
+
 - Leverage the `glean_namespace` to provide correct import when building for Javascript.
 
 ## 2.2.0 (2021-02-11)
