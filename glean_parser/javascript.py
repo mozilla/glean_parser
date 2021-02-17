@@ -68,7 +68,7 @@ def output_javascript(
         - `namespace`: The identifier of the global variable to assign to.
                        This will only have and effect for Qt and static web sites.
                        Default is `gleanAssets`.
-        - `glean_namespace`: Which version of the `@mozilla/glean` to import,
+        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
                              options are `webext` or `qt`. Default is `webext`.
     """
 
