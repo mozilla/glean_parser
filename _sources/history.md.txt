@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 2.4.0 (2021-02-18)
+
+- **Experimental:** `glean_parser` has a new subcommand `coverage` to convert raw coverage reports
+  into something consumable by coverage tools, such as codecov.io
+- The path to the file that each metric is defined in is now stored on the
+  `Metric` object in `defined_in["filepath"]`.
+
 ## 2.3.0 (2021-02-17)
 
 - Leverage the `glean_namespace` to provide correct import when building for Javascript.

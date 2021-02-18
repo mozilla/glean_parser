@@ -4,6 +4,14 @@ glean\_parser package
 Submodules
 ----------
 
+glean\_parser.coverage module
+-----------------------------
+
+.. automodule:: glean_parser.coverage
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.csharp module
 ---------------------------
 
