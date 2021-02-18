@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>glean_parser.coverage &#8212; Glean Parser 2.3.1.dev3+g7cfa4d6 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for glean_parser.coverage</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Produce coverage reports from the raw information produced by the</span>
+<span class="sd">`GLEAN_TEST_COVERAGE` feature.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">.metrics</span> <span class="kn">import</span> <span class="n">ObjectTree</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Set</span>
+
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+
+
+<span class="k">def</span> <span class="nf">_outputter_codecovio</span><span class="p">(</span><span class="n">metrics</span><span class="p">:</span> <span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Output coverage in codecov.io format as defined here:</span>
+
+<span class="sd">        https://docs.codecov.io/docs/codecov-custom-coverage-format</span>
+
+<span class="sd">    :param metrics: The tree of metrics, already annotated with coverage by</span>
+<span class="sd">        `_annotate_coverage`.</span>
+<span class="sd">    :param output_path: The file to output to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coverage</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">defined_in</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">defined_in</span>
+            <span class="k">if</span> <span class="n">defined_in</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">defined_in</span><span class="p">[</span><span class="s2">&quot;filepath&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">coverage</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+                        <span class="n">nlines</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">()))</span>
+                    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">nlines</span>
+                    <span class="n">coverage</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span>
+                <span class="n">file_section</span> <span class="o">=</span> <span class="n">coverage</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+                <span class="n">file_section</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">defined_in</span><span class="p">[</span><span class="s2">&quot;line&quot;</span><span class="p">])]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;covered&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s2">&quot;coverage&quot;</span><span class="p">:</span> <span class="n">coverage</span><span class="p">},</span> <span class="n">fd</span><span class="p">)</span>
+
+
+<span class="n">OUTPUTTERS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;codecovio&quot;</span><span class="p">:</span> <span class="n">_outputter_codecovio</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_annotate_coverage</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">coverage_entries</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Annotate each metric with whether it is covered. Sets the attribute</span>
+<span class="sd">    `covered` to 1 on each metric that is covered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">mapping</span><span class="p">[</span><span class="n">metric</span><span class="o">.</span><span class="n">identifier</span><span class="p">()]</span> <span class="o">=</span> <span class="n">metric</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">coverage_entries</span><span class="p">:</span>
+        <span class="n">metric_id</span> <span class="o">=</span> <span class="n">_coverage_entry_to_metric_id</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metric_id</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+            <span class="n">mapping</span><span class="p">[</span><span class="n">metric_id</span><span class="p">]</span><span class="o">.</span><span class="n">covered</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">_coverage_entry_to_metric_id</span><span class="p">(</span><span class="n">entry</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a coverage entry to a metric id.</span>
+
+<span class="sd">    Technically, the coverage entries are rkv database keys, so are not just</span>
+<span class="sd">    the metric identifier. This extracts the metric identifier part out.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># If getting a glean error count, report it as covering the metric the</span>
+    <span class="c1"># error occurred in, not the `glean.error.*` metric itself.</span>
+    <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;glean.error.&quot;</span><span class="p">):</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># If a labeled metric, strip off the label part</span>
+    <span class="k">return</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_read_coverage_entries</span><span class="p">(</span><span class="n">coverage_reports</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read coverage entries from one or more files, and deduplicates them.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">coverage_report</span> <span class="ow">in</span> <span class="n">coverage_reports</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">coverage_report</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="n">entries</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">entries</span>
+
+
+<div class="viewcode-block" id="coverage"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.coverage.coverage">[docs]</a><span class="k">def</span> <span class="nf">coverage</span><span class="p">(</span>
+    <span class="n">coverage_reports</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">metrics_files</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
+    <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Commandline helper for coverage.</span>
+
+<span class="sd">    :param coverage_reports: List of coverage report files, output from the</span>
+<span class="sd">        Glean SDK when the `GLEAN_TEST_COVERAGE` environment variable is set.</span>
+<span class="sd">    :param metrics_files: List of Path objects to load metrics from.</span>
+<span class="sd">    :param output_format: The coverage output format to produce. Must be one of</span>
+<span class="sd">        `OUTPUTTERS.keys()`.</span>
+<span class="sd">    :param output_file: Path to output coverage report to.</span>
+<span class="sd">    :param parser_config: Parser configuration object, passed to</span>
+<span class="sd">      `parser.parse_objects`.</span>
+<span class="sd">    :return: Non-zero if there were any errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">parser_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser_config</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">output_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OUTPUTTERS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown outputter </span><span class="si">{</span><span class="n">output_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">metrics_files</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">metrics_files</span><span class="p">)</span>
+
+    <span class="n">all_objects</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_objects</span><span class="p">(</span><span class="n">metrics_files</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">report_validation_errors</span><span class="p">(</span><span class="n">all_objects</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="n">entries</span> <span class="o">=</span> <span class="n">_read_coverage_entries</span><span class="p">(</span><span class="n">coverage_reports</span><span class="p">)</span>
+
+    <span class="n">_annotate_coverage</span><span class="p">(</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">entries</span><span class="p">)</span>
+
+    <span class="n">OUTPUTTERS</span><span class="p">[</span><span class="n">output_format</span><span class="p">](</span><span class="n">all_objects</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mi">0</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Glean Parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pings-yaml.html"><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2021, Michael Droettboom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

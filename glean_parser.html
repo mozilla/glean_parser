@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 2.3.1.dev1+g64a9726 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 2.3.1.dev3+g7cfa4d6 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,6 +36,34 @@
 <h1>glean_parser package<a class="headerlink" href="#glean-parser-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-glean_parser.coverage">
+<span id="glean-parser-coverage-module"></span><h2>glean_parser.coverage module<a class="headerlink" href="#module-glean_parser.coverage" title="Permalink to this headline">¶</a></h2>
+<p>Produce coverage reports from the raw information produced by the
+<cite>GLEAN_TEST_COVERAGE</cite> feature.</p>
+<dl class="py function">
+<dt id="glean_parser.coverage.coverage">
+<code class="sig-prename descclassname"><span class="pre">glean_parser.coverage.</span></code><code class="sig-name descname"><span class="pre">coverage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">coverage_reports:</span> <span class="pre">List[pathlib.Path],</span> <span class="pre">metrics_files:</span> <span class="pre">Sequence[pathlib.Path],</span> <span class="pre">output_format:</span> <span class="pre">str,</span> <span class="pre">output_file:</span> <span class="pre">pathlib.Path,</span> <span class="pre">parser_config:</span> <span class="pre">Optional[Dict[str,</span> <span class="pre">Any]]</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">file=&lt;_io.TextIOWrapper</span> <span class="pre">name='&lt;stderr&gt;'</span> <span class="pre">mode='w'</span> <span class="pre">encoding='UTF-8'&gt;</span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/glean_parser/coverage.html#coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.coverage.coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commandline helper for coverage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coverage_reports</strong> – List of coverage report files, output from the
+Glean SDK when the <cite>GLEAN_TEST_COVERAGE</cite> environment variable is set.</p></li>
+<li><p><strong>metrics_files</strong> – List of Path objects to load metrics from.</p></li>
+<li><p><strong>output_format</strong> – The coverage output format to produce. Must be one of
+<cite>OUTPUTTERS.keys()</cite>.</p></li>
+<li><p><strong>output_file</strong> – Path to output coverage report to.</p></li>
+<li><p><strong>parser_config</strong> – Parser configuration object, passed to
+<cite>parser.parse_objects</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Non-zero if there were any errors.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-glean_parser.csharp">
 <span id="glean-parser-csharp-module"></span><h2>glean_parser.csharp module<a class="headerlink" href="#module-glean_parser.csharp" title="Permalink to this headline">¶</a></h2>
