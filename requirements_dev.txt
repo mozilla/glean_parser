@@ -10,6 +10,6 @@ pytest==6.2.2
 recommonmark==0.7.1
 Sphinx==3.5.1
 twine==3.3.0
-watchdog==2.0.0
+watchdog==2.0.1
 wheel
 yamllint==1.25.0
