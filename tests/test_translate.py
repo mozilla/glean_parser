@@ -190,3 +190,39 @@ def test_getting_line_number():
 
     assert pings["custom-ping"].defined_in["line"] == 7
     assert metrics["core_ping"]["seq"].defined_in["line"] == 27
+
+
+def test_rates(tmpdir):
+    def external_translator(all_objects, output_dir, options):
+        assert (
+            all_objects["testing.rates"]["has_external_denominator"].type == "rate"
+        )  # Hasn't yet been transformed
+
+        translate.transform_metrics(all_objects)
+
+        category = all_objects["testing.rates"]
+        assert category["has_internal_denominator"].type == "rate"
+        assert category["has_external_denominator"].type == "numerator"
+        assert (
+            category["has_external_denominator"].denominator_metric
+            == "testing.rates.the_denominator"
+        )
+        assert category["also_has_external_denominator"].type == "numerator"
+        assert (
+            category["also_has_external_denominator"].denominator_metric
+            == "testing.rates.the_denominator"
+        )
+        assert category["the_denominator"].type == "denominator"
+        assert category["the_denominator"].numerators == [
+            "testing.rates.has_external_denominator",
+            "testing.rates.also_has_external_denominator",
+        ]
+
+    translate.translate_metrics(
+        ROOT / "data" / "rate.yaml",
+        Path(str(tmpdir)),
+        external_translator,
+        [],
+        options={"foo": "bar"},
+        parser_config={"allow_reserved": True},
+    )

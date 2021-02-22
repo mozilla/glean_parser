@@ -364,4 +364,12 @@ class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"
 
 
+class Rate(Metric):
+    typename = "rate"
+
+    def __init__(self, *args, **kwargs):
+        self.denominator_metric = kwargs.pop("denominator_metric", None)
+        super().__init__(*args, **kwargs)
+
+
 ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping]]]

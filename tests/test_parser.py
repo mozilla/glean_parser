@@ -647,3 +647,29 @@ def test_telemetry_mirror():
         all_metrics.value["telemetry.mirrored"]["parses_fine"].telemetry_mirror
         == "telemetry.test.string_kind"
     )
+
+
+def test_rates():
+    """
+    Ensure that `rate` metrics parse properly.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "rate.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    category = all_metrics.value["testing.rates"]
+    assert category["has_internal_denominator"].type == "rate"
+    assert (
+        category["has_external_denominator"].type == "rate"
+    )  # Hasn't been transformed to "numerator" yet
+    assert (
+        category["also_has_external_denominator"].type == "rate"
+    )  # Hasn't been transformed to "numerator" yet
+    assert (
+        category["the_denominator"].type == "counter"
+    )  # Hasn't been transformed to "denominator" yet

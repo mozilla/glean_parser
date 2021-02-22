@@ -130,6 +130,7 @@ definitions:
           - labeled_boolean
           - labeled_string
           - labeled_counter
+          - rate
 
       description:
         title: Description
@@ -479,6 +480,18 @@ definitions:
         type: string
         minLength: 6
 
+      denominator_metric:
+        title: The name of the denominator for this `rate` metric.
+        description: |
+          Denominators for `rate` metrics may be private and internal
+          or shared and external.
+          External denominators are `counter` metrics.
+          This field names the `counter` metric that serves as this
+          `rate` metric's external denominator.
+          The named denominator must be defined in this component
+          so glean_parser can find it.
+        type: string
+
     required:
       - type
       - bugs
@@ -605,3 +618,14 @@ additionalProperties:
             - decrypted_name
           description: |
             `jwe` is missing required parameter `decrypted_name`.
+      - if:
+          not:
+            properties:
+              type:
+                const: rate
+        then:
+          properties:
+            denominator_metric:
+              description: |
+                `denominator_metric` is only allowed for `rate`.
+              maxLength: 0
