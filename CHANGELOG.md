@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add parser and object model support for `rate` metric type. ([bug 1645166](https://bugzilla.mozilla.org/show_bug.cgi?id=1645166))
+- Add parser and object model support for telemetry_mirror property. ([bug 1685406](https://bugzilla.mozilla.org/show_bug.cgi?id=1685406))
+
 ## 2.4.0 (2021-02-18)
 
 - **Experimental:** `glean_parser` has a new subcommand `coverage` to convert raw coverage reports

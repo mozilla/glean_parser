@@ -422,6 +422,7 @@ extra_metric_args = [
     "range_max",
     "range_min",
     "histogram_type",
+    "numerators",
 ]
 
 
