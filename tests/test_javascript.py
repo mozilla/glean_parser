@@ -14,7 +14,7 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
-def test_parser(tmpdir):
+def test_parser_js(tmpdir):
     """Test translating metrics to Javascript files."""
     tmpdir = Path(str(tmpdir))
 
@@ -53,7 +53,7 @@ def test_parser(tmpdir):
         assert 'category: ""' in content
 
 
-def test_parser(tmpdir):
+def test_parser_ts(tmpdir):
     """Test translating metrics to Typescript files."""
     tmpdir = Path(str(tmpdir))
 

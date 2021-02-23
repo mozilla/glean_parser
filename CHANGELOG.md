@@ -4,6 +4,11 @@
 
 - Add parser and object model support for `rate` metric type. ([bug 1645166](https://bugzilla.mozilla.org/show_bug.cgi?id=1645166))
 - Add parser and object model support for telemetry_mirror property. ([bug 1685406](https://bugzilla.mozilla.org/show_bug.cgi?id=1685406))
+- Update the Javascript template to match Glean.js expectations. Glean.js has:
+  - Updated it's export strategy. It will now export each metric type as an independent module;
+  - Dropped support for non ES6 modules.
+- Add support for generating Typescript code.
+  - The templates added generate metrics and pings code for Glean.js.
 
 ## 2.4.0 (2021-02-18)
 

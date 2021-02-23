@@ -43,6 +43,7 @@ def class_name(obj_type: str) -> str:
 
     return class_name
 
+
 def import_path(obj_type: str) -> str:
     """
     Returns the import path of the given object inside the @mozilla/glean package.
@@ -50,7 +51,7 @@ def import_path(obj_type: str) -> str:
     if obj_type == "ping":
         import_path = "ping"
     else:
-        import_path =  "metrics/" + util.camelize(obj_type)
+        import_path = "metrics/" + util.camelize(obj_type)
 
     return import_path
 
@@ -66,7 +67,10 @@ def args(obj_type: str) -> Dict[str, object]:
 
 
 def output(
-    lang: str, objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+    lang: str,
+    objs: metrics.ObjectTree,
+    output_dir: Path,
+    options: Optional[Dict[str, Any]] = None,
 ) -> None:
     """
     Given a tree of objects, output Javascript or Typescript code to `output_dir`.
@@ -105,7 +109,7 @@ def output(
         filename = util.camelize(category_key) + extension
         filepath = output_dir / filename
 
-        types = set([util.camelize(obj.type) for obj in category_val.values()]);
+        types = set([util.camelize(obj.type) for obj in category_val.values()])
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
@@ -115,7 +119,7 @@ def output(
                     namespace=namespace,
                     glean_namespace=glean_namespace,
                     types=types,
-                    lang=lang
+                    lang=lang,
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
