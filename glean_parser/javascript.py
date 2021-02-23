@@ -41,7 +41,19 @@ def class_name(obj_type: str) -> str:
     else:
         class_name = util.Camelize(obj_type) + "MetricType"
 
-    return "Glean._private." + class_name
+    return class_name
+
+
+def import_path(obj_type: str) -> str:
+    """
+    Returns the import path of the given object inside the @mozilla/glean package.
+    """
+    if obj_type == "ping":
+        import_path = "ping"
+    else:
+        import_path = "metrics/" + util.camelize(obj_type)
+
+    return import_path
 
 
 def args(obj_type: str) -> Dict[str, object]:
@@ -54,12 +66,16 @@ def args(obj_type: str) -> Dict[str, object]:
     return {"common": util.common_metric_args, "extra": util.extra_metric_args}
 
 
-def output_javascript(
-    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+def output(
+    lang: str,
+    objs: metrics.ObjectTree,
+    output_dir: Path,
+    options: Optional[Dict[str, Any]] = None,
 ) -> None:
     """
-    Given a tree of objects, output Javascript code to `output_dir`.
+    Given a tree of objects, output Javascript or Typescript code to `output_dir`.
 
+    :param lang: Either "javascript" or "typescript";
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
@@ -82,15 +98,18 @@ def output_javascript(
         "javascript.jinja2",
         filters=(
             ("class_name", class_name),
+            ("import_path", import_path),
             ("js", javascript_datatypes_filter),
             ("args", args),
         ),
     )
 
     for category_key, category_val in objs.items():
-        filename = util.camelize(category_key) + ".js"
+        extension = ".js" if lang == "javascript" else ".ts"
+        filename = util.camelize(category_key) + extension
         filepath = output_dir / filename
 
+        types = set([util.camelize(obj.type) for obj in category_val.values()])
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
@@ -99,7 +118,56 @@ def output_javascript(
                     extra_args=util.extra_args,
                     namespace=namespace,
                     glean_namespace=glean_namespace,
+                    types=types,
+                    lang=lang,
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
             fd.write("\n")
+
+
+def output_javascript(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Javascript code to `output_dir`.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary, with the following optional keys:
+
+        - `namespace`: The identifier of the global variable to assign to.
+                       This will only have and effect for Qt and static web sites.
+                       Default is `gleanAssets`.
+        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
+                             options are `webext` or `qt`. Default is `webext`.
+    """
+
+    output("javascript", objs, output_dir, options)
+
+
+def output_typescript(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Typescript code to `output_dir`.
+
+    # Note
+
+    The only difference between the typescript and javascript templates,
+    currently is the file extension.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary, with the following optional keys:
+
+        - `namespace`: The identifier of the global variable to assign to.
+                       This will only have and effect for Qt and static web sites.
+                       Default is `gleanAssets`.
+        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
+                             options are `webext` or `qt`. Default is `webext`.
+    """
+
+    output("typescript", objs, output_dir, options)
