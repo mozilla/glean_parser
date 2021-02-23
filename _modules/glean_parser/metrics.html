@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.metrics &#8212; Glean Parser 2.4.1.dev2+gc9e4507 documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 2.4.1.dev3+g782ec70 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -395,6 +395,14 @@
 
 <div class="viewcode-block" id="LabeledCounter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledCounter">[docs]</a><span class="k">class</span> <span class="nc">LabeledCounter</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_counter&quot;</span></div>
+
+
+<div class="viewcode-block" id="Rate"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Rate">[docs]</a><span class="k">class</span> <span class="nc">Rate</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">denominator_metric</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;denominator_metric&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <span class="n">ObjectTree</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Metric</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">]]]</span>

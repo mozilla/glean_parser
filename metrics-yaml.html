@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metrics.yaml file &#8212; Glean Parser 2.4.1.dev2+gc9e4507 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 2.4.1.dev3+g782ec70 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -352,6 +352,7 @@ entirety below:</p>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_boolean</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_string</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_counter</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rate</span>
 
       <span class="nt">description</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Description</span>
@@ -701,6 +702,18 @@ entirety below:</p>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
         <span class="nt">minLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6</span>
 
+      <span class="nt">denominator_metric</span><span class="p">:</span>
+        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The name of the denominator for this `rate` metric.</span>
+        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+          <span class="no">Denominators for `rate` metrics may be private and internal</span>
+          <span class="no">or shared and external.</span>
+          <span class="no">External denominators are `counter` metrics.</span>
+          <span class="no">This field names the `counter` metric that serves as this</span>
+          <span class="no">`rate` metric&#39;s external denominator.</span>
+          <span class="no">The named denominator must be defined in this component</span>
+          <span class="no">so glean_parser can find it.</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+
     <span class="nt">required</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">type</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bugs</span>
@@ -827,6 +840,17 @@ entirety below:</p>
             <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">decrypted_name</span>
           <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
             <span class="no">`jwe` is missing required parameter `decrypted_name`.</span>
+      <span class="p p-Indicator">-</span> <span class="nt">if</span><span class="p">:</span>
+          <span class="nt">not</span><span class="p">:</span>
+            <span class="nt">properties</span><span class="p">:</span>
+              <span class="nt">type</span><span class="p">:</span>
+                <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rate</span>
+        <span class="nt">then</span><span class="p">:</span>
+          <span class="nt">properties</span><span class="p">:</span>
+            <span class="nt">denominator_metric</span><span class="p">:</span>
+              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+                <span class="no">`denominator_metric` is only allowed for `rate`.</span>
+              <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
 </pre></div>
 </div>
 </div>
