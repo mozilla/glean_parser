@@ -65,12 +65,13 @@ def args(obj_type: str) -> Dict[str, object]:
     return {"common": util.common_metric_args, "extra": util.extra_metric_args}
 
 
-def output_javascript(
-    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+def output(
+    lang: str, objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
 ) -> None:
     """
-    Given a tree of objects, output Javascript code to `output_dir`.
+    Given a tree of objects, output Javascript or Typescript code to `output_dir`.
 
+    :param lang: Either "javascript" or "typescript";
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
@@ -113,8 +114,56 @@ def output_javascript(
                     extra_args=util.extra_args,
                     namespace=namespace,
                     glean_namespace=glean_namespace,
-                    types=types
+                    types=types,
+                    lang=lang
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
             fd.write("\n")
+
+
+def output_javascript(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Javascript code to `output_dir`.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary, with the following optional keys:
+
+        - `namespace`: The identifier of the global variable to assign to.
+                       This will only have and effect for Qt and static web sites.
+                       Default is `gleanAssets`.
+        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
+                             options are `webext` or `qt`. Default is `webext`.
+    """
+
+    output("javascript", objs, output_dir, options)
+
+
+def output_typescript(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Typescript code to `output_dir`.
+
+    # Note
+
+    The only difference between the typescript and javascript templates,
+    currently is the file extension.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary, with the following optional keys:
+
+        - `namespace`: The identifier of the global variable to assign to.
+                       This will only have and effect for Qt and static web sites.
+                       Default is `gleanAssets`.
+        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
+                             options are `webext` or `qt`. Default is `webext`.
+    """
+
+    output("typescript", objs, output_dir, options)

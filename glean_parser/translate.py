@@ -54,6 +54,7 @@ class Outputter:
 OUTPUTTERS = {
     "csharp": Outputter(csharp.output_csharp, ["*.cs"]),
     "javascript": Outputter(javascript.output_javascript, []),
+    "typescript": Outputter(javascript.output_typescript, []),
     "kotlin": Outputter(kotlin.output_kotlin, ["*.kt"]),
     "markdown": Outputter(markdown.output_markdown, []),
     "swift": Outputter(swift.output_swift, ["*.swift"]),

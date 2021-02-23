@@ -17,6 +17,10 @@ new {{ obj.type|class_name }}({
 {% for type in types %}
 import {{ type|class_name }} from "@mozilla/glean/{{ glean_namespace }}/private/{{ type|import_path }}";
 {% endfor %}
+{% if lang == "javascript" %}
+
+"use strict"
+{% endif %}
 
 {% for obj in objs.values() %}
 /**

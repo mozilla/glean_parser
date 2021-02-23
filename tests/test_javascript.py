@@ -39,14 +39,56 @@ def test_parser(tmpdir):
     # Make sure descriptions made it in
     with (tmpdir / "corePing.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
+        assert "use strict" in content
         assert "True if the user has set Firefox as the default browser." in content
 
     with (tmpdir / "telemetry.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
+        assert "use strict" in content
         assert "جمع 搜集" in content
 
     with (tmpdir / "gleanInternalMetrics.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
+        assert "use strict" in content
+        assert 'category: ""' in content
+
+
+def test_parser(tmpdir):
+    """Test translating metrics to Typescript files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "typescript",
+        tmpdir,
+        None,
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        [
+            "corePing.ts",
+            "telemetry.ts",
+            "environment.ts",
+            "dottedCategory.ts",
+            "gleanInternalMetrics.ts",
+        ]
+    )
+
+    # Make sure descriptions made it in
+    with (tmpdir / "corePing.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "use strict" not in content
+        assert "True if the user has set Firefox as the default browser." in content
+
+    with (tmpdir / "telemetry.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "use strict" not in content
+        assert "جمع 搜集" in content
+
+    with (tmpdir / "gleanInternalMetrics.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "use strict" not in content
         assert 'category: ""' in content
 
 
