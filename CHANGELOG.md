@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.5.0 (2021-02-23)
+
 - Add parser and object model support for `rate` metric type. ([bug 1645166](https://bugzilla.mozilla.org/show_bug.cgi?id=1645166))
 - Add parser and object model support for telemetry_mirror property. ([bug 1685406](https://bugzilla.mozilla.org/show_bug.cgi?id=1685406))
 - Update the Javascript template to match Glean.js expectations. ([bug 1693516](https://bugzilla.mozilla.org/show_bug.cgi?id=1693516))
