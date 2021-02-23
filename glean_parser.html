@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 2.4.1.dev3+g782ec70 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 2.4.1.dev4+ga74a6c1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -136,15 +136,85 @@ code.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt id="glean_parser.javascript.import_path">
+<code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">import_path</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/glean_parser/javascript.html#import_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.import_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the import path of the given object inside the &#64;mozilla/glean package.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="glean_parser.javascript.javascript_datatypes_filter">
 <code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">javascript_datatypes_filter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/glean_parser/javascript.html#javascript_datatypes_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.javascript_datatypes_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Jinja2 filter that renders Javascript literals.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="glean_parser.javascript.output">
+<code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">output</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">glean_parser.metrics.Metric</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">glean_parser.pings.Ping</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/glean_parser/javascript.html#output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Javascript or Typescript code to <cite>output_dir</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lang</strong> – Either “javascript” or “typescript”;</p></li>
+<li><p><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</p></li>
+<li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
+<li><p><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
+<ul>
+<li><dl class="simple">
+<dt><cite>namespace</cite>: The identifier of the global variable to assign to.</dt><dd><p>This will only have and effect for Qt and static web sites.
+Default is <cite>gleanAssets</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>glean_namespace</cite>: Which version of the <cite>&#64;mozilla/glean</cite> package to import,</dt><dd><p>options are <cite>webext</cite> or <cite>qt</cite>. Default is <cite>webext</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="glean_parser.javascript.output_javascript">
 <code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">output_javascript</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">glean_parser.metrics.Metric</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">glean_parser.pings.Ping</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/glean_parser/javascript.html#output_javascript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.output_javascript" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a tree of objects, output Javascript code to <cite>output_dir</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</p></li>
+<li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
+<li><p><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
+<ul>
+<li><dl class="simple">
+<dt><cite>namespace</cite>: The identifier of the global variable to assign to.</dt><dd><p>This will only have and effect for Qt and static web sites.
+Default is <cite>gleanAssets</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>glean_namespace</cite>: Which version of the <cite>&#64;mozilla/glean</cite> package to import,</dt><dd><p>options are <cite>webext</cite> or <cite>qt</cite>. Default is <cite>webext</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="glean_parser.javascript.output_typescript">
+<code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">output_typescript</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">glean_parser.metrics.Metric</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">glean_parser.pings.Ping</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="reference internal" href="_modules/glean_parser/javascript.html#output_typescript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.output_typescript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Typescript code to <cite>output_dir</cite>.</p>
+<p># Note</p>
+<p>The only difference between the typescript and javascript templates,
+currently is the file extension.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

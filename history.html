@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Changelog &#8212; Glean Parser 2.4.1.dev3+g782ec70 documentation</title>
+    <title>Changelog &#8212; Glean Parser 2.4.1.dev4+ga74a6c1 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -38,6 +38,17 @@
 <ul class="simple">
 <li><p>Add parser and object model support for <code class="docutils literal notranslate"><span class="pre">rate</span></code> metric type. (<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1645166">bug 1645166</a>)</p></li>
 <li><p>Add parser and object model support for telemetry_mirror property. (<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1685406">bug 1685406</a>)</p></li>
+<li><p>Update the Javascript template to match Glean.js expectations. (<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1693516">bug 1693516</a>)</p>
+<ul>
+<li><p>Glean.js has updated it’s export strategy. It will now export each metric type as an independent module;</p></li>
+<li><p>Glean.js has dropped support for non ES6 modules.</p></li>
+</ul>
+</li>
+<li><p>Add support for generating Typescript code. (<a class="reference external" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1692157">bug 1692157</a>)</p>
+<ul>
+<li><p>The templates added generate metrics and pings code for Glean.js.</p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="id1">
