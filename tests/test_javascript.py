@@ -87,7 +87,7 @@ def test_metric_class_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    assert javascript.class_name(event.type) == "Glean._private.EventMetricType"
+    assert javascript.class_name(event.type) == "EventMetricType"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -98,7 +98,7 @@ def test_metric_class_name():
         description="description...",
         expires="never",
     )
-    assert javascript.class_name(boolean.type) == "Glean._private.BooleanMetricType"
+    assert javascript.class_name(boolean.type) == "BooleanMetricType"
 
     ping = pings.Ping(
         name="custom",
@@ -107,7 +107,42 @@ def test_metric_class_name():
         bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert javascript.class_name(ping.type) == "Glean._private.PingType"
+    assert javascript.class_name(ping.type) == "PingType"
+
+
+def test_import_path():
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        extra_keys={"my_extra": {"description": "an extra"}},
+    )
+
+    assert javascript.import_path(event.type) == "metrics/event"
+
+    boolean = metrics.Boolean(
+        type="boolean",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+    )
+    assert javascript.import_path(boolean.type) == "metrics/boolean"
+
+    ping = pings.Ping(
+        name="custom",
+        description="description...",
+        include_client_id=True,
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@nowhere.com"],
+    )
+    assert javascript.import_path(ping.type) == "ping"
 
 
 # TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
@@ -189,5 +224,5 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
     with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'new Glean._private.EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, }, ["alice", "bob", "charlie"]),'  # noqa
+        expected = 'export const example = new EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, }, ["alice", "bob", "charlie"]);'  # noqa
         assert expected in content
