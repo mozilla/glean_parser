@@ -318,7 +318,7 @@ definitions:
             uniqueItems: true
             items:
               $ref: "#/definitions/labeled_metric_id"
-            maxItems: 16
+            maxItems: 100
           - type: "null"
 
       extra_keys:
