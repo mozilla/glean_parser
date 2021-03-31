@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Raise limit on number of statically-defined lables to 100. ([bug 1702263](https://bugzilla.mozilla.org/show_bug.cgi?id=1702263))
+
 ## 2.5.0 (2021-02-23)
 
 - Add parser and object model support for `rate` metric type. ([bug 1645166](https://bugzilla.mozilla.org/show_bug.cgi?id=1645166))
