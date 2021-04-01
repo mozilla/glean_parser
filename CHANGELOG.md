@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Raise limit on number of statically-defined lables to 100. ([bug 1702263](https://bugzilla.mozilla.org/show_bug.cgi?id=1702263))
+- Add option to add extra introductory text to generated markdown ([#298](https://github.com/mozilla/glean_parser/pull/298))
 
 ## 2.5.0 (2021-02-23)
 
