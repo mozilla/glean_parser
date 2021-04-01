@@ -237,6 +237,7 @@ def output_markdown(
         )
 
     project_title = options.get("project_title", "this project")
+    introduction_extra = options.get("introduction_extra")
 
     template = util.get_jinja2_template(
         "markdown.jinja2",
@@ -264,7 +265,9 @@ def output_markdown(
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
-                metrics_by_pings=metrics_by_pings, project_title=project_title
+                metrics_by_pings=metrics_by_pings,
+                project_title=project_title,
+                introduction_extra=introduction_extra,
             )
         )
         # Jinja2 squashes the final newline, so we explicitly add it
