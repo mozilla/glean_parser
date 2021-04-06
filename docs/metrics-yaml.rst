@@ -1,56 +1,7 @@
 ``metrics.yaml`` file
 =====================
 
-The ``metrics.yaml`` file defines what metrics and events your application will
-collect.
-
-The top-level of the file must contain the following key-value pair to indicate
-that it is a Glean ``metrics.yaml`` file::
-
-   $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
-
-The other keys at the top level of the file are category names. Category names
-must be in ``snake_case``, but may also contain ``.`` to indicate *ad hoc*
-subcategories. Category names have a maximum of 40 characters.
-
-Within each category, the individual metrics are defined. The key is the name of
-the metric (``snake_case`` with a maximum of 30 characters), and each value is
-an object with the following parameters described below.
-
-``metrics.yaml`` files must be encoded in UTF-8.
-
-Metric parameters
------------------
-
-.. metric_parameter:: type
-
-.. metric_parameter:: description
-
-.. metric_parameter:: notification_emails
-
-.. metric_parameter:: bugs
-
-.. metric_parameter:: data_reviews
-
-.. metric_parameter:: lifetime
-
-.. metric_parameter:: send_in_pings
-
-.. metric_parameter:: disabled
-
-.. metric_parameter:: expires
-
-.. metric_parameter:: version
-
-.. metric_parameter:: time_unit
-
-.. metric_parameter:: labels
-
-.. metric_parameter:: extra_keys
-
-.. metric_parameter:: gecko_datapoint
-
-.. metric_parameter:: no_lint
+Documentation for the ``metrics.yaml`` file has moved to `metrics parameters in the Glean user documentation <https://mozilla.github.io/glean/book/user/metrics/metric-parameters.html>`_.
 
 JSON Schema
 -----------
