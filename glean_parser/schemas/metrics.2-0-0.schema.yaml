@@ -32,7 +32,7 @@ definitions:
   # were also supported.
   kebab_case:
     type: string
-    pattern: "^[a-z][a-z0-9-]{0,29}$|^glean_.*$"
+    pattern: "^[a-z][a-z0-9-]{0,29}$"
 
   long_id:
     allOf:
@@ -177,7 +177,12 @@ definitions:
           in any ping.)
         type: array
         items:
-          $ref: "#/definitions/kebab_case"
+          anyOf:
+            - $ref: "#/definitions/kebab_case"
+            # Allow "special" ping names that start with "glean_" used
+            # internally by the Glean SDK
+            - type: string
+              pattern: "^glean_.*$"
         default:
           - default
 
