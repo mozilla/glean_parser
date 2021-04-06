@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev11+g6b1de41 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev12+gdee1140 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -400,7 +400,12 @@ entirety below:</p>
           <span class="no">in any ping.)</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
         <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/kebab_case&quot;</span>
+          <span class="nt">anyOf</span><span class="p">:</span>
+            <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/kebab_case&quot;</span>
+            <span class="c1"># Allow &quot;special&quot; ping names that start with &quot;glean_&quot; used</span>
+            <span class="c1"># internally by the Glean SDK</span>
+            <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+              <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^glean_.*$&quot;</span>
         <span class="nt">default</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
 
