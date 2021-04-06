@@ -189,7 +189,7 @@ def test_getting_line_number():
     metrics = load_yaml_or_json(ROOT / "data" / "core.yaml")
 
     assert pings["custom-ping"].defined_in["line"] == 7
-    assert metrics["core_ping"]["seq"].defined_in["line"] == 27
+    assert metrics["core_ping"]["seq"].defined_in["line"] == 28
 
 
 def test_rates(tmpdir):
