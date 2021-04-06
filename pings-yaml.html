@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pings.yaml file &#8212; Glean Parser 2.5.1.dev9+g8522c49 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>pings.yaml file &#8212; Glean Parser 2.5.1.dev10+g2690c38 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="pings-yaml-file">
+  <section id="pings-yaml-file">
 <h1><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file<a class="headerlink" href="#pings-yaml-file" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file defines what pings your application will collect.</p>
 <p>The top-level of the file must contain the following key-value pair to indicate
@@ -43,33 +44,33 @@ that it is a Glean <code class="docutils literal notranslate"><span class="pre">
 <p>The other keys at the top level of the file are ping names.
 Ping names must be in <code class="docutils literal notranslate"><span class="pre">kebab-case</span></code>.
 Ping names have a maximum of 30 characters.</p>
-<div class="section" id="ping-parameters">
+<section id="ping-parameters">
 <h2>Ping parameters<a class="headerlink" href="#ping-parameters" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="description">
+<section id="description">
 <span id="id1"></span><h3>description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A textual description of the purpose of this ping and what it contains.</p>
 <p>Descriptions may contain <a class="reference external" href="https://www.markdownguide.org/basic-syntax/">markdown
 syntax</a>.</p>
-</div>
-<div class="section" id="include-client-id">
+</section>
+<section id="include-client-id">
 <span id="id2"></span><h3>include_client_id<a class="headerlink" href="#include-client-id" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>When <code class="docutils literal notranslate"><span class="pre">true</span></code>, include the <code class="docutils literal notranslate"><span class="pre">client_id</span></code> value in the ping.</p>
-</div>
-<div class="section" id="send-if-empty">
+</section>
+<section id="send-if-empty">
 <span id="id3"></span><h3>send_if_empty<a class="headerlink" href="#send-if-empty" title="Permalink to this headline">¶</a></h3>
 <p>When <code class="docutils literal notranslate"><span class="pre">false</span></code> a ping is sent only if it contains data (the default).
 When <code class="docutils literal notranslate"><span class="pre">true</span></code> a ping is sent even if it contains no data.</p>
-</div>
-<div class="section" id="notification-emails">
+</section>
+<section id="notification-emails">
 <span id="id4"></span><h3>notification_emails<a class="headerlink" href="#notification-emails" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of email addresses to notify for important events with the
 ping or when people with context or ownership for the ping need to
 be contacted.</p>
-</div>
-<div class="section" id="bugs">
+</section>
+<section id="bugs">
 <span id="id5"></span><h3>bugs<a class="headerlink" href="#bugs" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of bugs (e.g. Bugzilla and Github) that are relevant to this
@@ -77,21 +78,21 @@ ping, e.g., tracking its original implementation or later changes to
 it.</p>
 <p>It must be a URI to a bug page in a tracker.</p>
 <p>Prior to version 2.0.0 of the schema, bugs could also be integers.</p>
-</div>
-<div class="section" id="data-reviews">
+</section>
+<section id="data-reviews">
 <span id="id6"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of URIs to any data collection reviews relevant to the ping.</p>
-</div>
-<div class="section" id="reasons">
+</section>
+<section id="reasons">
 <span id="id7"></span><h3>reasons<a class="headerlink" href="#reasons" title="Permalink to this headline">¶</a></h3>
 <p>A list of reasons that the ping might be triggered. Sent in the ping’s
 <code class="docutils literal notranslate"><span class="pre">ping_info.reason</span></code> field.</p>
 <p>Specified as a mapping from reason codes (which are short strings), to
 a textual description of the reason.</p>
-</div>
-</div>
-<div class="section" id="json-schema">
+</section>
+</section>
+<section id="json-schema">
 <h2>JSON Schema<a class="headerlink" href="#json-schema" title="Permalink to this headline">¶</a></h2>
 <p>There is a formal schema for validating <code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> files, included in its
 entirety below:</p>
@@ -250,8 +251,8 @@ entirety below:</p>
   <span class="nt">additionalProperties</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -270,7 +271,7 @@ entirety below:</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Glean Parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>

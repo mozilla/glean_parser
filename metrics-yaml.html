@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev9+g8522c49 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev10+g2690c38 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -32,7 +33,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="metrics-yaml-file">
+  <section id="metrics-yaml-file">
 <h1><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file<a class="headerlink" href="#metrics-yaml-file" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file defines what metrics and events your application will
 collect.</p>
@@ -48,9 +49,9 @@ subcategories. Category names have a maximum of 40 characters.</p>
 the metric (<code class="docutils literal notranslate"><span class="pre">snake_case</span></code> with a maximum of 30 characters), and each value is
 an object with the following parameters described below.</p>
 <p><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files must be encoded in UTF-8.</p>
-<div class="section" id="metric-parameters">
+<section id="metric-parameters">
 <h2>Metric parameters<a class="headerlink" href="#metric-parameters" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="type">
+<section id="type">
 <span id="id1"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>Specifies the type of a metric, like “counter” or “event”. This
@@ -89,36 +90,36 @@ metric types include:</p>
 </div></blockquote>
 </li>
 </ul>
-</div>
-<div class="section" id="description">
+</section>
+<section id="description">
 <span id="id2"></span><h3>description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A textual description of what this metric does, what it means, and its
 edge cases or any other helpful information.</p>
 <p>Descriptions may contain <a class="reference external" href="https://www.markdownguide.org/basic-syntax/">markdown
 syntax</a>.</p>
-</div>
-<div class="section" id="notification-emails">
+</section>
+<section id="notification-emails">
 <span id="id3"></span><h3>notification_emails<a class="headerlink" href="#notification-emails" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of email addresses to notify for important events with the
 metric or when people with context or ownership for the metric need to
 be contacted.</p>
-</div>
-<div class="section" id="bugs">
+</section>
+<section id="bugs">
 <span id="id4"></span><h3>bugs<a class="headerlink" href="#bugs" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of bug URLs (e.g. Bugzilla and Github) that are relevant to
 this metric, e.g., tracking its original implementation or later
 changes to it.</p>
 <p>Prior to version 2.0.0 of the schema, bugs could also be integers.</p>
-</div>
-<div class="section" id="data-reviews">
+</section>
+<section id="data-reviews">
 <span id="id5"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>A list of URIs to any data collection reviews relevant to the metric.</p>
-</div>
-<div class="section" id="lifetime">
+</section>
+<section id="lifetime">
 <span id="id6"></span><h3>lifetime<a class="headerlink" href="#lifetime" title="Permalink to this headline">¶</a></h3>
 <p>Defines the lifetime of the metric. It must be one of the following
 values:</p>
@@ -130,8 +131,8 @@ profile and is never reset.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">application</span></code>: The metric contains a property that is related to the
 application, and is reset only at application restarts.</p></li>
 </ul>
-</div>
-<div class="section" id="send-in-pings">
+</section>
+<section id="send-in-pings">
 <span id="id7"></span><h3>send_in_pings<a class="headerlink" href="#send-in-pings" title="Permalink to this headline">¶</a></h3>
 <p>Which pings the metric should be sent on. If not specified, the metric
 is sent on the “default ping”, which is the <code class="docutils literal notranslate"><span class="pre">events</span></code> ping for events,
@@ -140,13 +141,13 @@ specify this.</p>
 <p>(There is an additional special value of <code class="docutils literal notranslate"><span class="pre">all-pings</span></code> for internal
 Glean metrics only that is used to indicate that a metric may appear
 in any ping.)</p>
-</div>
-<div class="section" id="disabled">
+</section>
+<section id="disabled">
 <span id="id8"></span><h3>disabled<a class="headerlink" href="#disabled" title="Permalink to this headline">¶</a></h3>
 <p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metric is disabled, and any metric collection on it
 will be silently ignored at runtime.</p>
-</div>
-<div class="section" id="expires">
+</section>
+<section id="expires">
 <span id="id9"></span><h3>expires<a class="headerlink" href="#expires" title="Permalink to this headline">¶</a></h3>
 <p><strong>Required.</strong></p>
 <p>By default it may be one of the following values:</p>
@@ -160,13 +161,13 @@ that the metric automatically “sunsets” after a period of time.</p></li>
 </ul>
 <p>The default may be overriden in certain applications by the
 <code class="docutils literal notranslate"><span class="pre">custom_validate_expires</span></code> and <code class="docutils literal notranslate"><span class="pre">custom_is_expired</span></code> configs.</p>
-</div>
-<div class="section" id="version">
+</section>
+<section id="version">
 <span id="id10"></span><h3>version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h3>
 <p>The version of the metric. A monotonically increasing value. If not
 provided, defaults to 0.</p>
-</div>
-<div class="section" id="time-unit">
+</section>
+<section id="time-unit">
 <span id="id11"></span><h3>time_unit<a class="headerlink" href="#time-unit" title="Permalink to this headline">¶</a></h3>
 <p>For timespans and datetimes, specifies the unit that the metric will
 be stored and displayed in. If not provided, it defaults to
@@ -184,8 +185,8 @@ If not provided, it defaults to “nanosecond”.</p>
 <li><p>millisecond: 1ms &lt;= x &lt;= ~19 years</p></li>
 </ul>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">timespan</span></code>, <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code> or <code class="docutils literal notranslate"><span class="pre">datetime</span></code>.</p>
-</div>
-<div class="section" id="labels">
+</section>
+<section id="labels">
 <span id="id12"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
 <p>A list of labels for a labeled metric.  If provided, the labels are
 enforced at run time, and recording to an unknown label is recorded
@@ -193,8 +194,8 @@ to the special label <code class="docutils literal notranslate"><span class="pre
 may be anything, but using too many unique labels will put some
 labels in the special label <code class="docutils literal notranslate"><span class="pre">__other__</span></code>.</p>
 <p>Valid with any of the labeled metric types.</p>
-</div>
-<div class="section" id="extra-keys">
+</section>
+<section id="extra-keys">
 <span id="id13"></span><h3>extra_keys<a class="headerlink" href="#extra-keys" title="Permalink to this headline">¶</a></h3>
 <p>The acceptable keys on the “extra” object sent with events. This is an
 object mapping the key to an object containing metadata about the key.
@@ -204,19 +205,19 @@ This metadata object has the following keys:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: <strong>Required.</strong> A description of the key.</p></li>
 </ul>
 <p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">event</span></code>.</p>
-</div>
-<div class="section" id="gecko-datapoint">
+</section>
+<section id="gecko-datapoint">
 <span id="id14"></span><h3>gecko_datapoint<a class="headerlink" href="#gecko-datapoint" title="Permalink to this headline">¶</a></h3>
 <p>This is a Gecko-specific property. It is the name of the Gecko metric
 to accumulate the data from, when using the Glean SDK in a product
 using GeckoView. See bug 1566356 for more context.</p>
-</div>
-<div class="section" id="no-lint">
+</section>
+<section id="no-lint">
 <span id="id15"></span><h3>no_lint<a class="headerlink" href="#no-lint" title="Permalink to this headline">¶</a></h3>
 <p>This parameter lists any lint checks to skip for this metric only.</p>
-</div>
-</div>
-<div class="section" id="json-schema">
+</section>
+</section>
+<section id="json-schema">
 <h2>JSON Schema<a class="headerlink" href="#json-schema" title="Permalink to this headline">¶</a></h2>
 <p>There is a formal schema for validating <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files, included in its
 entirety below:</p>
@@ -853,8 +854,8 @@ entirety below:</p>
               <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -873,7 +874,7 @@ entirety below:</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Glean Parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
