@@ -42,11 +42,27 @@ Metric parameters
 
 .. metric_parameter:: version
 
+.. metric_parameter:: data_sensitivity
+
 .. metric_parameter:: time_unit
+
+.. metric_parameter:: memory_unit
 
 .. metric_parameter:: labels
 
 .. metric_parameter:: extra_keys
+
+.. metric_parameter:: range_min
+
+.. metric_parameter:: range_max
+
+.. metric_parameter:: bucket_count
+
+.. metric_parameter:: histogram_type
+
+.. metric_parameter:: unit
+
+.. metric_parameter:: denominator_metric
 
 .. metric_parameter:: gecko_datapoint
 
