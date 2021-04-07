@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev12+gdee1140 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 2.5.1.dev13+g9ffcfda documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -35,188 +35,7 @@
             
   <section id="metrics-yaml-file">
 <h1><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file<a class="headerlink" href="#metrics-yaml-file" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file defines what metrics and events your application will
-collect.</p>
-<p>The top-level of the file must contain the following key-value pair to indicate
-that it is a Glean <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
-</pre></div>
-</div>
-<p>The other keys at the top level of the file are category names. Category names
-must be in <code class="docutils literal notranslate"><span class="pre">snake_case</span></code>, but may also contain <code class="docutils literal notranslate"><span class="pre">.</span></code> to indicate <em>ad hoc</em>
-subcategories. Category names have a maximum of 40 characters.</p>
-<p>Within each category, the individual metrics are defined. The key is the name of
-the metric (<code class="docutils literal notranslate"><span class="pre">snake_case</span></code> with a maximum of 30 characters), and each value is
-an object with the following parameters described below.</p>
-<p><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files must be encoded in UTF-8.</p>
-<section id="metric-parameters">
-<h2>Metric parameters<a class="headerlink" href="#metric-parameters" title="Permalink to this headline">¶</a></h2>
-<section id="type">
-<span id="id1"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>Specifies the type of a metric, like “counter” or “event”. This
-defines which operations are valid for the metric, how it is stored
-and how data analysis tooling displays it.</p>
-<p>The supported types are:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">event</span></code>: Record a specific event (with optional metadata).
-Additional properties: <code class="docutils literal notranslate"><span class="pre">extra_keys</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code>: A metric storing values of true or false.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code>: A metric storing Unicode string values.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">string_list</span></code>: a list of Unicode strings.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">counter</span></code>: A numeric value that can only be incremented.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">quantity</span></code>: A numeric value that is set directly.</p></li>
-<li><p><cite>timespan</cite>: Represents a time interval. Additional properties:
-<code class="docutils literal notranslate"><span class="pre">time_unit</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code>: Record the distribution of multiple
-timings. Additional properties: <code class="docutils literal notranslate"><span class="pre">time_unit</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">datetime</span></code>: A date/time value. Represented as an ISO datetime in
-UTC. Additional properties: <code class="docutils literal notranslate"><span class="pre">time_unit</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code>: Record a UUID v4.</p></li>
-<li><p><cite>jwe</cite>: Record a [JWE](<a class="reference external" href="https://tools.ietf.org/html/rfc7516">https://tools.ietf.org/html/rfc7516</a>) value.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">memory_distribution</span></code>: A histogram for recording memory usage
-values. Additional properties: <code class="docutils literal notranslate"><span class="pre">memory_unit</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">custom_distribution</span></code>: A histogram with a custom range and number
-of buckets. This metric type is for legacy support only and is
-only allowed for metrics coming from GeckoView. Additional
-properties: <code class="docutils literal notranslate"><span class="pre">range_min</span></code>, <code class="docutils literal notranslate"><span class="pre">range_max</span></code>, <code class="docutils literal notranslate"><span class="pre">bucket_count</span></code>,
-<code class="docutils literal notranslate"><span class="pre">histogram_type</span></code>.</p></li>
-<li><p>Additionally, labeled versions of many metric types are supported.
-These support the <a class="reference internal" href="#labels">labels</a> parameter, allowing multiple instances
-of the metric to be stored at a given set of labels. The labeled
-metric types include:</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">labeled_boolean</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_string</span></code>, <code class="docutils literal notranslate"><span class="pre">labeled_counter</span></code>.</p>
-</div></blockquote>
-</li>
-</ul>
-</section>
-<section id="description">
-<span id="id2"></span><h3>description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>A textual description of what this metric does, what it means, and its
-edge cases or any other helpful information.</p>
-<p>Descriptions may contain <a class="reference external" href="https://www.markdownguide.org/basic-syntax/">markdown
-syntax</a>.</p>
-</section>
-<section id="notification-emails">
-<span id="id3"></span><h3>notification_emails<a class="headerlink" href="#notification-emails" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>A list of email addresses to notify for important events with the
-metric or when people with context or ownership for the metric need to
-be contacted.</p>
-</section>
-<section id="bugs">
-<span id="id4"></span><h3>bugs<a class="headerlink" href="#bugs" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>A list of bug URLs (e.g. Bugzilla and Github) that are relevant to
-this metric, e.g., tracking its original implementation or later
-changes to it.</p>
-<p>Prior to version 2.0.0 of the schema, bugs could also be integers.</p>
-</section>
-<section id="data-reviews">
-<span id="id5"></span><h3>data_reviews<a class="headerlink" href="#data-reviews" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>A list of URIs to any data collection reviews relevant to the metric.</p>
-</section>
-<section id="lifetime">
-<span id="id6"></span><h3>lifetime<a class="headerlink" href="#lifetime" title="Permalink to this headline">¶</a></h3>
-<p>Defines the lifetime of the metric. It must be one of the following
-values:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ping</span></code> (default): The metric is reset each time it is sent in a
-ping.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: The metric contains a property that is part of the user’s
-profile and is never reset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">application</span></code>: The metric contains a property that is related to the
-application, and is reset only at application restarts.</p></li>
-</ul>
-</section>
-<section id="send-in-pings">
-<span id="id7"></span><h3>send_in_pings<a class="headerlink" href="#send-in-pings" title="Permalink to this headline">¶</a></h3>
-<p>Which pings the metric should be sent on. If not specified, the metric
-is sent on the “default ping”, which is the <code class="docutils literal notranslate"><span class="pre">events</span></code> ping for events,
-and the <code class="docutils literal notranslate"><span class="pre">metrics</span></code> ping for everything else. Most metrics don’t need to
-specify this.</p>
-<p>(There is an additional special value of <code class="docutils literal notranslate"><span class="pre">all-pings</span></code> for internal
-Glean metrics only that is used to indicate that a metric may appear
-in any ping.)</p>
-</section>
-<section id="disabled">
-<span id="id8"></span><h3>disabled<a class="headerlink" href="#disabled" title="Permalink to this headline">¶</a></h3>
-<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metric is disabled, and any metric collection on it
-will be silently ignored at runtime.</p>
-</section>
-<section id="expires">
-<span id="id9"></span><h3>expires<a class="headerlink" href="#expires" title="Permalink to this headline">¶</a></h3>
-<p><strong>Required.</strong></p>
-<p>By default it may be one of the following values:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&lt;build</span> <span class="pre">date&gt;</span></code>: An ISO date <code class="docutils literal notranslate"><span class="pre">yyyy-mm-dd</span></code> in UTC on which the
-metric expires. For example, <code class="docutils literal notranslate"><span class="pre">2019-03-13</span></code>. This date is checked at
-build time. Except in special cases, this form should be used so
-that the metric automatically “sunsets” after a period of time.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">never</span></code>: This metric never expires.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">expired</span></code>: This metric is manually expired.</p></li>
-</ul>
-<p>The default may be overriden in certain applications by the
-<code class="docutils literal notranslate"><span class="pre">custom_validate_expires</span></code> and <code class="docutils literal notranslate"><span class="pre">custom_is_expired</span></code> configs.</p>
-</section>
-<section id="version">
-<span id="id10"></span><h3>version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h3>
-<p>The version of the metric. A monotonically increasing value. If not
-provided, defaults to 0.</p>
-</section>
-<section id="time-unit">
-<span id="id11"></span><h3>time_unit<a class="headerlink" href="#time-unit" title="Permalink to this headline">¶</a></h3>
-<p>For timespans and datetimes, specifies the unit that the metric will
-be stored and displayed in. If not provided, it defaults to
-“millisecond”. Time values are sent to the backend as integers, so
-<a class="reference internal" href="#time-unit">time_unit</a> determines the maximum resolution at which timespans are
-recorded. Times are always truncated, not rounded, to the nearest time
-unit. For example, a measurement of 25 ns will be returned as 0 ms if
-<code class="docutils literal notranslate"><span class="pre">time_unit</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;millisecond&quot;</span></code>.</p>
-<p>For timing distributions, times are always recorded and sent in
-nanoseconds, but <code class="docutils literal notranslate"><span class="pre">time_unit</span></code> controls the minimum and maximum values.
-If not provided, it defaults to “nanosecond”.</p>
-<ul class="simple">
-<li><p>nanosecond: 1ns &lt;= x &lt;= 10 minutes</p></li>
-<li><p>microsecond: 1μs &lt;= x &lt;= ~6.94 days</p></li>
-<li><p>millisecond: 1ms &lt;= x &lt;= ~19 years</p></li>
-</ul>
-<p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">timespan</span></code>, <code class="docutils literal notranslate"><span class="pre">timing_distribution</span></code> or <code class="docutils literal notranslate"><span class="pre">datetime</span></code>.</p>
-</section>
-<section id="labels">
-<span id="id12"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
-<p>A list of labels for a labeled metric.  If provided, the labels are
-enforced at run time, and recording to an unknown label is recorded
-to the special label <code class="docutils literal notranslate"><span class="pre">__other__</span></code>.  If not provided, the labels
-may be anything, but using too many unique labels will put some
-labels in the special label <code class="docutils literal notranslate"><span class="pre">__other__</span></code>.</p>
-<p>Valid with any of the labeled metric types.</p>
-</section>
-<section id="extra-keys">
-<span id="id13"></span><h3>extra_keys<a class="headerlink" href="#extra-keys" title="Permalink to this headline">¶</a></h3>
-<p>The acceptable keys on the “extra” object sent with events. This is an
-object mapping the key to an object containing metadata about the key.
-A maximum of 10 extra keys is allowed.
-This metadata object has the following keys:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: <strong>Required.</strong> A description of the key.</p></li>
-</ul>
-<p>Valid when <a class="reference internal" href="#type">type</a> is <code class="docutils literal notranslate"><span class="pre">event</span></code>.</p>
-</section>
-<section id="gecko-datapoint">
-<span id="id14"></span><h3>gecko_datapoint<a class="headerlink" href="#gecko-datapoint" title="Permalink to this headline">¶</a></h3>
-<p>This is a Gecko-specific property. It is the name of the Gecko metric
-to accumulate the data from, when using the Glean SDK in a product
-using GeckoView. See bug 1566356 for more context.</p>
-</section>
-<section id="no-lint">
-<span id="id15"></span><h3>no_lint<a class="headerlink" href="#no-lint" title="Permalink to this headline">¶</a></h3>
-<p>This parameter lists any lint checks to skip for this metric only.</p>
-</section>
-</section>
+<p>Documentation for the <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file has moved to <a class="reference external" href="https://mozilla.github.io/glean/book/user/metric-parameters.html">metrics parameters in the Glean user documentation</a>.</p>
 <section id="json-schema">
 <h2>JSON Schema<a class="headerlink" href="#json-schema" title="Permalink to this headline">¶</a></h2>
 <p>There is a formal schema for validating <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files, included in its
@@ -327,6 +146,11 @@ entirety below:</p>
               <span class="no">only allowed for metrics coming from GeckoView. Additional</span>
               <span class="no">properties: `range_min`, `range_max`, `bucket_count`,</span>
               <span class="no">`histogram_type`.</span>
+
+            <span class="no">- `rate`: Used to record the rate something happens relative to some</span>
+              <span class="no">other thing. For example, the number of HTTP connections that</span>
+              <span class="no">experience an error relative to the number of total HTTP</span>
+              <span class="no">connections made.</span>
 
             <span class="no">- Additionally, labeled versions of many metric types are supported.</span>
               <span class="no">These support the `labels`_ parameter, allowing multiple instances</span>
@@ -884,7 +708,6 @@ entirety below:</p>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Glean Parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#metric-parameters">Metric parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#json-schema">JSON Schema</a></li>
 </ul>
 </li>
