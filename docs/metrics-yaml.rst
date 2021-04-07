@@ -1,7 +1,7 @@
 ``metrics.yaml`` file
 =====================
 
-Documentation for the ``metrics.yaml`` file has moved to `metrics parameters in the Glean user documentation <https://mozilla.github.io/glean/book/user/metrics/metric-parameters.html>`_.
+Documentation for the ``metrics.yaml`` file has moved to `metrics parameters in the Glean user documentation <https://mozilla.github.io/glean/book/user/metric-parameters.html>`_.
 
 JSON Schema
 -----------
