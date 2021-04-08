@@ -112,6 +112,13 @@ jobs:
             - test-start
             - test-python-version
 
+    build-310:
+        docker:
+            - image: circleci/python:3.10-rc
+        steps:
+            - test-start
+            - test-python-version
+
     docs-deploy:
         docker:
             - image: node:8.10.0
@@ -182,6 +189,10 @@ workflows:
                         tags:
                             only: /.*/
             - build-39:
+                    filters:
+                        tags:
+                            only: /.*/
+            - build-310:
                     filters:
                         tags:
                             only: /.*/
