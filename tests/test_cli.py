@@ -87,3 +87,21 @@ def test_translate_invalid_format(tmpdir):
     )
     assert result.exit_code == 2
     assert re.search("Invalid value for ['\"]--format['\"]", result.output)
+
+
+def test_reject_jwe(tmpdir):
+    """Test that the JWE type is rejected"""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            str(ROOT / "data" / "jwe.yaml"),
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+        ],
+    )
+    assert result.exit_code == 1
+    assert len(os.listdir(str(tmpdir))) == 0

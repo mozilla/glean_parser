@@ -94,8 +94,6 @@ definitions:
 
             - `uuid`: Record a UUID v4.
 
-            - `jwe`: Record a [JWE](https://tools.ietf.org/html/rfc7516) value.
-
             - `memory_distribution`: A histogram for recording memory usage
               values. Additional properties: `memory_unit`.
 
@@ -422,16 +420,6 @@ definitions:
         items:
           type: string
 
-      decrypted_name:
-        title: Decrypted name
-        description: |
-          Name of the column where to persist the decrypted value
-          stored in the JWE after processing.
-
-          Required when `type`_ is `jwe`.
-        type: string
-        pattern: "^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$"
-
       data_sensitivity:
         title: The level of data sensitivity
         description: |
@@ -625,9 +613,10 @@ additionalProperties:
               const: jwe
         then:
           required:
-            - decrypted_name
+            - jwe_support_was_removed
           description: |
-            `jwe` is missing required parameter `decrypted_name`.
+            JWE support was removed.
+            If you require this send an email to glean-team@mozilla.com.
       - if:
           not:
             properties:
