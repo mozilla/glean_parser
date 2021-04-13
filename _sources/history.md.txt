@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.0.0 (2021-04-13)
+
 - Raise limit on number of statically-defined lables to 100. ([bug 1702263](https://bugzilla.mozilla.org/show_bug.cgi?id=1702263))
 - BUGFIX: Version 2.0.0 of the schema now allows the "special" `glean_.*` ping names for Glean-internal use again.
 - Remove support for JWE metric types.
