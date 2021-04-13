@@ -1,0 +1,19 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+crypto:
+  secret:
+    type: jwe
+    lifetime: ping
+    description: |
+      A secret token.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1700991
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1700991
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
