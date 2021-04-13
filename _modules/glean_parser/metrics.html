@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.metrics &#8212; Glean Parser 2.5.1.dev18+g23835dd documentation</title>
+    <title>glean_parser.metrics &#8212; Glean Parser 2.5.1.dev19+g43ba0ed documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -358,8 +358,10 @@
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;jwe&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">decrypted_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;decrypted_name&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;JWE support was removed. &quot;</span>
+            <span class="s2">&quot;If you require this send an email to glean-team@mozilla.com.&quot;</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Labeled"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Labeled">[docs]</a><span class="k">class</span> <span class="nc">Labeled</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
