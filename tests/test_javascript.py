@@ -187,62 +187,55 @@ def test_import_path():
     assert javascript.import_path(ping.type) == "ping"
 
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_duplicate(tmpdir):
-#     """
-#     Test that there aren't duplicate imports when using a labeled and
-#     non-labeled version of the same metric.
+def test_duplicate(tmpdir):
+    """
+    Test that there aren't duplicate imports when using a labeled and
+    non-labeled version of the same metric.
 
-#     https://github.com/mozilla-mobile/android-components/issues/2793
-#     """
+    https://github.com/mozilla-mobile/android-components/issues/2793
+    """
 
-#     tmpdir = Path(str(tmpdir))
+    tmpdir = Path(str(tmpdir))
 
-#     translate.translate(
-#         ROOT / "data" / "duplicate_labeled.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"}
-#     )
+    translate.translate(
+        ROOT / "data" / "duplicate_labeled.yaml", "javascript", tmpdir, None
+    )
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
 
-#     with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         assert (
-#             content.count(
-#                 "import mozilla.components.service.glean.private.CounterMetricType"
-#             )
-#             == 1
-#         )
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert (
+            content.count(
+                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+            )
+            == 1
+        )
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_event_extra_keys_in_correct_order(tmpdir):
-#     """
-#     Assert that the extra keys appear in the parameter and the enumeration in
-#     the same order.
 
-#     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
-#     """
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
 
-#     tmpdir = Path(str(tmpdir))
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
 
-#     translate.translate(
-#         ROOT / "data" / "event_key_ordering.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"},
-#     )
+    tmpdir = Path(str(tmpdir))
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "javascript",
+        tmpdir,
+        None,
+    )
 
-#     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         content = " ".join(content.split())
-#         assert "exampleKeys { alice, bob, charlie }" in content
-#         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
+    assert set(x.name for x in tmpdir.iterdir()) == set(["event.js"])
+
+    with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert '["alice", "bob", "charlie"]' in content
 
 
 def test_arguments_are_generated_in_deterministic_order(tmpdir):
