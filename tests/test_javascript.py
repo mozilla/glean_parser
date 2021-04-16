@@ -198,10 +198,7 @@ def test_duplicate(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "duplicate_labeled.yaml",
-        "javascript",
-        tmpdir,
-        None
+        ROOT / "data" / "duplicate_labeled.yaml", "javascript", tmpdir, None
     )
 
     assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
@@ -210,10 +207,11 @@ def test_duplicate(tmpdir):
         content = fd.read()
         assert (
             content.count(
-                "import CounterMetricType from \"@mozilla/glean/webext/private/metrics/counter\";"
+                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
             )
             == 1
         )
+
 
 def test_event_extra_keys_in_correct_order(tmpdir):
     """

@@ -52,7 +52,6 @@ def class_name(obj_type: str) -> str:
             obj_type = obj_type[8:]
         class_name = util.Camelize(obj_type) + "MetricType"
 
-
     return class_name
 
 
