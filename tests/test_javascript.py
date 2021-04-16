@@ -215,32 +215,29 @@ def test_duplicate(tmpdir):
             == 1
         )
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_event_extra_keys_in_correct_order(tmpdir):
-#     """
-#     Assert that the extra keys appear in the parameter and the enumeration in
-#     the same order.
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
 
-#     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
-#     """
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
 
-#     tmpdir = Path(str(tmpdir))
+    tmpdir = Path(str(tmpdir))
 
-#     translate.translate(
-#         ROOT / "data" / "event_key_ordering.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"},
-#     )
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "javascript",
+        tmpdir,
+        None,
+    )
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(["event.js"])
 
-#     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         content = " ".join(content.split())
-#         assert "exampleKeys { alice, bob, charlie }" in content
-#         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
+    with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert '["alice", "bob", "charlie"]' in content
 
 
 def test_arguments_are_generated_in_deterministic_order(tmpdir):
