@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for labeled metric types in Javascript and Typescript templates.
+
 ## 3.0.0 (2021-04-13)
 
 - Raise limit on number of statically-defined lables to 100. ([bug 1702263](https://bugzilla.mozilla.org/show_bug.cgi?id=1702263))
