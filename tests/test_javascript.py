@@ -187,35 +187,33 @@ def test_import_path():
     assert javascript.import_path(ping.type) == "ping"
 
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_duplicate(tmpdir):
-#     """
-#     Test that there aren't duplicate imports when using a labeled and
-#     non-labeled version of the same metric.
+def test_duplicate(tmpdir):
+    """
+    Test that there aren't duplicate imports when using a labeled and
+    non-labeled version of the same metric.
 
-#     https://github.com/mozilla-mobile/android-components/issues/2793
-#     """
+    https://github.com/mozilla-mobile/android-components/issues/2793
+    """
 
-#     tmpdir = Path(str(tmpdir))
+    tmpdir = Path(str(tmpdir))
 
-#     translate.translate(
-#         ROOT / "data" / "duplicate_labeled.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"}
-#     )
+    translate.translate(
+        ROOT / "data" / "duplicate_labeled.yaml",
+        "javascript",
+        tmpdir,
+        None
+    )
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
 
-#     with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         assert (
-#             content.count(
-#                 "import mozilla.components.service.glean.private.CounterMetricType"
-#             )
-#             == 1
-#         )
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert (
+            content.count(
+                "import CounterMetricType from \"@mozilla/glean/webext/private/metrics/counter\";"
+            )
+            == 1
+        )
 
 # TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
 #
