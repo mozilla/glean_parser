@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.1.0 (2021-04-16)
+
 - Add support for labeled metric types in Javascript and Typescript templates.
 
 ## 3.0.0 (2021-04-13)
