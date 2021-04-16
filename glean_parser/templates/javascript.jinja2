@@ -11,11 +11,11 @@ new LabeledMetricType({
     {% for arg_name in (obj.type|args).common if obj[arg_name] is defined %}
     {{ arg_name|camelize }}: {{ obj[arg_name]|js }},
     {% endfor %}
-    {{ obj.type|class_name }},
-    {% if obj.labels is not none %}
-    {{ obj.labels|js }}
-    {% endif %}
-}{% for arg_name in (obj.type|args).extra if obj[arg_name] is defined %}, {{ obj[arg_name]|js }}{% endfor %}){% endmacro %}
+}, {{ obj.type|class_name }}, {% if obj.labels is not none %}{{ obj.labels|js }}{% endif %}){% endmacro %}
+{% if lang == "javascript" %}
+"use strict";
+
+{% endif %}
 /* eslint-disable */
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -30,10 +30,7 @@ import LabeledMetricType from "@mozilla/glean/{{ glean_namespace }}/private/metr
 {% for type in types %}
 import {{ type|class_name }} from "@mozilla/glean/{{ glean_namespace }}/private/{{ type|import_path }}";
 {% endfor %}
-{% if lang == "javascript" %}
 
-"use strict"
-{% endif %}
 
 {% for obj in objs.values() %}
 /**
