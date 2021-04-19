@@ -129,7 +129,7 @@ def output(
                 # thus the removal of the `labeled_` substring.
                 #
                 # The actual LabeledMetricType import is conditioned after
-                # the `has_labeled_metrics` boolean, if that is True that class is imported.
+                # the `has_labeled_metrics` boolean.
                 obj.type if not obj.type.startswith("labeled_") else obj.type[8:]
                 for obj in category_val.values()
             ]
