@@ -124,9 +124,8 @@ def output(
 
         types = set(
             [
-                obj.type
+                obj.type if not obj.type.startswith("labeled_") else obj.type[8:]
                 for obj in category_val.values()
-                if not obj.type.startswith("labeled_")
             ]
         )
         has_labeled_metrics = any(

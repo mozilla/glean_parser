@@ -187,6 +187,35 @@ def test_import_path():
     assert javascript.import_path(ping.type) == "ping"
 
 
+def test_labeled_subtype_is_imported(tmpdir):
+    """
+    Test that both the LabeledMetricType and its subtype are imoprted
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml", "javascript", tmpdir, None
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
+
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert (
+            content.count(
+                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+            )
+            == 1
+        )
+        assert (
+            content.count(
+                'import LabeledMetricType from "@mozilla/glean/webext/private/metrics/labeled";'  # noqa
+            )
+            == 1
+        )
+
+
 def test_duplicate(tmpdir):
     """
     Test that there aren't duplicate imports when using a labeled and
