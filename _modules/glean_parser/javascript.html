@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript &#8212; Glean Parser 3.1.1.dev2+g4ef3956 documentation</title>
+    <title>glean_parser.javascript &#8212; Glean Parser 3.1.1.dev3+g9728e1c documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -157,9 +157,14 @@
 
         <span class="n">types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="n">obj</span><span class="o">.</span><span class="n">type</span>
+                <span class="c1"># This takes care of the regular metric type imports</span>
+                <span class="c1"># as well as the labeled metric subtype imports,</span>
+                <span class="c1"># thus the removal of the `labeled_` substring.</span>
+                <span class="c1">#</span>
+                <span class="c1"># The actual LabeledMetricType import is conditioned after</span>
+                <span class="c1"># the `has_labeled_metrics` boolean.</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;labeled_&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
                 <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;labeled_&quot;</span><span class="p">)</span>
             <span class="p">]</span>
         <span class="p">)</span>
         <span class="n">has_labeled_metrics</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>

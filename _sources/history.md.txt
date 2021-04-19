@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Recommend to not commit as well as to not edit the generated files. ([bug 1706042](https://bugzilla.mozilla.org/show_bug.cgi?id=1706042))
+- BUGFIX: Include import statement for labeled metric subtypes in Javascript and Typescript templates.
 
 ## 3.1.0 (2021-04-16)
 
