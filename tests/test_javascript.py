@@ -189,7 +189,7 @@ def test_import_path():
 
 def test_labeled_subtype_is_imported(tmpdir):
     """
-    Test that both the LabeledMetricType and its subtype are imoprted
+    Test that both the LabeledMetricType and its subtype are imported
     """
 
     tmpdir = Path(str(tmpdir))
