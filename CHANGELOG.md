@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Remove the "DO NOT COMMIT" notice from the documentation.
+
 ## 3.1.1 (2021-04-19)
 
 - Recommend to not commit as well as to not edit the generated files. ([bug 1706042](https://bugzilla.mozilla.org/show_bug.cgi?id=1706042))
