@@ -124,9 +124,14 @@ def output(
 
         types = set(
             [
-                obj.type
+                # This takes care of the regular metric type imports
+                # as well as the labeled metric subtype imports,
+                # thus the removal of the `labeled_` substring.
+                #
+                # The actual LabeledMetricType import is conditioned after
+                # the `has_labeled_metrics` boolean.
+                obj.type if not obj.type.startswith("labeled_") else obj.type[8:]
                 for obj in category_val.values()
-                if not obj.type.startswith("labeled_")
             ]
         )
         has_labeled_metrics = any(
