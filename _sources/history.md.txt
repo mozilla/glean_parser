@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.1.2 (2021-04-21)
+
 - BUGFIX: Remove the "DO NOT COMMIT" notice from the documentation.
 
 ## 3.1.1 (2021-04-19)
