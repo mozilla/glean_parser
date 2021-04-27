@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add option to add extra introductory text to generated markdown ([#298](https://github.com/mozilla/glean_parser/pull/298))
+
 ## 3.1.2 (2021-04-21)
 
 - BUGFIX: Remove the "DO NOT COMMIT" notice from the documentation.

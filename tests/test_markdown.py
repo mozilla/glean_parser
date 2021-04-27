@@ -22,7 +22,7 @@ def test_parser(tmpdir):
         ROOT / "data" / "core.yaml",
         "markdown",
         tmpdir,
-        {"namespace": "Foo"},
+        {"namespace": "Foo", "introduction_extra": "Extra Intro Text Bar"},
         {"allow_reserved": True},
     )
 
@@ -40,6 +40,8 @@ def test_parser(tmpdir):
         )
         # Make sure non ASCII characters are there
         assert "جمع 搜集" in content
+        # test that extra text made it
+        assert "Extra Intro Text" in content
 
 
 def test_extra_info_generator():
