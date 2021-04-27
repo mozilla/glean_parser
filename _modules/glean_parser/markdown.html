@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.markdown &#8212; Glean Parser 3.1.2.dev2+gf7e6954 documentation</title>
+    <title>glean_parser.markdown &#8212; Glean Parser 3.1.3.dev1+g31096a1 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -267,6 +267,7 @@
         <span class="p">)</span>
 
     <span class="n">project_title</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project_title&quot;</span><span class="p">,</span> <span class="s2">&quot;this project&quot;</span><span class="p">)</span>
+    <span class="n">introduction_extra</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;introduction_extra&quot;</span><span class="p">)</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
         <span class="s2">&quot;markdown.jinja2&quot;</span><span class="p">,</span>
@@ -294,7 +295,9 @@
     <span class="k">with</span> <span class="n">filepath</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
         <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
             <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
-                <span class="n">metrics_by_pings</span><span class="o">=</span><span class="n">metrics_by_pings</span><span class="p">,</span> <span class="n">project_title</span><span class="o">=</span><span class="n">project_title</span>
+                <span class="n">metrics_by_pings</span><span class="o">=</span><span class="n">metrics_by_pings</span><span class="p">,</span>
+                <span class="n">project_title</span><span class="o">=</span><span class="n">project_title</span><span class="p">,</span>
+                <span class="n">introduction_extra</span><span class="o">=</span><span class="n">introduction_extra</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>
