@@ -26,6 +26,15 @@ def javascript_datatypes_filter(value: util.JSONType) -> str:
         def iterencode(self, value):
             if isinstance(value, enum.Enum):
                 yield from super().iterencode(util.camelize(value.name))
+            elif isinstance(value, set):
+                yield "["
+                first = True
+                for subvalue in sorted(list(value)):
+                    if not first:
+                        yield ", "
+                    yield from self.iterencode(subvalue)
+                    first = False
+                yield "]"
             else:
                 yield from super().iterencode(value)
 
@@ -39,6 +48,8 @@ def class_name(obj_type: str) -> str:
     if obj_type == "ping":
         class_name = "PingType"
     else:
+        if obj_type.startswith("labeled_"):
+            obj_type = obj_type[8:]
         class_name = util.Camelize(obj_type) + "MetricType"
 
     return class_name
@@ -51,7 +62,9 @@ def import_path(obj_type: str) -> str:
     if obj_type == "ping":
         import_path = "ping"
     else:
-        import_path = "metrics/" + util.camelize(obj_type)
+        if obj_type.startswith("labeled_"):
+            obj_type = obj_type[8:]
+        import_path = "metrics/" + obj_type
 
     return import_path
 
@@ -109,7 +122,21 @@ def output(
         filename = util.camelize(category_key) + extension
         filepath = output_dir / filename
 
-        types = set([util.camelize(obj.type) for obj in category_val.values()])
+        types = set(
+            [
+                # This takes care of the regular metric type imports
+                # as well as the labeled metric subtype imports,
+                # thus the removal of the `labeled_` substring.
+                #
+                # The actual LabeledMetricType import is conditioned after
+                # the `has_labeled_metrics` boolean.
+                obj.type if not obj.type.startswith("labeled_") else obj.type[8:]
+                for obj in category_val.values()
+            ]
+        )
+        has_labeled_metrics = any(
+            getattr(metric, "labeled", False) for metric in category_val.values()
+        )
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
@@ -118,6 +145,7 @@ def output(
                     extra_args=util.extra_args,
                     namespace=namespace,
                     glean_namespace=glean_namespace,
+                    has_labeled_metrics=has_labeled_metrics,
                     types=types,
                     lang=lang,
                 )

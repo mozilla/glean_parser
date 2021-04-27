@@ -21,6 +21,7 @@ telemetry:
       - CHANGE-ME@example.com
     send_in_pings:
       - core
+      - glean_client_info
     expires: 2100-01-01
 
 core_ping:

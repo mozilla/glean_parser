@@ -187,62 +187,84 @@ def test_import_path():
     assert javascript.import_path(ping.type) == "ping"
 
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_duplicate(tmpdir):
-#     """
-#     Test that there aren't duplicate imports when using a labeled and
-#     non-labeled version of the same metric.
+def test_labeled_subtype_is_imported(tmpdir):
+    """
+    Test that both the LabeledMetricType and its subtype are imported
+    """
 
-#     https://github.com/mozilla-mobile/android-components/issues/2793
-#     """
+    tmpdir = Path(str(tmpdir))
 
-#     tmpdir = Path(str(tmpdir))
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml", "javascript", tmpdir, None
+    )
 
-#     translate.translate(
-#         ROOT / "data" / "duplicate_labeled.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"}
-#     )
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Category.kt"])
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert (
+            content.count(
+                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+            )
+            == 1
+        )
+        assert (
+            content.count(
+                'import LabeledMetricType from "@mozilla/glean/webext/private/metrics/labeled";'  # noqa
+            )
+            == 1
+        )
 
-#     with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         assert (
-#             content.count(
-#                 "import mozilla.components.service.glean.private.CounterMetricType"
-#             )
-#             == 1
-#         )
 
-# TODO: Activate once Glean.js adds support for labeled metric types in Bug 1682573.
-#
-# def test_event_extra_keys_in_correct_order(tmpdir):
-#     """
-#     Assert that the extra keys appear in the parameter and the enumeration in
-#     the same order.
+def test_duplicate(tmpdir):
+    """
+    Test that there aren't duplicate imports when using a labeled and
+    non-labeled version of the same metric.
 
-#     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
-#     """
+    https://github.com/mozilla-mobile/android-components/issues/2793
+    """
 
-#     tmpdir = Path(str(tmpdir))
+    tmpdir = Path(str(tmpdir))
 
-#     translate.translate(
-#         ROOT / "data" / "event_key_ordering.yaml",
-#         "kotlin",
-#         tmpdir,
-#         {"namespace": "Foo"},
-#     )
+    translate.translate(
+        ROOT / "data" / "duplicate_labeled.yaml", "javascript", tmpdir, None
+    )
 
-#     assert set(x.name for x in tmpdir.iterdir()) == set(["Event.kt"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
 
-#     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
-#         content = fd.read()
-#         content = " ".join(content.split())
-#         assert "exampleKeys { alice, bob, charlie }" in content
-#         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert (
+            content.count(
+                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+            )
+            == 1
+        )
+
+
+def test_event_extra_keys_in_correct_order(tmpdir):
+    """
+    Assert that the extra keys appear in the parameter and the enumeration in
+    the same order.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "event_key_ordering.yaml",
+        "javascript",
+        tmpdir,
+        None,
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["event.js"])
+
+    with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert '["alice", "bob", "charlie"]' in content
 
 
 def test_arguments_are_generated_in_deterministic_order(tmpdir):

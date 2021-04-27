@@ -186,3 +186,18 @@ def test_no_unit():
     )
 
     assert not hasattr(event, "unit")
+
+
+def test_jwe_is_rejected():
+    with pytest.raises(ValueError):
+        metrics.Jwe(
+            type="jwe",
+            category="category",
+            name="metric",
+            bugs=["http://bugzilla.mozilla.com/12345"],
+            notification_emails=["nobody@example.com"],
+            description="description...",
+            expires="never",
+            extra_keys={"glean.internal": {"description": "foo"}},
+            _config={"allow_reserved": True},
+        )

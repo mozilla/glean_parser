@@ -1,0 +1,21 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+category:
+  labeled_counter:
+    type: labeled_counter
+    lifetime: user
+    description: >
+      Foo
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    send_in_pings:
+      - core
+    expires: 2100-01-01
