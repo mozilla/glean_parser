@@ -11,7 +11,7 @@ Outputter to generate Javascript code for metrics.
 import enum
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union  # noqa
+from typing import Any, Dict, List, Optional, Union, Callable  # noqa
 
 from . import metrics
 from . import util
@@ -41,16 +41,24 @@ def javascript_datatypes_filter(value: util.JSONType) -> str:
     return "".join(JavascriptEncoder().iterencode(value))
 
 
-def class_name(obj_type: str) -> str:
+def class_name_factory(platform: str, namespace: str) -> Callable[[str], str]:
     """
-    Returns the Javascript class name for a given metric or ping type.
+    Returns a function that receives an obj_type and
+    returns the correct class name for that time in the current platform.
     """
-    if obj_type == "ping":
-        class_name = "PingType"
-    else:
-        if obj_type.startswith("labeled_"):
-            obj_type = obj_type[8:]
-        class_name = util.Camelize(obj_type) + "MetricType"
+
+    def class_name(obj_type: str) -> str:
+        if obj_type == "ping":
+            class_name = "PingType"
+        else:
+            if obj_type.startswith("labeled_"):
+                obj_type = obj_type[8:]
+            class_name = util.Camelize(obj_type) + "MetricType"
+
+        if platform == "qt":
+            return namespace + ".Glean.default._private." + class_name
+
+        return class_name
 
     return class_name
 
@@ -94,23 +102,23 @@ def output(
     :param output_dir: Path to an output directory to write to.
     :param options: options dictionary, with the following optional keys:
 
-        - `namespace`: The identifier of the global variable to assign to.
+        - `namespace`: The identifier of the global variable Glean was assigned to.
                        This will only have and effect for Qt and static web sites.
-                       Default is `gleanAssets`.
-        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
-                             options are `webext` or `qt`. Default is `webext`.
+                       Default is `Glean`.
+        - `platform`: Which platform are we building for. Options are `webext` and `qt`.
+                      Default is `webext`.
     """
 
     if options is None:
         options = {}
 
-    namespace = options.get("namespace", "gleanAssets")
-    glean_namespace = options.get("glean_namespace", "webext")
+    namespace = options.get("namespace", "Glean")
+    platform = options.get("platform", "webext")
 
     template = util.get_jinja2_template(
         "javascript.jinja2",
         filters=(
-            ("class_name", class_name),
+            ("class_name", class_name_factory(platform, namespace)),
             ("import_path", import_path),
             ("js", javascript_datatypes_filter),
             ("args", args),
@@ -144,7 +152,7 @@ def output(
                     objs=category_val,
                     extra_args=util.extra_args,
                     namespace=namespace,
-                    glean_namespace=glean_namespace,
+                    platform=platform,
                     has_labeled_metrics=has_labeled_metrics,
                     types=types,
                     lang=lang,
@@ -167,9 +175,9 @@ def output_javascript(
 
         - `namespace`: The identifier of the global variable to assign to.
                        This will only have and effect for Qt and static web sites.
-                       Default is `gleanAssets`.
-        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
-                             options are `webext` or `qt`. Default is `webext`.
+                       Default is `Glean`.
+        - `platform`: Which platform are we building for. Options are `webext` and `qt`.
+                      Default is `webext`.
     """
 
     output("javascript", objs, output_dir, options)
@@ -193,9 +201,9 @@ def output_typescript(
 
         - `namespace`: The identifier of the global variable to assign to.
                        This will only have and effect for Qt and static web sites.
-                       Default is `gleanAssets`.
-        - `glean_namespace`: Which version of the `@mozilla/glean` package to import,
-                             options are `webext` or `qt`. Default is `webext`.
+                       Default is `Glean`.
+        - `platform`: Which platform are we building for. Options are `webext` and `qt`.
+                      Default is `webext`.
     """
 
     output("typescript", objs, output_dir, options)
