@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser package &#8212; Glean Parser 3.1.3.dev1+g31096a1 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 3.1.3.dev2+g9f67b16 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -130,9 +130,10 @@ code.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="glean_parser.javascript.class_name">
-<code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">class_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/glean_parser/javascript.html#class_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.class_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the Javascript class name for a given metric or ping type.</p>
+<dt id="glean_parser.javascript.class_name_factory">
+<code class="sig-prename descclassname"><span class="pre">glean_parser.javascript.</span></code><code class="sig-name descname"><span class="pre">class_name_factory</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">platform</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">namespace</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><a class="reference internal" href="_modules/glean_parser/javascript.html#class_name_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.javascript.class_name_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function that receives an obj_type and
+returns the correct class name for that time in the current platform.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -161,13 +162,13 @@ code.</p></li>
 <li><p><strong>options</strong> – <p>options dictionary, with the following optional keys:</p>
 <ul>
 <li><dl class="simple">
-<dt><cite>namespace</cite>: The identifier of the global variable to assign to.</dt><dd><p>This will only have and effect for Qt and static web sites.
-Default is <cite>gleanAssets</cite>.</p>
+<dt><cite>namespace</cite>: The identifier of the global variable Glean was assigned to.</dt><dd><p>This will only have and effect for Qt and static web sites.
+Default is <cite>Glean</cite>.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>glean_namespace</cite>: Which version of the <cite>&#64;mozilla/glean</cite> package to import,</dt><dd><p>options are <cite>webext</cite> or <cite>qt</cite>. Default is <cite>webext</cite>.</p>
+<dt><cite>platform</cite>: Which platform are we building for. Options are <cite>webext</cite> and <cite>qt</cite>.</dt><dd><p>Default is <cite>webext</cite>.</p>
 </dd>
 </dl>
 </li>
@@ -192,12 +193,12 @@ Default is <cite>gleanAssets</cite>.</p>
 <ul>
 <li><dl class="simple">
 <dt><cite>namespace</cite>: The identifier of the global variable to assign to.</dt><dd><p>This will only have and effect for Qt and static web sites.
-Default is <cite>gleanAssets</cite>.</p>
+Default is <cite>Glean</cite>.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>glean_namespace</cite>: Which version of the <cite>&#64;mozilla/glean</cite> package to import,</dt><dd><p>options are <cite>webext</cite> or <cite>qt</cite>. Default is <cite>webext</cite>.</p>
+<dt><cite>platform</cite>: Which platform are we building for. Options are <cite>webext</cite> and <cite>qt</cite>.</dt><dd><p>Default is <cite>webext</cite>.</p>
 </dd>
 </dl>
 </li>
@@ -225,12 +226,12 @@ currently is the file extension.</p>
 <ul>
 <li><dl class="simple">
 <dt><cite>namespace</cite>: The identifier of the global variable to assign to.</dt><dd><p>This will only have and effect for Qt and static web sites.
-Default is <cite>gleanAssets</cite>.</p>
+Default is <cite>Glean</cite>.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><cite>glean_namespace</cite>: Which version of the <cite>&#64;mozilla/glean</cite> package to import,</dt><dd><p>options are <cite>webext</cite> or <cite>qt</cite>. Default is <cite>webext</cite>.</p>
+<dt><cite>platform</cite>: Which platform are we building for. Options are <cite>webext</cite> and <cite>qt</cite>.</dt><dd><p>Default is <cite>webext</cite>.</p>
 </dd>
 </dl>
 </li>
