@@ -129,7 +129,11 @@ def test_metric_class_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    assert javascript.class_name(event.type) == "EventMetricType"
+    webext_class_name = javascript.class_name_factory("webext", "Glean")
+    qt_class_name = javascript.class_name_factory("qt", "Glean")
+
+    assert webext_class_name(event.type) == "EventMetricType"
+    assert qt_class_name(event.type) == "Glean.Glean.default._private.EventMetricType"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -140,7 +144,10 @@ def test_metric_class_name():
         description="description...",
         expires="never",
     )
-    assert javascript.class_name(boolean.type) == "BooleanMetricType"
+    assert webext_class_name(boolean.type) == "BooleanMetricType"
+    assert (
+        qt_class_name(boolean.type) == "Glean.Glean.default._private.BooleanMetricType"
+    )
 
     ping = pings.Ping(
         name="custom",
@@ -149,7 +156,8 @@ def test_metric_class_name():
         bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert javascript.class_name(ping.type) == "PingType"
+    assert webext_class_name(ping.type) == "PingType"
+    assert qt_class_name(ping.type) == "Glean.Glean.default._private.PingType"
 
 
 def test_import_path():
@@ -290,3 +298,23 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
         content = " ".join(content.split())
         expected = 'export const example = new EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, }, ["alice", "bob", "charlie"]);'  # noqa
         assert expected in content
+
+
+def test_qt_platform_template_does_not_include_import_export_statements(tmpdir):
+    """
+    Test when the platform is Qt, the template does not contain
+    import/export statements.
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml", "javascript", tmpdir, {"platform": "qt"}
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
+
+    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert content.count("import") == 0
+        assert content.count("export") == 0
