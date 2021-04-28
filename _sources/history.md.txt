@@ -1,11 +1,11 @@
 # Changelog
 
-## Unreleased
+## 3.2.0 (2021-04-28)
 
 - Add option to add extra introductory text to generated markdown ([#298](https://github.com/mozilla/glean_parser/pull/298))
 - Add support for Qt in Javascript templates ([bug 1706252](https://bugzilla.mozilla.org/show_bug.cgi?id=1706252))
-    - Javascript templates will now accept the `platform` option. If this option is set to `qt`
-      the generated templates will be Qt compatible. Default value is `webext`.
+  - Javascript templates will now accept the `platform` option. If this option is set to `qt`
+  the generated templates will be Qt compatible. Default value is `webext`.
 
 ## 3.1.2 (2021-04-21)
 
