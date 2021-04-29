@@ -211,3 +211,30 @@ def test_event_extra_keys_in_correct_order(tmpdir):
             "{ case alice = 0 case bob = 1 case charlie = 2" in content
         )
         assert 'allowedExtraKeys: ["alice", "bob", "charlie"]' in content
+
+
+def test_event_extra_keys_with_types(tmpdir):
+    """
+    Assert that the extra keys with types appear with their corresponding types.
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "events_with_types.yaml",
+        "swift",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert (
+            "struct PreferenceToggledExtra: EventExtras "
+            "{ val enabled: Bool? val preference: String? "
+            "val swapped: Int32?" in content
+        )
+        assert 'allowedExtraKeys: ["enabled", "preference", "swapped"]' in content
