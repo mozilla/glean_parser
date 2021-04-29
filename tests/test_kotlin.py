@@ -385,3 +385,36 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
         content = " ".join(content.split())
         expected = 'EventMetricType<exampleKeys> by lazy { // generated from event.example EventMetricType<exampleKeys>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
         assert expected in content
+
+
+def test_event_extra_keys_with_types(tmpdir):
+    """
+    Assert that the extra keys with types appear with their corresponding types.
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "events_with_types.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Core.kt", "GleanBuildInfo.kt"]
+    )
+
+    with (tmpdir / "Core.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert (
+            "data class PreferenceToggledExtra( "
+            "val enabled: Boolean? = null, "
+            "val preference: String? = null, "
+            "val swapped: Int? = null "
+            "): EventExtras {" in content
+        )
+        assert (
+            'allowedExtraKeys = listOf("enabled", "preference", "swapped")' in content
+        )

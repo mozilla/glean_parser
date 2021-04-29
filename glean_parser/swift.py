@@ -85,6 +85,21 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
     return class_name(obj.type)
 
 
+def extra_type_name(typ: str) -> str:
+    """
+    Returns the corresponding Kotlin type for event's extra key types.
+    """
+
+    if typ == "boolean":
+        return "Bool"
+    elif typ == "string":
+        return "String"
+    elif typ == "quantity":
+        return "Int32"
+    else:
+        return "UNSUPPORTED"
+
+
 def class_name(obj_type: str) -> str:
     """
     Returns the Swift class name for a given metric or ping type.
@@ -140,6 +155,7 @@ def output_swift(
             ("type_name", type_name),
             ("class_name", class_name),
             ("variable_name", variable_name),
+            ("extra_type_name", extra_type_name),
         ),
     )
 

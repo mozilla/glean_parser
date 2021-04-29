@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Generate new event API construct ([#321](https://github.com/mozilla/glean_parser/pull/321))
+
 ## 3.2.0 (2021-04-28)
 
 - Add option to add extra introductory text to generated markdown ([#298](https://github.com/mozilla/glean_parser/pull/298))

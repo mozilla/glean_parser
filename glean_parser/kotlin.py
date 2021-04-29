@@ -78,7 +78,13 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
         template_args = []
         for member, suffix in generate_enums:
             if len(getattr(obj, member)):
-                template_args.append(util.camelize(obj.name) + suffix)
+                # Hack to not break naming of `eventExtraKeys`,
+                # which use camelCase.
+                # Proper class names should be CamelCase.
+                if suffix == "Extra":
+                    template_args.append(util.Camelize(obj.name) + suffix)
+                else:
+                    template_args.append(util.camelize(obj.name) + suffix)
             else:
                 if suffix == "Keys":
                     template_args.append("NoExtraKeys")
@@ -88,6 +94,21 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
         return "{}<{}>".format(class_name(obj.type), ", ".join(template_args))
 
     return class_name(obj.type)
+
+
+def extra_type_name(typ: str) -> str:
+    """
+    Returns the corresponding Kotlin type for event's extra key types.
+    """
+
+    if typ == "boolean":
+        return "Boolean"
+    elif typ == "string":
+        return "String"
+    elif typ == "quantity":
+        return "Int"
+    else:
+        return "UNSUPPORTED"
 
 
 def class_name(obj_type: str) -> str:
@@ -245,6 +266,7 @@ def output_kotlin(
         filters=(
             ("kotlin", kotlin_datatypes_filter),
             ("type_name", type_name),
+            ("extra_type_name", extra_type_name),
             ("class_name", class_name),
         ),
     )
