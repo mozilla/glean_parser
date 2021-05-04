@@ -17,13 +17,8 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
-# The version of Detekt built. Must match the version checked out in
-# Makefile
-DETEKT_VERSION = "1.1.1"
-
-
 def run_detekt(files):
-    detekt_exec = ROOT.parent / f"detekt-cli-{DETEKT_VERSION}-all.jar"
+    detekt_exec = ROOT.parent / "detekt-cli.jar"
     # We want to make sure this runs on CI, but it's not required
     # for local development
     if detekt_exec.is_file() or "CI" in os.environ:
