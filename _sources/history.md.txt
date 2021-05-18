@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.3.0 (2021-05-18)
+
 - Generate new event API construct ([#321](https://github.com/mozilla/glean_parser/pull/321))
 
 ## 3.2.0 (2021-04-28)
