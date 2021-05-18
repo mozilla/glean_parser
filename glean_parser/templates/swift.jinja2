@@ -70,7 +70,7 @@ extension {{ namespace }} {
 
         {% for obj in category.objs.values() %}
         {% if obj|attr("_generate_enums") %}
-        {% for name, suffix, typ in obj["_generate_enums"] %}
+        {% for name, suffix in obj["_generate_enums"] %}
         {% if obj|attr(name)|length %}
         enum {{ obj.name|Camelize }}{{ suffix }}: Int, ReasonCodes {
             {% for key in obj|attr(name) %}
