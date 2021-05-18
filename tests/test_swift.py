@@ -18,6 +18,20 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
+def run_linters(files):
+    # Syntax check on the generated files.
+    # Only run this test if swiftc is on the path.
+    if shutil.which("swiftc"):
+        for filepath in files:
+            subprocess.check_call(["swiftc", "-parse", filepath])
+
+    # Lint check on the generated files.
+    # Only run this test if swiftlint is on the path.
+    if shutil.which("swiftlint"):
+        for filepath in files:
+            subprocess.check_call(["swiftlint", "lint", filepath])
+
+
 def test_parser(tmpdir):
     """Test translating metrics to Swift files."""
     tmpdir = Path(str(tmpdir))
@@ -36,17 +50,36 @@ def test_parser(tmpdir):
         assert "جمع 搜集" in content
         assert 'category: ""' in content
 
-    # Syntax check on the generated files.
-    # Only run this test if swiftc is on the path.
-    if shutil.which("swiftc"):
-        for filepath in tmpdir.glob("*.swift"):
-            subprocess.check_call(["swiftc", "-parse", filepath])
+    run_linters(tmpdir.glob("*.swift"))
 
-    # Lint check on the generated files.
-    # Only run this test if swiftlint is on the path.
-    if shutil.which("swiftlint"):
-        for filepath in tmpdir.glob("*.swift"):
-            subprocess.check_call(["swiftlint", "lint", filepath])
+
+def test_ping_parser(tmpdir):
+    """Test translating pings to Swift files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "pings.yaml",
+        "swift",
+        tmpdir,
+        {"namespace": "Foo"},
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    # Make sure descriptions made it in
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "This is a custom ping" in content
+        # Make sure the namespace option is in effect
+        assert "extension Foo" in content
+        assert "customPing = Ping<NoReasonCodes>" in content
+        assert (
+            "customPingMightBeEmpty = Ping<CustomPingMightBeEmptyReasonCodes>"
+            in content
+        )
+
+    run_linters(tmpdir.glob("*.swift"))
 
 
 def test_swift_generator():
