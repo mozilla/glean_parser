@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.3.1 (2021-05-18)
+
 - Fix Swift code generation bug for pings ([#333](https://github.com/mozilla/glean_parser/pull/333))
 
 ## 3.3.0 (2021-05-18)
