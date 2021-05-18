@@ -21,7 +21,7 @@ enum {{ obj.name|Camelize }}{{ suffix }}: Int32, ExtraKeys {
         case {{ key|camelize|variable_name }} = {{ loop.index-1 }}
         {% endfor %}
 
-        public func index() -> Int {
+        public func index() -> Int32 {
             return self.rawValue
         }
     }
