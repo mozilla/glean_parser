@@ -62,31 +62,30 @@ def test_swift_generator():
 
 
 def test_metric_type_name():
-    # TODO: Events are not yet supported.
-    # event = metrics.Event(
-    #     type="event",
-    #     category="category",
-    #     name="metric",
-    #     bugs=[42],
-    #     notification_emails=["nobody@example.com"],
-    #     description="description...",
-    #     expires="never",
-    #     extra_keys={"my_extra": {"description": "an extra"}},
-    # )
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["42"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        extra_keys={"my_extra": {"description": "an extra"}},
+    )
 
-    # assert swift.type_name(event) == "EventMetricType<metricKeys>"
+    assert swift.type_name(event) == "EventMetricType<MetricKeys>"
 
-    # event = metrics.Event(
-    #     type="event",
-    #     category="category",
-    #     name="metric",
-    #     bugs=[42],
-    #     notification_emails=["nobody@example.com"],
-    #     description="description...",
-    #     expires="never",
-    # )
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["42"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+    )
 
-    # assert swift.type_name(event) == "EventMetricType<noExtraKeys>"
+    assert swift.type_name(event) == "EventMetricType<NoExtraKeys>"
 
     boolean = metrics.Boolean(
         type="boolean",
