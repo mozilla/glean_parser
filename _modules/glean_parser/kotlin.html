@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.kotlin &#8212; Glean Parser 3.2.1.dev13+gced3390 documentation</title>
+    <title>glean_parser.kotlin &#8212; Glean Parser 3.2.1.dev14+gaf46f82 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -111,7 +111,13 @@
         <span class="n">template_args</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">member</span><span class="p">,</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">generate_enums</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">member</span><span class="p">)):</span>
-                <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+                <span class="c1"># Hack to not break naming of `eventExtraKeys`,</span>
+                <span class="c1"># which use camelCase.</span>
+                <span class="c1"># Proper class names should be CamelCase.</span>
+                <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;Extra&quot;</span><span class="p">:</span>
+                    <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;Keys&quot;</span><span class="p">:</span>
                     <span class="n">template_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;NoExtraKeys&quot;</span><span class="p">)</span>
@@ -121,6 +127,21 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">),</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_args</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extra_type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.extra_type_name">[docs]</a><span class="k">def</span> <span class="nf">extra_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the corresponding Kotlin type for event&#39;s extra key types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Boolean&quot;</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;String&quot;</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;quantity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Int&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;UNSUPPORTED&quot;</span></div>
 
 
 <div class="viewcode-block" id="class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.kotlin.class_name">[docs]</a><span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -278,6 +299,7 @@
         <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
             <span class="p">(</span><span class="s2">&quot;kotlin&quot;</span><span class="p">,</span> <span class="n">kotlin_datatypes_filter</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;type_name&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;extra_type_name&quot;</span><span class="p">,</span> <span class="n">extra_type_name</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;class_name&quot;</span><span class="p">,</span> <span class="n">class_name</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">)</span>
