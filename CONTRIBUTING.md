@@ -173,6 +173,10 @@ $ git rebase upstream/main
 The continuous integration system will then automatically deploy to
 PyPI.
 
-See also the [instructions for updating the version of `glean_parser`
+See also:
+
+- The [instructions for updating the version of `glean_parser`
 used by the Glean
-SDK](https://mozilla.github.io/glean/book/dev/upgrading-glean-parser.html).
+SDK](https://mozilla.github.io/glean/dev/upgrading-glean-parser.html).
+- The [instructions for updating the version of `glean_parser`
+used by Glean.js](https://github.com/mozilla/glean.js/tree/main/docs/update_glean_parser.md).
