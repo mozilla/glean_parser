@@ -82,12 +82,17 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
                 # which use camelCase.
                 # Proper class names should be CamelCase.
                 if suffix == "Extra":
+                    if isinstance(obj, metrics.Event):
+                        template_args.append("NoExtraKeys")
                     template_args.append(util.Camelize(obj.name) + suffix)
                 else:
                     template_args.append(util.camelize(obj.name) + suffix)
+                    if isinstance(obj, metrics.Event):
+                        template_args.append("NoExtras")
             else:
                 if suffix == "Keys":
                     template_args.append("NoExtraKeys")
+                    template_args.append("NoExtras")
                 else:
                     template_args.append("No" + suffix)
 
