@@ -57,6 +57,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 @file:Suppress("PackageNaming", "MaxLineLength")
 package {{ namespace }}
 
+import {{ glean_namespace }}.private.EventExtras // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.HistogramType // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.Lifetime // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.MemoryUnit // ktlint-disable import-ordering no-unused-imports
