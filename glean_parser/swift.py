@@ -73,10 +73,22 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
         template_args = []
         for member, suffix in generate_enums:
             if len(getattr(obj, member)):
-                template_args.append(util.Camelize(obj.name) + suffix)
+                # Ugly hack to support the newer event extras API
+                # along the deprecated API.
+                # We need to specify both generic parameters,
+                # but only for event metrics.
+                if suffix == "Extra":
+                    if isinstance(obj, metrics.Event):
+                        template_args.append("NoExtraKeys")
+                    template_args.append(util.Camelize(obj.name) + suffix)
+                else:
+                    template_args.append(util.Camelize(obj.name) + suffix)
+                    if isinstance(obj, metrics.Event):
+                        template_args.append("NoExtras")
             else:
                 if suffix == "Keys":
                     template_args.append("NoExtraKeys")
+                    template_args.append("NoExtras")
                 else:
                     template_args.append("No" + suffix)
 
