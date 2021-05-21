@@ -38,7 +38,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
     val {{ item|camelize }}: {{typ|extra_type_name}}? = null{{ "," if not loop.last }}
 {% endfor %}
 ): EventExtras {
-  override fun toFfiExtra(): Pair<IntArray, StringArray> {
+  override fun toFfiExtra(): Pair<IntArray, List<String>> {
     var keys = mutableListOf<Int>()
     var values = mutableListOf<String>()
 
@@ -48,7 +48,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
       values.add(it.toString())
     }
     {% endfor %}
-    return Pair(IntArray(keys.size, { keys[it] }), StringArray(values.toTypedArray(), "utf-8"))
+    return Pair(IntArray(keys.size, { keys[it] }), values)
   }
 }
 {%- endmacro -%}
