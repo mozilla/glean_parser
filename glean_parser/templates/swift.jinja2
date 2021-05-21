@@ -30,7 +30,7 @@ enum {{ obj.name|Camelize }}{{ suffix }}: Int32, ExtraKeys {
 {% macro struct_decl(obj, name, suffix) %}
 struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {% for item, typ in obj|attr(name) %}
-        val {{ item|camelize|variable_name }}: {{typ|extra_type_name}}?
+        var {{ item|camelize|variable_name }}: {{typ|extra_type_name}}?
         {% endfor %}
 
         func toFfiExtra() -> ([Int32], [String]) {

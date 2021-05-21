@@ -106,7 +106,7 @@ def test_metric_type_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    assert swift.type_name(event) == "EventMetricType<MetricKeys>"
+    assert swift.type_name(event) == "EventMetricType<MetricKeys, NoExtras>"
 
     event = metrics.Event(
         type="event",
@@ -118,7 +118,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert swift.type_name(event) == "EventMetricType<NoExtraKeys>"
+    assert swift.type_name(event) == "EventMetricType<NoExtraKeys, NoExtras>"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -266,7 +266,7 @@ def test_event_extra_keys_with_types(tmpdir):
         content = " ".join(content.split())
         assert (
             "struct PreferenceToggledExtra: EventExtras "
-            "{ val enabled: Bool? val preference: String? "
-            "val swapped: Int32?" in content
+            "{ var enabled: Bool? var preference: String? "
+            "var swapped: Int32?" in content
         )
         assert 'allowedExtraKeys: ["enabled", "preference", "swapped"]' in content
