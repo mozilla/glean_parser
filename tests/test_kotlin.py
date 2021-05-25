@@ -141,7 +141,7 @@ def test_metric_type_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    assert kotlin.type_name(event) == "EventMetricType<metricKeys>"
+    assert kotlin.type_name(event) == "EventMetricType<metricKeys, NoExtras>"
 
     event = metrics.Event(
         type="event",
@@ -153,7 +153,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert kotlin.type_name(event) == "EventMetricType<NoExtraKeys>"
+    assert kotlin.type_name(event) == "EventMetricType<NoExtraKeys, NoExtras>"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -383,7 +383,7 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'EventMetricType<exampleKeys> by lazy { // generated from event.example EventMetricType<exampleKeys>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
+        expected = 'EventMetricType<exampleKeys, NoExtras> by lazy { // generated from event.example EventMetricType<exampleKeys, NoExtras>( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.Ping, disabled = false, allowedExtraKeys = listOf("alice", "bob", "charlie") ) } }'  # noqa
         assert expected in content
 
 
