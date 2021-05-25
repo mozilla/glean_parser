@@ -3,6 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
+import pytest
 from collections import OrderedDict
 from pathlib import Path
 
@@ -15,6 +16,9 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
+@pytest.mark.skip(
+    reason="C# support was dropped. This test was not adopted to new APIs"
+)
 def test_parser(tmpdir):
     """Test translating metrics to C# files."""
     tmpdir = Path(str(tmpdir))
