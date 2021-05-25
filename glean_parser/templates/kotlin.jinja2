@@ -37,19 +37,19 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 {% for item, typ in obj|attr(name) %}
     val {{ item|camelize }}: {{typ|extra_type_name}}? = null{{ "," if not loop.last }}
 {% endfor %}
-): EventExtras {
-  override fun toFfiExtra(): Pair<IntArray, List<String>> {
-    var keys = mutableListOf<Int>()
-    var values = mutableListOf<String>()
+) : EventExtras {
+    override fun toFfiExtra(): Pair<IntArray, List<String>> {
+        val keys = mutableListOf<Int>()
+        val values = mutableListOf<String>()
 
-    {% for item in obj|attr(name) %}
-    this.{{ item[0]|camelize }}?.let {
-      keys.add({{loop.index-1}})
-      values.add(it.toString())
+        {% for item in obj|attr(name) %}
+        this.{{ item[0]|camelize }}?.let {
+            keys.add({{loop.index-1}})
+            values.add(it.toString())
+        }
+        {% endfor %}
+        return Pair(IntArray(keys.size, { keys[it] }), values)
     }
-    {% endfor %}
-    return Pair(IntArray(keys.size, { keys[it] }), values)
-  }
 }
 {%- endmacro -%}
 
