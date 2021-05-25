@@ -413,7 +413,7 @@ def test_event_extra_keys_with_types(tmpdir):
             "val enabled: Boolean? = null, "
             "val preference: String? = null, "
             "val swapped: Int? = null "
-            "): EventExtras {" in content
+            ") : EventExtras {" in content
         )
         assert (
             'allowedExtraKeys = listOf("enabled", "preference", "swapped")' in content
