@@ -40,7 +40,7 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
             {% for item in obj|attr(name) %}
             if let {{ item[0]|camelize }} = self.{{item[0]|camelize}} {
                 keys.append({{ loop.index - 1 }})
-                values.append(String(val))
+                values.append(String({{ item[0]|camelize }}))
             }
             {% endfor %}
 
