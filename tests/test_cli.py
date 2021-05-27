@@ -60,6 +60,42 @@ def test_translate(tmpdir):
         assert "package Foo" in content
 
 
+def test_translate_no_buildinfo(tmpdir):
+    """Test the 'translate' command."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            str(ROOT / "data" / "core.yaml"),
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+            "-s",
+            "namespace=Foo",
+            "-s",
+            "with_buildinfo=false",
+            "--allow-reserved",
+        ],
+    )
+    assert result.exit_code == 0
+    assert set(os.listdir(str(tmpdir))) == set(
+        [
+            "CorePing.kt",
+            "Telemetry.kt",
+            "Environment.kt",
+            "DottedCategory.kt",
+            "GleanInternalMetrics.kt",
+        ]
+    )
+    for filename in os.listdir(str(tmpdir)):
+        path = Path(str(tmpdir)) / filename
+        with path.open(encoding="utf-8") as fd:
+            content = fd.read()
+        assert "package Foo" in content
+
+
 def test_translate_errors(tmpdir):
     """Test the 'translate' command."""
     runner = CliRunner()
