@@ -244,6 +244,9 @@ def output_kotlin(
         - `glean_namespace`: The package namespace of the glean library itself.
           This is where glean objects will be imported from in the generated
           code.
+        - `with_buildinfo`: If "true" a `GleanBuildInfo.kt` file is generated.
+          Otherwise generation of that file is skipped.
+          Defaults to "true".
     """
     if options is None:
         options = {}
@@ -251,23 +254,25 @@ def output_kotlin(
     namespace = options.get("namespace", "GleanMetrics")
     glean_namespace = options.get("glean_namespace", "mozilla.components.service.glean")
     namespace_package = namespace[: namespace.rfind(".")]
+    with_buildinfo = options.get("with_buildinfo", "true").lower() == "true"
 
     # Write out the special "build info" object
     template = util.get_jinja2_template(
         "kotlin.buildinfo.jinja2",
     )
 
-    # This filename needs to start with "Glean" so it can never clash with a
-    # metric category
-    with (output_dir / "GleanBuildInfo.kt").open("w", encoding="utf-8") as fd:
-        fd.write(
-            template.render(
-                namespace=namespace,
-                namespace_package=namespace_package,
-                glean_namespace=glean_namespace,
+    if with_buildinfo:
+        # This filename needs to start with "Glean" so it can never clash with a
+        # metric category
+        with (output_dir / "GleanBuildInfo.kt").open("w", encoding="utf-8") as fd:
+            fd.write(
+                template.render(
+                    namespace=namespace,
+                    namespace_package=namespace_package,
+                    glean_namespace=glean_namespace,
+                )
             )
-        )
-        fd.write("\n")
+            fd.write("\n")
 
     template = util.get_jinja2_template(
         "kotlin.jinja2",
