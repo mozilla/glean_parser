@@ -65,7 +65,7 @@ development.
     ```sh
     $ mkvirtualenv glean_parser
     $ cd glean_parser/
-    $ python setup.py develop
+    $ pip install --editable .
     ```
 
 4. Create a branch for local development:
