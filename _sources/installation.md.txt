@@ -37,5 +37,5 @@ $ curl  -OL https://github.com/mdboom/glean_parser/tarball/HEAD
 Once you have a copy of the source, you can install it with:
 
 ```sh
-$ python setup.py install
+$ pip install .
 ```
