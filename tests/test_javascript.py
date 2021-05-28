@@ -39,17 +39,14 @@ def test_parser_js(tmpdir):
     # Make sure descriptions made it in
     with (tmpdir / "corePing.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert "True if the user has set Firefox as the default browser." in content
 
     with (tmpdir / "telemetry.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert "جمع 搜集" in content
 
     with (tmpdir / "gleanInternalMetrics.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert 'category: ""' in content
 
 
