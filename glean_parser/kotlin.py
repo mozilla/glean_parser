@@ -78,9 +78,12 @@ def type_name(obj: Union[metrics.Metric, pings.Ping]) -> str:
         template_args = []
         for member, suffix in generate_enums:
             if len(getattr(obj, member)):
-                # Hack to not break naming of `eventExtraKeys`,
-                # which use camelCase.
-                # Proper class names should be CamelCase.
+                # Ugly hack to support the newer event extras API
+                # along the deprecated API.
+                # We need to specify both generic parameters,
+                # but only for event metrics.
+                # Plus `eventExtraKeys` use camelCase (lower),
+                # whereas proper class names should use CamelCase.
                 if suffix == "Extra":
                     if isinstance(obj, metrics.Event):
                         template_args.append("NoExtraKeys")
