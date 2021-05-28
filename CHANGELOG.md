@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Transform generated folder into QML Module when building Javascript templates for the Qt platform. ([bug 1707896](https://bugzilla.mozilla.org/show_bug.cgi?id=1707896))
+
 ## 3.4.0 (2021-05-28)
 
 - Add missing import for Kotlin code ([#339](https://github.com/mozilla/glean_parser/pull/341))
