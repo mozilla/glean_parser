@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add missing import for Kotlin code ([#339](https://github.com/mozilla/glean_parser/pull/341))
+- Use a plain Kotlin type in the generated interface implementation ([#339](https://github.com/mozilla/glean_parser/pull/341))
+- Generate additional generics for event metrics ([#339](https://github.com/mozilla/glean_parser/pull/341))
+
 ## 3.3.2 (2021-05-18)
 
 - Fix another bug in the Swift code generation when generating extra keys ([#334](https://github.com/mozilla/glean_parser/pull/334))
