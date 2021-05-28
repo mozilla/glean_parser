@@ -8,7 +8,7 @@ pip
 pytest-runner==5.3.0
 pytest==6.2.4
 recommonmark==0.7.1
-Sphinx==4.0.1
+Sphinx==4.0.2
 twine==3.4.1
 watchdog==2.1.1
 wheel
