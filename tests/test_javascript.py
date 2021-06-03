@@ -126,8 +126,8 @@ def test_metric_class_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    webext_class_name = javascript.class_name_factory("webext", "Glean")
-    qt_class_name = javascript.class_name_factory("qt", "Glean")
+    webext_class_name = javascript.class_name_factory("webext")
+    qt_class_name = javascript.class_name_factory("qt")
 
     assert webext_class_name(event.type) == "EventMetricType"
     assert qt_class_name(event.type) == "Glean.Glean._private.EventMetricType"
