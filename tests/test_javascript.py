@@ -39,17 +39,14 @@ def test_parser_js(tmpdir):
     # Make sure descriptions made it in
     with (tmpdir / "corePing.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert "True if the user has set Firefox as the default browser." in content
 
     with (tmpdir / "telemetry.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert "جمع 搜集" in content
 
     with (tmpdir / "gleanInternalMetrics.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "use strict" in content
         assert 'category: ""' in content
 
 
@@ -129,11 +126,11 @@ def test_metric_class_name():
         extra_keys={"my_extra": {"description": "an extra"}},
     )
 
-    webext_class_name = javascript.class_name_factory("webext", "Glean")
-    qt_class_name = javascript.class_name_factory("qt", "Glean")
+    webext_class_name = javascript.class_name_factory("webext")
+    qt_class_name = javascript.class_name_factory("qt")
 
     assert webext_class_name(event.type) == "EventMetricType"
-    assert qt_class_name(event.type) == "Glean.Glean.default._private.EventMetricType"
+    assert qt_class_name(event.type) == "Glean.Glean._private.EventMetricType"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -145,9 +142,7 @@ def test_metric_class_name():
         expires="never",
     )
     assert webext_class_name(boolean.type) == "BooleanMetricType"
-    assert (
-        qt_class_name(boolean.type) == "Glean.Glean.default._private.BooleanMetricType"
-    )
+    assert qt_class_name(boolean.type) == "Glean.Glean._private.BooleanMetricType"
 
     ping = pings.Ping(
         name="custom",
@@ -157,7 +152,7 @@ def test_metric_class_name():
         notification_emails=["nobody@nowhere.com"],
     )
     assert webext_class_name(ping.type) == "PingType"
-    assert qt_class_name(ping.type) == "Glean.Glean.default._private.PingType"
+    assert qt_class_name(ping.type) == "Glean.Glean._private.PingType"
 
 
 def test_import_path():
@@ -300,21 +295,61 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
         assert expected in content
 
 
-def test_qt_platform_template_does_not_include_import_export_statements(tmpdir):
+def test_qt_platform_template_includes_expected_imports(tmpdir):
     """
-    Test when the platform is Qt, the template does not contain
+    Assert that when the platform is Qt, the template does not contain
     import/export statements.
     """
 
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "single_labeled.yaml", "javascript", tmpdir, {"platform": "qt"}
+        ROOT / "data" / "single_labeled.yaml",
+        "javascript",
+        tmpdir,
+        {"platform": "qt", "version": "0.14"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
+    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js", "qmldir"])
 
     with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert content.count("import") == 0
+        assert content.count(".import org.mozilla.Glean 0.14") == 1
         assert content.count("export") == 0
+
+
+def test_qt_platform_generated_correct_qmldir_file(tmpdir):
+    """
+    Assert that when the platform is Qt, a qmldir is also generated
+    with the expected files listed in it.
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "javascript",
+        tmpdir,
+        {"platform": "qt", "version": "0.14"},
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        [
+            "corePing.js",
+            "telemetry.js",
+            "environment.js",
+            "dottedCategory.js",
+            "gleanInternalMetrics.js",
+            "qmldir",
+        ]
+    )
+
+    with (tmpdir / "qmldir").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert content.count("CorePing 0.14 corePing.js") == 1
+        assert content.count("Telemetry 0.14 telemetry.js") == 1
+        assert content.count("Environment 0.14 environment.js") == 1
+        assert content.count("DottedCategory 0.14 dottedCategory.js") == 1
+        assert content.count("GleanInternalMetrics 0.14 gleanInternalMetrics.js") == 1
+        assert content.count("depends org.mozilla.Glean 0.14") == 1
