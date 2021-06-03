@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Transform generated folder into QML Module when building Javascript templates for the Qt platform. ([bug 1707896](https://bugzilla.mozilla.org/show_bug.cgi?id=1707896)
+    - Import the Glean QML module from inside each generated file, removing the requirement to import Glean before importing any of the generated files;
+    - Prodive a `qmldir` file exposing all generated files;
+    - Drop the `namespace` option for Javascript templates;
+    - Add a new `version` option for Javascript templates, required when building for Qt, which expected the Glean QML module version.
+
 ## 3.4.0 (2021-05-28)
 
 - Add missing import for Kotlin code ([#339](https://github.com/mozilla/glean_parser/pull/341))
