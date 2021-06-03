@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.5.0 (2021-06-03)
+
 - Transform generated folder into QML Module when building Javascript templates for the Qt platform. ([bug 1707896](https://bugzilla.mozilla.org/show_bug.cgi?id=1707896)
     - Import the Glean QML module from inside each generated file, removing the requirement to import Glean before importing any of the generated files;
     - Prodive a `qmldir` file exposing all generated files;
