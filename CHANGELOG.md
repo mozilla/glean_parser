@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a command `data-review` to generate a skeleton Data Review Request for all metrics matching a supplied bug number. ([bug 1704541](https://bugzilla.mozilla.org/show_bug.cgi?id=1704541))
+
 ## 3.5.0 (2021-06-03)
 
 - Transform generated folder into QML Module when building Javascript templates for the Qt platform. ([bug 1707896](https://bugzilla.mozilla.org/show_bug.cgi?id=1707896)
