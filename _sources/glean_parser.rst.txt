@@ -20,6 +20,14 @@ glean\_parser.csharp module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.data\_review module
+---------------------------------
+
+.. automodule:: glean_parser.data_review
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.javascript module
 -------------------------------
 

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>glean_parser package &#8212; Glean Parser 3.4.1.dev5+g5f0c4f4 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 3.5.1.dev1+g8650385 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -118,6 +118,27 @@ code.</p></li>
 <dt class="sig sig-object py" id="glean_parser.csharp.type_name">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.csharp.</span></span><span class="sig-name descname"><span class="pre">type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">glean_parser.metrics.Metric</span></a><span class="p"><span class="pre">,</span> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">glean_parser.pings.Ping</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/glean_parser/csharp.html#type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.csharp.type_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the C# type to use for a given metric or ping object.</p>
+</dd></dl>
+
+</section>
+<section id="module-glean_parser.data_review">
+<span id="glean-parser-data-review-module"></span><h2>glean_parser.data_review module<a class="headerlink" href="#module-glean_parser.data_review" title="Permalink to this headline">¶</a></h2>
+<p>Produce skeleton Data Review Requests.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.data_review.generate">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.data_review.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bug</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="reference internal" href="_modules/glean_parser/data_review.html#generate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.data_review.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Commandline helper for Data Review Request template generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bug</strong> – pattern to match in metrics’ bug_numbers lists.</p></li>
+<li><p><strong>metrics_files</strong> – List of Path objects to load metrics from.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Non-zero if there were any errors.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -1419,6 +1440,12 @@ in order to validate the output against the input schema.</p>
 <dt class="sig sig-object py" id="glean_parser.util.report_validation_errors">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">report_validation_errors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_objects</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/util.html#report_validation_errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.report_validation_errors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report any validation errors found to the console.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.util.snake_case">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">snake_case</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="reference internal" href="_modules/glean_parser/util.html#snake_case"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.snake_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the value to snake_case.</p>
 </dd></dl>
 
 <dl class="py function">
