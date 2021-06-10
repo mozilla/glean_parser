@@ -338,9 +338,6 @@ def test_geckoview_only_on_valid_metrics():
         ]
         contents = [util.add_required(x) for x in contents]
 
-        all_metrics = parser.parse_objects(contents)
-        errs = list(all_metrics)
-
     contents = [{"category1": {"metric1": {"type": "event", "gecko_datapoint": "FOO"}}}]
     contents = [util.add_required(x) for x in contents]
 
@@ -390,7 +387,7 @@ def test_all_pings_reserved():
 
 
 def test_custom_distribution():
-    # Test that custom_distribution isn't allowed on non-Gecko metric
+    # Test plain custom_distribution, now also allowed generally
     contents = [
         {
             "category": {
@@ -408,8 +405,7 @@ def test_custom_distribution():
     contents = [util.add_required(x) for x in contents]
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
-    assert len(errors) == 1
-    assert "is only allowed for Gecko" in errors[0]
+    assert len(errors) == 0
 
     # Test that custom_distribution has required parameters
     contents = [
@@ -456,7 +452,6 @@ def test_custom_distribution():
             "category": {
                 "metric": {
                     "type": "custom_distribution",
-                    "gecko_datapoint": "FROM_GECKO",
                     "range_max": 60000,
                     "bucket_count": 100,
                     "histogram_type": "exponential",
