@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 3.6.0 (2021-06-11)
+
 - Add a command `data-review` to generate a skeleton Data Review Request for all metrics matching a supplied bug number. ([bug 1704541](https://bugzilla.mozilla.org/show_bug.cgi?id=1704541))
 - Enable custom distribution outside of GeckoView (`gecko_datapoint` becomes optional)
 
