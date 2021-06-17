@@ -3,13 +3,16 @@ coverage==5.5
 flake8==3.9.2
 flake8-bugbear==21.4.3
 m2r==0.2.1
-mypy==0.812
+mypy==0.901
 pip
 pytest-runner==5.3.1
 pytest==6.2.4
 recommonmark==0.7.1
 Sphinx==4.0.2
 twine==3.4.1
+types-Jinja2==2.11.1
+types-pkg_resources==0.1.2
+types-PyYAML==5.4.2
 watchdog==2.1.2
 wheel
 yamllint==1.26.1
