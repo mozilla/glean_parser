@@ -10,7 +10,7 @@ pytest==6.2.4
 recommonmark==0.7.1
 Sphinx==4.0.2
 twine==3.4.1
-types-Jinja2==2.11.1
+types-Jinja2==2.11.2
 types-pkg_resources==0.1.2
 types-PyYAML==5.4.2
 watchdog==2.1.2
