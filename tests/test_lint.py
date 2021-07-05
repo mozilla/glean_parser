@@ -336,3 +336,27 @@ def test_bug_number_pings(content, num_nits):
     assert len(nits) == num_nits
     if num_nits > 0:
         assert set(["BUG_NUMBER"]) == set(v.check_name for v in nits)
+
+
+def test_redundant_pings():
+    """
+    Test that name contains '-ping' or 'ping-' or 'ping' or 'custom' yields lint errors.
+    """
+    content = [
+        {
+            "ping_test": {
+                "description": "testing the ping in the prefix",
+                "send_if_empty": True,
+                "bugs": ["https://bugzilla.mozilla.org/show_bug.cgi?id=1703577"],
+                "data_review": ["https://bugzilla.mozilla.org/show_bug.cgi?id=1703577"],
+            }
+        }
+    ]
+    content = util.add_required_ping(content)
+    all_pings = parser.parse_objects([content])
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+    assert len(nits) == 1
+    assert set(["REDUNDANT_PING"]) == set(v.check_name for v in nits)
