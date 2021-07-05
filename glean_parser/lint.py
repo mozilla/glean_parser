@@ -263,33 +263,25 @@ def check_expired_metric(
 
 
 def check_redundant_ping(
-    pings: Iterable[pings.Ping]
+    pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
-    '''
+    """
     Check if the pings contains 'ping' as the prefix or suffix, or 'ping' or 'custom'
-    '''
-    ping_words = sorted([_split_words(ping.name) for ping in pings])
+    """
+    ping_words = _split_words(pings.name)
 
     if len(ping_words) != 0:
         ping_first_word = ping_words[0]
         ping_last_word = ping_words[-1]
 
         if ping_first_word == "ping":
-            yield (
-                "The prefix 'ping' is redundant."
-            )
+            yield ("The prefix 'ping' is redundant.")
         elif ping_last_word == "ping":
-            yield (
-                "The suffix 'ping' is redundant."
-            )
+            yield ("The suffix 'ping' is redundant.")
         elif "ping" in ping_words:
-            yield (
-                "The word 'ping' is redundant."
-            )
+            yield ("The word 'ping' is redundant.")
         elif "custom" in ping_words:
-            yield (
-                "The word 'custom' is redundant."
-            )
+            yield ("The word 'custom' is redundant.")
 
 
 # The checks that operate on an entire category of metrics:
@@ -311,7 +303,6 @@ METRIC_CHECKS: Dict[
     "BUG_NUMBER": (check_bug_number, CheckType.error),
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
-    "REDUNDANT_PING": (check_redundant_ping, CheckType.error),
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
@@ -324,6 +315,7 @@ PING_CHECKS: Dict[
     str, Tuple[Callable[[pings.Ping, dict], LintGenerator], CheckType]
 ] = {
     "BUG_NUMBER": (check_bug_number, CheckType.error),
+    "REDUNDANT_PING": (check_redundant_ping, CheckType.error),
 }
 
 
