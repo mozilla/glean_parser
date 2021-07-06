@@ -314,9 +314,9 @@ def test_translate_missing_input_files(tmpdir):
 @pytest.mark.parametrize(
     "content,num_nits",
     [
-        ({"ping": {"bugs": [12345]}}, 1),
-        ({"ping": {"bugs": [12345], "no_lint": ["BUG_NUMBER"]}}, 0),
-        ({"ping": {"bugs": [12345]}, "no_lint": ["BUG_NUMBER"]}, 0),
+        ({"search": {"bugs": [12345]}}, 1),
+        ({"search": {"bugs": [12345], "no_lint": ["BUG_NUMBER"]}}, 0),
+        ({"search": {"bugs": [12345]}, "no_lint": ["BUG_NUMBER"]}, 0),
     ],
 )
 def test_bug_number_pings(content, num_nits):
@@ -342,16 +342,10 @@ def test_redundant_pings():
     """
     Test that name contains '-ping' or 'ping-' or 'ping' or 'custom' yields lint errors.
     """
-    content = [
-        {
-            "ping_test": {
-                "description": "testing the ping in the prefix",
-                "send_if_empty": True,
-                "bugs": ["https://bugzilla.mozilla.org/show_bug.cgi?id=1703577"],
-                "data_review": ["https://bugzilla.mozilla.org/show_bug.cgi?id=1703577"],
-            }
-        }
-    ]
+    content = {
+            "ping": {}
+    }
+
     content = util.add_required_ping(content)
     all_pings = parser.parse_objects([content])
     errs = list(all_pings)

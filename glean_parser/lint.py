@@ -42,7 +42,7 @@ def _split_words(name: str) -> List[str]:
     """
     Helper function to split words on either `.` or `_`.
     """
-    return re.split("[._]", name)
+    return re.split("[._-]", name)
 
 
 def _english_list(items: List[str]) -> str:
