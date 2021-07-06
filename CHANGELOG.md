@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New lint: Check for redundant words in ping names ([#355](https://github.com/mozilla/glean_parser/pull/355))
+
 ## 3.6.0 (2021-06-11)
 
 - Add a command `data-review` to generate a skeleton Data Review Request for all metrics matching a supplied bug number. ([bug 1704541](https://bugzilla.mozilla.org/show_bug.cgi?id=1704541))
