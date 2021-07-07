@@ -36,7 +36,7 @@ clean-test: ## remove test and coverage artifacts
 
 lint: ## check style with flake8
 	python3 -m flake8 glean_parser tests
-	python3 -m black --check glean_parser tests setup.py
+	python3 -m black --check --diff glean_parser tests setup.py
 	python3 -m yamllint glean_parser tests
 	python3 -m mypy glean_parser
 
