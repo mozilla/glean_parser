@@ -342,9 +342,7 @@ def test_redundant_pings():
     """
     Test that name contains '-ping' or 'ping-' or 'ping' or 'custom' yields lint errors.
     """
-    content = {
-            "ping": {}
-    }
+    content = {"ping": {}}
 
     content = util.add_required_ping(content)
     all_pings = parser.parse_objects([content])
