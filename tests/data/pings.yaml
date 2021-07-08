@@ -14,6 +14,7 @@ custom-ping:
     - http://nowhere.com/reviews
   notification_emails:
     - CHANGE-ME@test-only.com
+  no_lint: [REDUNDANT_PING]
 
 really-custom-ping:
   description: >
@@ -31,6 +32,7 @@ really-custom-ping:
     - http://nowhere.com/reviews
   notification_emails:
     - CHANGE-ME@test-only.com
+  no_lint: [REDUNDANT_PING]
 
 custom-ping-might-be-empty:
   description:
@@ -48,3 +50,4 @@ custom-ping-might-be-empty:
       A silly reason for sending a ping.
     serious:
       A serious reason for sending a ping.
+  no_lint: [REDUNDANT_PING]

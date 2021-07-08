@@ -42,7 +42,7 @@ def _split_words(name: str) -> List[str]:
     """
     Helper function to split words on either `.` or `_`.
     """
-    return re.split("[._]", name)
+    return re.split("[._-]", name)
 
 
 def _english_list(items: List[str]) -> str:
@@ -262,6 +262,28 @@ def check_expired_metric(
         yield ("Metric has expired. Please consider removing it.")
 
 
+def check_redundant_ping(
+    pings: pings.Ping, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    """
+    Check if the pings contains 'ping' as the prefix or suffix, or 'ping' or 'custom'
+    """
+    ping_words = _split_words(pings.name)
+
+    if len(ping_words) != 0:
+        ping_first_word = ping_words[0]
+        ping_last_word = ping_words[-1]
+
+        if ping_first_word == "ping":
+            yield ("The prefix 'ping' is redundant.")
+        elif ping_last_word == "ping":
+            yield ("The suffix 'ping' is redundant.")
+        elif "ping" in ping_words:
+            yield ("The word 'ping' is redundant.")
+        elif "custom" in ping_words:
+            yield ("The word 'custom' is redundant.")
+
+
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
 CATEGORY_CHECKS: Dict[
@@ -293,6 +315,7 @@ PING_CHECKS: Dict[
     str, Tuple[Callable[[pings.Ping, dict], LintGenerator], CheckType]
 ] = {
     "BUG_NUMBER": (check_bug_number, CheckType.error),
+    "REDUNDANT_PING": (check_redundant_ping, CheckType.error),
 }
 
 
