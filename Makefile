@@ -40,6 +40,9 @@ lint: ## check style with flake8
 	python3 -m yamllint glean_parser tests
 	python3 -m mypy glean_parser
 
+fmt: ## autoformat files
+	python3 -m black glean_parser tests setup.py
+
 test: ## run tests quickly with the default Python
 	py.test
 
