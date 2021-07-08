@@ -313,7 +313,9 @@ def pprint_validation_error(error) -> str:
 
     description = error.schema.get("description")
     if description:
-        parts.extend(["", "Documentation for this node:", _utils.indent(description)])
+        parts.extend(
+            ["", "Documentation for this node:", textwrap.indent(description, "    ")]
+        )
 
     return "\n".join(parts)
 
@@ -327,9 +329,9 @@ def format_error(filepath: Union[str, Path], header: str, content: str) -> str:
     else:
         filepath = "<string>"
     if header:
-        return f"{filepath}: {header}\n{_utils.indent(content)}"
+        return f"{filepath}: {header}\n{textwrap.indent(content, '    ')}"
     else:
-        return f"{filepath}:\n{_utils.indent(content)}"
+        return f"{filepath}:\n{textwrap.indent(content, '    ')}"
 
 
 def parse_expires(expires: str) -> datetime.date:
