@@ -8,7 +8,6 @@ import re
 import textwrap
 
 import pytest
-from jsonschema import _utils
 
 from glean_parser import metrics
 from glean_parser import parser
@@ -183,7 +182,7 @@ def test_parser_schema_violation():
     ]
 
     expected_errors = set(
-        re.sub(r"\s", "", _utils.indent(textwrap.dedent(x)).strip())
+        re.sub(r"\s", "", textwrap.indent(textwrap.dedent(x), "    ").strip())
         for x in expected_errors
     )
 
