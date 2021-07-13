@@ -94,6 +94,8 @@ definitions:
 
             - `uuid`: Record a UUID v4.
 
+            - `url`: Record a valid URL string.
+
             - `memory_distribution`: A histogram for recording memory usage
               values. Additional properties: `memory_unit`.
 
@@ -129,6 +131,7 @@ definitions:
           - memory_distribution
           - datetime
           - uuid
+          - url
           - jwe
           - labeled_boolean
           - labeled_string
