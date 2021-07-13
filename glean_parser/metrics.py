@@ -338,6 +338,10 @@ class Uuid(Metric):
     typename = "uuid"
 
 
+class Url(Metric):
+    typename = "url"
+
+
 class Jwe(Metric):
     typename = "jwe"
 
