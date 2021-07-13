@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.7.0 (2021-07-13)
 
 - New lint: Check for redundant words in ping names ([#355](https://github.com/mozilla/glean_parser/pull/355))
 - Add support for URL metric type ([#361](https://github.com/mozilla/glean_parser/pull/361))
