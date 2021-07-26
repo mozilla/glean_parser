@@ -1,5 +1,7 @@
 # Changelog
 
+- Expose ping reasons enum on JavaScript / TypeScript templates. ([bug 1719136](https://bugzilla.mozilla.org/show_bug.cgi?id=1719136))
+
 ## 3.7.0 (2021-07-13)
 
 - New lint: Check for redundant words in ping names ([#355](https://github.com/mozilla/glean_parser/pull/355))

@@ -44,7 +44,7 @@ def javascript_datatypes_filter(value: util.JSONType) -> str:
 def class_name_factory(platform: str) -> Callable[[str], str]:
     """
     Returns a function that receives an obj_type and
-    returns the correct class name for that time in the current platform.
+    returns the correct class name for that type in the current platform.
     """
 
     def class_name(obj_type: str) -> str:

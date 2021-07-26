@@ -245,6 +245,26 @@ def test_duplicate(tmpdir):
         )
 
 
+def test_reasons(tmpdir):
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(ROOT / "data" / "pings.yaml", "javascript", tmpdir, None)
+
+    translate.translate(ROOT / "data" / "pings.yaml", "typescript", tmpdir, None)
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["pings.js", "pings.ts"])
+
+    with (tmpdir / "pings.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "export const CustomPingMightBeEmptyReasonCodes" in content
+        assert "export const RealPingMightBeEmptyReasonCodes" not in content
+
+    with (tmpdir / "pings.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "export enum CustomPingMightBeEmptyReasonCodes" in content
+        assert "export enum RealPingMightBeEmptyReasonCodes" not in content
+
+
 def test_event_extra_keys_in_correct_order(tmpdir):
     """
     Assert that the extra keys appear in the parameter and the enumeration in

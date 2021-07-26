@@ -28,6 +28,7 @@ import {{ type|class_name }} from "@mozilla/glean/{{ platform }}/private/{{ type
 {% else %}
 .import org.mozilla.Glean {{ version }} as Glean
 {% endif %}
+
 {% for obj in objs.values() %}
 /**
  * {{ obj.description|wordwrap() | replace("\n", "\n * ") }}
@@ -40,4 +41,29 @@ import {{ type|class_name }} from "@mozilla/glean/{{ platform }}/private/{{ type
 {% if platform != "qt" %}export {% endif %}const {{ obj.name|camelize }} = {{ obj_declaration(obj) }};
 {% endif %}
 
+{% if obj|attr("_generate_enums") %}
+{% for name, suffix in obj["_generate_enums"] %}
+{% if obj|attr(name)|length and name == "reason_codes" %}
+/**
+ * Reason codes for `{{ obj.identifier() }}`.
+ *
+ * @readonly
+ * @enum {string}
+ */
+{% if lang == "typescript" %}
+export enum {{ obj.name|Camelize }}{{ name|Camelize }} {
+    {% for key in obj|attr(name) %}
+    {{ key|Camelize }} = "{{ key }}",
+    {% endfor %}
+}
+{% else %}
+{% if platform != "qt" %}export {% endif %}const {{ obj.name|Camelize }}{{ name|Camelize }} = {
+    {% for key in obj|attr(name) %}
+    "{{ key|Camelize }}": "{{ key }}",
+    {% endfor %}
+}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endfor %}
