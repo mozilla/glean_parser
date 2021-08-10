@@ -205,6 +205,7 @@ def _instantiate_metrics(
                 f"For category '{category_key}'",
                 "Categories beginning with 'glean' are reserved for "
                 "Glean internal use.",
+                category_val.defined_in["line"],
             )
             continue
         all_objects.setdefault(category_key, OrderedDict())
@@ -222,6 +223,7 @@ def _instantiate_metrics(
                     filepath,
                     f"On instance {category_key}.{metric_key}",
                     str(e),
+                    metric_val.defined_in["line"],
                 )
                 metric_obj = None
             else:
@@ -234,14 +236,15 @@ def _instantiate_metrics(
                         f"On instance {category_key}.{metric_key}",
                         'Only internal metrics may specify "all-pings" '
                         'in "send_in_pings"',
+                        metric_val.defined_in["line"],
                     )
                     metric_obj = None
 
             if metric_obj is not None:
                 metric_obj.no_lint = list(set(metric_obj.no_lint + global_no_lint))
 
-            if isinstance(filepath, Path):
-                metric_obj.defined_in["filepath"] = str(filepath)
+                if isinstance(filepath, Path):
+                    metric_obj.defined_in["filepath"] = str(filepath)
 
             already_seen = sources.get((category_key, metric_key))
             if already_seen is not None:
@@ -253,6 +256,7 @@ def _instantiate_metrics(
                         f"Duplicate metric name '{category_key}.{metric_key}' "
                         f"already defined in '{already_seen}'"
                     ),
+                    metric_val.defined_in["line"],
                 )
             else:
                 all_objects[category_key][metric_key] = metric_obj
