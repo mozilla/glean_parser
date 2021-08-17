@@ -63,6 +63,16 @@ def class_name_factory(platform: str) -> Callable[[str], str]:
     return class_name
 
 
+def extra_type_name(extra_type: str) -> str:
+    """
+    Returns the equivalent TypeScript type to an extra type.
+    """
+    if extra_type == "quantity":
+        return "number"
+
+    return extra_type
+
+
 def import_path(obj_type: str) -> str:
     """
     Returns the import path of the given object inside the @mozilla/glean package.
@@ -127,6 +137,7 @@ def output(
         "javascript.jinja2",
         filters=(
             ("class_name", class_name_factory(platform)),
+            ("extra_type_name", extra_type_name),
             ("import_path", import_path),
             ("js", javascript_datatypes_filter),
             ("args", args),
