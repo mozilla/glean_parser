@@ -2,9 +2,6 @@
 Jinja2 template is not. Please file bugs! #}
 {% macro obj_declaration(obj) %}
 new {{ obj.type|class_name }}{% if obj.extra_keys and  lang == "typescript" %}<{
-    {% for name in obj.allowed_extra_keys_without_types %}
-    {{ name }}?: string,
-    {% endfor %}
     {% for name, type in obj.allowed_extra_keys_with_types %}
     {{ name }}?: {{ type|extra_type_name }},
     {% endfor %}
