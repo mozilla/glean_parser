@@ -373,3 +373,47 @@ def test_qt_platform_generated_correct_qmldir_file(tmpdir):
         assert content.count("DottedCategory 0.14 dottedCategory.js") == 1
         assert content.count("GleanInternalMetrics 0.14 gleanInternalMetrics.js") == 1
         assert content.count("depends org.mozilla.Glean 0.14") == 1
+
+
+def test_event_extra_keys_with_types(tmpdir):
+    """
+    Assert that the extra keys with types appear with their corresponding types.
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "events_with_types.yaml",
+        "typescript",
+        tmpdir,
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["core.ts"])
+
+    with (tmpdir / "core.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        print(content)
+        assert (
+            "new EventMetricType<{ "
+            "enabled?: boolean, "
+            "preference?: string, "
+            "swapped?: number, "
+            "}>({" in content
+        )
+        assert '"enabled", "preference", "swapped"' in content
+
+    # Make sure this only happens for the TypeScript template.
+    translate.translate(
+        ROOT / "data" / "events_with_types.yaml",
+        "javascript",
+        tmpdir,
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["core.js", "core.ts"])
+
+    with (tmpdir / "core.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+        assert "new EventMetricType({" in content
+        assert '"enabled", "preference", "swapped"' in content

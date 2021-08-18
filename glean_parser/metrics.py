@@ -312,7 +312,8 @@ class Event(Metric):
     def allowed_extra_keys_with_types(self):
         # Sort keys so that output is deterministic
         return sorted(
-            [(k, v["type"]) for (k, v) in self.extra_keys.items()], key=lambda x: x[0]
+            [(k, v.get("type", "string")) for (k, v) in self.extra_keys.items()],
+            key=lambda x: x[0],
         )
 
     @property
