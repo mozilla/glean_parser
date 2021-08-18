@@ -1,5 +1,7 @@
 # Changelog
 
+## 3.8.0 (2021-08-18)
+
 - Expose ping reasons enum on JavaScript / TypeScript templates. ([bug 1719136](https://bugzilla.mozilla.org/show_bug.cgi?id=1719136))
 - Define an interface with the allowed extras for each event on the TypeScript template. ([bug 1693487](https://bugzilla.mozilla.org/show_bug.cgi?id=1693487))
 
