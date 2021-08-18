@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript &#8212; Glean Parser 3.7.1.dev8+gbe44315 documentation</title>
+    <title>glean_parser.javascript &#8212; Glean Parser 3.7.1.dev9+g0939066 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -96,6 +96,16 @@
     <span class="k">return</span> <span class="n">class_name</span></div>
 
 
+<div class="viewcode-block" id="extra_type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.extra_type_name">[docs]</a><span class="k">def</span> <span class="nf">extra_type_name</span><span class="p">(</span><span class="n">extra_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the equivalent TypeScript type to an extra type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">extra_type</span> <span class="o">==</span> <span class="s2">&quot;quantity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;number&quot;</span>
+
+    <span class="k">return</span> <span class="n">extra_type</span></div>
+
+
 <div class="viewcode-block" id="import_path"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.import_path">[docs]</a><span class="k">def</span> <span class="nf">import_path</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the import path of the given object inside the @mozilla/glean package.</span>
@@ -160,6 +170,7 @@
         <span class="s2">&quot;javascript.jinja2&quot;</span><span class="p">,</span>
         <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
             <span class="p">(</span><span class="s2">&quot;class_name&quot;</span><span class="p">,</span> <span class="n">class_name_factory</span><span class="p">(</span><span class="n">platform</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s2">&quot;extra_type_name&quot;</span><span class="p">,</span> <span class="n">extra_type_name</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;import_path&quot;</span><span class="p">,</span> <span class="n">import_path</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;js&quot;</span><span class="p">,</span> <span class="n">javascript_datatypes_filter</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;args&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">),</span>
