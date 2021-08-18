@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add support for Text metric type ([#374](https://github.com/mozilla/glean_parser/pull/374))
+
 ## 3.8.0 (2021-08-18)
 
 - Expose ping reasons enum on JavaScript / TypeScript templates. ([bug 1719136](https://bugzilla.mozilla.org/show_bug.cgi?id=1719136))

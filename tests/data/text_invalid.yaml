@@ -1,0 +1,63 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+invalid.text:
+  lifetime:
+    type: text
+    lifetime: user
+    send_in_pings:
+      - custom
+    description: |
+      dummy metric
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+    data_sensitivity:
+      - highly_sensitive
+    no_lint:
+      - EXPIRATION_DATE_TOO_FAR
+
+  sensitivity:
+    type: text
+    lifetime: ping
+    send_in_pings:
+      - custom
+    description: |
+      dummy metric
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+    data_sensitivity:
+      - technical
+    no_lint:
+      - EXPIRATION_DATE_TOO_FAR
+
+  builtin_pings:
+    type: text
+    lifetime: ping
+    send_in_pings:
+      - metrics
+    description: |
+      dummy metric
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: 2100-01-01
+    data_sensitivity:
+      - highly_sensitive
+    no_lint:
+      - EXPIRATION_DATE_TOO_FAR
