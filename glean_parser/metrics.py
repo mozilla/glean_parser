@@ -396,4 +396,8 @@ class Rate(Metric):
         super().__init__(*args, **kwargs)
 
 
+class Text(Metric):
+    typename = "text"
+
+
 ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping]]]

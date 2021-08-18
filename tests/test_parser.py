@@ -667,3 +667,47 @@ def test_rates():
     assert (
         category["the_denominator"].type == "counter"
     )  # Hasn't been transformed to "denominator" yet
+
+
+def test_text_valid():
+    """
+    Ensure that `text` metrics parse properly.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "text.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    assert all_metrics.value["valid.text"]["lifetime"].lifetime == metrics.Lifetime.ping
+
+    assert all_metrics.value["valid.text"]["sensitivity"].data_sensitivity == [
+        metrics.DataSensitivity.web_activity
+    ]
+
+
+def test_text_invalid():
+    """
+    Ensure that `text` metrics parse properly.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "text_invalid.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errors = list(all_metrics)
+    assert len(errors) == 3
+
+    for error in errors:
+        if "sensitivity" in error:
+            assert "'technical' is not one of" in error
+
+        if "lifetime" in error:
+            assert "'user' is not one of" in error
+
+        if "builtin_pings" in error:
+            assert "Built-in pings are not allowed" in error
