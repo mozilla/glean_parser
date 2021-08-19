@@ -222,6 +222,7 @@ def _instantiate_metrics(
                     filepath,
                     f"On instance {category_key}.{metric_key}",
                     str(e),
+                    metric_val.defined_in["line"],
                 )
                 metric_obj = None
             else:
@@ -234,6 +235,7 @@ def _instantiate_metrics(
                         f"On instance {category_key}.{metric_key}",
                         'Only internal metrics may specify "all-pings" '
                         'in "send_in_pings"',
+                        metric_val.defined_in["line"],
                     )
                     metric_obj = None
 
@@ -253,6 +255,7 @@ def _instantiate_metrics(
                         f"Duplicate metric name '{category_key}.{metric_key}' "
                         f"already defined in '{already_seen}'"
                     ),
+                    metric_obj.defined_in["line"],
                 )
             else:
                 all_objects[category_key][metric_key] = metric_obj
