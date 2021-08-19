@@ -3,7 +3,7 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-from glean_parser import parser
+from glean_parser import parser, pings
 
 import util
 
@@ -12,17 +12,19 @@ def test_reserved_ping_name():
     """
     Make sure external users can't use a reserved ping name.
     """
-    content = {"baseline": {"include_client_id": True}}
 
-    util.add_required_ping(content)
-    errors = list(parser._instantiate_pings({}, {}, content, "", {}))
-    assert len(errors) == 1
-    assert "Ping uses a reserved name" in errors[0]
+    for ping in pings.RESERVED_PING_NAMES:
+        content = {ping: {"include_client_id": True}}
 
-    errors = list(
-        parser._instantiate_pings({}, {}, content, "", {"allow_reserved": True})
-    )
-    assert len(errors) == 0
+        util.add_required_ping(content)
+        errors = list(parser._instantiate_pings({}, {}, content, "", {}))
+        assert len(errors) == 1, f"Ping '{ping}' should not be allowed"
+        assert "Ping uses a reserved name" in errors[0]
+
+        errors = list(
+            parser._instantiate_pings({}, {}, content, "", {"allow_reserved": True})
+        )
+        assert len(errors) == 0
 
 
 def test_reserved_metrics_category():
