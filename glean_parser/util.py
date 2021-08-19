@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 import sys
 import textwrap
-from typing import Any, Callable, Iterable, Sequence, Tuple, Union
+from typing import Any, Callable, Iterable, Sequence, Tuple, Union, Optional
 import urllib.request
 
 import appdirs  # type: ignore
@@ -320,7 +320,12 @@ def pprint_validation_error(error) -> str:
     return "\n".join(parts)
 
 
-def format_error(filepath: Union[str, Path], header: str, content: str) -> str:
+def format_error(
+    filepath: Union[str, Path],
+    header: str,
+    content: str,
+    lineno: Optional[int] = None,
+) -> str:
     """
     Format a jsonshema validation error.
     """
@@ -328,6 +333,8 @@ def format_error(filepath: Union[str, Path], header: str, content: str) -> str:
         filepath = filepath.resolve()
     else:
         filepath = "<string>"
+    if lineno:
+        filepath = f"{filepath}:{lineno}"
     if header:
         return f"{filepath}: {header}\n{textwrap.indent(content, '    ')}"
     else:
