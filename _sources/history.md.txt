@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.0.0 (2021-08-20)
+
 - Add support for Text metric type ([#374](https://github.com/mozilla/glean_parser/pull/374))
 - Reserve the `default` ping name. It can't be used as a ping name, but it can be used in `send_in_pings` ([#376](https://github.com/mozilla/glean_parser/pull/376))
 
