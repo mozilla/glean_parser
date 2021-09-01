@@ -32,9 +32,9 @@
 
 ## 3.4.0 (2021-05-28)
 
-- Add missing import for Kotlin code ([#339](https://github.com/mozilla/glean_parser/pull/341))
-- Use a plain Kotlin type in the generated interface implementation ([#339](https://github.com/mozilla/glean_parser/pull/341))
-- Generate additional generics for event metrics ([#339](https://github.com/mozilla/glean_parser/pull/341))
+- Add missing import for Kotlin code ([#339](https://github.com/mozilla/glean_parser/pull/339))
+- Use a plain Kotlin type in the generated interface implementation ([#339](https://github.com/mozilla/glean_parser/pull/339))
+- Generate additional generics for event metrics ([#339](https://github.com/mozilla/glean_parser/pull/339))
 - For Kotlin skip generating `GleanBuildInfo.kt` when requested (with `with_buildinfo=false`) ([#341](https://github.com/mozilla/glean_parser/pull/341))
 
 ## 3.3.2 (2021-05-18)
