@@ -112,7 +112,7 @@ def load_yaml_or_json(path: Path):
     """
     # If in py.test, support bits of literal JSON/YAML content
     if TESTING_MODE and isinstance(path, dict):
-        return path
+        return yaml_load(yaml.dump(path))
 
     if path.suffix == ".json":
         with path.open("r", encoding="utf-8") as fd:
