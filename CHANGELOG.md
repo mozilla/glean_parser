@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for Node.js platform on Javascript / Typescript templates. ([bug 1728982](https://bugzilla.mozilla.org/show_bug.cgi?id=1728982))
+
 ## 4.0.0 (2021-08-20)
 
 - Add support for Text metric type ([#374](https://github.com/mozilla/glean_parser/pull/374))
