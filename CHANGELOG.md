@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.1.1 (2021-09-28)
+
 - Update private import paths on Javascript / Typescript templates. ([bug 1702468](https://bugzilla.mozilla.org/show_bug.cgi?id=1702468))
 
 ## 4.1.0 (2021-09-16)
