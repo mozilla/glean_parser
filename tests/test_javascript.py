@@ -207,13 +207,13 @@ def test_labeled_subtype_is_imported(tmpdir):
         content = fd.read()
         assert (
             content.count(
-                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+                'import CounterMetricType from "@mozilla/glean/private/metrics/counter";'  # noqa
             )
             == 1
         )
         assert (
             content.count(
-                'import LabeledMetricType from "@mozilla/glean/webext/private/metrics/labeled";'  # noqa
+                'import LabeledMetricType from "@mozilla/glean/private/metrics/labeled";'  # noqa
             )
             == 1
         )
@@ -239,7 +239,7 @@ def test_duplicate(tmpdir):
         content = fd.read()
         assert (
             content.count(
-                'import CounterMetricType from "@mozilla/glean/webext/private/metrics/counter";'  # noqa
+                'import CounterMetricType from "@mozilla/glean/private/metrics/counter";'  # noqa
             )
             == 1
         )
