@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Update private import paths on Javascript / Typescript templates. ([bug 1702468](https://bugzilla.mozilla.org/show_bug.cgi?id=1702468))
+
 ## 4.1.0 (2021-09-16)
 
 - Add support for Node.js platform on Javascript / Typescript templates. ([bug 1728982](https://bugzilla.mozilla.org/show_bug.cgi?id=1728982))
