@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Improve the schema validation error messages. They will no longer include `OrderedDict(...)` on Python 3.7 and later ([bug 1733395](https://bugzilla.mozilla.org/show_bug.cgi?id=1733395))
+
 ## 4.1.1 (2021-09-28)
 
 - Update private import paths on Javascript / Typescript templates. ([bug 1702468](https://bugzilla.mozilla.org/show_bug.cgi?id=1702468))
