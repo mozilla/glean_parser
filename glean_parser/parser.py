@@ -8,7 +8,6 @@
 Code for parsing metrics.yaml files.
 """
 
-from collections import OrderedDict
 import functools
 from pathlib import Path
 import textwrap
@@ -20,6 +19,7 @@ from jsonschema.exceptions import ValidationError  # type: ignore
 from .metrics import Metric, ObjectTree
 from .pings import Ping, RESERVED_PING_NAMES
 from . import util
+from .util import DictWrapper
 
 
 ROOT_DIR = Path(__file__).parent
@@ -207,7 +207,7 @@ def _instantiate_metrics(
                 "Glean internal use.",
             )
             continue
-        all_objects.setdefault(category_key, OrderedDict())
+        all_objects.setdefault(category_key, DictWrapper())
 
         if not isinstance(category_val, dict):
             raise TypeError(f"Invalid content for {category_key}")
@@ -382,7 +382,7 @@ def parse_objects(
     if config is None:
         config = {}
 
-    all_objects: ObjectTree = OrderedDict()
+    all_objects: ObjectTree = DictWrapper()
     sources: Dict[Any, Path] = {}
     filepaths = util.ensure_list(filepaths)
     for filepath in filepaths:

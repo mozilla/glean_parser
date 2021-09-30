@@ -3,7 +3,6 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-from collections import OrderedDict
 import os
 from pathlib import Path
 import subprocess
@@ -12,6 +11,7 @@ from glean_parser import kotlin
 from glean_parser import metrics
 from glean_parser import pings
 from glean_parser import translate
+from glean_parser.util import DictWrapper
 
 
 ROOT = Path(__file__).parent
@@ -123,7 +123,7 @@ def test_kotlin_generator():
     assert kdf("\n") == r'"\n"'
     assert kdf([42, "\n"]) == r'listOf(42, "\n")'
     assert (
-        kdf(OrderedDict([("key", "value"), ("key2", "value2")]))
+        kdf(DictWrapper([("key", "value"), ("key2", "value2")]))
         == r'mapOf("key" to "value", "key2" to "value2")'
     )
     assert kdf(metrics.Lifetime.ping) == "Lifetime.Ping"
