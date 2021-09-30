@@ -707,12 +707,15 @@ def test_text_invalid():
     errors = list(all_metrics)
     assert len(errors) == 3
 
+    def compare(expected, found):
+        return "".join(expected.split()) in "".join(found.split())
+
     for error in errors:
         if "sensitivity" in error:
-            assert "'technical' is not one of" in error
+            assert compare("'technical' is not one of", error)
 
         if "lifetime" in error:
-            assert "'user' is not one of" in error
+            assert compare("'user' is not one of", error)
 
         if "builtin_pings" in error:
-            assert "Built-in pings are not allowed" in error
+            assert compare("Built-in pings are not allowed", error)
