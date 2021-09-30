@@ -39,6 +39,20 @@ This is only an approximation -- this should really be a recursive type.
 # https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
 
 
+# A wrapper around OrderedDict for Python < 3.7 (where dict ordering is not
+# maintained by default), and regular dict everywhere else.
+if sys.version_info < (3, 7):
+
+    class DictWrapper(OrderedDict):
+        pass
+
+
+else:
+
+    class DictWrapper(dict):
+        pass
+
+
 class _NoDatesSafeLoader(yaml.SafeLoader):
     @classmethod
     def remove_implicit_resolver(cls, tag_to_remove):
@@ -77,7 +91,7 @@ def yaml_load(stream):
 
     def _construct_mapping_adding_line(loader, node):
         loader.flatten_mapping(node)
-        mapping = OrderedDict(loader.construct_pairs(node))
+        mapping = DictWrapper(loader.construct_pairs(node))
         mapping.defined_in = {"line": node.start_mark.line}
         return mapping
 
@@ -96,7 +110,7 @@ def ordered_yaml_dump(data, **kwargs):
             yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, data.items()
         )
 
-    OrderedDumper.add_representer(OrderedDict, _dict_representer)
+    OrderedDumper.add_representer(DictWrapper, _dict_representer)
     return yaml.dump(data, Dumper=OrderedDumper, **kwargs)
 
 

@@ -4,13 +4,13 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 import pytest
-from collections import OrderedDict
 from pathlib import Path
 
 from glean_parser import csharp
 from glean_parser import metrics
 from glean_parser import pings
 from glean_parser import translate
+from glean_parser.util import DictWrapper
 
 
 ROOT = Path(__file__).parent
@@ -89,7 +89,7 @@ def test_csharp_generator():
     assert cdf("\n") == r'"\n"'
     assert cdf(["test", "\n"]) == r'new string[] {"test", "\n"}'
     assert (
-        cdf(OrderedDict([("key", "value"), ("key2", "value2")]))
+        cdf(DictWrapper([("key", "value"), ("key2", "value2")]))
         == r'new Dictionary<string, string> {{"key", "value"}, {"key2", "value2"}}'
     )
     assert cdf(metrics.Lifetime.ping) == "Lifetime.Ping"

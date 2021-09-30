@@ -5,6 +5,7 @@
 
 from pathlib import Path
 import re
+import sys
 import textwrap
 
 import pytest
@@ -52,6 +53,10 @@ def test_parser_invalid():
     assert "could not determine a constructor for the tag" in errors[0]
 
 
+@pytest.mark.skipif(
+    sys.version_info < (3, 7),
+    reason="Error messages have literal 'OrderedDict' in them on Python 3.6",
+)
 def test_parser_schema_violation():
     """1507792"""
     all_metrics = parser.parse_objects(ROOT / "data" / "schema-violation.yaml")
@@ -159,18 +164,18 @@ def test_parser_schema_violation():
                 key_11:
                 description: Sample extra key
         ```
-        OrderedDict([('key_1', OrderedDict([('description', 'Sample extra
-        key')])), ('key_2', OrderedDict([('description', 'Sample extra
-        key')])), ('key_3', OrderedDict([('description', 'Sample extra
-        key')])), ('key_4', OrderedDict([('description', 'Sample extra
-        key')])), ('key_5', OrderedDict([('description', 'Sample extra
-        key')])), ('key_6', OrderedDict([('description', 'Sample extra
-        key')])), ('key_7', OrderedDict([('description', 'Sample extra
-        key')])), ('key_8', OrderedDict([('description', 'Sample extra
-        key')])), ('key_9', OrderedDict([('description', 'Sample extra
-        key')])), ('key_10', OrderedDict([('description', 'Sample extra
-        key')])), ('key_11', OrderedDict([('description', 'Sample extra
-        key')]))]) has too many properties
+        {'key_1': {'description': 'Sample extra key'},
+        'key_2': {'description': 'Sample extra key'},
+        'key_3': {'description': 'Sample extra key'},
+        'key_4': {'description': 'Sample extra key'},
+        'key_5': {'description': 'Sample extra key'},
+        'key_6': {'description': 'Sample extra key'},
+        'key_7': {'description': 'Sample extra key'},
+        'key_8': {'description': 'Sample extra key'},
+        'key_9': {'description': 'Sample extra key'},
+        'key_10': {'description': 'Sample extra key'},
+        'key_11': {'description': 'Sample extra key'}
+        } has too many properties
         Documentation for this node:
             The acceptable keys on the "extra" object sent with events. This is an
             object mapping the key to an object containing metadata about the key.

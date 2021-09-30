@@ -3,7 +3,6 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-from collections import OrderedDict
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,6 +12,7 @@ from glean_parser import swift
 from glean_parser import metrics
 from glean_parser import pings
 from glean_parser import translate
+from glean_parser.util import DictWrapper
 
 
 ROOT = Path(__file__).parent
@@ -88,7 +88,7 @@ def test_swift_generator():
     assert kdf("\n") == r'"\n"'
     assert kdf([42, "\n"]) == r'[42, "\n"]'
     assert (
-        kdf(OrderedDict([("key", "value"), ("key2", "value2")]))
+        kdf(DictWrapper([("key", "value"), ("key2", "value2")]))
         == r'["key": "value", "key2": "value2"]'
     )
     assert kdf(metrics.Lifetime.ping) == ".ping"
