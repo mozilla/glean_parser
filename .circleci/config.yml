@@ -82,14 +82,14 @@ commands:
 jobs:
     build-36:
         docker:
-            - image: circleci/python:3.6.12
+            - image: cimg/python:3.6
         steps:
             - test-start
             - test-python-version
 
     build-36-min:
         docker:
-            - image: circleci/python:3.6.12
+            - image: cimg/python:3.6
         steps:
             - test-start
             - test-min-requirements
@@ -97,7 +97,7 @@ jobs:
 
     build-37:
         docker:
-            - image: circleci/python:3.7.9
+            - image: cimg/python:3.7
         steps:
             - test-start
             - test-python-version
@@ -112,14 +112,14 @@ jobs:
 
     build-38:
         docker:
-            - image: circleci/python:3.8.5
+            - image: cimg/python:3.8
         steps:
             - test-start
             - test-python-version
 
     build-38-min:
         docker:
-            - image: circleci/python:3.8.5
+            - image: cimg/python:3.8
         steps:
             - test-start
             - test-min-requirements
@@ -127,21 +127,21 @@ jobs:
 
     build-39:
         docker:
-            - image: circleci/python:3.9.0
+            - image: cimg/python:3.9
         steps:
             - test-start
             - test-python-version
 
     build-310:
         docker:
-            - image: circleci/python:3.10-rc
+            - image: cimg/python:3.10
         steps:
             - test-start
             - test-python-version
 
     lint:
         docker:
-            - image: circleci/python:3.9.0
+            - image: cimg/python:3.9
         steps:
             - test-start
             - lint
@@ -169,7 +169,7 @@ jobs:
 
     pypi-deploy:
         docker:
-            - image: circleci/python:3.7.5
+            - image: cimg/python:3.7
         steps:
             - checkout
             - run:
