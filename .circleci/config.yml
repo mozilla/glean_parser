@@ -134,7 +134,7 @@ jobs:
 
     build-310:
         docker:
-            - image: circleci/python:3.10-rc
+            - image: circleci/python:3.10
         steps:
             - test-start
             - test-python-version
