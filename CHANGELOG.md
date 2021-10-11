@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.2.0
+
 - Improve the schema validation error messages. They will no longer include `OrderedDict(...)` on Python 3.7 and later ([bug 1733395](https://bugzilla.mozilla.org/show_bug.cgi?id=1733395))
 - Officially support Python 3.10
 
