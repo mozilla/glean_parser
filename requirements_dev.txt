@@ -1,6 +1,6 @@
 black==21.9b0
 coverage==6.0
-flake8==3.9.2
+flake8==4.0.0
 flake8-bugbear==21.9.2
 m2r==0.2.1
 mypy==0.910
