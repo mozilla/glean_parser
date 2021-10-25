@@ -18,6 +18,7 @@ from jsonschema.exceptions import ValidationError  # type: ignore
 
 from .metrics import Metric, ObjectTree
 from .pings import Ping, RESERVED_PING_NAMES
+from .tags import Tag
 from . import util
 from .util import DictWrapper
 
@@ -27,6 +28,7 @@ SCHEMAS_DIR = ROOT_DIR / "schemas"
 
 METRICS_ID = "moz://mozilla.org/schemas/glean/metrics/2-0-0"
 PINGS_ID = "moz://mozilla.org/schemas/glean/pings/2-0-0"
+TAGS_ID = "moz://mozilla.org/schemas/glean/tags/1-0-0"
 
 
 def _update_validator(validator):
@@ -90,7 +92,7 @@ def _load_file(
     except IndexError:
         filetype = None
 
-    if filetype not in ("metrics", "pings"):
+    if filetype not in ("metrics", "pings", "tags"):
         filetype = None
 
     for error in validate(content, filepath):
@@ -322,6 +324,58 @@ def _instantiate_pings(
             sources[ping_key] = filepath
 
 
+def _instantiate_tags(
+    all_objects: ObjectTree,
+    sources: Dict[Any, Path],
+    content: Dict[str, util.JSONType],
+    filepath: Path,
+    config: Dict[str, Any],
+) -> Generator[str, None, None]:
+    """
+    Load a list of tags.yaml files, convert the JSON information into Tag
+    objects.
+    """
+    global_no_lint = content.get("no_lint", [])
+    assert isinstance(global_no_lint, list)
+
+    for tag_key, tag_val in content.items():
+        if tag_key.startswith("$"):
+            continue
+        if tag_key == "no_lint":
+            continue
+        if not isinstance(tag_val, dict):
+            raise TypeError(f"Invalid content for ping {tag_key}")
+        tag_val["name"] = tag_key
+        try:
+            tag_obj = Tag(
+                defined_in=getattr(tag_val, "defined_in", None),
+                _validated=True,
+                **tag_val,
+            )
+        except Exception as e:
+            yield util.format_error(filepath, f"On instance '{tag_key}'", str(e))
+            continue
+
+        if tag_obj is not None:
+            tag_obj.no_lint = list(set(tag_obj.no_lint + global_no_lint))
+
+        if isinstance(filepath, Path) and tag_obj.defined_in is not None:
+            tag_obj.defined_in["filepath"] = str(filepath)
+
+        already_seen = sources.get(tag_key)
+        if already_seen is not None:
+            # We've seen this tag name already
+            yield util.format_error(
+                filepath,
+                "",
+                f"Duplicate tag name '{tag_key}' "
+                f"already defined in '{already_seen}'",
+            )
+        else:
+            all_objects.setdefault("tags", {})[tag_key] = tag_obj
+            sources[tag_key] = filepath
+
+
 def _preprocess_objects(objs: ObjectTree, config: Dict[str, Any]) -> ObjectTree:
     """
     Preprocess the object tree to better set defaults.
@@ -363,11 +417,11 @@ def parse_objects(
 
     The result value is a dictionary of category names to categories, where
     each category is a dictionary from metric name to `metrics.Metric`
-    instances.  There is also the special category `pings` containing all
-    of the `pings.Ping` instances.
+    instances.  There are also the special categories `pings` and `tags`
+    containing all of the `pings.Ping` and `tags.Tag` instances, respectively.
 
-    :param filepaths: list of Path objects to metrics.yaml and/or pings.yaml
-        files
+    :param filepaths: list of Path objects to metrics.yaml, pings.yaml, and/or
+        tags.yaml files
     :param config: A dictionary of options that change parsing behavior.
         Supported keys are:
 
@@ -395,5 +449,8 @@ def parse_objects(
             yield from _instantiate_pings(
                 all_objects, sources, content, filepath, config
             )
-
+        elif filetype == "tags":
+            yield from _instantiate_tags(
+                all_objects, sources, content, filepath, config
+            )
     return _preprocess_objects(all_objects, config)

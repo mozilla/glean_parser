@@ -47,6 +47,7 @@ class Metric:
         description: str,
         notification_emails: List[str],
         expires: Any,
+        metadata: Optional[Dict] = None,
         data_reviews: Optional[List[str]] = None,
         version: int = 0,
         disabled: bool = False,
@@ -71,6 +72,9 @@ class Metric:
         self.description = description
         self.notification_emails = notification_emails
         self.expires = expires
+        if metadata is None:
+            metadata = {}
+        self.metadata = metadata
         if data_reviews is None:
             data_reviews = []
         self.data_reviews = data_reviews
