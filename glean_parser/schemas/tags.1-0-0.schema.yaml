@@ -9,7 +9,8 @@ description: |
   Schema for the tags.yaml files for Mozilla's Glean telemetry SDK.
 
   The top-level of the `tags.yaml` file has a key defining the name of each
-  tag. The values contain metadata about that tag (currently just a description).
+  tag. The values contain metadata about that tag (currently just a
+  description).
 
 $id: moz://mozilla.org/schemas/glean/tags/1-0-0
 
