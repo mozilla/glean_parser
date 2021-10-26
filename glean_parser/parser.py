@@ -344,7 +344,7 @@ def _instantiate_tags(
         if tag_key == "no_lint":
             continue
         if not isinstance(tag_val, dict):
-            raise TypeError(f"Invalid content for ping {tag_key}")
+            raise TypeError(f"Invalid content for tag {tag_key}")
         tag_val["name"] = tag_key
         try:
             tag_obj = Tag(
@@ -359,8 +359,8 @@ def _instantiate_tags(
         if tag_obj is not None:
             tag_obj.no_lint = list(set(tag_obj.no_lint + global_no_lint))
 
-        if isinstance(filepath, Path) and tag_obj.defined_in is not None:
-            tag_obj.defined_in["filepath"] = str(filepath)
+            if isinstance(filepath, Path) and tag_obj.defined_in is not None:
+                tag_obj.defined_in["filepath"] = str(filepath)
 
         already_seen = sources.get(tag_key)
         if already_seen is not None:
