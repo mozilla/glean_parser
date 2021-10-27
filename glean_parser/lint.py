@@ -23,6 +23,7 @@ from typing import (
 from . import metrics
 from . import parser
 from . import pings
+from . import tags
 from . import util
 
 
@@ -234,6 +235,16 @@ def check_misspelled_pings(
                 yield f"Ping '{ping}' seems misspelled. Did you mean '{builtin}'?"
 
 
+def check_has_tags(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+
+    if parser_config.get("require_tags", False) and not len(
+        metric.metadata.get("tags", [])
+    ):
+        yield "Tags are required but no tags specified"
+
+
 def check_user_lifetime_expiration(
     metric: metrics.Metric, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -303,6 +314,7 @@ METRIC_CHECKS: Dict[
     "BUG_NUMBER": (check_bug_number, CheckType.error),
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
+    "HAS_TAGS": (check_has_tags, CheckType.error),
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
@@ -374,12 +386,17 @@ def lint_metrics(
         parser_config = {}
 
     nits: List[GlinterNit] = []
+    valid_tag_names = [tag for tag in objs.get("tags", [])]
     for (category_name, category) in sorted(list(objs.items())):
         if category_name == "pings":
             nits.extend(_lint_pings(category, parser_config))
             continue
 
-        # Make sure the category has only Metrics, not Pings
+        if category_name == "tags":
+            # currently we have no linting for tags
+            continue
+
+        # Make sure the category has only Metrics, not Pings or Tags
         category_metrics = dict(
             (name, metric)
             for (name, metric) in category.items()
@@ -410,6 +427,22 @@ def lint_metrics(
                             )
                             for msg in new_nits
                         )
+
+            # also check that tags for metric are valid
+            invalid_tags = [
+                tag
+                for tag in metric.metadata.get("tags", [])
+                if tag not in valid_tag_names
+            ]
+            if len(invalid_tags):
+                nits.append(
+                    GlinterNit(
+                        "INVALID_TAGS",
+                        ".".join([metric.category, metric.name]),
+                        f"Invalid tags specified in metric: {', '.join(invalid_tags)}",
+                        CheckType.error,
+                    )
+                )
 
     if len(nits):
         print("Sorry, Glean found some glinter nits:", file=file)
