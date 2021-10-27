@@ -405,7 +405,7 @@ def parse_objects(
 ) -> Generator[str, None, ObjectTree]:
     """
     Parse one or more metrics.yaml and/or pings.yaml files, returning a tree of
-    `metrics.Metric` and `pings.Ping` instances.
+    `metrics.Metric`, `pings.Ping`, and `tags.Tag` instances.
 
     The result is a generator over any errors.  If there are no errors, the
     actual metrics can be obtained from `result.value`.  For example::
