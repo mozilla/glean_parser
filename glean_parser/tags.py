@@ -31,6 +31,15 @@ class Tag:
             for error in parser.validate(data):
                 raise ValueError(error)
 
+    @property
+    def type(self) -> str:
+        return "tag"
+
+    def _serialize_input(self) -> Dict[str, util.JSONType]:
+        d = self.serialize()
+        modified_dict = util.remove_output_params(d, "defined_in")
+        return modified_dict
+
     def serialize(self) -> Dict[str, util.JSONType]:
         """
         Serialize the tag back to JSON object model.

@@ -368,7 +368,7 @@ def _lint_item_tags(
 
 
 def _lint_pings(
-    category: Dict[str, Union[metrics.Metric, pings.Ping]],
+    category: Dict[str, Union[metrics.Metric, pings.Ping, tags.Tag]],
     parser_config: Dict[str, Any],
     valid_tag_names: List[str],
 ) -> List[GlinterNit]:

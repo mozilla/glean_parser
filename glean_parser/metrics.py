@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional, Type, Union  # noqa
 
 
 from . import pings
+from . import tags
 from . import util
 
 
@@ -404,4 +405,4 @@ class Text(Metric):
     typename = "text"
 
 
-ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping]]]
+ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping, tags.Tag]]]
