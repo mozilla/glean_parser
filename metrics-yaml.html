@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>metrics.yaml file &#8212; Glean Parser 4.2.1.dev4+gc8ae4cb6 documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 4.2.1.dev5+gd3549cc0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -194,6 +194,22 @@ entirety below:</p>
           <span class="no">Descriptions may contain [markdown</span>
           <span class="no">syntax](https://www.markdownguide.org/basic-syntax/).</span>
         <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+
+      <span class="nt">metadata</span><span class="p">:</span>
+        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metadata</span>
+        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+          <span class="no">Additional metadata about this metric. Currently limited to a list of</span>
+          <span class="no">tags.</span>
+        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
+        <span class="nt">properties</span><span class="p">:</span>
+          <span class="nt">tags</span><span class="p">:</span>
+            <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Tags</span>
+            <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Which tags are specified for this metric.</span>
+            <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+            <span class="nt">items</span><span class="p">:</span>
+              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+              <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
+        <span class="nt">default</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
 
       <span class="nt">lifetime</span><span class="p">:</span>
         <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lifetime</span>
@@ -561,6 +577,9 @@ entirety below:</p>
         <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
             <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;&#39;pings&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span>
             <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pings</span>
+        <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
+            <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;&#39;tags&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span>
+            <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tags</span>
     <span class="p p-Indicator">-</span> <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">]</span>
 
 <span class="nt">properties</span><span class="p">:</span>
@@ -739,6 +758,7 @@ entirety below:</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pings-yaml.html"><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tags-yaml.html"><code class="docutils literal notranslate"><span class="pre">tags.yaml</span></code> file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">glean_parser</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>

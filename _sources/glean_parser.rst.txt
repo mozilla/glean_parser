@@ -92,6 +92,14 @@ glean\_parser.swift module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.tags module
+-------------------------
+
+.. automodule:: glean_parser.tags
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.translate module
 ------------------------------
 
