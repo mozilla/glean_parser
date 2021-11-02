@@ -235,7 +235,7 @@ def check_misspelled_pings(
                 yield f"Ping '{ping}' seems misspelled. Did you mean '{builtin}'?"
 
 
-def check_has_tags(
+def check_tags_required(
     metric_or_ping: Union[metrics.Metric, pings.Ping], parser_config: Dict[str, Any]
 ) -> LintGenerator:
 
@@ -314,7 +314,7 @@ METRIC_CHECKS: Dict[
     "BUG_NUMBER": (check_bug_number, CheckType.error),
     "BASELINE_PING": (check_valid_in_baseline, CheckType.error),
     "MISSPELLED_PING": (check_misspelled_pings, CheckType.error),
-    "HAS_TAGS": (check_has_tags, CheckType.error),
+    "TAGS_REQUIRED": (check_tags_required, CheckType.error),
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
@@ -327,7 +327,7 @@ PING_CHECKS: Dict[
     str, Tuple[Callable[[pings.Ping, dict], LintGenerator], CheckType]
 ] = {
     "BUG_NUMBER": (check_bug_number, CheckType.error),
-    "HAS_TAGS": (check_has_tags, CheckType.error),
+    "TAGS_REQUIRED": (check_tags_required, CheckType.error),
     "REDUNDANT_PING": (check_redundant_ping, CheckType.error),
 }
 

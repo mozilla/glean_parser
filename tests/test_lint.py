@@ -377,7 +377,7 @@ def test_metric_no_tags(require_tags, expected_nits):
     nits = lint.lint_metrics(objs.value, {"require_tags": require_tags})
     assert len(nits) == expected_nits
     if expected_nits:
-        assert nits[0].check_name == "HAS_TAGS"
+        assert nits[0].check_name == "TAGS_REQUIRED"
         assert nits[0].name == "foo.bar"
         assert nits[0].msg == "Tags are required but no tags specified"
 
@@ -398,7 +398,7 @@ def test_ping_no_tags(require_tags, expected_nits):
     nits = lint.lint_metrics(objs.value, {"require_tags": require_tags})
     assert len(nits) == expected_nits
     if expected_nits:
-        assert nits[0].check_name == "HAS_TAGS"
+        assert nits[0].check_name == "TAGS_REQUIRED"
         assert nits[0].name == "search"
         assert nits[0].msg == "Tags are required but no tags specified"
 
