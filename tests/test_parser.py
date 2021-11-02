@@ -558,7 +558,20 @@ def test_send_in_pings_restrictions():
     all_metrics = parser.parse_objects(ROOT / "data" / "invalid-ping-names.yaml")
     errors = list(all_metrics)
     assert len(errors) == 1
+
     assert "'invalid_ping_name' does not match" in errors[0]
+
+
+def test_tags():
+    """Tests that tags can be specified."""
+    all_metrics = parser.parse_objects(ROOT / "data" / "metric-with-tags.yaml")
+    errors = list(all_metrics)
+
+    assert errors == []
+    assert len(all_metrics.value) == 1
+    assert all_metrics.value["telemetry"]["client_id"].metadata == {
+        "tags": ["banana", "apple"]
+    }
 
 
 def test_custom_expires():

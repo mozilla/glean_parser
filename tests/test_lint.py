@@ -352,3 +352,118 @@ def test_redundant_pings():
     nits = lint.lint_metrics(all_pings.value)
     assert len(nits) == 1
     assert set(["REDUNDANT_PING"]) == set(v.check_name for v in nits)
+
+
+@pytest.mark.parametrize(
+    "require_tags,expected_nits",
+    [
+        (False, 0),
+        (True, 1),
+    ],
+)
+def test_metric_no_tags(require_tags, expected_nits):
+    """Test what happens when a metric has no tags (depends on parser configuration)"""
+    metric = {
+        "foo": {
+            "bar": {
+                "type": "boolean",
+            },
+        },
+    }
+    objs = parser.parse_objects([util.add_required(metric)])
+    errs = list(objs)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(objs.value, {"require_tags": require_tags})
+    assert len(nits) == expected_nits
+    if expected_nits:
+        assert nits[0].check_name == "TAGS_REQUIRED"
+        assert nits[0].name == "foo.bar"
+        assert nits[0].msg == "Tags are required but no tags specified"
+
+
+@pytest.mark.parametrize(
+    "require_tags,expected_nits",
+    [
+        (False, 0),
+        (True, 1),
+    ],
+)
+def test_ping_no_tags(require_tags, expected_nits):
+    """Test what happens when a metric has no tags (depends on parser configuration)"""
+    objs = parser.parse_objects([util.add_required_ping({"search": {}})])
+    errs = list(objs)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(objs.value, {"require_tags": require_tags})
+    assert len(nits) == expected_nits
+    if expected_nits:
+        assert nits[0].check_name == "TAGS_REQUIRED"
+        assert nits[0].name == "search"
+        assert nits[0].msg == "Tags are required but no tags specified"
+
+
+@pytest.mark.parametrize(
+    "tags,expected_nits",
+    [
+        (["apple"], 0),
+        (["grapefruit"], 1),
+    ],
+)
+def test_check_metric_tag_names(tags, expected_nits):
+    """
+    Test that specifying an invalid tag name inside a metric produces an error
+    """
+    metric = {
+        "foo": {
+            "bar": {
+                "type": "boolean",
+                "metadata": {"tags": tags},
+            },
+        },
+    }
+    defined_tags = {
+        "$schema": "moz://mozilla.org/schemas/glean/tags/1-0-0",
+        "apple": {"description": "apple is a banana"},
+    }
+
+    objs = parser.parse_objects([util.add_required(metric), defined_tags])
+    errs = list(objs)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(objs.value)
+    assert len(nits) == expected_nits
+    if expected_nits:
+        assert nits[0].check_name == "INVALID_TAGS"
+        assert nits[0].name == "foo.bar"
+        assert nits[0].msg == "Invalid tags specified in metric: grapefruit"
+
+
+@pytest.mark.parametrize(
+    "tags,expected_nits",
+    [
+        (["apple"], 0),
+        (["grapefruit"], 1),
+    ],
+)
+def test_check_ping_tag_names(tags, expected_nits):
+    """
+    Test that specifying an invalid tag name inside a metric produces an error
+    """
+    defined_tags = {
+        "$schema": "moz://mozilla.org/schemas/glean/tags/1-0-0",
+        "apple": {"description": "apple is a banana"},
+    }
+
+    objs = parser.parse_objects(
+        [util.add_required_ping({"search": {"metadata": {"tags": tags}}}), defined_tags]
+    )
+    errs = list(objs)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(objs.value)
+    assert len(nits) == expected_nits
+    if expected_nits:
+        assert nits[0].check_name == "INVALID_TAGS"
+        assert nits[0].name == "search"
+        assert nits[0].msg == "Invalid tags specified in ping: grapefruit"

@@ -153,6 +153,22 @@ definitions:
           syntax](https://www.markdownguide.org/basic-syntax/).
         type: string
 
+      metadata:
+        title: Metadata
+        description: |
+          Additional metadata about this metric. Currently limited to a list of
+          tags.
+        type: object
+        properties:
+          tags:
+            title: Tags
+            description: Which tags are specified for this metric.
+            type: array
+            items:
+              type: string
+              maxLength: 80
+        default: {}
+
       lifetime:
         title: Lifetime
         description: |
@@ -519,6 +535,9 @@ propertyNames:
         - not:
             description: "'pings' is reserved as a category name."
             const: pings
+        - not:
+            description: "'tags' is reserved as a category name."
+            const: tags
     - enum: ['$schema']
 
 properties:
