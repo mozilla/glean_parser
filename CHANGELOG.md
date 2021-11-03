@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- BUGFIX: Skip tags for code generation
+## 4.3.1
+
+- BUGFIX: Skip tags for code generation ([#409](https://github.com/mozilla/glean_parser/pull/409))
 
 ## 4.3.0
 
