@@ -226,3 +226,21 @@ def test_rates(tmpdir):
         options={"foo": "bar"},
         parser_config={"allow_reserved": True},
     )
+
+
+def test_with_tags(tmpdir):
+    output = Path(str(tmpdir)) / "tags_test"
+
+    translate.translate(
+        [
+            ROOT / "data" / "metric-with-tags.yaml",
+            ROOT / "data" / "tags.yaml",
+        ],
+        "kotlin",
+        output,
+        options={"with_buildinfo": "false"},
+        parser_config={"allow_reserved": True},
+    )
+
+    # A single metric category in a single file
+    assert len(list(output.iterdir())) == 1
