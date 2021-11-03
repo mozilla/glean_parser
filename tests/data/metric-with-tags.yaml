@@ -7,7 +7,7 @@ $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 telemetry:
   client_id:
     type: uuid
-    lifetime: user
+    lifetime: ping
     description: >
       A UUID identifying a profile and allowing user-oriented
       Correlation of data.
@@ -25,3 +25,5 @@ telemetry:
         - banana
         - apple
     expires: 2100-01-01
+    no_lint:
+      - EXPIRATION_DATE_TOO_FAR

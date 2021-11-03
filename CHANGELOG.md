@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Skip tags for code generation
+
 ## 4.3.0
 
 - Support tags in glean parser ([bug 1734011](https://bugzilla.mozilla.org/show_bug.cgi?id=1734011))
