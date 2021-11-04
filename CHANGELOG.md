@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- A new linter warning, `PRIVATE_BUGTRACKER`, will be emitted if a `bugs` URL points to a known private bugtracker. This warning will become an error in a future release.
+
 ## 4.3.1
 
 - BUGFIX: Skip tags for code generation ([#409](https://github.com/mozilla/glean_parser/pull/409))

@@ -18,6 +18,7 @@ from typing import (
     Tuple,
     Union,
 )  # noqa
+from urllib.parse import urlparse
 
 
 from . import metrics
@@ -273,6 +274,18 @@ def check_expired_metric(
         yield ("Metric has expired. Please consider removing it.")
 
 
+PRIVATE_BUGTRACKER_DISALLOW_LIST = set(["mozilla-hub.atlassian.net"])
+
+
+def check_private_bugtracker(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    for bug in metric.bugs:
+        parsed = urlparse(bug)
+        if parsed.hostname in PRIVATE_BUGTRACKER_DISALLOW_LIST:
+            yield (f"Bug url '{bug}' points to a private bugtracker.")
+
+
 def check_redundant_ping(
     pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -318,6 +331,7 @@ METRIC_CHECKS: Dict[
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
+    "PRIVATE_BUGTRACKER": (check_private_bugtracker, CheckType.warning),
 }
 
 

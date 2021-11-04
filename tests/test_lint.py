@@ -467,3 +467,24 @@ def test_check_ping_tag_names(tags, expected_nits):
         assert nits[0].check_name == "INVALID_TAGS"
         assert nits[0].name == "search"
         assert nits[0].msg == "Invalid tags specified in ping: grapefruit"
+
+
+def test_private_bugtracker():
+    contents = [
+        {
+            "user_data": {
+                "too_far": {
+                    "bugs": ["https://mozilla-hub.atlassian.net/browse/FXIOS-1808"],
+                }
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+    assert len(nits) == 1
+    assert set(["PRIVATE_BUGTRACKER"]) == set(v.check_name for v in nits)
