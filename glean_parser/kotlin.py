@@ -56,7 +56,8 @@ def kotlin_datatypes_filter(value: util.JSONType) -> str:
                     first = False
                 yield ")"
             elif isinstance(value, enum.Enum):
-                yield (value.__class__.__name__ + "." + util.Camelize(value.name))
+                # UniFFI generates SCREAMING_CASE enum variants.
+                yield (value.__class__.__name__ + "." + util.screaming_case(value.name))
             elif isinstance(value, set):
                 yield "setOf("
                 first = True
@@ -338,7 +339,9 @@ def output_kotlin(
                     category_name=category_key,
                     objs=category_val,
                     obj_types=obj_types,
-                    extra_args=util.extra_args,
+                    common_metric_args=util.common_metric_args,
+                    extra_metric_args=util.extra_metric_args,
+                    ping_args=util.ping_args,
                     namespace=namespace,
                     has_labeled_metrics=has_labeled_metrics,
                     glean_namespace=glean_namespace,
