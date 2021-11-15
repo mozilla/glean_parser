@@ -245,7 +245,7 @@ def test_order_of_fields(tmpdir):
             # Collect only the fields
             field = line.strip().split(":")[0]
             first_metric_fields.append(field)
-        elif re.search("MetricType", line):
+        elif re.search("CommonMetricData", line):
             found_metric = True
 
     expected_fields = ["category", "name", "sendInPings", "lifetime", "disabled"]
@@ -309,7 +309,7 @@ def test_event_extra_keys_in_correct_order(tmpdir):
             "enum ExampleKeys: Int32, ExtraKeys "
             "{ case alice = 0 case bob = 1 case charlie = 2" in content
         )
-        assert 'allowedExtraKeys: ["alice", "bob", "charlie"]' in content
+        assert ', ["alice", "bob", "charlie"]' in content
 
 
 def test_event_extra_keys_with_types(tmpdir):
@@ -336,4 +336,4 @@ def test_event_extra_keys_with_types(tmpdir):
             "{ var enabled: Bool? var preference: String? "
             "var swapped: Int32?" in content
         )
-        assert 'allowedExtraKeys: ["enabled", "preference", "swapped"]' in content
+        assert ', ["enabled", "preference", "swapped"]' in content
