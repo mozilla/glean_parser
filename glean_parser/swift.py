@@ -238,7 +238,8 @@ def output_swift(
             template.render(
                 parser_version=__version__,
                 categories=categories,
-                extra_args=util.metric_args,
+                common_metric_args=util.common_metric_args,
+                extra_metric_args=util.extra_metric_args,
                 namespace=namespace,
                 glean_namespace=glean_namespace,
                 allow_reserved=options.get("allow_reserved", False),
