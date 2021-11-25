@@ -1,0 +1,120 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+# Note: we're using YAML anchors to re-use the values
+# defined in the first metric.
+# Saves us some typing.
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+all_metrics:
+  counter: &defaults
+    type: counter
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1137353
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+  labeled_counter:
+    <<: *defaults
+    type: labeled_counter
+    labels:
+      - label_a
+      - label_b
+
+  bool:
+    <<: *defaults
+    type: boolean
+
+  labeled_bool:
+    <<: *defaults
+    type: labeled_boolean
+    labels:
+      - label_a
+      - label_b
+
+  string:
+    <<: *defaults
+    type: string
+
+  labeled_string:
+    <<: *defaults
+    type: labeled_string
+    labels:
+      - label_a
+      - label_b
+
+  strlist:
+    <<: *defaults
+    type: string_list
+
+  timespan:
+    <<: *defaults
+    type: timespan
+    time_unit: second
+
+  timing_dist:
+    <<: *defaults
+    type: timing_distribution
+    time_unit: minute
+
+  memory_dist:
+    <<: *defaults
+    type: memory_distribution
+    memory_unit: megabyte
+
+  custom_dist:
+    <<: *defaults
+    type: custom_distribution
+    range_min: 0
+    range_max: 100
+    bucket_count: 10
+    histogram_type: linear
+
+  uuid:
+    <<: *defaults
+    type: uuid
+
+  url:
+    <<: *defaults
+    type: url
+
+  datetime:
+    <<: *defaults
+    type: datetime
+    time_unit: day
+
+  event:
+    <<: *defaults
+    type: event
+    extra_keys:
+      source:
+        description: Source of this event
+        type: string
+
+  quantity:
+    <<: *defaults
+    type: quantity
+    unit: tabs
+
+  rate:
+    <<: *defaults
+    type: rate
+
+  rate_counter:
+    <<: *defaults
+    type: counter
+
+  rate_external:
+    <<: *defaults
+    type: rate
+    denominator_metric: all_metrics.rate_counter
+
+  text:
+    <<: *defaults
+    type: text

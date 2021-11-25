@@ -50,6 +50,21 @@ def test_parser_js(tmpdir):
         assert 'category: ""' in content
 
 
+def test_parser_js_all_metrics(tmpdir):
+    """Test translating metrics to Javascript files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "all_metrics.yaml",
+        "javascript",
+        tmpdir,
+        None,
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["allMetrics.js"])
+
+
 def test_parser_ts(tmpdir):
     """Test translating metrics to Typescript files."""
     tmpdir = Path(str(tmpdir))

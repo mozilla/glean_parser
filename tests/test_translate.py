@@ -25,6 +25,21 @@ def test_translate_unknown_format():
     assert "Unknown output format" in str(e)
 
 
+def test_all_metrics(tmpdir):
+    output = Path(str(tmpdir)) / "tags_test"
+
+    translate.translate(
+        [ROOT / "data" / "all_metrics.yaml"],
+        "kotlin",
+        output,
+        options={"with_buildinfo": "false"},
+        parser_config={"allow_reserved": True},
+    )
+
+    # A single metric category in a single file
+    assert len(list(output.iterdir())) == 1
+
+
 def test_translate_missing_directory(tmpdir):
     output = Path(str(tmpdir)) / "foo"
 
