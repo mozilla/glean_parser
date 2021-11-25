@@ -53,6 +53,23 @@ def test_parser(tmpdir):
     run_linters(tmpdir.glob("*.swift"))
 
 
+def test_parser_all_metrics(tmpdir):
+    """Test translating ALL metric types to Swift files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "all_metrics.yaml",
+        "swift",
+        tmpdir,
+        {"namespace": "Foo"},
+        {"allow_reserved": False},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    run_linters(tmpdir.glob("*.swift"))
+
+
 def test_ping_parser(tmpdir):
     """Test translating pings to Swift files."""
     tmpdir = Path(str(tmpdir))

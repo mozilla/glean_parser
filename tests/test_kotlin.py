@@ -91,6 +91,23 @@ def test_parser(tmpdir):
     run_linters(tmpdir.glob("*.kt"))
 
 
+def test_parser_all_metrics(tmpdir):
+    """Test translating ALL metric types to Kotlin files."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "all_metrics.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo", "with_buildinfo": "false"},
+        {"allow_reserved": False},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["AllMetrics.kt"])
+
+    run_linters(tmpdir.glob("*.kt"))
+
+
 def test_ping_parser(tmpdir):
     """Test translating pings to Kotlin files."""
     tmpdir = Path(str(tmpdir))
