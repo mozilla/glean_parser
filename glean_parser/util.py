@@ -411,13 +411,15 @@ def validate_expires(expires: str) -> None:
 def report_validation_errors(all_objects):
     """
     Report any validation errors found to the console.
+
+    Returns the number of errors reported.
     """
-    found_error = False
+    found_errors = 0
     for error in all_objects:
-        found_error = True
+        found_errors += 1
         print("=" * 78, file=sys.stderr)
         print(error, file=sys.stderr)
-    return found_error
+    return found_errors
 
 
 def remove_output_params(d, output_params):

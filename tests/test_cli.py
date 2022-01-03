@@ -114,6 +114,20 @@ def test_translate_errors(tmpdir):
     assert len(os.listdir(str(tmpdir))) == 0
 
 
+def test_glinter_errors(tmpdir):
+    """Test that the 'glinter' command reports all errors."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "glinter",
+            str(ROOT / "data" / "bad_ping.yamlx"),
+        ],
+    )
+    assert result.exit_code == 1
+    assert "Found 2 errors" in result.output
+
+
 def test_translate_invalid_format(tmpdir):
     """Test passing an invalid format to the 'translate' command."""
     runner = CliRunner()
