@@ -49,6 +49,56 @@ def test_parser(tmpdir):
         assert "True if the user has set Firefox as the default browser." in content
         assert "جمع 搜集" in content
         assert 'category: ""' in content
+        assert "class GleanBuild" in content
+        assert "BuildInfo(buildDate:" in content
+
+    run_linters(tmpdir.glob("*.swift"))
+
+
+def test_parser_no_build_info(tmpdir):
+    """Test translating metrics to Swift files without build info."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "swift",
+        tmpdir,
+        {"with_buildinfo": "false"},
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    # Make sure descriptions made it in
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        assert "class GleanBuild" not in content
+
+    run_linters(tmpdir.glob("*.swift"))
+
+
+def test_parser_custom_build_date(tmpdir):
+    """Test translating metrics to Swift files without build info."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "core.yaml",
+        "swift",
+        tmpdir,
+        {"build_date": "2020-01-01T17:30:00"},
+        {"allow_reserved": True},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    # Make sure descriptions made it in
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        assert "class GleanBuild" in content
+        assert "BuildInfo(buildDate:" in content
+        assert "year: 2020, month: 1, day: 1" in content
 
     run_linters(tmpdir.glob("*.swift"))
 

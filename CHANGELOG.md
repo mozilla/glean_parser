@@ -4,6 +4,16 @@
 
 - Support global file-level tags in metrics.yaml ([bug 1745283](https://bugzilla.mozilla.org/show_bug.cgi?id=1745283))
 - Glinter: Reject metric files if they use `unit` by mistake. It should be `time_unit` ([#432](https://github.com/mozilla/glean_parser/pull/432)).
+- Automatically generate a build date when generating build info ([#431](https://github.com/mozilla/glean_parser/pull/431)).
+  Enabled for Kotlin and Swift.
+  This can be changed with the `build_date` command line option.
+  `build_date=0` will use a static unix epoch time.
+  `build_date=2022-01-03T17:30:00` will parse the ISO8601 string to use (as a UTC timestamp).
+  Other values will throw an error.
+
+  Example:
+
+    glean_parser translate --format kotlin --option build_date=2021-11-01T01:00:00 path/to/metrics.yaml
 
 ## 4.3.1
 
