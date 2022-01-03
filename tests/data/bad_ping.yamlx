@@ -1,0 +1,28 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# NOTE: This file DOES NOT have a trailing newline.
+# This will trigger the linter.
+#
+# If you accidentally add a newline,
+# you can use this oneline to remove it again:
+#
+# head -c -1 tests/data/bad_ping.yamlx > tests/data/bad_ping.yamlx2 && \
+# mv tests/data/bad_ping.yamlx2 tests/data/bad_ping.yamlx
+
+---
+$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+
+noname:
+  description: |
+    Just for testing.
+    Note that the notification_emails list below is NOT an array
+    (it's missing the leading dash)
+  include_client_id: false
+  bugs:
+    - https://github.com/mozilla-rally/rally-study-01/issues/114
+  data_reviews:
+    - TODO
+  notification_emails:
+    CHANGE-ME@example.com
