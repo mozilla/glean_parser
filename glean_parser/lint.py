@@ -552,7 +552,7 @@ def glinter(
     errors += util.report_validation_errors(objs)
 
     nits = lint_metrics(objs.value, parser_config=parser_config, file=file)
-    errors += len(list(filter(lambda nit: nit.check_type == CheckType.error, nits)))
+    errors += len([nit for nit in nits if nit.check_type == CheckType.error])
 
     if errors == 0:
         print("✨ Your metrics are Glean! ✨", file=file)
