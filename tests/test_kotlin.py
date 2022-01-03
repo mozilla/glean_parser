@@ -88,6 +88,10 @@ def test_parser(tmpdir):
         content = fd.read()
         assert 'category = ""' in content
 
+    with (tmpdir / "GleanBuildInfo.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "buildDate = Calendar.getInstance" in content
+
     run_linters(tmpdir.glob("*.kt"))
 
 

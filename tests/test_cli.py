@@ -96,6 +96,84 @@ def test_translate_no_buildinfo(tmpdir):
         assert "package Foo" in content
 
 
+def test_translate_build_date(tmpdir):
+    """Test with a custom build date."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            str(ROOT / "data" / "core.yaml"),
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+            "-s",
+            "namespace=Foo",
+            "-s",
+            "build_date=2020-01-01T17:30:00",
+            "--allow-reserved",
+        ],
+    )
+    assert result.exit_code == 0
+
+    path = Path(str(tmpdir)) / "GleanBuildInfo.kt"
+    with path.open(encoding="utf-8") as fd:
+        content = fd.read()
+    assert "buildDate = Calendar.getInstance" in content
+    assert "cal.set(2020, 0, 1, 17, 30" in content
+
+
+def test_translate_fixed_build_date(tmpdir):
+    """Test with a custom build date."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            str(ROOT / "data" / "core.yaml"),
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+            "-s",
+            "namespace=Foo",
+            "-s",
+            "build_date=0",
+            "--allow-reserved",
+        ],
+    )
+    assert result.exit_code == 0
+
+    path = Path(str(tmpdir)) / "GleanBuildInfo.kt"
+    with path.open(encoding="utf-8") as fd:
+        content = fd.read()
+    assert "buildDate = Calendar.getInstance" in content
+    assert "cal.set(1970" in content
+
+
+def test_translate_borked_build_date(tmpdir):
+    """Test with a custom build date."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            str(ROOT / "data" / "core.yaml"),
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+            "-s",
+            "namespace=Foo",
+            "-s",
+            "build_date=1",
+            "--allow-reserved",
+        ],
+    )
+    assert result.exit_code == 1
+
+
 def test_translate_errors(tmpdir):
     """Test the 'translate' command."""
     runner = CliRunner()
