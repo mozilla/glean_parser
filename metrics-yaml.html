@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>metrics.yaml file &#8212; Glean Parser 4.3.2.dev3+g6140be4c documentation</title>
+    <title>metrics.yaml file &#8212; Glean Parser 4.3.2.dev4+g2831028a documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -40,693 +40,693 @@
 <h2>JSON Schema<a class="headerlink" href="#json-schema" title="Permalink to this headline">¶</a></h2>
 <p>There is a formal schema for validating <code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> files, included in its
 entirety below:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
-<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
-<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span><span class="w"></span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span><span class="w"></span>
+<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span><span class="w"></span>
 
-<span class="nn">---</span>
-<span class="nt">$schema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://json-schema.org/draft-07/schema#</span>
-<span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metrics</span>
-<span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-  <span class="no">Schema for the metrics.yaml files for Mozilla&#39;s Glean telemetry SDK.</span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">$schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://json-schema.org/draft-07/schema#</span><span class="w"></span>
+<span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Metrics</span><span class="w"></span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">  </span><span class="no">Schema for the metrics.yaml files for Mozilla&#39;s Glean telemetry SDK.</span><span class="w"></span>
 
-  <span class="no">The top-level of the `metrics.yaml` file has a key defining each category of</span>
-  <span class="no">metrics. Categories must be snake_case, and they may also have dots `.` to</span>
-  <span class="no">define subcategories.</span>
+<span class="w">  </span><span class="no">The top-level of the `metrics.yaml` file has a key defining each category of</span><span class="w"></span>
+<span class="w">  </span><span class="no">metrics. Categories must be snake_case, and they may also have dots `.` to</span><span class="w"></span>
+<span class="w">  </span><span class="no">define subcategories.</span><span class="w"></span>
 
-<span class="nt">$id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">moz://mozilla.org/schemas/glean/metrics/2-0-0</span>
+<span class="nt">$id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">moz://mozilla.org/schemas/glean/metrics/2-0-0</span><span class="w"></span>
 
-<span class="nt">definitions</span><span class="p">:</span>
-  <span class="nt">token</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[A-Za-z_][A-Za-z0-9_\\.]*$&quot;</span>
+<span class="nt">definitions</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">token</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^[A-Za-z_][A-Za-z0-9_\\.]*$&quot;</span><span class="w"></span>
 
-  <span class="nt">snake_case</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_]*$&quot;</span>
+<span class="w">  </span><span class="nt">snake_case</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^[a-z_][a-z0-9_]*$&quot;</span><span class="w"></span>
 
-  <span class="nt">dotted_snake_case</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$&quot;</span>
-    <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
+<span class="w">  </span><span class="nt">dotted_snake_case</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^[a-z_][a-z0-9_]{0,29}(\\.[a-z_][a-z0-9_]{0,29})*$&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"></span>
 
-  <span class="c1"># Prior to version 2.0.0 of the schema, special ping names with underscores</span>
-  <span class="c1"># were also supported.</span>
-  <span class="nt">kebab_case</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z][a-z0-9-]{0,29}$&quot;</span>
+<span class="w">  </span><span class="c1"># Prior to version 2.0.0 of the schema, special ping names with underscores</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># were also supported.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">kebab_case</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^[a-z][a-z0-9-]{0,29}$&quot;</span><span class="w"></span>
 
-  <span class="nt">long_id</span><span class="p">:</span>
-    <span class="nt">allOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">40</span>
-
-  <span class="nt">short_id</span><span class="p">:</span>
-    <span class="nt">allOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/snake_case&quot;</span>
-      <span class="p p-Indicator">-</span> <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
-
-  <span class="nt">labeled_metric_id</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^[a-z_][a-z0-9_-]{0,29}(\\.[a-z_][a-z0-9_-]{0,29})*$&quot;</span>
-    <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">71</span>  <span class="c1"># Note: this should be category + metric + 1</span>
-
-  <span class="nt">metric</span><span class="p">:</span>
-    <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-      <span class="no">Describes a single metric.</span>
-
-      <span class="no">See https://mozilla.github.io/glean_parser/metrics-yaml.html</span>
-
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-
-    <span class="nt">additionalProperties</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-
-    <span class="nt">properties</span><span class="p">:</span>
-      <span class="nt">type</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metric type</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">Specifies the type of a metric, like &quot;counter&quot; or &quot;event&quot;. This</span>
-          <span class="no">defines which operations are valid for the metric, how it is stored</span>
-          <span class="no">and how data analysis tooling displays it.</span>
-
-          <span class="no">The supported types are:</span>
-            <span class="no">- `event`: Record a specific event (with optional metadata).</span>
-              <span class="no">Additional properties: `extra_keys`.</span>
-
-            <span class="no">- `boolean`: A metric storing values of true or false.</span>
-
-            <span class="no">- `string`: A metric storing Unicode string values.</span>
-
-            <span class="no">- `string_list`: a list of Unicode strings.</span>
-
-            <span class="no">- `counter`: A numeric value that can only be incremented.</span>
-
-            <span class="no">- `quantity`: A numeric value that is set directly.</span>
-
-            <span class="no">- `timespan`: Represents a time interval. Additional properties:</span>
-              <span class="no">`time_unit`.</span>
-
-            <span class="no">- `timing_distribution`: Record the distribution of multiple</span>
-              <span class="no">timings. Additional properties: `time_unit`.</span>
-
-            <span class="no">- `datetime`: A date/time value. Represented as an ISO datetime in</span>
-              <span class="no">UTC. Additional properties: `time_unit`.</span>
-
-            <span class="no">- `uuid`: Record a UUID v4.</span>
-
-            <span class="no">- `url`: Record a valid URL string.</span>
-
-            <span class="no">- `memory_distribution`: A histogram for recording memory usage</span>
-              <span class="no">values. Additional properties: `memory_unit`.</span>
-
-            <span class="no">- `custom_distribution`: A histogram with a custom range and number</span>
-              <span class="no">of buckets. This metric type is for legacy support only and is</span>
-              <span class="no">only allowed for metrics coming from GeckoView. Additional</span>
-              <span class="no">properties: `range_min`, `range_max`, `bucket_count`,</span>
-              <span class="no">`histogram_type`.</span>
-
-            <span class="no">- `rate`: Used to record the rate something happens relative to some</span>
-              <span class="no">other thing. For example, the number of HTTP connections that</span>
-              <span class="no">experience an error relative to the number of total HTTP</span>
-              <span class="no">connections made.</span>
-
-            <span class="no">- Additionally, labeled versions of many metric types are supported.</span>
-              <span class="no">These support the `labels`_ parameter, allowing multiple instances</span>
-              <span class="no">of the metric to be stored at a given set of labels. The labeled</span>
-              <span class="no">metric types include:</span>
-
-                <span class="no">`labeled_boolean`, `labeled_string`, `labeled_counter`.</span>
-
-            <span class="no">- `text`: Record long text data.</span>
-
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">enum</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">event</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string_list</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">counter</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timespan</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timing_distribution</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">memory_distribution</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">datetime</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">uuid</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jwe</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_boolean</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_string</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_counter</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rate</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">text</span>
-
-      <span class="nt">description</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Description</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">A textual description of what this metric does, what it means, and its</span>
-          <span class="no">edge cases or any other helpful information.</span>
-
-          <span class="no">Descriptions may contain [markdown</span>
-          <span class="no">syntax](https://www.markdownguide.org/basic-syntax/).</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-      <span class="nt">metadata</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metadata</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Additional metadata about this metric. Currently limited to a list of</span>
-          <span class="no">tags.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-        <span class="nt">properties</span><span class="p">:</span>
-          <span class="nt">tags</span><span class="p">:</span>
-            <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Tags</span>
-            <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Which tags are specified for this metric.</span>
-            <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-            <span class="nt">items</span><span class="p">:</span>
-              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-              <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">80</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-
-      <span class="nt">lifetime</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lifetime</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Defines the lifetime of the metric. It must be one of the following</span>
-          <span class="no">values:</span>
-
-          <span class="no">- `ping` (default): The metric is reset each time it is sent in a</span>
-            <span class="no">ping.</span>
-
-          <span class="no">- `user`: The metric contains a property that is part of the user&#39;s</span>
-            <span class="no">profile and is never reset.</span>
-
-          <span class="no">- `application`: The metric contains a property that is related to the</span>
-            <span class="no">application, and is reset only at application restarts.</span>
-        <span class="nt">enum</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ping</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">user</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">application</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ping</span>
-
-      <span class="nt">send_in_pings</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Send in pings</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Which pings the metric should be sent on. If not specified, the metric</span>
-          <span class="no">is sent on the &quot;default ping&quot;, which is the `events` ping for events,</span>
-          <span class="no">and the `metrics` ping for everything else. Most metrics don&#39;t need to</span>
-          <span class="no">specify this.</span>
-
-          <span class="no">(There is an additional special value of `all-pings` for internal</span>
-          <span class="no">Glean metrics only that is used to indicate that a metric may appear</span>
-          <span class="no">in any ping.)</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">anyOf</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/kebab_case&quot;</span>
-            <span class="c1"># Allow &quot;special&quot; ping names that start with &quot;glean_&quot; used</span>
-            <span class="c1"># internally by the Glean SDK</span>
-            <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-              <span class="nt">pattern</span><span class="p">:</span> <span class="s">&quot;^glean_.*$&quot;</span>
-        <span class="nt">default</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
-
-      <span class="nt">notification_emails</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Notification emails</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">A list of email addresses to notify for important events with the</span>
-          <span class="no">metric or when people with context or ownership for the metric need to</span>
-          <span class="no">be contacted.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
-
-      <span class="nt">bugs</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Related bugs</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">A list of bug URLs (e.g. Bugzilla and Github) that are relevant to</span>
-          <span class="no">this metric, e.g., tracking its original implementation or later</span>
-          <span class="no">changes to it.</span>
-
-          <span class="no">Prior to version 2.0.0 of the schema, bugs could also be integers.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">minItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
-
-      <span class="nt">data_reviews</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Review references</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">A list of URIs to any data collection reviews relevant to the metric.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-          <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">uri</span>
-
-      <span class="nt">disabled</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Disabled</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">If `true`, the metric is disabled, and any metric collection on it</span>
-          <span class="no">will be silently ignored at runtime.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-
-      <span class="nt">expires</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Expires</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">**Required.**</span>
-
-          <span class="no">By default it may be one of the following values:</span>
-            <span class="no">- `&lt;build date&gt;`: An ISO date `yyyy-mm-dd` in UTC on which the</span>
-              <span class="no">metric expires. For example, `2019-03-13`. This date is checked at</span>
-              <span class="no">build time. Except in special cases, this form should be used so</span>
-              <span class="no">that the metric automatically &quot;sunsets&quot; after a period of time.</span>
-            <span class="no">- `never`: This metric never expires.</span>
-            <span class="no">- `expired`: This metric is manually expired.</span>
-
-          <span class="no">The default may be overriden in certain applications by the</span>
-          <span class="no">`custom_validate_expires` and `custom_is_expired` configs.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-      <span class="nt">version</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Metric version</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The version of the metric. A monotonically increasing value. If not</span>
-          <span class="no">provided, defaults to 0.</span>
-
-      <span class="nt">time_unit</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Time unit</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">For timespans and datetimes, specifies the unit that the metric will</span>
-          <span class="no">be stored and displayed in. If not provided, it defaults to</span>
-          <span class="no">&quot;millisecond&quot;. Time values are sent to the backend as integers, so</span>
-          <span class="no">`time_unit`_ determines the maximum resolution at which timespans are</span>
-          <span class="no">recorded. Times are always truncated, not rounded, to the nearest time</span>
-          <span class="no">unit. For example, a measurement of 25 ns will be returned as 0 ms if</span>
-          <span class="no">`time_unit` is `&quot;millisecond&quot;`.</span>
-
-          <span class="no">For timing distributions, times are always recorded and sent in</span>
-          <span class="no">nanoseconds, but `time_unit` controls the minimum and maximum values.</span>
-          <span class="no">If not provided, it defaults to &quot;nanosecond&quot;.</span>
-
-          <span class="no">- nanosecond: 1ns &lt;= x &lt;= 10 minutes</span>
-          <span class="no">- microsecond: 1μs &lt;= x &lt;= ~6.94 days</span>
-          <span class="no">- millisecond: 1ms &lt;= x &lt;= ~19 years</span>
-
-          <span class="no">Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.</span>
-        <span class="nt">enum</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">nanosecond</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">microsecond</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">millisecond</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">second</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">minute</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">hour</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">day</span>
-
-      <span class="nt">memory_unit</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Memory unit</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The unit that the incoming memory size values are recorded in.</span>
-
-          <span class="no">The units are the power-of-2 units, so &quot;kilobyte&quot; is correctly a</span>
-          <span class="no">&quot;kibibyte&quot;.</span>
-
-          <span class="no">- kilobyte == 2^10 ==         1,024 bytes</span>
-          <span class="no">- megabyte == 2^20 ==     1,048,576 bytes</span>
-          <span class="no">- gigabyte == 2^30 == 1,073,741,824 bytes</span>
-
-          <span class="no">Values are automatically converted to and transmitted as bytes.</span>
-
-          <span class="no">Valid when `type`_ is `memory_distribution`.</span>
-        <span class="nt">enum</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">byte</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kilobyte</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">megabyte</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">gigabyte</span>
-
-      <span class="nt">labels</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Labels</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">A list of labels for a labeled metric.  If provided, the labels are</span>
-          <span class="no">enforced at run time, and recording to an unknown label is recorded</span>
-          <span class="no">to the special label `__other__`.  If not provided, the labels</span>
-          <span class="no">may be anything, but using too many unique labels will put some</span>
-          <span class="no">labels in the special label `__other__`.</span>
-
-          <span class="no">Valid with any of the labeled metric types.</span>
-        <span class="nt">anyOf</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-            <span class="nt">uniqueItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="nt">items</span><span class="p">:</span>
-              <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/labeled_metric_id&quot;</span>
-            <span class="nt">maxItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-          <span class="p p-Indicator">-</span> <span class="nt">type</span><span class="p">:</span> <span class="s">&quot;null&quot;</span>
-
-      <span class="nt">extra_keys</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Extra keys</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The acceptable keys on the &quot;extra&quot; object sent with events. This is an</span>
-          <span class="no">object mapping the key to an object containing metadata about the key.</span>
-          <span class="no">A maximum of 10 extra keys is allowed.</span>
-          <span class="no">This metadata object has the following keys:</span>
-
-            <span class="no">- `description`: **Required.** A description of the key.</span>
-
-          <span class="no">Valid when `type`_ is `event`.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-        <span class="nt">propertyNames</span><span class="p">:</span>
-          <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/dotted_snake_case&quot;</span>
-        <span class="nt">additionalProperties</span><span class="p">:</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">description</span><span class="p">:</span>
-              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-              <span class="nt">enum</span><span class="p">:</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
-          <span class="nt">required</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
-        <span class="nt">maxProperties</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="p p-Indicator">{}</span>
-
-      <span class="nt">gecko_datapoint</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Gecko Datapoint</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">This is a Gecko-specific property. It is the name of the Gecko metric</span>
-          <span class="no">to accumulate the data from, when using the Glean SDK in a product</span>
-          <span class="no">using GeckoView. See bug 1566356 for more context.</span>
-
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-      <span class="nt">range_min</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Range minimum</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The minimum value of a custom distribution.</span>
-
-          <span class="no">Valid when `type`_ is `custom_distribution`.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">number</span>
-        <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-
-      <span class="nt">range_max</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Range maximum</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The maximum value of a custom distribution.</span>
-
-          <span class="no">Required when `type`_ is `custom_distribution`.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">number</span>
-
-      <span class="nt">bucket_count</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Bucket count</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The number of buckets to include in a custom distribution.</span>
-
-          <span class="no">Required when `type`_ is `custom_distribution`.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">number</span>
-        <span class="nt">minimum</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-        <span class="nt">maximum</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
-
-      <span class="nt">histogram_type</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Histogram type</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The type of histogram bucketing to use:</span>
-            <span class="no">- `linear`: The buckets are linearly spaced within the range.</span>
-            <span class="no">- `exponential`: The buckets use the natural logarithmic so the</span>
-              <span class="no">smaller-valued buckets are smaller in size than the higher-valued</span>
-              <span class="no">buckets.</span>
-
-          <span class="no">Required when `type`_ is `custom_distribution`.</span>
-        <span class="nt">enum</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">linear</span>
-          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">exponential</span>
-
-      <span class="nt">unit</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Unit</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The unit of the metric, for metrics that don&#39;t already require a</span>
-          <span class="no">meaningful unit, such as `time_unit`.</span>
-          <span class="no">This is provided for informational purposes only and doesn&#39;t have any</span>
-          <span class="no">effect on data collection.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-      <span class="nt">no_lint</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">This parameter lists any lint checks to skip for this metric only.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-      <span class="nt">data_sensitivity</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The level of data sensitivity</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">There are four data collection categories related to data sensitivity</span>
-          <span class="no">[defined here](https://wiki.mozilla.org/Firefox/Data_Collection):</span>
-
-          <span class="no">- **Category 1: Technical Data:** (`technical`) Information about the</span>
-            <span class="no">machine or Firefox itself. Examples include OS, available memory,</span>
-            <span class="no">crashes and errors, outcome of automated processes like updates,</span>
-            <span class="no">safebrowsing, activation, version \#s, and buildid. This also</span>
-            <span class="no">includes compatibility information about features and APIs used by</span>
-            <span class="no">websites, addons, and other 3rd-party software that interact with</span>
-            <span class="no">Firefox during usage.</span>
-
-          <span class="no">- **Category 2: Interaction Data:** (`interaction`) Information about</span>
-            <span class="no">the user’s direct engagement with Firefox. Examples include how many</span>
-            <span class="no">tabs, addons, or windows a user has open; uses of specific Firefox</span>
-            <span class="no">features; session length, scrolls and clicks; and the status of</span>
-            <span class="no">discrete user preferences.</span>
-
-          <span class="no">- **Category 3: Web activity data:** (`web_activity`) Information</span>
-            <span class="no">about user web browsing that could be considered sensitive. Examples</span>
-            <span class="no">include users’ specific web browsing history; general information</span>
-            <span class="no">about their web browsing history (such as TLDs or categories of</span>
-            <span class="no">webpages visited over time); and potentially certain types of</span>
-            <span class="no">interaction data about specific webpages visited.</span>
-
-          <span class="no">- **Category 4: Highly sensitive data:** (`highly_sensitive`)</span>
-            <span class="no">Information that directly identifies a person, or if combined with</span>
-            <span class="no">other data could identify a person. Examples include e-mail,</span>
-            <span class="no">usernames, identifiers such as google ad id, apple id, fxaccount,</span>
-            <span class="no">city or country (unless small ones are explicitly filtered out), or</span>
-            <span class="no">certain cookies. It may be embedded within specific website content,</span>
-            <span class="no">such as memory contents, dumps, captures of screen data, or DOM</span>
-            <span class="no">data.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-        <span class="nt">items</span><span class="p">:</span>
-          <span class="nt">enum</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">technical</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">interaction</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">web_activity</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">highly_sensitive</span>
-          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">minLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-        <span class="nt">uniqueItems</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-
-      <span class="nt">telemetry_mirror</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Which probe in Telemetry to mirror this metric&#39;s value to.</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">The C++ enum form of the Scalar, Event, or Histogram to which we</span>
-          <span class="no">should mirror values.</span>
-          <span class="no">Use is limited to Firefox Desktop only.</span>
-          <span class="no">Has no effect when used with non-FOG outputters.</span>
-          <span class="no">See FOG&#39;s documentation on mirroring for details -</span>
-          <span class="no">https://firefox-source-docs.mozilla.org/toolkit/components/glean/mirroring.html</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-        <span class="nt">minLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6</span>
-
-      <span class="nt">denominator_metric</span><span class="p">:</span>
-        <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The name of the denominator for this `rate` metric.</span>
-        <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-          <span class="no">Denominators for `rate` metrics may be private and internal</span>
-          <span class="no">or shared and external.</span>
-          <span class="no">External denominators are `counter` metrics.</span>
-          <span class="no">This field names the `counter` metric that serves as this</span>
-          <span class="no">`rate` metric&#39;s external denominator.</span>
-          <span class="no">The named denominator must be defined in this component</span>
-          <span class="no">so glean_parser can find it.</span>
-        <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-    <span class="nt">required</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">type</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bugs</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">notification_emails</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">data_reviews</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">expires</span>
-
-<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-
-<span class="nt">propertyNames</span><span class="p">:</span>
-  <span class="nt">anyOf</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">allOf</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/dotted_snake_case&quot;</span>
-        <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
-            <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;&#39;pings&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span>
-            <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pings</span>
-        <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
-            <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;&#39;tags&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span>
-            <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tags</span>
-    <span class="p p-Indicator">-</span> <span class="nt">enum</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">]</span>
-
-<span class="nt">properties</span><span class="p">:</span>
-  <span class="nt">$schema</span><span class="p">:</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
-
-  <span class="nt">no_lint</span><span class="p">:</span>
-    <span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Lint checks to skip globally</span>
-    <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-      <span class="no">This parameter lists any lint checks to skip for this whole file.</span>
-    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-    <span class="nt">items</span><span class="p">:</span>
-      <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-
-<span class="nt">additionalProperties</span><span class="p">:</span>
-  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
-  <span class="nt">propertyNames</span><span class="p">:</span>
-    <span class="nt">anyOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/short_id&quot;</span>
-  <span class="nt">additionalProperties</span><span class="p">:</span>
-    <span class="nt">allOf</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/metric&quot;</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">event</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">lifetime</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-                <span class="no">Event metrics must have ping lifetime.</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ping</span>
-      <span class="p p-Indicator">-</span> <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">not</span><span class="p">:</span>
-            <span class="nt">properties</span><span class="p">:</span>
-              <span class="nt">type</span><span class="p">:</span>
-                <span class="nt">enum</span><span class="p">:</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">timing_distribution</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">memory_distribution</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">labeled_counter</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">gecko_datapoint</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-                <span class="no">`gecko_datapoint` is only allowed for `timing_distribution`,</span>
-                <span class="no">`custom_distribution`, `memory_distribution`, `quantity`,</span>
-                <span class="no">`boolean`, `string` and `labeled_counter`.</span>
-              <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_distribution</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">required</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">range_max</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">bucket_count</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">histogram_type</span>
-          <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`custom_distribution` is missing required parameters `range_max`,</span>
-            <span class="no">`bucket_count` and `histogram_type`.</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">memory_distribution</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">required</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">memory_unit</span>
-          <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`memory_distribution` is missing required parameter `memory_unit`.</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">quantity</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">required</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">unit</span>
-          <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">`quantity` is missing required parameter `unit`.</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jwe</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">required</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jwe_support_was_removed</span>
-          <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-            <span class="no">JWE support was removed.</span>
-            <span class="no">If you require this send an email to glean-team@mozilla.com.</span>
-      <span class="p p-Indicator">-</span> <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">not</span><span class="p">:</span>
-            <span class="nt">properties</span><span class="p">:</span>
-              <span class="nt">type</span><span class="p">:</span>
-                <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rate</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">denominator_metric</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-                <span class="no">`denominator_metric` is only allowed for `rate`.</span>
-              <span class="nt">maxLength</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-      <span class="p p-Indicator">-</span>
-        <span class="nt">if</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">type</span><span class="p">:</span>
-              <span class="nt">const</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">text</span>
-        <span class="nt">then</span><span class="p">:</span>
-          <span class="nt">properties</span><span class="p">:</span>
-            <span class="nt">lifetime</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
-                <span class="no">Text metrics must have ping or application lifetime.</span>
-              <span class="nt">enum</span><span class="p">:</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ping</span>
-                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">application</span>
-
-            <span class="nt">data_sensitivity</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
-                <span class="no">Text metrics require Category 3 (`web_activity`)</span>
-                <span class="no">or Category 4 (`highly_sensitive`).</span>
-              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-              <span class="nt">items</span><span class="p">:</span>
-                <span class="nt">enum</span><span class="p">:</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">web_activity</span>
-                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">highly_sensitive</span>
-
-            <span class="nt">send_in_pings</span><span class="p">:</span>
-              <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">|</span>
-                <span class="no">Text metrics can only be sent in custom pings.</span>
-                <span class="no">Built-in pings are not allowed.</span>
-              <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
-              <span class="nt">items</span><span class="p">:</span>
-                <span class="nt">allOf</span><span class="p">:</span>
-                  <span class="p p-Indicator">-</span> <span class="nt">$ref</span><span class="p">:</span> <span class="s">&quot;#/definitions/kebab_case&quot;</span>
-                  <span class="p p-Indicator">-</span> <span class="nt">not</span><span class="p">:</span>
-                      <span class="nt">description</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
-                        <span class="no">Text metrics can only be sent in custom pings.</span>
-                        <span class="no">Built-in pings are not allowed.&quot;</span>
-                      <span class="nt">pattern</span><span class="p">:</span>
-                        <span class="s">&quot;^(metrics|baseline|events|deletion-request|default|glean_.*)$&quot;</span>
+<span class="w">  </span><span class="nt">long_id</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">allOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/snake_case&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">short_id</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">allOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/snake_case&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">labeled_metric_id</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^[a-z_][a-z0-9_-]{0,29}(\\.[a-z_][a-z0-9_-]{0,29})*$&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">71</span><span class="w">  </span><span class="c1"># Note: this should be category + metric + 1</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">metric</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">      </span><span class="no">Describes a single metric.</span><span class="w"></span>
+
+<span class="w">      </span><span class="no">See https://mozilla.github.io/glean_parser/metrics-yaml.html</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">additionalProperties</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Metric type</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Specifies the type of a metric, like &quot;counter&quot; or &quot;event&quot;. This</span><span class="w"></span>
+<span class="w">          </span><span class="no">defines which operations are valid for the metric, how it is stored</span><span class="w"></span>
+<span class="w">          </span><span class="no">and how data analysis tooling displays it.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">The supported types are:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `event`: Record a specific event (with optional metadata).</span><span class="w"></span>
+<span class="w">              </span><span class="no">Additional properties: `extra_keys`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `boolean`: A metric storing values of true or false.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `string`: A metric storing Unicode string values.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `string_list`: a list of Unicode strings.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `counter`: A numeric value that can only be incremented.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `quantity`: A numeric value that is set directly.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `timespan`: Represents a time interval. Additional properties:</span><span class="w"></span>
+<span class="w">              </span><span class="no">`time_unit`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `timing_distribution`: Record the distribution of multiple</span><span class="w"></span>
+<span class="w">              </span><span class="no">timings. Additional properties: `time_unit`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `datetime`: A date/time value. Represented as an ISO datetime in</span><span class="w"></span>
+<span class="w">              </span><span class="no">UTC. Additional properties: `time_unit`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `uuid`: Record a UUID v4.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `url`: Record a valid URL string.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `memory_distribution`: A histogram for recording memory usage</span><span class="w"></span>
+<span class="w">              </span><span class="no">values. Additional properties: `memory_unit`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `custom_distribution`: A histogram with a custom range and number</span><span class="w"></span>
+<span class="w">              </span><span class="no">of buckets. This metric type is for legacy support only and is</span><span class="w"></span>
+<span class="w">              </span><span class="no">only allowed for metrics coming from GeckoView. Additional</span><span class="w"></span>
+<span class="w">              </span><span class="no">properties: `range_min`, `range_max`, `bucket_count`,</span><span class="w"></span>
+<span class="w">              </span><span class="no">`histogram_type`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `rate`: Used to record the rate something happens relative to some</span><span class="w"></span>
+<span class="w">              </span><span class="no">other thing. For example, the number of HTTP connections that</span><span class="w"></span>
+<span class="w">              </span><span class="no">experience an error relative to the number of total HTTP</span><span class="w"></span>
+<span class="w">              </span><span class="no">connections made.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- Additionally, labeled versions of many metric types are supported.</span><span class="w"></span>
+<span class="w">              </span><span class="no">These support the `labels`_ parameter, allowing multiple instances</span><span class="w"></span>
+<span class="w">              </span><span class="no">of the metric to be stored at a given set of labels. The labeled</span><span class="w"></span>
+<span class="w">              </span><span class="no">metric types include:</span><span class="w"></span>
+
+<span class="w">                </span><span class="no">`labeled_boolean`, `labeled_string`, `labeled_counter`.</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `text`: Record long text data.</span><span class="w"></span>
+
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">event</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string_list</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counter</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timespan</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timing_distribution</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_distribution</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory_distribution</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datetime</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uuid</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">url</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jwe</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">labeled_boolean</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">labeled_string</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">labeled_counter</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Description</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">A textual description of what this metric does, what it means, and its</span><span class="w"></span>
+<span class="w">          </span><span class="no">edge cases or any other helpful information.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Descriptions may contain [markdown</span><span class="w"></span>
+<span class="w">          </span><span class="no">syntax](https://www.markdownguide.org/basic-syntax/).</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Metadata</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">Additional metadata about this metric. Currently limited to a list of</span><span class="w"></span>
+<span class="w">          </span><span class="no">tags.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">        </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">tags</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tags</span><span class="w"></span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Which tags are specified for this metric.</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">            </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">              </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">lifetime</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lifetime</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">Defines the lifetime of the metric. It must be one of the following</span><span class="w"></span>
+<span class="w">          </span><span class="no">values:</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- `ping` (default): The metric is reset each time it is sent in a</span><span class="w"></span>
+<span class="w">            </span><span class="no">ping.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- `user`: The metric contains a property that is part of the user&#39;s</span><span class="w"></span>
+<span class="w">            </span><span class="no">profile and is never reset.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- `application`: The metric contains a property that is related to the</span><span class="w"></span>
+<span class="w">            </span><span class="no">application, and is reset only at application restarts.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ping</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ping</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">send_in_pings</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Send in pings</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">Which pings the metric should be sent on. If not specified, the metric</span><span class="w"></span>
+<span class="w">          </span><span class="no">is sent on the &quot;default ping&quot;, which is the `events` ping for events,</span><span class="w"></span>
+<span class="w">          </span><span class="no">and the `metrics` ping for everything else. Most metrics don&#39;t need to</span><span class="w"></span>
+<span class="w">          </span><span class="no">specify this.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">(There is an additional special value of `all-pings` for internal</span><span class="w"></span>
+<span class="w">          </span><span class="no">Glean metrics only that is used to indicate that a metric may appear</span><span class="w"></span>
+<span class="w">          </span><span class="no">in any ping.)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">anyOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/kebab_case&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># Allow &quot;special&quot; ping names that start with &quot;glean_&quot; used</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># internally by the Glean SDK</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">              </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;^glean_.*$&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">notification_emails</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Notification emails</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">A list of email addresses to notify for important events with the</span><span class="w"></span>
+<span class="w">          </span><span class="no">metric or when people with context or ownership for the metric need to</span><span class="w"></span>
+<span class="w">          </span><span class="no">be contacted.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">minItems</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">          </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">bugs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Related bugs</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">A list of bug URLs (e.g. Bugzilla and Github) that are relevant to</span><span class="w"></span>
+<span class="w">          </span><span class="no">this metric, e.g., tracking its original implementation or later</span><span class="w"></span>
+<span class="w">          </span><span class="no">changes to it.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Prior to version 2.0.0 of the schema, bugs could also be integers.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">minItems</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">          </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uri</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">data_reviews</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Review references</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">A list of URIs to any data collection reviews relevant to the metric.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">          </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uri</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">disabled</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Disabled</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">If `true`, the metric is disabled, and any metric collection on it</span><span class="w"></span>
+<span class="w">          </span><span class="no">will be silently ignored at runtime.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">expires</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expires</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">**Required.**</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">By default it may be one of the following values:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `&lt;build date&gt;`: An ISO date `yyyy-mm-dd` in UTC on which the</span><span class="w"></span>
+<span class="w">              </span><span class="no">metric expires. For example, `2019-03-13`. This date is checked at</span><span class="w"></span>
+<span class="w">              </span><span class="no">build time. Except in special cases, this form should be used so</span><span class="w"></span>
+<span class="w">              </span><span class="no">that the metric automatically &quot;sunsets&quot; after a period of time.</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `never`: This metric never expires.</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `expired`: This metric is manually expired.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">The default may be overriden in certain applications by the</span><span class="w"></span>
+<span class="w">          </span><span class="no">`custom_validate_expires` and `custom_is_expired` configs.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Metric version</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The version of the metric. A monotonically increasing value. If not</span><span class="w"></span>
+<span class="w">          </span><span class="no">provided, defaults to 0.</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">time_unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Time unit</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">For timespans and datetimes, specifies the unit that the metric will</span><span class="w"></span>
+<span class="w">          </span><span class="no">be stored and displayed in. If not provided, it defaults to</span><span class="w"></span>
+<span class="w">          </span><span class="no">&quot;millisecond&quot;. Time values are sent to the backend as integers, so</span><span class="w"></span>
+<span class="w">          </span><span class="no">`time_unit`_ determines the maximum resolution at which timespans are</span><span class="w"></span>
+<span class="w">          </span><span class="no">recorded. Times are always truncated, not rounded, to the nearest time</span><span class="w"></span>
+<span class="w">          </span><span class="no">unit. For example, a measurement of 25 ns will be returned as 0 ms if</span><span class="w"></span>
+<span class="w">          </span><span class="no">`time_unit` is `&quot;millisecond&quot;`.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">For timing distributions, times are always recorded and sent in</span><span class="w"></span>
+<span class="w">          </span><span class="no">nanoseconds, but `time_unit` controls the minimum and maximum values.</span><span class="w"></span>
+<span class="w">          </span><span class="no">If not provided, it defaults to &quot;nanosecond&quot;.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- nanosecond: 1ns &lt;= x &lt;= 10 minutes</span><span class="w"></span>
+<span class="w">          </span><span class="no">- microsecond: 1μs &lt;= x &lt;= ~6.94 days</span><span class="w"></span>
+<span class="w">          </span><span class="no">- millisecond: 1ms &lt;= x &lt;= ~19 years</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Valid when `type`_ is `timespan`, `timing_distribution` or `datetime`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nanosecond</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">microsecond</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">millisecond</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">second</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minute</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hour</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">day</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">memory_unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Memory unit</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The unit that the incoming memory size values are recorded in.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">The units are the power-of-2 units, so &quot;kilobyte&quot; is correctly a</span><span class="w"></span>
+<span class="w">          </span><span class="no">&quot;kibibyte&quot;.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- kilobyte == 2^10 ==         1,024 bytes</span><span class="w"></span>
+<span class="w">          </span><span class="no">- megabyte == 2^20 ==     1,048,576 bytes</span><span class="w"></span>
+<span class="w">          </span><span class="no">- gigabyte == 2^30 == 1,073,741,824 bytes</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Values are automatically converted to and transmitted as bytes.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Valid when `type`_ is `memory_distribution`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">byte</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kilobyte</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">megabyte</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gigabyte</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Labels</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">A list of labels for a labeled metric.  If provided, the labels are</span><span class="w"></span>
+<span class="w">          </span><span class="no">enforced at run time, and recording to an unknown label is recorded</span><span class="w"></span>
+<span class="w">          </span><span class="no">to the special label `__other__`.  If not provided, the labels</span><span class="w"></span>
+<span class="w">          </span><span class="no">may be anything, but using too many unique labels will put some</span><span class="w"></span>
+<span class="w">          </span><span class="no">labels in the special label `__other__`.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Valid with any of the labeled metric types.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">anyOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">            </span><span class="nt">uniqueItems</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">            </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/labeled_metric_id&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">maxItems</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;null&quot;</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">extra_keys</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Extra keys</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The acceptable keys on the &quot;extra&quot; object sent with events. This is an</span><span class="w"></span>
+<span class="w">          </span><span class="no">object mapping the key to an object containing metadata about the key.</span><span class="w"></span>
+<span class="w">          </span><span class="no">A maximum of 10 extra keys is allowed.</span><span class="w"></span>
+<span class="w">          </span><span class="no">This metadata object has the following keys:</span><span class="w"></span>
+
+<span class="w">            </span><span class="no">- `description`: **Required.** A description of the key.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Valid when `type`_ is `event`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">        </span><span class="nt">propertyNames</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/dotted_snake_case&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">additionalProperties</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">              </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span><span class="w"></span>
+<span class="w">          </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">description</span><span class="w"></span>
+<span class="w">        </span><span class="nt">maxProperties</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">gecko_datapoint</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Gecko Datapoint</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">This is a Gecko-specific property. It is the name of the Gecko metric</span><span class="w"></span>
+<span class="w">          </span><span class="no">to accumulate the data from, when using the Glean SDK in a product</span><span class="w"></span>
+<span class="w">          </span><span class="no">using GeckoView. See bug 1566356 for more context.</span><span class="w"></span>
+
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">range_min</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range minimum</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The minimum value of a custom distribution.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Valid when `type`_ is `custom_distribution`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span><span class="w"></span>
+<span class="w">        </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">range_max</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Range maximum</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The maximum value of a custom distribution.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Required when `type`_ is `custom_distribution`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">bucket_count</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bucket count</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The number of buckets to include in a custom distribution.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Required when `type`_ is `custom_distribution`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span><span class="w"></span>
+<span class="w">        </span><span class="nt">minimum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">maximum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">histogram_type</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Histogram type</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The type of histogram bucketing to use:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `linear`: The buckets are linearly spaced within the range.</span><span class="w"></span>
+<span class="w">            </span><span class="no">- `exponential`: The buckets use the natural logarithmic so the</span><span class="w"></span>
+<span class="w">              </span><span class="no">smaller-valued buckets are smaller in size than the higher-valued</span><span class="w"></span>
+<span class="w">              </span><span class="no">buckets.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">Required when `type`_ is `custom_distribution`.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linear</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">exponential</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unit</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The unit of the metric, for metrics that don&#39;t already require a</span><span class="w"></span>
+<span class="w">          </span><span class="no">meaningful unit, such as `time_unit`.</span><span class="w"></span>
+<span class="w">          </span><span class="no">This is provided for informational purposes only and doesn&#39;t have any</span><span class="w"></span>
+<span class="w">          </span><span class="no">effect on data collection.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">no_lint</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lint checks to skip</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">This parameter lists any lint checks to skip for this metric only.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">data_sensitivity</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The level of data sensitivity</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">There are four data collection categories related to data sensitivity</span><span class="w"></span>
+<span class="w">          </span><span class="no">[defined here](https://wiki.mozilla.org/Firefox/Data_Collection):</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- **Category 1: Technical Data:** (`technical`) Information about the</span><span class="w"></span>
+<span class="w">            </span><span class="no">machine or Firefox itself. Examples include OS, available memory,</span><span class="w"></span>
+<span class="w">            </span><span class="no">crashes and errors, outcome of automated processes like updates,</span><span class="w"></span>
+<span class="w">            </span><span class="no">safebrowsing, activation, version \#s, and buildid. This also</span><span class="w"></span>
+<span class="w">            </span><span class="no">includes compatibility information about features and APIs used by</span><span class="w"></span>
+<span class="w">            </span><span class="no">websites, addons, and other 3rd-party software that interact with</span><span class="w"></span>
+<span class="w">            </span><span class="no">Firefox during usage.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- **Category 2: Interaction Data:** (`interaction`) Information about</span><span class="w"></span>
+<span class="w">            </span><span class="no">the user’s direct engagement with Firefox. Examples include how many</span><span class="w"></span>
+<span class="w">            </span><span class="no">tabs, addons, or windows a user has open; uses of specific Firefox</span><span class="w"></span>
+<span class="w">            </span><span class="no">features; session length, scrolls and clicks; and the status of</span><span class="w"></span>
+<span class="w">            </span><span class="no">discrete user preferences.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- **Category 3: Web activity data:** (`web_activity`) Information</span><span class="w"></span>
+<span class="w">            </span><span class="no">about user web browsing that could be considered sensitive. Examples</span><span class="w"></span>
+<span class="w">            </span><span class="no">include users’ specific web browsing history; general information</span><span class="w"></span>
+<span class="w">            </span><span class="no">about their web browsing history (such as TLDs or categories of</span><span class="w"></span>
+<span class="w">            </span><span class="no">webpages visited over time); and potentially certain types of</span><span class="w"></span>
+<span class="w">            </span><span class="no">interaction data about specific webpages visited.</span><span class="w"></span>
+
+<span class="w">          </span><span class="no">- **Category 4: Highly sensitive data:** (`highly_sensitive`)</span><span class="w"></span>
+<span class="w">            </span><span class="no">Information that directly identifies a person, or if combined with</span><span class="w"></span>
+<span class="w">            </span><span class="no">other data could identify a person. Examples include e-mail,</span><span class="w"></span>
+<span class="w">            </span><span class="no">usernames, identifiers such as google ad id, apple id, fxaccount,</span><span class="w"></span>
+<span class="w">            </span><span class="no">city or country (unless small ones are explicitly filtered out), or</span><span class="w"></span>
+<span class="w">            </span><span class="no">certain cookies. It may be embedded within specific website content,</span><span class="w"></span>
+<span class="w">            </span><span class="no">such as memory contents, dumps, captures of screen data, or DOM</span><span class="w"></span>
+<span class="w">            </span><span class="no">data.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">        </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">technical</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interaction</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">web_activity</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">highly_sensitive</span><span class="w"></span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">        </span><span class="nt">minLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">uniqueItems</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">telemetry_mirror</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Which probe in Telemetry to mirror this metric&#39;s value to.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">The C++ enum form of the Scalar, Event, or Histogram to which we</span><span class="w"></span>
+<span class="w">          </span><span class="no">should mirror values.</span><span class="w"></span>
+<span class="w">          </span><span class="no">Use is limited to Firefox Desktop only.</span><span class="w"></span>
+<span class="w">          </span><span class="no">Has no effect when used with non-FOG outputters.</span><span class="w"></span>
+<span class="w">          </span><span class="no">See FOG&#39;s documentation on mirroring for details -</span><span class="w"></span>
+<span class="w">          </span><span class="no">https://firefox-source-docs.mozilla.org/toolkit/components/glean/mirroring.html</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">        </span><span class="nt">minLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span><span class="w"></span>
+
+<span class="w">      </span><span class="nt">denominator_metric</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The name of the denominator for this `rate` metric.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">          </span><span class="no">Denominators for `rate` metrics may be private and internal</span><span class="w"></span>
+<span class="w">          </span><span class="no">or shared and external.</span><span class="w"></span>
+<span class="w">          </span><span class="no">External denominators are `counter` metrics.</span><span class="w"></span>
+<span class="w">          </span><span class="no">This field names the `counter` metric that serves as this</span><span class="w"></span>
+<span class="w">          </span><span class="no">`rate` metric&#39;s external denominator.</span><span class="w"></span>
+<span class="w">          </span><span class="no">The named denominator must be defined in this component</span><span class="w"></span>
+<span class="w">          </span><span class="no">so glean_parser can find it.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bugs</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">description</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notification_emails</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data_reviews</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">expires</span><span class="w"></span>
+
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+
+<span class="nt">propertyNames</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">anyOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">allOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/dotted_snake_case&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">not</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;pings&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pings</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">not</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&#39;tags&#39;</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">reserved</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category</span><span class="nv"> </span><span class="s">name.&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tags</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">enum</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;$schema&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
+
+<span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">$schema</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">url</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">no_lint</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lint checks to skip globally</span><span class="w"></span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">      </span><span class="no">This parameter lists any lint checks to skip for this whole file.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+
+<span class="nt">additionalProperties</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">  </span><span class="nt">propertyNames</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">anyOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/short_id&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">additionalProperties</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">allOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/metric&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">event</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">lifetime</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">                </span><span class="no">Event metrics must have ping lifetime.</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ping</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">not</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timing_distribution</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_distribution</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory_distribution</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">labeled_counter</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">gecko_datapoint</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">                </span><span class="no">`gecko_datapoint` is only allowed for `timing_distribution`,</span><span class="w"></span>
+<span class="w">                </span><span class="no">`custom_distribution`, `memory_distribution`, `quantity`,</span><span class="w"></span>
+<span class="w">                </span><span class="no">`boolean`, `string` and `labeled_counter`.</span><span class="w"></span>
+<span class="w">              </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom_distribution</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">range_max</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bucket_count</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">histogram_type</span><span class="w"></span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">`custom_distribution` is missing required parameters `range_max`,</span><span class="w"></span>
+<span class="w">            </span><span class="no">`bucket_count` and `histogram_type`.</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory_distribution</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory_unit</span><span class="w"></span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">`memory_distribution` is missing required parameter `memory_unit`.</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit</span><span class="w"></span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">`quantity` is missing required parameter `unit`.</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jwe</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">required</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jwe_support_was_removed</span><span class="w"></span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">            </span><span class="no">JWE support was removed.</span><span class="w"></span>
+<span class="w">            </span><span class="no">If you require this send an email to glean-team@mozilla.com.</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">not</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">denominator_metric</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">                </span><span class="no">`denominator_metric` is only allowed for `rate`.</span><span class="w"></span>
+<span class="w">              </span><span class="nt">maxLength</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"></span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">const</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text</span><span class="w"></span>
+<span class="w">        </span><span class="nt">then</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">lifetime</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w"></span>
+<span class="w">                </span><span class="no">Text metrics must have ping or application lifetime.</span><span class="w"></span>
+<span class="w">              </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ping</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application</span><span class="w"></span>
+
+<span class="w">            </span><span class="nt">data_sensitivity</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w"></span>
+<span class="w">                </span><span class="no">Text metrics require Category 3 (`web_activity`)</span><span class="w"></span>
+<span class="w">                </span><span class="no">or Category 4 (`highly_sensitive`).</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">              </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">enum</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">web_activity</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">highly_sensitive</span><span class="w"></span>
+
+<span class="w">            </span><span class="nt">send_in_pings</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">                </span><span class="no">Text metrics can only be sent in custom pings.</span><span class="w"></span>
+<span class="w">                </span><span class="no">Built-in pings are not allowed.</span><span class="w"></span>
+<span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span><span class="w"></span>
+<span class="w">              </span><span class="nt">items</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">allOf</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">$ref</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#/definitions/kebab_case&quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">not</span><span class="p">:</span><span class="w"></span>
+<span class="w">                      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span><span class="w"></span>
+<span class="w">                        </span><span class="no">Text metrics can only be sent in custom pings.</span><span class="w"></span>
+<span class="w">                        </span><span class="no">Built-in pings are not allowed.&quot;</span><span class="w"></span>
+<span class="w">                      </span><span class="nt">pattern</span><span class="p">:</span><span class="w"></span>
+<span class="w">                        </span><span class="s">&quot;^(metrics|baseline|events|deletion-request|default|glean_.*)$&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
