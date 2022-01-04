@@ -46,7 +46,6 @@ if sys.version_info < (3, 7):
     class DictWrapper(OrderedDict):
         pass
 
-
 else:
 
     class DictWrapper(dict):
