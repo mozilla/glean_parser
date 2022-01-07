@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Support global file-level tags in metrics.yaml ([bug 1745283](https://bugzilla.mozilla.org/show_bug.cgi?id=1745283))
+- Glinter: Reject metric files if they use `unit` by mistake. It should be `time_unit` ([#432](https://github.com/mozilla/glean_parser/pull/432)).
 
 ## 4.3.1
 

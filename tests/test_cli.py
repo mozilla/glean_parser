@@ -155,3 +155,19 @@ def test_reject_jwe(tmpdir):
     )
     assert result.exit_code == 1
     assert len(os.listdir(str(tmpdir))) == 0
+
+
+def test_wrong_key_lint(tmpdir):
+    """Test that the 'glinter' reports a wrong key used."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "glinter",
+            str(ROOT / "data" / "wrong_key.yamlx"),
+        ],
+    )
+    assert result.exit_code == 1
+    # wrong `unit` key for datetime, timing_distribution, timespan.
+    # a missing key is NOT an error.
+    assert "Found 3 errors" in result.output
