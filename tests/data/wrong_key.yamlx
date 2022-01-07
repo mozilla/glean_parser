@@ -1,0 +1,69 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+# Note: we're using YAML anchors to re-use the values
+# defined in the first metric.
+# Saves us some typing.
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+wrong_key:
+  datetime: &unit_defaults
+    type: datetime
+    # note: this _should_ have been time_unit
+    unit: day
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1137353
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+  timing_distribution:
+    <<: *unit_defaults
+    type: timing_distribution
+
+  timespan:
+    <<: *unit_defaults
+    type: timespan
+
+both_keys:
+  datetime:
+    type: datetime
+    # note: it has both keys
+    unit: day
+    time_unit: day
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1137353
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+missing_key:
+  datetime: &defaults
+    type: datetime
+    # note: no unit specified. the `time_unit` is _optional_
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1137353
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+  timing_distribution:
+    <<: *defaults
+    type: timing_distribution
+
+  timespan:
+    <<: *defaults
+    type: timespan
