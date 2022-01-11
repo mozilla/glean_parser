@@ -110,7 +110,7 @@ def test_parser_schema_violation():
         the given schemas
         'gleantest.with.way.too.long.category.name' is too long
         'gleantest.with.way.too.long.category.name' is not one of
-        ['$schema']
+        ['$schema', '$tags']
         """,
         """
         ```
@@ -569,9 +569,12 @@ def test_tags():
 
     assert errors == []
     assert len(all_metrics.value) == 1
-    assert all_metrics.value["telemetry"]["client_id"].metadata == {
-        "tags": ["banana", "apple"]
-    }
+    assert set(all_metrics.value["telemetry"]["client_id"].metadata.keys()) == set(
+        ["tags"]
+    )
+    assert set(all_metrics.value["telemetry"]["client_id"].metadata["tags"]) == set(
+        ["banana", "apple", "global_tag"]
+    )
 
 
 def test_custom_expires():

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Support global file-level tags in metrics.yaml ([bug 1745283](https://bugzilla.mozilla.org/show_bug.cgi?id=1745283))
+
 ## 4.3.1
 
 - BUGFIX: Skip tags for code generation ([#409](https://github.com/mozilla/glean_parser/pull/409))
