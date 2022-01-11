@@ -4,6 +4,9 @@
 ---
 $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
+$tags:
+  - global_tag
+
 telemetry:
   client_id:
     type: uuid

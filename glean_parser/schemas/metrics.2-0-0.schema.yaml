@@ -538,7 +538,7 @@ propertyNames:
         - not:
             description: "'tags' is reserved as a category name."
             const: tags
-    - enum: ['$schema']
+    - enum: ['$schema', '$tags']
 
 properties:
   $schema:
@@ -549,6 +549,14 @@ properties:
     title: Lint checks to skip globally
     description: |
       This parameter lists any lint checks to skip for this whole file.
+    type: array
+    items:
+      type: string
+
+  $tags:
+    title: Tags that apply to the whole file
+    description: |
+      This denotes the list of tags that apply to all metrics in this file.
     type: array
     items:
       type: string

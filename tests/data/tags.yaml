@@ -13,3 +13,8 @@ apple:
   description: |
     A red fruit. Or green. Or a mix of it.
     Very good in pie.
+
+global_tag:
+  description: |
+    A very uninteresting global tag.
+    Alas, it has no colour.
