@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove C# support ([#436](https://github.com/mozilla/glean_parser/pull/436)).
+
 ## 4.4.0
 
 - Support global file-level tags in metrics.yaml ([bug 1745283](https://bugzilla.mozilla.org/show_bug.cgi?id=1745283))
