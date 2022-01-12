@@ -17,7 +17,6 @@ from typing import Any, Callable, Dict, Iterable, List, Optional
 
 from . import lint
 from . import parser
-from . import csharp
 from . import javascript
 from . import kotlin
 from . import markdown
@@ -52,7 +51,6 @@ class Outputter:
 
 
 OUTPUTTERS = {
-    "csharp": Outputter(csharp.output_csharp, ["*.cs"]),
     "javascript": Outputter(javascript.output_javascript, []),
     "typescript": Outputter(javascript.output_typescript, []),
     "kotlin": Outputter(kotlin.output_kotlin, ["*.kt"]),
