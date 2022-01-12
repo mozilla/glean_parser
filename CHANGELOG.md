@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 4.4.0
+
 - Support global file-level tags in metrics.yaml ([bug 1745283](https://bugzilla.mozilla.org/show_bug.cgi?id=1745283))
 - Glinter: Reject metric files if they use `unit` by mistake. It should be `time_unit` ([#432](https://github.com/mozilla/glean_parser/pull/432)).
 - Automatically generate a build date when generating build info ([#431](https://github.com/mozilla/glean_parser/pull/431)).
