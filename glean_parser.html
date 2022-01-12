@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>glean_parser package &#8212; Glean Parser 4.3.2.dev16+gc52e0e71 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 4.3.2.dev17+g9dd0bdde documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -286,6 +286,12 @@ Default is <cite>Glean</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.kotlin.generate_build_date">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.kotlin.</span></span><span class="sig-name descname"><span class="pre">generate_build_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/kotlin.html#generate_build_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.kotlin.generate_build_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the build timestamp.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.kotlin.kotlin_datatypes_filter">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.kotlin.</span></span><span class="sig-name descname"><span class="pre">kotlin_datatypes_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/kotlin.html#kotlin_datatypes_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.kotlin.kotlin_datatypes_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Jinja2 filter that renders Kotlin literals.</p>
@@ -345,6 +351,14 @@ code.</p></li>
 <li><p><cite>with_buildinfo</cite>: If “true” a <cite>GleanBuildInfo.kt</cite> file is generated.
 Otherwise generation of that file is skipped.
 Defaults to “true”.</p></li>
+<li><dl class="simple">
+<dt><cite>build_date</cite>: If set to <cite>0</cite> a static unix epoch time will be used.</dt><dd><p>If set to a ISO8601 datetime string (e.g. <cite>2022-01-03T17:30:00</cite>)
+it will use that date.
+Other values will throw an error.
+If not set it will use the current date &amp; time.</p>
+</dd>
+</dl>
+</li>
 </ul>
 </p></li>
 </ul>
@@ -1182,6 +1196,12 @@ the input <cite>filepaths</cite> do not exist.</p></li>
 <span id="glean-parser-swift-module"></span><h2>glean_parser.swift module<a class="headerlink" href="#module-glean_parser.swift" title="Permalink to this headline">¶</a></h2>
 <p>Outputter to generate Swift code for metrics.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="glean_parser.swift.BuildInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">glean_parser.swift.</span></span><span class="sig-name descname"><span class="pre">BuildInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/glean_parser/swift.html#BuildInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.swift.BuildInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="glean_parser.swift.Category">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">glean_parser.swift.</span></span><span class="sig-name descname"><span class="pre">Category</span></span><a class="reference internal" href="_modules/glean_parser/swift.html#Category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.swift.Category" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -1216,6 +1236,12 @@ the input <cite>filepaths</cite> do not exist.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.swift.generate_build_date">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.swift.</span></span><span class="sig-name descname"><span class="pre">generate_build_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/swift.html#generate_build_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.swift.generate_build_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the build timestamp.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.swift.output_swift">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.swift.</span></span><span class="sig-name descname"><span class="pre">output_swift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">glean_parser.metrics.Metric</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">glean_parser.pings.Ping</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.tags.Tag" title="glean_parser.tags.Tag"><span class="pre">glean_parser.tags.Tag</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pathlib.Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/glean_parser/swift.html#output_swift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.swift.output_swift" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a tree of objects, output Swift code to <cite>output_dir</cite>.</p>
@@ -1225,10 +1251,26 @@ the input <cite>filepaths</cite> do not exist.</p></li>
 <li><p><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
 <cite>parser.parse_objects</cite>.</p></li>
 <li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
-<li><p><strong>options</strong> – options dictionary, with the following optional keys:
+<li><p><strong>options</strong> – <p>options dictionary, with the following optional keys:
 - namespace: The namespace to generate metrics in
 - glean_namespace: The namespace to import Glean from
-- allow_reserved: When True, this is a Glean-internal build</p></li>
+- allow_reserved: When True, this is a Glean-internal build
+- with_buildinfo: If “true” the <cite>GleanBuildInfo</cite> is generated.</p>
+<blockquote>
+<div><p>Otherwise generation of that file is skipped.
+Defaults to “true”.</p>
+</div></blockquote>
+<ul>
+<li><dl class="simple">
+<dt>build_date: If set to <cite>0</cite> a static unix epoch time will be used.</dt><dd><p>If set to a ISO8601 datetime string (e.g. <cite>2022-01-03T17:30:00</cite>)
+it will use that date.
+Other values will throw an error.
+If not set it will use the current date &amp; time.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
 </ul>
 </dd>
 </dl>
@@ -1387,12 +1429,34 @@ addition to underscores.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.util.build_date">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">build_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime.datetime</span></span></span><a class="reference internal" href="_modules/glean_parser/util.html#build_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.build_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the build timestamp.</p>
+<p>If <cite>date</cite> is set to <cite>0</cite> a static unix epoch time will be used.
+If <cite>date</cite> it is set to a ISO8601 datetime string (e.g. <cite>2022-01-03T17:30:00</cite>)
+it will use that date.
+Note that any timezone offset will be ignored and UTC will be used.
+Otherwise it will throw an error.</p>
+<p>If <cite>date</cite> is <cite>None</cite> it will use the current date &amp; time.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.util.camelize">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">camelize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/util.html#camelize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.camelize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the value to camelCase (with a lower case first letter).</p>
 <p>This is a thin wrapper around inflection.camelize that handles dots in
 addition to underscores.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.util.date_fromisoformat">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">date_fromisoformat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datestr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime.date</span></span></span><a class="reference internal" href="_modules/glean_parser/util.html#date_fromisoformat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.date_fromisoformat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.util.datetime_fromisoformat">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">datetime_fromisoformat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datestr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime.datetime</span></span></span><a class="reference internal" href="_modules/glean_parser/util.html#datetime_fromisoformat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.datetime_fromisoformat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.util.ensure_list">

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.swift &#8212; Glean Parser 4.3.2.dev16+gc52e0e71 documentation</title>
+    <title>glean_parser.swift &#8212; Glean Parser 4.3.2.dev17+g9dd0bdde documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -167,6 +167,33 @@
         <span class="k">return</span> <span class="n">var</span></div>
 
 
+<div class="viewcode-block" id="BuildInfo"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.BuildInfo">[docs]</a><span class="k">class</span> <span class="nc">BuildInfo</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">build_date</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_date</span> <span class="o">=</span> <span class="n">build_date</span></div>
+
+
+<div class="viewcode-block" id="generate_build_date"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.generate_build_date">[docs]</a><span class="k">def</span> <span class="nf">generate_build_date</span><span class="p">(</span><span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the build timestamp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">build_date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">year</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">month</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">day</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">hour</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">minute</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">second</span><span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="c1"># The internal DatetimeMetricType API can take a `DateComponents` object,</span>
+    <span class="c1"># which lets us easily specify the timezone.</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;DateComponents(calendar: Calendar.current, timeZone: TimeZone(abbreviation: &quot;UTC&quot;), </span><span class="si">{</span><span class="n">components</span><span class="si">}</span><span class="s1">)&#39;</span>  <span class="c1"># noqa</span></div>
+
+
 <div class="viewcode-block" id="Category"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.swift.Category">[docs]</a><span class="k">class</span> <span class="nc">Category</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Data struct holding information about a metric to be used in the template.</span>
@@ -190,6 +217,14 @@
 <span class="sd">        - namespace: The namespace to generate metrics in</span>
 <span class="sd">        - glean_namespace: The namespace to import Glean from</span>
 <span class="sd">        - allow_reserved: When True, this is a Glean-internal build</span>
+<span class="sd">        - with_buildinfo: If &quot;true&quot; the `GleanBuildInfo` is generated.</span>
+<span class="sd">          Otherwise generation of that file is skipped.</span>
+<span class="sd">          Defaults to &quot;true&quot;.</span>
+<span class="sd">        - build_date: If set to `0` a static unix epoch time will be used.</span>
+<span class="sd">                      If set to a ISO8601 datetime string (e.g. `2022-01-03T17:30:00`)</span>
+<span class="sd">                      it will use that date.</span>
+<span class="sd">                      Other values will throw an error.</span>
+<span class="sd">                      If not set it will use the current date &amp; time.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
@@ -207,6 +242,12 @@
 
     <span class="n">namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;GleanMetrics&quot;</span><span class="p">)</span>
     <span class="n">glean_namespace</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;glean_namespace&quot;</span><span class="p">,</span> <span class="s2">&quot;Glean&quot;</span><span class="p">)</span>
+    <span class="n">with_buildinfo</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;with_buildinfo&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span>
+    <span class="n">build_date</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;build_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">build_info</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">with_buildinfo</span><span class="p">:</span>
+        <span class="n">build_date</span> <span class="o">=</span> <span class="n">generate_build_date</span><span class="p">(</span><span class="n">build_date</span><span class="p">)</span>
+        <span class="n">build_info</span> <span class="o">=</span> <span class="n">BuildInfo</span><span class="p">(</span><span class="n">build_date</span><span class="o">=</span><span class="n">build_date</span><span class="p">)</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Metrics.swift&quot;</span>
     <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
@@ -232,6 +273,7 @@
                 <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span>
                 <span class="n">glean_namespace</span><span class="o">=</span><span class="n">glean_namespace</span><span class="p">,</span>
                 <span class="n">allow_reserved</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                <span class="n">build_info</span><span class="o">=</span><span class="n">build_info</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Jinja2 squashes the final newline, so we explicitly add it</span>
