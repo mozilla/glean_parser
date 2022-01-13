@@ -21,6 +21,7 @@ from . import javascript
 from . import kotlin
 from . import markdown
 from . import metrics
+from . import rust
 from . import swift
 from . import util
 
@@ -56,6 +57,7 @@ OUTPUTTERS = {
     "kotlin": Outputter(kotlin.output_kotlin, ["*.kt"]),
     "markdown": Outputter(markdown.output_markdown, []),
     "swift": Outputter(swift.output_swift, ["*.swift"]),
+    "rust": Outputter(rust.output_rust, []),
 }
 
 
