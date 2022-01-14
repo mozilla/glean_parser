@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>glean_parser.rust &#8212; Glean Parser 4.4.1.dev4+g228e179b documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for glean_parser.rust</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Outputter to generate Rust code for metrics.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tags</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+
+
+<div class="viewcode-block" id="rust_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.rust_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">rust_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Jinja2 filter that renders Rust literals.</span>
+
+<span class="sd">    Based on Python&#39;s JSONEncoder, but overrides:</span>
+<span class="sd">      - dicts and sets to raise an error</span>
+<span class="sd">      - sets to vec![] (used in labels)</span>
+<span class="sd">      - enums to become Class::Value</span>
+<span class="sd">      - lists to vec![] (used in send_in_pings)</span>
+<span class="sd">      - null to None</span>
+<span class="sd">      - strings to &quot;value&quot;.into()</span>
+<span class="sd">      - Rate objects to a CommonMetricData initializer</span>
+<span class="sd">        (for external Denominators&#39; Numerators lists)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">RustEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">iterencode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RustEncoder doesn&#39;t know dicts </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;::&quot;</span> <span class="o">+</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="s2">&quot;vec![&quot;</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">subvalue</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">first</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="s2">&quot;, &quot;</span>
+                    <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">subvalue</span><span class="p">)</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">yield</span> <span class="s2">&quot;]&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="s2">&quot;vec![&quot;</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">subvalue</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">first</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="s2">&quot;, &quot;</span>
+                    <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">subvalue</span><span class="p">)</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">yield</span> <span class="s2">&quot;]&quot;</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="s2">&quot;None&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot;.into()&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield from</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RustEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ctor"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.ctor">[docs]</a><span class="k">def</span> <span class="nf">ctor</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the scope and name of the constructor to use for a metric object.</span>
+<span class="sd">    Necessary because LabeledMetric&lt;T&gt; is constructed using LabeledMetric::new</span>
+<span class="sd">    not LabeledMetric&lt;T&gt;::new</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;labeled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;LabeledMetric::new&quot;</span>
+    <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;::new&quot;</span></div>
+
+
+<div class="viewcode-block" id="type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.type_name">[docs]</a><span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the Rust type to use for a given metric or ping object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;labeled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;LabeledMetric&lt;Labeled</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+    <span class="n">generate_enums</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_generate_enums&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># Extra Keys? Reasons?</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">generate_enums</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">generate_enums</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span> <span class="ow">and</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;Keys&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&lt;NoExtraKeys&gt;&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># we always use the `extra` suffix,</span>
+                <span class="c1"># because we only expose the new event API</span>
+                <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;Extra&quot;</span>
+                <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">),</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="n">suffix</span>
+                <span class="p">)</span>
+    <span class="k">return</span> <span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extra_type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.extra_type_name">[docs]</a><span class="k">def</span> <span class="nf">extra_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the corresponding Rust type for event&#39;s extra key types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;bool&quot;</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;String&quot;</span>
+    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="s2">&quot;quantity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;u32&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;UNSUPPORTED&quot;</span></div>
+
+
+<div class="viewcode-block" id="class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.class_name">[docs]</a><span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the Rust class name for a given metric or ping type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;ping&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Ping&quot;</span>
+    <span class="k">if</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;labeled_&quot;</span><span class="p">):</span>
+        <span class="n">obj_type</span> <span class="o">=</span> <span class="n">obj_type</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;Metric&quot;</span></div>
+
+
+<div class="viewcode-block" id="extra_keys"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.extra_keys">[docs]</a><span class="k">def</span> <span class="nf">extra_keys</span><span class="p">(</span><span class="n">allowed_extra_keys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the &amp;&#39;static [&amp;&#39;static str] ALLOWED_EXTRA_KEYS for impl ExtraKeys</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;&amp;[&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">allowed_extra_keys</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span></div>
+
+
+<div class="viewcode-block" id="Category"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.Category">[docs]</a><span class="k">class</span> <span class="nc">Category</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data struct holding information about a metric to be used in the template.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">objs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">,</span> <span class="n">tags</span><span class="o">.</span><span class="n">Tag</span><span class="p">]],</span>
+        <span class="n">contains_pings</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objs</span> <span class="o">=</span> <span class="n">objs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contains_pings</span> <span class="o">=</span> <span class="n">contains_pings</span></div>
+
+
+<div class="viewcode-block" id="output_rust"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.output_rust">[docs]</a><span class="k">def</span> <span class="nf">output_rust</span><span class="p">(</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Rust code to `output_dir`.</span>
+
+<span class="sd">    :param objs: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">        `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    :param options: options dictionary, not currently used for Rust</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
+        <span class="s2">&quot;rust.jinja2&quot;</span><span class="p">,</span>
+        <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;rust&quot;</span><span class="p">,</span> <span class="n">rust_datatypes_filter</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;snake_case&quot;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">snake_case</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;camelize&quot;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">camelize</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;type_name&quot;</span><span class="p">,</span> <span class="n">type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;extra_type_name&quot;</span><span class="p">,</span> <span class="n">extra_type_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;ctor&quot;</span><span class="p">,</span> <span class="n">ctor</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;extra_keys&quot;</span><span class="p">,</span> <span class="n">extra_keys</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;glean_metrics.rs&quot;</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">filename</span>
+    <span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">contains_pings</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Category</span><span class="p">(</span><span class="n">category_key</span><span class="p">,</span> <span class="n">category_val</span><span class="p">,</span> <span class="n">contains_pings</span><span class="p">)</span>
+        <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">filepath</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
+                <span class="n">extra_args</span><span class="o">=</span><span class="n">util</span><span class="o">.</span><span class="n">metric_args</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Glean Parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pings-yaml.html"><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tags-yaml.html"><code class="docutils literal notranslate"><span class="pre">tags.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2021, Michael Droettboom.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

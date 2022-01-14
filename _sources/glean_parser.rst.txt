@@ -76,6 +76,14 @@ glean\_parser.pings module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.rust module
+-------------------------
+
+.. automodule:: glean_parser.rust
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.swift module
 --------------------------
 
