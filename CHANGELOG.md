@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Remove C# support ([#436](https://github.com/mozilla/glean_parser/pull/436)).
+- Add support for Rust code generation ([bug 1677434](https://bugzilla.mozilla.org/show_bug.cgi?id=1677434))
 
 ## 4.4.0
 
