@@ -12,14 +12,6 @@ glean\_parser.coverage module
    :undoc-members:
    :show-inheritance:
 
-glean\_parser.csharp module
----------------------------
-
-.. automodule:: glean_parser.csharp
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 glean\_parser.data\_review module
 ---------------------------------
 
