@@ -136,6 +136,12 @@ def translate_metrics(
 
     input_filepaths = util.ensure_list(input_filepaths)
 
+    allow_missing_files = parser_config.get("allow_missing_files", False)
+    if not input_filepaths and not allow_missing_files:
+        print("❌ No metric files specified. ", end="")
+        print("Use `--allow-missing-files` to not treat this as an error.")
+        return 1
+
     if lint.glinter(input_filepaths, parser_config):
         return 1
 
