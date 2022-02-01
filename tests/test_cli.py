@@ -249,3 +249,29 @@ def test_wrong_key_lint(tmpdir):
     # wrong `unit` key for datetime, timing_distribution, timespan.
     # a missing key is NOT an error.
     assert "Found 3 errors" in result.output
+
+
+def test_no_file_is_an_error(tmpdir):
+    """Test that 'translate' fails when no files are passed."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        [
+            "translate",
+            "-o",
+            str(tmpdir),
+            "-f",
+            "kotlin",
+        ],
+    )
+    assert result.exit_code == 1
+
+
+def test_no_file_can_be_skipped(tmpdir):
+    """Test that 'translate' works when no files are passed but flag is set."""
+    runner = CliRunner()
+    result = runner.invoke(
+        __main__.main,
+        ["translate", "-o", str(tmpdir), "-f", "kotlin", "--allow-missing-files"],
+    )
+    assert result.exit_code == 0
