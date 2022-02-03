@@ -7,6 +7,7 @@
 - Report an error if no files are passed ([bug 1751730](https://bugzilla.mozilla.org/show_bug.cgi?id=1751730))
 - [data-review] Report an error if no metrics match provided bug number ([bug 1752576](https://bugzilla.mozilla.org/show_bug.cgi?id=1752576))
 - [data-review] Include notification_emails in list of those responsible ([bug 1752576](https://bugzilla.mozilla.org/show_bug.cgi?id=1752576))
+- Add support for expiring metrics by the provided major version ([bug 1753194](https://bugzilla.mozilla.org/show_bug.cgi?id=1753194))
 
 ## 4.4.0
 
