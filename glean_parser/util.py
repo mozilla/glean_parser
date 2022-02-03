@@ -381,7 +381,7 @@ def parse_expiration_date(expires: str) -> datetime.date:
     """
     try:
         return date_fromisoformat(expires)
-    except ValueError:
+    except (TypeError, ValueError):
         raise ValueError(
             f"Invalid expiration date '{expires}'. "
             "Must be of the form yyyy-mm-dd in UTC."
