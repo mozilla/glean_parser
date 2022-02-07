@@ -395,10 +395,13 @@ def parse_expiration_version(expires: str) -> int:
     positive integer.
     """
     try:
-        version_number = int(expires)
-        if version_number < 0:
-            raise ValueError()
-        return version_number
+        if isinstance(expires, int):
+            version_number = int(expires)
+            if version_number > 0:
+                return version_number
+        # Fall-through: if it's not an integer or is not greater than zero,
+        # raise an error.
+        raise ValueError()
     except ValueError:
         raise ValueError(
             f"Invalid expiration version '{expires}'. Must be a positive integer."

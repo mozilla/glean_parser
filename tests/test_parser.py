@@ -688,6 +688,25 @@ def test_parser_mixed_expirations():
         list(all_metrics)
 
 
+def test_expire_by_version_must_fail_if_disabled():
+    failing_metrics = [
+        {
+            "category": {
+                "metric_fail_date": {
+                    "type": "boolean",
+                    "expires": 99,
+                },
+            }
+        }
+    ]
+    failing_metrics = [util.add_required(x) for x in failing_metrics]
+
+    with pytest.raises(ValueError):
+        # Versions are not allowed if expiration by major version is enabled.
+        all_metrics = parser.parse_objects(failing_metrics)
+        list(all_metrics)
+
+
 def test_historical_versions():
     """
     Make sure we can load the correct version of the schema and it will
