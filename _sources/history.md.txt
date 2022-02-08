@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 5.0.1
+
 - Fix the logic for the metric expiration by version ([bug 1753194](https://bugzilla.mozilla.org/show_bug.cgi?id=1753194))
 
 ## 5.0.0
