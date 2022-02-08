@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix the logic for the metric expiration by version ([bug 1753194](https://bugzilla.mozilla.org/show_bug.cgi?id=1753194))
+
 ## 5.0.0
 
 - Remove C# support ([#436](https://github.com/mozilla/glean_parser/pull/436)).
