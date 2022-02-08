@@ -247,7 +247,7 @@ def test_user_lifetime_expiration():
 
 
 def test_expired_metric():
-    """Test that expiring 'user' lifetime metrics generate a warning."""
+    """Test that expiring 'ping' lifetime metrics generate a warning."""
     contents = [
         {
             "user_data": {

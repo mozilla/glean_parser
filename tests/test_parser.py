@@ -613,6 +613,100 @@ def test_custom_expires():
         errors = list(all_metrics)
 
 
+def test_expire_by_major_version():
+    failing_metrics = [
+        {
+            "category": {
+                "metric_fail_date": {
+                    "type": "boolean",
+                    "expires": "1986-07-03",
+                },
+            }
+        }
+    ]
+    failing_metrics = [util.add_required(x) for x in failing_metrics]
+
+    with pytest.raises(ValueError):
+        # Dates are not allowed if expiration by major version is enabled.
+        all_metrics = parser.parse_objects(
+            failing_metrics,
+            {
+                "expire_by_version": 15,
+            },
+        )
+        errors = list(all_metrics)
+
+    contents = [
+        {
+            "category": {
+                "metric_expired_version": {
+                    "type": "boolean",
+                    "expires": 18,
+                },
+                "metric_expired": {
+                    "type": "boolean",
+                    "expires": "expired",
+                },
+                "metric": {
+                    "type": "boolean",
+                    "expires": 7,
+                },
+            }
+        }
+    ]
+    contents = [util.add_required(x) for x in contents]
+
+    # Double-check that parsing without custom functions breaks
+    all_metrics = parser.parse_objects(
+        contents,
+        {
+            "expire_by_version": 15,
+        },
+    )
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric_expired_version"].disabled is True
+    assert all_metrics.value["category"]["metric_expired"].disabled is True
+    assert all_metrics.value["category"]["metric"].disabled is False
+
+
+def test_parser_mixed_expirations():
+    """Validate that mixing expiration types fail"""
+    with pytest.raises(ValueError):
+        # Mixing expiration types must fail when expiring by version.
+        all_metrics = parser.parse_objects(
+            ROOT / "data" / "mixed-expirations.yaml",
+            {
+                "expire_by_version": 15,
+            },
+        )
+        list(all_metrics)
+
+    with pytest.raises(ValueError):
+        # Mixing expiration types must fail when expiring by date.
+        all_metrics = parser.parse_objects(ROOT / "data" / "mixed-expirations.yaml")
+        list(all_metrics)
+
+
+def test_expire_by_version_must_fail_if_disabled():
+    failing_metrics = [
+        {
+            "category": {
+                "metric_fail_date": {
+                    "type": "boolean",
+                    "expires": 99,
+                },
+            }
+        }
+    ]
+    failing_metrics = [util.add_required(x) for x in failing_metrics]
+
+    with pytest.raises(ValueError):
+        # Versions are not allowed if expiration by major version is enabled.
+        all_metrics = parser.parse_objects(failing_metrics)
+        list(all_metrics)
+
+
 def test_historical_versions():
     """
     Make sure we can load the correct version of the schema and it will
