@@ -641,7 +641,7 @@ def test_expire_by_major_version():
             "category": {
                 "metric_expired_version": {
                     "type": "boolean",
-                    "expires": 18,
+                    "expires": 7,
                 },
                 "metric_expired": {
                     "type": "boolean",
@@ -649,7 +649,7 @@ def test_expire_by_major_version():
                 },
                 "metric": {
                     "type": "boolean",
-                    "expires": 7,
+                    "expires": 18,
                 },
             }
         }

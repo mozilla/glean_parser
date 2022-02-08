@@ -418,7 +418,7 @@ def is_expired(expires: str, major_version: Optional[int] = None) -> bool:
     elif expires == "expired":
         return True
     elif major_version is not None:
-        return parse_expiration_version(expires) >= major_version
+        return parse_expiration_version(expires) <= major_version
     else:
         date = parse_expiration_date(expires)
         return date <= datetime.datetime.utcnow().date()
