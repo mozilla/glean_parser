@@ -643,6 +643,10 @@ def test_expire_by_major_version():
                     "type": "boolean",
                     "expires": 7,
                 },
+                "metric_expired_edge": {
+                    "type": "boolean",
+                    "expires": 15,
+                },
                 "metric_expired": {
                     "type": "boolean",
                     "expires": "expired",
@@ -666,6 +670,7 @@ def test_expire_by_major_version():
     errors = list(all_metrics)
     assert len(errors) == 0
     assert all_metrics.value["category"]["metric_expired_version"].disabled is True
+    assert all_metrics.value["category"]["metric_expired_edge"].disabled is True
     assert all_metrics.value["category"]["metric_expired"].disabled is True
     assert all_metrics.value["category"]["metric"].disabled is False
 
