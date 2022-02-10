@@ -212,6 +212,9 @@ def translate(
     if format_desc is None:
         raise ValueError(f"Unknown output format '{output_format}'")
 
+    # Output format is relevant for the linters
+    parser_config["output_format"] = output_format
+
     return translate_metrics(
         input_filepaths,
         output_dir,

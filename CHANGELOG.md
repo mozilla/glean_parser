@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Glinter: warn against using any of the default pings while translating to a language whose SDK does not provide any of the default pings (JavaScript, TypeScript and Python) ([bug 1744768](https://bugzilla.mozilla.org/show_bug.cgi?id=1744768))
+
 ## 5.0.1
 
 - Fix the logic for the metric expiration by version ([bug 1753194](https://bugzilla.mozilla.org/show_bug.cgi?id=1753194))

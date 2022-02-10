@@ -225,6 +225,28 @@ def check_valid_in_baseline(
         )
 
 
+def check_default_in_pings(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    output_format = parser_config.get("output_format")
+    allow_reserved = parser_config.get("allow_reserved", False)
+
+    # language SDKs that don't provide the default pings
+    TARGETS_WITHOUT_DEFAULT = ["javascript", "typescript", "python"]
+
+    for ping in metric.send_in_pings:
+        if (
+            not allow_reserved
+            and ping in pings.RESERVED_PING_NAMES
+            and output_format in TARGETS_WITHOUT_DEFAULT
+        ):
+            yield (
+                f"The Glean ${util.camelize(output_format)} SDK does not provide "
+                "default pings other than the deletion-request. Adding one of the "
+                "default pings to `send_in_pings` will have no effect."
+            )
+
+
 def check_misspelled_pings(
     metric: metrics.Metric, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -318,6 +340,7 @@ METRIC_CHECKS: Dict[
     "EXPIRATION_DATE_TOO_FAR": (check_expired_date, CheckType.warning),
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
+    "DEFAULT_PING": (check_default_in_pings, CheckType.warning),
 }
 
 
