@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for build info generation for JavaScript and Typescript targets ([bug 1749494](https://bugzilla.mozilla.org/show_bug.cgi?id=1749494))
+
 ## 5.0.1
 
 - Fix the logic for the metric expiration by version ([bug 1753194](https://bugzilla.mozilla.org/show_bug.cgi?id=1753194))
