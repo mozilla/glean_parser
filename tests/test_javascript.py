@@ -408,7 +408,6 @@ def test_event_extra_keys_with_types(tmpdir):
     with (tmpdir / "core.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        print(content)
         assert (
             "new EventMetricType<{ "
             "enabled?: boolean, "
@@ -432,3 +431,34 @@ def test_event_extra_keys_with_types(tmpdir):
         content = " ".join(content.split())
         assert "new EventMetricType({" in content
         assert '"enabled", "preference", "swapped"' in content
+
+
+def test_build_info_is_generated_when_option_is_present(tmpdir):
+    """
+    Assert that build info is generated
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml",
+        "typescript",
+        tmpdir,
+        {"with_buildinfo": "true"},
+    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["gleanBuildInfo.ts", "category.ts"]
+    )
+
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml",
+        "typescript",
+        tmpdir,
+        {"with_buildinfo": "true", "build_date": "2022-03-01T14:10+01:00"},
+    )
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["gleanBuildInfo.ts", "category.ts"]
+    )
+    with (tmpdir / "gleanBuildInfo.ts").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "new Date(2022, 2, 1, 14, 10, 0)" in content

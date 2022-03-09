@@ -97,6 +97,29 @@ def args(obj_type: str) -> Dict[str, object]:
     return {"common": util.common_metric_args, "extra": util.extra_metric_args}
 
 
+def generate_build_date(date: Optional[str]) -> str:
+    """
+    Generate the build Date object.
+    """
+
+    ts = util.build_date(date)
+
+    data = [
+        str(ts.year),
+        # In JavaScript the first month of the year in calendars is JANUARY which is 0.
+        # In Python it's 1-based
+        str(ts.month - 1),
+        str(ts.day),
+        str(ts.hour),
+        str(ts.minute),
+        str(ts.second),
+    ]
+    components = ", ".join(data)
+
+    # DatetimeMetricType takes a `Date` instance.
+    return f"new Date({components})"  # noqa
+
+
 def output(
     lang: str,
     objs: metrics.ObjectTree,
@@ -116,6 +139,13 @@ def output(
         - `version`: The version of the Glean.js Qt library being used.
                      This option is mandatory when targeting Qt. Note that the version
                      string must only contain the major and minor version i.e. 0.14.
+        - `with_buildinfo`: If "true" a `gleanBuildInfo.(js|ts)` file is generated.
+            Otherwise generation of that file is skipped. Defaults to "false".
+        - `build_date`: If set to `0` a static unix epoch time will be used.
+                        If set to a ISO8601 datetime string (e.g. `2022-01-03T17:30:00`)
+                        it will use that date.
+                        Other values will throw an error.
+                        If not set it will use the current date & time.
 
     """
 
@@ -179,6 +209,26 @@ def output(
                 )
             )
             # Jinja2 squashes the final newline, so we explicitly add it
+            fd.write("\n")
+
+    with_buildinfo = options.get("with_buildinfo", "").lower() == "true"
+    build_date = options.get("build_date", None)
+    if with_buildinfo:
+        # Write out the special "build info" file
+        template = util.get_jinja2_template(
+            "javascript.buildinfo.jinja2",
+        )
+        # This filename needs to start with "glean" so it can never
+        # clash with a metric category
+        filename = "gleanBuildInfo" + extension
+        filepath = output_dir / filename
+
+        with filepath.open("w", encoding="utf-8") as fd:
+            fd.write(
+                template.render(
+                    platform=platform, build_date=generate_build_date(build_date)
+                )
+            )
             fd.write("\n")
 
     if platform == "qt":
