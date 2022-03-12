@@ -7,8 +7,7 @@
 
 ## Contributors
 
-- Frank Bertsch <frank@mozilla.com>
-- Travis Long <tlong@mozilla.com>
+See [the full list of contributors](https://github.com/mozilla/glean_parser/graphs/contributors).
 
 ## Acknowledgements
 
