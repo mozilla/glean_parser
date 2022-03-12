@@ -42,8 +42,8 @@ test_requirements = [
 ]
 
 setup(
-    author="Michael Droettboom",
-    author_email="mdroettboom@mozilla.com",
+    author="The Glean Team",
+    author_email="glean-team@mozilla.com",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

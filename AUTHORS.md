@@ -2,7 +2,7 @@
 
 ## Development Lead
 
-- Michael Droettboom <mdroettboom@mozilla.com>
+- Jan-Erik Rediger <jrediger@mozilla.com>
 - Alessio Placitelli <aplacitelli@mozilla.com>
 
 ## Contributors

@@ -48,8 +48,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Glean Parser'
-copyright = u"2018-2021, Michael Droettboom"
-author = u"Michael Droettboom"
+copyright = u"2018-2022, The Glean Team"
+author = u"The Glean Team"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -130,7 +130,7 @@ latex_elements = {
 latex_documents = [
     (master_doc, 'glean_parser.tex',
      u'Glean Parser Documentation',
-     u'Michael Droettboom', 'manual'),
+     u'The Glean Team', 'manual'),
 ]
 
 
