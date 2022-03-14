@@ -28,10 +28,10 @@ $ git clone https://github.com/mozilla/glean_parser.git
 ```
 
 Or download the
-[tarball](https://github.com/mdboom/glean_parser/tarball/HEAD):
+[tarball](https://github.com/mozilla/glean_parser/tarball/HEAD):
 
 ```sh
-$ curl  -OL https://github.com/mdboom/glean_parser/tarball/HEAD
+$ curl  -OL https://github.com/mozilla/glean_parser/tarball/HEAD
 ```
 
 Once you have a copy of the source, you can install it with:
