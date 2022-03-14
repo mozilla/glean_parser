@@ -7,7 +7,7 @@ m2r==0.2.1
 mypy==0.931
 pip
 pytest-runner==5.3.1
-pytest==7.0.1
+pytest==7.1.0
 recommonmark==0.7.1
 Sphinx==4.3.2
 twine==3.8.0
