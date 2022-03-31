@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- BUGFIX: Fix issues with Swift templates ([bug 1749494](https://bugzilla.mozilla.org/show_bug.cgi?id=1749494))
+    - Make metrics and pings all `public`
+    - Make pings `static`
+
 ## 5.1.0
 
 - Add support for build info generation for JavaScript and Typescript targets ([bug 1749494](https://bugzilla.mozilla.org/show_bug.cgi?id=1749494))

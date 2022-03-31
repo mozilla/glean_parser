@@ -7,8 +7,8 @@ Jinja2 template is not. Please file bugs! #}
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-{% macro obj_declaration(obj, suffix='', access='') %}
-{{ access }}static let {{ obj.name|camelize|variable_name }}{{ suffix }} = {{ obj|type_name }}( // generated from {{ obj.identifier() }}
+{% macro obj_declaration(obj, suffix='') %}
+public static let {{ obj.name|camelize|variable_name }}{{ suffix }} = {{ obj|type_name }}( // generated from {{ obj.identifier() }}
         {% for arg_name in extra_args if obj[arg_name] is defined %}
         {{ arg_name|camelize }}: {{ obj[arg_name]|swift }}{{ "," if not loop.last }}
         {% endfor %}
@@ -28,12 +28,22 @@ enum {{ obj.name|Camelize }}{{ suffix }}: Int32, ExtraKeys {
 {% endmacro %}
 
 {% macro struct_decl(obj, name, suffix) %}
-struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
+public struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {% for item, typ in obj|attr(name) %}
         var {{ item|camelize|variable_name }}: {{typ|extra_type_name}}?
         {% endfor %}
 
-        func toFfiExtra() -> ([Int32], [String]) {
+        public init(
+            {% for item, typ in obj|attr(name) %}
+            {{ item|camelize|variable_name }}: {{typ|extra_type_name}}?{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ) {
+            {% for item, typ in obj|attr(name) %}
+            self.{{ item|camelize|variable_name }} = {{ item|camelize|variable_name }}
+            {% endfor %}
+        }
+
+        public func toFfiExtra() -> ([Int32], [String]) {
             var keys = [Int32]()
             var values = [String]()
 
@@ -59,7 +69,7 @@ import {{ glean_namespace }}
 // swiftlint:disable identifier_name
 // swiftlint:disable force_try
 
-extension {{ namespace }} {
+public extension {{ namespace }} {
     {% if build_info %}
     class GleanBuild {
         private init() {
@@ -96,7 +106,7 @@ extension {{ namespace }} {
         {% endfor %}
         {% endif %}
         /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
-        let {{ obj.name|camelize|variable_name }} = {{obj|type_name}}(
+        public static let {{ obj.name|camelize|variable_name }} = {{obj|type_name}}(
             name: {{ obj.name|swift }},
             includeClientId: {{obj.include_client_id|swift}},
             sendIfEmpty: {{obj.send_if_empty|swift}},
@@ -123,9 +133,9 @@ extension {{ namespace }} {
     {% endfor %}
     {% for obj in category.objs.values() %}
         {% if obj.labeled %}
-        {{ obj_declaration(obj, 'Label', 'private ') | indent }}
+        {{ obj_declaration(obj, 'Label') | indent }}
         /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
-        static let {{ obj.name|camelize|variable_name }} = try! LabeledMetricType<{{ obj|type_name }}>( // generated from {{ obj.identifier() }}
+        public static let {{ obj.name|camelize|variable_name }} = try! LabeledMetricType<{{ obj|type_name }}>( // generated from {{ obj.identifier() }}
             category: {{ obj.category|swift }},
             name: {{ obj.name|swift }},
             sendInPings: {{ obj.send_in_pings|swift }},
