@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.1.1
 
 - BUGFIX: Fix issues with Swift templates ([bug 1749494](https://bugzilla.mozilla.org/show_bug.cgi?id=1749494))
     - Make metrics and pings all `public`
