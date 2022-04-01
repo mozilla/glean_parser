@@ -1,6 +1,8 @@
 # Changelog
 
-- BUGFIX: Revert changes made on v5.1.1. 
+## 5.1.2
+
+- BUGFIX: Revert changes made on v5.1.1.
     - The issues addressed by those changes, were non-issues and result of misuse of the APIs.
 
 ## 5.1.1
