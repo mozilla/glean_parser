@@ -1,5 +1,8 @@
 # Changelog
 
+- BUGFIX: Revert changes made on v5.1.1. 
+    - The issues addressed by those changes, were non-issues and result of misuse of the APIs.
+
 ## 5.1.1
 
 - BUGFIX: Fix issues with Swift templates ([bug 1749494](https://bugzilla.mozilla.org/show_bug.cgi?id=1749494))
