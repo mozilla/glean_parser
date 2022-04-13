@@ -78,6 +78,7 @@ from . import translation_options
 @click.option(
     "--list-options",
     is_flag=True,
+    default=False,
     help="List valid options for target language",
     is_eager=True,
     callback=translation_options.translate_options,
@@ -91,6 +92,7 @@ def translate(
     allow_missing_files,
     require_tags,
     expire_by_version,
+    list_options,
 ):
     """
     Translate metrics.yaml and pings.yaml files to other formats.

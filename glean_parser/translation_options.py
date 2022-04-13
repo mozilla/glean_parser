@@ -3,7 +3,7 @@ import pydoc
 import click
 
 def translate_options(ctx, param, value):
-    text = """Target language options for Translate function
+        text = """Target language options for Translate function
 
 These are backend specific and optional, provide as key:value
 
@@ -44,6 +44,7 @@ Markdown:
 - `project_title`: The projects title.
 
 (press q to exit)"""
-    pydoc.pager(text)
-    ctx.exit()
-    
+
+        if value:
+                pydoc.pager(text)
+                ctx.exit()
