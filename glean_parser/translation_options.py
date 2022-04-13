@@ -46,3 +46,4 @@ Markdown:
 (press q to exit)"""
     pydoc.pager(text)
     ctx.exit()
+    
