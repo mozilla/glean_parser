@@ -21,6 +21,7 @@ from . import data_review as mod_data_review
 from . import lint
 from . import translate as mod_translate
 from . import validate_ping
+from . import translation_options
 
 
 @click.command()
@@ -73,6 +74,13 @@ from . import validate_ping
     help="Expire metrics by version, with the provided major version.",
     type=click.INT,
     required=False,
+)
+@click.option(
+    "--list-options",
+    is_flag=True,
+    help="List valid options for target language",
+    is_eager=True,
+    callback=translation_options.translate_options,
 )
 def translate(
     input,
