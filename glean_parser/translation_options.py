@@ -45,5 +45,7 @@ Markdown:
 (press q to exit)"""
 
     if value:
-        pydoc.pager(text)
-        ctx.exit()
+        if value[0].lower() == "help":
+            pydoc.pager(text)
+            ctx.exit()
+    return value

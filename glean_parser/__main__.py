@@ -24,7 +24,10 @@ from . import validate_ping
 from . import translation_options
 
 
-@click.command()
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+
+@click.command(context_settings=CONTEXT_SETTINGS)
 @click.argument(
     "input",
     type=click.Path(exists=False, dir_okay=False, file_okay=True, readable=True),
@@ -46,10 +49,13 @@ from . import translation_options
 @click.option(
     "--option",
     "-s",
-    help="backend-specific option. Must be of the form key=value",
+    help="Backend-specific option. Must be of the form key=value.\
+ Pass 'help' for valid options",
     type=str,
     multiple=True,
     required=False,
+    is_eager=True,
+    callback=translation_options.translate_options,
 )
 @click.option(
     "--allow-reserved",
@@ -75,14 +81,6 @@ from . import translation_options
     type=click.INT,
     required=False,
 )
-@click.option(
-    "--list-options",
-    is_flag=True,
-    default=False,
-    help="List valid options for target language",
-    is_eager=True,
-    callback=translation_options.translate_options,
-)
 def translate(
     input,
     format,
@@ -92,7 +90,6 @@ def translate(
     allow_missing_files,
     require_tags,
     expire_by_version,
-    list_options,
 ):
     """
     Translate metrics.yaml and pings.yaml files to other formats.
