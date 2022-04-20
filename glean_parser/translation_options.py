@@ -43,7 +43,7 @@ JavaScript:
         If not set it will use the current date & time.
 
 Markdown:
-- `project_title`: The projects title.
+- `project_title`: The project's title.
 
 (press q to exit)"""
 
