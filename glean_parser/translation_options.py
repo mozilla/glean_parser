@@ -20,6 +20,7 @@ Swift:
         it will use that date.
         Other values will throw an error.
         If not set it will use the current date & time.
+
 Kotlin:
 - `namespace`: The package namespace to declare at the top of the
         generated files. Defaults to `GleanMetrics`.
