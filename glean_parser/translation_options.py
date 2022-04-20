@@ -6,8 +6,7 @@ def translate_options(ctx, param, value):
 
 These are backend specific and optional, provide as key:value
 
-Rust:
-- not used
+Rust: no options.
 Swift:
 - namespace: The namespace to generate metrics in
 - glean_namespace: The namespace to import Glean from
