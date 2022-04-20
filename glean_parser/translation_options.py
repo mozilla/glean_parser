@@ -27,6 +27,7 @@ Kotlin:
 - `glean_namespace`: The package namespace of the glean library itself.
         This is where glean objects will be imported from in the generated
         code.
+
 JavaScript:
 - `platform`: Which platform are we building for. Options are `webext` and `qt`.
         Default is `webext`.
