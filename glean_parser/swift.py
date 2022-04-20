@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
+from . import __version__
 from . import metrics
 from . import pings
 from . import tags
@@ -235,6 +236,7 @@ def output_swift(
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
+                parser_version=__version__,
                 categories=categories,
                 extra_args=util.metric_args,
                 namespace=namespace,

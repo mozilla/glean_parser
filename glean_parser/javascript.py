@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Callable
 
+from . import __version__
 from . import metrics
 from . import util
 
@@ -198,6 +199,7 @@ def output(
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
+                    parser_version=__version__,
                     category_name=category_key,
                     objs=category_val,
                     extra_args=util.extra_args,
@@ -226,7 +228,9 @@ def output(
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
-                    platform=platform, build_date=generate_build_date(build_date)
+                    parser_version=__version__,
+                    platform=platform,
+                    build_date=generate_build_date(build_date),
                 )
             )
             fd.write("\n")
@@ -237,7 +241,11 @@ def output(
         filepath = output_dir / "qmldir"
 
         with filepath.open("w", encoding="utf-8") as fd:
-            fd.write(template.render(categories=objs.keys(), version=version))
+            fd.write(
+                template.render(
+                    parser_version=__version__, categories=objs.keys(), version=version
+                )
+            )
             # Jinja2 squashes the final newline, so we explicitly add it
             fd.write("\n")
 
