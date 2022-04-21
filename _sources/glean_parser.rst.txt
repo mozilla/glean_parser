@@ -108,6 +108,14 @@ glean\_parser.translate module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.translation\_options module
+-----------------------------------------
+
+.. automodule:: glean_parser.translation_options
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.util module
 -------------------------
 
