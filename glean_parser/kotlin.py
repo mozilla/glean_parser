@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union  # noqa
 
+from . import __version__
 from . import metrics
 from . import pings
 from . import tags
@@ -244,6 +245,7 @@ def output_gecko_lookup(
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
+                parser_version=__version__,
                 gecko_metrics=gecko_metrics,
                 namespace=namespace,
                 glean_namespace=glean_namespace,
@@ -299,6 +301,7 @@ def output_kotlin(
         with (output_dir / "GleanBuildInfo.kt").open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
+                    parser_version=__version__,
                     namespace=namespace,
                     namespace_package=namespace_package,
                     glean_namespace=glean_namespace,
@@ -331,6 +334,7 @@ def output_kotlin(
         with filepath.open("w", encoding="utf-8") as fd:
             fd.write(
                 template.render(
+                    parser_version=__version__,
                     category_name=category_key,
                     objs=category_val,
                     obj_types=obj_types,
