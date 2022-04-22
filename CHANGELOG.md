@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- BUGFIX: Add missing `extra_args` to Rust constructor generation ([bug 1765855](https://bugzilla.mozilla.org/show_bug.cgi?id=1765855))
+
 ## 5.1.2
 
 - BUGFIX: Revert changes made on v5.1.1.

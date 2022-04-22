@@ -197,5 +197,6 @@ def output_rust(
                 parser_version=__version__,
                 categories=categories,
                 extra_args=util.metric_args,
+                common_metric_args=util.common_metric_args,
             )
         )
