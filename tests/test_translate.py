@@ -209,12 +209,6 @@ def test_getting_line_number():
 
 def test_rates(tmpdir):
     def external_translator(all_objects, output_dir, options):
-        assert (
-            all_objects["testing.rates"]["has_external_denominator"].type == "rate"
-        )  # Hasn't yet been transformed
-
-        translate.transform_metrics(all_objects)
-
         category = all_objects["testing.rates"]
         assert category["has_internal_denominator"].type == "rate"
         assert category["has_external_denominator"].type == "numerator"
@@ -228,7 +222,11 @@ def test_rates(tmpdir):
             == "testing.rates.the_denominator"
         )
         assert category["the_denominator"].type == "denominator"
-        assert category["the_denominator"].numerators == [
+
+        numerators = [
+            f"{m.category}.{m.name}" for m in category["the_denominator"].numerators
+        ]
+        assert numerators == [
             "testing.rates.has_external_denominator",
             "testing.rates.also_has_external_denominator",
         ]
