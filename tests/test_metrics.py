@@ -18,9 +18,11 @@ def test_metrics_match_schema():
     """
     schema, validator = parser._get_schema(parser.METRICS_ID)
 
+    # "ERROR": The unset typename of `Metric`
+    # "denominator": The special wrapper type around counter for external denominators
     assert set(metrics.Metric.metric_types.keys()) == set(
         schema["definitions"]["metric"]["properties"]["type"]["enum"]
-    ) | set(["ERROR"])
+    ) | set(["ERROR", "denominator"])
 
 
 def test_enforcement():
