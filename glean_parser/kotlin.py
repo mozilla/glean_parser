@@ -31,6 +31,8 @@ def kotlin_datatypes_filter(value: util.JSONType) -> str:
       - dicts to use mapOf
       - sets to use setOf
       - enums to use the like-named Kotlin enum
+      - Rate objects to a CommonMetricData initializer
+        (for external Denominators' Numerators lists)
     """
 
     class KotlinEncoder(json.JSONEncoder):
@@ -66,6 +68,17 @@ def kotlin_datatypes_filter(value: util.JSONType) -> str:
                         yield ", "
                     yield from self.iterencode(subvalue)
                     first = False
+                yield ")"
+            elif isinstance(value, metrics.Rate):
+                yield "CommonMetricData("
+                first = True
+                for arg_name in util.common_metric_args:
+                    if hasattr(value, arg_name):
+                        if not first:
+                            yield ", "
+                        yield f"{util.camelize(arg_name)} = "
+                        yield from self.iterencode(getattr(value, arg_name))
+                        first = False
                 yield ")"
             else:
                 yield from super().iterencode(value)
