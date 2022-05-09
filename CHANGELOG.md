@@ -3,6 +3,7 @@
 ## Unreleased
 
 - BUGFIX: Add missing `extra_args` to Rust constructor generation ([bug 1765855](https://bugzilla.mozilla.org/show_bug.cgi?id=1765855))
+- Generate Rate, Denominator and Numerator metrics for Kotlin and Swift
 
 ## 5.1.2
 
