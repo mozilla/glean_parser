@@ -6,6 +6,9 @@
 - **Breaking change:** `glean_parser` now generates metrics compatible with the UniFFI-powered Glean SDK.
   This is not backwards-compatible with previous versions.
 - Generate Rate, Denominator and Numerator metrics for Kotlin and Swift
+- Explicitly skip Rate, Denominator and Numerator metrics for JavaScript.
+  These will cause a build failure by default, but can be turned into warnings on request.
+  Use `-s fail_rates=false` to enable warning-only mode.
 
 ## 5.1.2
 
