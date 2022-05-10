@@ -10,6 +10,7 @@ Outputter to generate Javascript code for metrics.
 
 import enum
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Callable
 
@@ -147,12 +148,15 @@ def output(
                         it will use that date.
                         Other values will throw an error.
                         If not set it will use the current date & time.
-
+        - `fail_rates`: Whether to fail or just warn and skip rate metrics.
+                        Defaults to "true".
     """
 
     if options is None:
         options = {}
 
+    fail_rates = options.get("fail_rates", "true").lower() == "true"
+    fail_rate_level = "ERROR" if fail_rates else "WARN"
     platform = options.get("platform", "webext")
     accepted_platforms = ["qt", "webext", "node"]
     if platform not in accepted_platforms:
@@ -180,6 +184,26 @@ def output(
         extension = ".js" if lang == "javascript" else ".ts"
         filename = util.camelize(category_key) + extension
         filepath = output_dir / filename
+
+        # FIXME: Add support for rate (and numerator & denominator) in Glean.js
+        todelete = []
+        for key, metric in category_val.items():
+            if isinstance(metric, metrics.Rate):
+                print(
+                    f"{fail_rate_level}: Rate metric not supported. Metric: {category_key}.{metric.name}",  # noqa: E501
+                    file=sys.stderr,
+                )
+                todelete.append(key)
+            if isinstance(metric, metrics.Denominator):
+                print(
+                    f"{fail_rate_level}: Rate metric not supported. Dropping numerators. Metric: {category_key}.{metric.name}",  # noqa: E501
+                    file=sys.stderr,
+                )
+                del metric.numerators
+
+        if fail_rates and todelete:
+            print("Failed due to previous errors.", file=sys.stderr)
+            raise ValueError("Unsupported metric type encountered.")
 
         types = set(
             [
