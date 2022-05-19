@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 6.0.0
+
 - BUGFIX: Add missing `extra_args` to Rust constructor generation ([bug 1765855](https://bugzilla.mozilla.org/show_bug.cgi?id=1765855))
 - **Breaking change:** `glean_parser` now generates metrics compatible with the UniFFI-powered Glean SDK.
   This is not backwards-compatible with previous versions.
