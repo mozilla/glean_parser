@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 6.0.1
+
+- Relax version requirement for MarkupSafe.
+  Now works with MarkupSafe v1.1.1 to v2.0.1 inclusive again.
+
 ## 6.0.0
 
 - BUGFIX: Add missing `extra_args` to Rust constructor generation ([bug 1765855](https://bugzilla.mozilla.org/show_bug.cgi?id=1765855))
