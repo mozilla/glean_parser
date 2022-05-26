@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- [data-review] Include extra keys' names and descriptions in data review template ([bug 1767027](https://bugzilla.mozilla.org/show_bug.cgi?id=1767027))
+
 ## 6.0.1
 
 - Relax version requirement for MarkupSafe.
