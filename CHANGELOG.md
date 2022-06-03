@@ -3,6 +3,7 @@
 ## Unreleased
 
 - [data-review] Include extra keys' names and descriptions in data review template ([bug 1767027](https://bugzilla.mozilla.org/show_bug.cgi?id=1767027))
+- Raise limit on number of statically-defined lables to 4096. ([bug 1772163](https://bugzilla.mozilla.org/show_bug.cgi?id=1772163))
 
 ## 6.0.1
 
