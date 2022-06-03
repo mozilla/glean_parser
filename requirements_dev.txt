@@ -8,7 +8,7 @@ pip
 pytest-runner==5.3.1
 pytest==7.0.1
 recommonmark==0.7.1
-Sphinx==4.3.2
+Sphinx==5.0.1
 twine==3.8.0
 types-Jinja2==2.11.9
 types-pkg_resources==0.1.3
