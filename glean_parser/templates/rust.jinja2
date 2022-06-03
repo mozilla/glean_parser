@@ -32,10 +32,10 @@ pub struct {{ obj.name|Camelize }}{{ suffix }} {
 impl ExtraKeys for {{ obj.name|Camelize }}{{ suffix }} {
     const ALLOWED_KEYS: &'static [&'static str] = {{ obj.allowed_extra_keys|extra_keys }};
 
-    fn into_ffi_extra(self) -> ::std::collections::HashMap<i32, String> {
+    fn into_ffi_extra(self) -> ::std::collections::HashMap<String, String> {
         let mut map = ::std::collections::HashMap::new();
         {% for key, _ in obj|attr(name) %}
-        self.{{key|snake_case}}.and_then(|val| map.insert({{loop.index-1}}, val));
+        self.{{key|snake_case}}.and_then(|val| map.insert("{{key}}", val));
         {% endfor %}
         map
     }
