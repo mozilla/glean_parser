@@ -86,8 +86,16 @@ def test_ping_parser(tmpdir):
         content = fd.read()
 
         assert "This is a custom ping" in content
-        assert "custom_ping: Lazy<Ping> =\n    Lazy::new" in content
-        assert "custom_ping_might_be_empty: Lazy<Ping> =\n    Lazy::new" in content
+        assert (
+            "custom_ping: ::glean::private::__export::Lazy<::glean::private::"
+            + "PingType> =\n    ::glean::private::__export::Lazy::new"
+            in content
+        )
+        assert (
+            "custom_ping_might_be_empty: ::glean::private::__export::Lazy<"
+            + "::glean::private::PingType> =\n    ::glean::private::__export::Lazy::new"
+            in content
+        )
 
     # TODO we need a cargo.toml to run `cargo fmt` and `cargo clippy`
     # and I'm not quite sure how to do that in a non-Rust project for
