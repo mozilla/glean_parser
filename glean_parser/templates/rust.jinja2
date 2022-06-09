@@ -32,10 +32,10 @@ pub struct {{ obj.name|Camelize }}{{ suffix }} {
 impl ExtraKeys for {{ obj.name|Camelize }}{{ suffix }} {
     const ALLOWED_KEYS: &'static [&'static str] = {{ obj.allowed_extra_keys|extra_keys }};
 
-    fn into_ffi_extra(self) -> ::std::collections::HashMap<String, String> {
+    fn into_ffi_extra(self) -> ::std::collections::HashMap<::std::string::String, ::std::string::String> {
         let mut map = ::std::collections::HashMap::new();
         {% for key, _ in obj|attr(name) %}
-        self.{{key|snake_case}}.and_then(|val| map.insert("{{key}}", val));
+        self.{{key|snake_case}}.and_then(|val| map.insert("{{key}}".to_string(), val));
         {% endfor %}
         map
     }
@@ -72,7 +72,7 @@ pub mod {{ category.name|snake_case }} {
             disabled: {{ obj.is_disabled()|rust }},
             ..Default::default()
         }
-        {%- for arg_name in extra_args if obj[arg_name] is defined and arg_name not in common_metric_args and arg_name != 'allowed_extra_keys' -%}
+        {%- for arg_name in extra_metric_args if obj[arg_name] is defined and arg_name != 'allowed_extra_keys' -%}
             , {{ obj[arg_name]|rust }}
         {%- endfor -%}
         {{ ", " if obj.labeled else ")\n" }}
