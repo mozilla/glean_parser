@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 6.1.1
+
 - Rust: Use correct name for a ping in generated code.
 
 ## 6.1.0
