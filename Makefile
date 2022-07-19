@@ -44,7 +44,7 @@ fmt: ## autoformat files
 	python3 -m black glean_parser tests setup.py
 
 test: ## run tests quickly with the default Python
-	py.test
+	py.test --run-web-tests
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source glean_parser -m pytest

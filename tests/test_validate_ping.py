@@ -5,11 +5,13 @@
 
 import io
 import json
+import pytest
 from pytest import raises
 
 from glean_parser import validate_ping
 
 
+@pytest.mark.web_dependency
 def test_validate_ping():
     content = {
         "experiments": {
