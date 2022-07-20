@@ -35,7 +35,11 @@ requirements = [
     "yamllint>=1.18.0",
 ]
 
-setup_requirements = ["pytest-runner", "setuptools-scm"]
+setup_requirements = [
+    "pytest-runner",
+    "setuptools-scm<7; python_version<='3.6'",
+    "setuptools-scm>=7; python_version>'3.6'",
+]
 
 test_requirements = [
     "pytest",
