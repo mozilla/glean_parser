@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- [data-review] Use a template to generate the Data Review Request template ([bug 1772605](https://bugzilla.mozilla.org/show_bug.cgi?id=1772605))
+
 ## 6.1.2
 
 - Swift: Add a conditional `import Foundation` to support generating metrics when Glean is delivered via the AppServices iOS megazord
