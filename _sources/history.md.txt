@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 6.1.2
+
+- Swift: Add a conditional `import Foundation` to support generating metrics when Glean is delivered via the AppServices iOS megazord
+
 ## 6.1.1
 
 - Rust: Use correct name for a ping in generated code.
