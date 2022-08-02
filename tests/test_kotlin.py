@@ -299,7 +299,7 @@ def test_gecko_datapoints(tmpdir):
             "GV_PAGE_RELOAD_MS" -> PagePerf.reloadTime
             else -> null
         }
-    }"""
+    }"""  # noqa
 
         assert expected_func in content
 
@@ -321,7 +321,7 @@ def test_gecko_datapoints(tmpdir):
             "gfx_adapter.stand_alone" -> GfxInfoAdapter.standAlone
             else -> null
         }
-    }"""
+    }"""  # noqa
 
         assert expected_func in content
 
@@ -331,7 +331,7 @@ def test_gecko_datapoints(tmpdir):
             "gfx_adapter.vendor_id" -> GfxInfoAdapter.vendorId
             else -> null
         }
-    }"""
+    }"""  # noqa
 
         assert expected_func in content
 
@@ -341,7 +341,7 @@ def test_gecko_datapoints(tmpdir):
             "gfx_adapter.width" -> GfxInfoAdapter.screenWidth
             else -> null
         }
-    }"""
+    }"""  # noqa
 
         assert expected_func in content
 
