@@ -3,6 +3,7 @@
 ## Unreleased
 
 - [data-review] Use a template to generate the Data Review Request template ([bug 1772605](https://bugzilla.mozilla.org/show_bug.cgi?id=1772605))
+- Make tag and no\_lint order deterministic ([#518](https://github.com/mozilla/glean_parser/pull/518))
 
 ## 6.1.2
 
