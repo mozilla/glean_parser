@@ -834,3 +834,50 @@ def test_text_invalid():
 
         if "builtin_pings" in error:
             assert compare("Built-in pings are not allowed", error)
+
+
+def test_metadata_tags_sorted():
+    all_metrics = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "$tags": ["tag1"],
+                    "category": {"metric": {"metadata": {"tags": ["tag2"]}}},
+                }
+            )
+        ]
+    )
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric"].disabled is False
+    assert all_metrics.value["category"]["metric"].metadata["tags"] == ["tag1", "tag2"]
+
+
+def test_no_lint_sorted():
+    all_objects = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "no_lint": ["lint1"],
+                    "category": {"metric": {"no_lint": ["lint2"]}},
+                }
+            ),
+            util.add_required_ping(
+                {
+                    "no_lint": ["lint1"],
+                    "ping": {"no_lint": ["lint2"]},
+                }
+            ),
+            {
+                "$schema": parser.TAGS_ID,
+                # no_lint is only valid at the top level for tags
+                "no_lint": ["lint2", "lint1"],
+                "tag": {"description": ""},
+            },
+        ]
+    )
+    errors = list(all_objects)
+    assert len(errors) == 0
+    assert all_objects.value["category"]["metric"].no_lint == ["lint1", "lint2"]
+    assert all_objects.value["pings"]["ping"].no_lint == ["lint1", "lint2"]
+    assert all_objects.value["tags"]["tag"].no_lint == ["lint1", "lint2"]

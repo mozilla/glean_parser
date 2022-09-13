@@ -17,7 +17,7 @@ def add_required(chunk):
     }
 
     for category_key, category_val in chunk.items():
-        if category_key == "$schema":
+        if category_key in ("$schema", "$tags", "no_lint"):
             continue
         for metric in category_val.values():
             for default_name, default_val in DEFAULTS.items():
