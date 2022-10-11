@@ -1,4 +1,4 @@
-black==22.8.0
+black==22.10.0; python_version > '3.6'
 coverage==6.5.0; python_version > '3.6'
 coverage==6.2; python_version <= '3.6'
 flake8==5.0.4
