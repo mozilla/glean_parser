@@ -58,7 +58,7 @@ def test_parser_js_all_metrics(tmpdir):
         ROOT / "data" / "all_metrics.yaml",
         "javascript",
         tmpdir,
-        {"fail_rates": "false"},  # Don't fail on rate metrics.
+        None,
         {"allow_reserved": True},
     )
 
