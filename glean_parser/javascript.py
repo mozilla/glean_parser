@@ -10,7 +10,6 @@ Outputter to generate Javascript code for metrics.
 
 import enum
 import json
-import sys
 from pathlib import Path
 from typing import Any, Dict, Optional, Callable
 
