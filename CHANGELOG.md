@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for Rate, Denominator and Numerator metrics for JavaScript. ([bug 1793777](https://bugzilla.mozilla.org/show_bug.cgi?id=1793777))
+
 ## 6.2.0
 
 - [data-review] Use a template to generate the Data Review Request template ([bug 1772605](https://bugzilla.mozilla.org/show_bug.cgi?id=1772605))
