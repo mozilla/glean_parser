@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 6.2.1
+
 - Add support for Rate, Denominator and Numerator metrics for JavaScript. ([bug 1793777](https://bugzilla.mozilla.org/show_bug.cgi?id=1793777))
 
 ## 6.2.0
