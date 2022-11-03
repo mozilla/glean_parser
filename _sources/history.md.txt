@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 6.3.0
+
 - events: Increase extras limit to 15 ([bug 1798713](https://bugzilla.mozilla.org/show_bug.cgi?id=1798713))
 
 ## 6.2.1
