@@ -163,6 +163,16 @@ def test_parser_schema_violation():
                 description: Sample extra key
                 key_11:
                 description: Sample extra key
+                key_12:
+                  description: Sample extra key
+                key_13:
+                  description: Sample extra key
+                key_14:
+                  description: Sample extra key
+                key_15:
+                  description: Sample extra key
+                key_16:
+                  description: Sample extra key
         ```
         {'key_1': {'description': 'Sample extra key'},
         'key_2': {'description': 'Sample extra key'},
@@ -174,7 +184,12 @@ def test_parser_schema_violation():
         'key_8': {'description': 'Sample extra key'},
         'key_9': {'description': 'Sample extra key'},
         'key_10': {'description': 'Sample extra key'},
-        'key_11': {'description': 'Sample extra key'}
+        'key_11': {'description': 'Sample extra key'},
+        'key_12': {'description': 'Sample extra key'},
+        'key_13': {'description': 'Sample extra key'},
+        'key_14': {'description': 'Sample extra key'},
+        'key_15': {'description': 'Sample extra key'},
+        'key_16': {'description': 'Sample extra key'}
         } has too many properties
         Documentation for this node:
             The acceptable keys on the "extra" object sent with events. This is an
