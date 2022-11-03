@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- events: Increase extras limit to 15 ([bug 1798713](https://bugzilla.mozilla.org/show_bug.cgi?id=1798713))
+
 ## 6.2.1
 
 - Add support for Rate, Denominator and Numerator metrics for JavaScript. ([bug 1793777](https://bugzilla.mozilla.org/show_bug.cgi?id=1793777))
