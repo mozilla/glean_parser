@@ -3,7 +3,7 @@ coverage==6.5.0; python_version > '3.6'
 coverage==6.2; python_version <= '3.6'
 flake8==5.0.4
 flake8-bugbear==22.8.23
-mypy==0.971
+mypy==0.990
 pip
 pytest-runner==5.3.1
 pytest==7.0.1
