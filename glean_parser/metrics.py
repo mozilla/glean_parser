@@ -60,7 +60,7 @@ class Metric:
         data_sensitivity: Optional[List[str]] = None,
         defined_in: Optional[Dict] = None,
         telemetry_mirror: Optional[str] = None,
-        _config: Dict[str, Any] = None,
+        _config: Optional[Dict[str, Any]] = None,
         _validated: bool = False,
     ):
         # Avoid cyclical import
