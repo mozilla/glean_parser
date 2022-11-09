@@ -299,6 +299,12 @@ class CustomDistribution(Metric):
 class Datetime(TimeBase):
     typename = "datetime"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.time_unit == TimeUnit.nanosecond:
+            raise ValueError("`time_unit: nanosecond` not allowed for type `datetime`")
+
 
 class Event(Metric):
     typename = "event"

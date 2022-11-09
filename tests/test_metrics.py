@@ -203,3 +203,20 @@ def test_jwe_is_rejected():
             extra_keys={"glean.internal": {"description": "foo"}},
             _config={"allow_reserved": True},
         )
+
+
+def test_datetime_nanoseconds_disallowed():
+    with pytest.raises(ValueError) as e:
+        metrics.Datetime(
+            type="datetime",
+            category="category",
+            name="metric",
+            bugs=["http://bugzilla.mozilla.com/12345"],
+            notification_emails=["nobody@example.com"],
+            description="description...",
+            expires="never",
+            time_unit="nanosecond",
+            _config={"allow_reserved": True},
+        )
+
+    assert "time_unit" in str(e.value)
