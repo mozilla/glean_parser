@@ -63,6 +63,17 @@ def rust_datatypes_filter(value):
                 yield "None"
             elif isinstance(value, str):
                 yield f'"{value}".into()'
+            elif isinstance(value, metrics.Rate):
+                yield "CommonMetricData("
+                first = True
+                for arg_name in util.common_metric_args:
+                    if hasattr(value, arg_name):
+                        if not first:
+                            yield ", "
+                        yield f"{util.camelize(arg_name)} = "
+                        yield from self.iterencode(getattr(value, arg_name))
+                        first = False
+                yield ")"
             else:
                 yield from super().iterencode(value)
 
