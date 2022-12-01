@@ -61,6 +61,9 @@ def rust_datatypes_filter(value):
                 yield "]"
             elif value is None:
                 yield "None"
+            # `CowStr` is a `str`, so needs to be before next case
+            elif isinstance(value, metrics.CowString):
+                yield f'::std::borrow::Cow::from("{value.inner}")'
             elif isinstance(value, str):
                 yield f'"{value}".into()'
             elif isinstance(value, metrics.Rate):
