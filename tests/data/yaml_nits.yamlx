@@ -7,7 +7,7 @@ $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 page.perf:
   load_time:
     type: timing_distribution
-    gecko_datapoint: GV_PAGE_LOAD_MS   
+    gecko_datapoint: GV_PAGE_LOAD_MS
     time_unit: millisecond
     lifetime: application
     description: >
