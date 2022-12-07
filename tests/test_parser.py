@@ -194,7 +194,7 @@ def test_parser_schema_violation():
         Documentation for this node:
             The acceptable keys on the "extra" object sent with events. This is an
             object mapping the key to an object containing metadata about the key.
-            A maximum of 10 extra keys is allowed.
+            A maximum of 15 extra keys is allowed.
             This metadata object has the following keys:
                 - `description`: **Required.** A description of the key.
             Valid when `type`_ is `event`.
@@ -206,7 +206,12 @@ def test_parser_schema_violation():
         for x in expected_errors
     )
 
-    assert sorted(list(found_errors)) == sorted(list(expected_errors))
+    # Compare errors 1-by-1 for better assertion message when it fails.
+    found = sorted(list(found_errors))
+    expected = sorted(list(expected_errors))
+
+    for found_error, expected_error in zip(found, expected):
+        assert found_error == expected_error
 
 
 def test_parser_empty():
