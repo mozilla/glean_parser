@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.rust &#8212; Glean Parser 6.3.1.dev6+g9cd56825 documentation</title>
+    <title>glean_parser.rust &#8212; Glean Parser 6.3.1.dev8+g8c789666 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -94,6 +94,9 @@
                 <span class="k">yield</span> <span class="s2">&quot;]&quot;</span>
             <span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="s2">&quot;None&quot;</span>
+            <span class="c1"># `CowStr` is a `str`, so needs to be before next case</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">CowString</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;::std::borrow::Cow::from(&quot;</span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">inner</span><span class="si">}</span><span class="s1">&quot;)&#39;</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot;.into()&#39;</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Rate</span><span class="p">):</span>
@@ -130,7 +133,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;labeled&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;LabeledMetric&lt;Labeled</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s2">&quot;LabeledMetric&lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
     <span class="n">generate_enums</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_generate_enums&quot;</span><span class="p">,</span> <span class="p">[])</span>  <span class="c1"># Extra Keys? Reasons?</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">generate_enums</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">generate_enums</span><span class="p">:</span>
