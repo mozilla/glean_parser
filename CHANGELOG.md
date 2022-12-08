@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 6.4.0
+
+- BUGFIX: Correct code generation for labeled metrics in Rust ([#533](https://github.com/mozilla/glean_parser/pull/533))
+- BUGFIX: Correctly serialize `Rates` for Rust code ([#530](https://github.com/mozilla/glean_parser/pull/530))
+- Feature: Wrap labeled metric's static labels list as CoW strings (requires updated Glean support) ([#534](https://github.com/mozilla/glean_parser/pull/534))
+
 ## 6.3.0
 
 - events: Increase extras limit to 15 ([bug 1798713](https://bugzilla.mozilla.org/show_bug.cgi?id=1798713))
