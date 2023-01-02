@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript &#8212; Glean Parser 6.4.1.dev3+g31ea93b2 documentation</title>
+    <title>glean_parser.javascript &#8212; Glean Parser 6.4.1.dev4+g8515ad86 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -52,7 +52,7 @@
 
 
 <div class="viewcode-block" id="javascript_datatypes_filter"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.javascript_datatypes_filter">[docs]</a><span class="k">def</span> <span class="nf">javascript_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Jinja2 filter that renders Javascript literals.</span>
 
 <span class="sd">    Based on Python&#39;s JSONEncoder, but overrides:</span>
@@ -102,7 +102,7 @@
 
 
 <div class="viewcode-block" id="class_name_factory"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.class_name_factory">[docs]</a><span class="k">def</span> <span class="nf">class_name_factory</span><span class="p">(</span><span class="n">platform</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a function that receives an obj_type and</span>
 <span class="sd">    returns the correct class name for that type in the current platform.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -124,7 +124,7 @@
 
 
 <div class="viewcode-block" id="extra_type_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.extra_type_name">[docs]</a><span class="k">def</span> <span class="nf">extra_type_name</span><span class="p">(</span><span class="n">extra_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the equivalent TypeScript type to an extra type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">extra_type</span> <span class="o">==</span> <span class="s2">&quot;quantity&quot;</span><span class="p">:</span>
@@ -134,7 +134,7 @@
 
 
 <div class="viewcode-block" id="import_path"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.import_path">[docs]</a><span class="k">def</span> <span class="nf">import_path</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the import path of the given object inside the @mozilla/glean package.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;ping&quot;</span><span class="p">:</span>
@@ -148,7 +148,7 @@
 
 
 <div class="viewcode-block" id="args"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.args">[docs]</a><span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the list of arguments for each object type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;ping&quot;</span><span class="p">:</span>
@@ -158,7 +158,7 @@
 
 
 <div class="viewcode-block" id="generate_build_date"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.generate_build_date">[docs]</a><span class="k">def</span> <span class="nf">generate_build_date</span><span class="p">(</span><span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the build Date object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -186,7 +186,7 @@
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Javascript or Typescript code to `output_dir`.</span>
 
 <span class="sd">    :param lang: Either &quot;javascript&quot; or &quot;typescript&quot;;</span>
@@ -311,7 +311,7 @@
 <div class="viewcode-block" id="output_javascript"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.output_javascript">[docs]</a><span class="k">def</span> <span class="nf">output_javascript</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Javascript code to `output_dir`.</span>
 
 <span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
@@ -332,7 +332,7 @@
 <div class="viewcode-block" id="output_typescript"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript.output_typescript">[docs]</a><span class="k">def</span> <span class="nf">output_typescript</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a tree of objects, output Typescript code to `output_dir`.</span>
 
 <span class="sd">    # Note</span>

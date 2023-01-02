@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Contributing &#8212; Glean Parser 6.4.1.dev3+g31ea93b2 documentation</title>
+    <title>Contributing &#8212; Glean Parser 6.4.1.dev4+g8515ad86 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -86,45 +86,45 @@ development.</p>
 <ol>
 <li><p>Fork the <code class="docutils literal notranslate"><span class="pre">glean_parser</span></code> repo on GitHub.</p></li>
 <li><p>Clone your fork locally:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:your_name_here/glean_parser.git
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:your_name_here/glean_parser.git
 </pre></div>
 </div>
 </li>
 <li><p>Install your local copy into a virtualenv. Assuming you have
 virtualenvwrapper installed, this is how you set up your fork for local
 development:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ mkvirtualenv glean_parser
-$ <span class="nb">cd</span> glean_parser/
-$ pip install --editable .
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkvirtualenv<span class="w"> </span>glean_parser
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>glean_parser/
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--editable<span class="w"> </span>.
 </pre></div>
 </div>
 </li>
 <li><p>Create a branch for local development:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git checkout -b name-of-your-bugfix-or-feature
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>name-of-your-bugfix-or-feature
 </pre></div>
 </div>
 <p>Now you can make your changes locally.</p>
 </li>
 <li><p>To test your changes to <code class="docutils literal notranslate"><span class="pre">glean_parser</span></code>:</p>
 <p>Install the testing dependencies:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ pip install -r requirements_dev.txt
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements_dev.txt
 </pre></div>
 </div>
 <p>Optionally, if you want to ensure that the generated Kotlin code lints
 correctly, install a Java SDK, and then run:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make install-kotlin-linters
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>install-kotlin-linters
 </pre></div>
 </div>
 <p>Then make sure that all lints and tests are passing:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make lint
-$ make <span class="nb">test</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>lint
+$<span class="w"> </span>make<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 </li>
 <li><p>Commit your changes and push your branch to GitHub:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git add .
-$ git commit -m <span class="s2">&quot;Your detailed description of your changes.&quot;</span>
-$ git push origin name-of-your-bugfix-or-feature
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>.
+$<span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Your detailed description of your changes.&quot;</span>
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>name-of-your-bugfix-or-feature
 </pre></div>
 </div>
 </li>
@@ -147,7 +147,7 @@ will take care of testing all of these Python versions).</p></li>
 <section id="tips">
 <h2>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
 <p>To run a subset of tests:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ py.test tests.test_glean_parser
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>py.test<span class="w"> </span>tests.test_glean_parser
 </pre></div>
 </div>
 </section>
@@ -155,9 +155,9 @@ will take care of testing all of these Python versions).</p></li>
 <h2>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
 <p>A reminder for the maintainers on how to deploy.</p>
 <p>Get a clean main branch with all of the changes from <code class="docutils literal notranslate"><span class="pre">upstream</span></code>:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git checkout main
-$ git fetch upstream
-$ git rebase upstream/main
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>main
+$<span class="w"> </span>git<span class="w"> </span>fetch<span class="w"> </span>upstream
+$<span class="w"> </span>git<span class="w"> </span>rebase<span class="w"> </span>upstream/main
 </pre></div>
 </div>
 <ul>
@@ -169,7 +169,7 @@ version anywhere else).</p></li>
 is frowned upon, but the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch is protected from force
 pushes and release tagging requires the same permissions as pushing
 to <code class="docutils literal notranslate"><span class="pre">main</span></code>):</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ git push upstream main
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>upstream<span class="w"> </span>main
 </pre></div>
 </div>
 </li>
