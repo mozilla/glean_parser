@@ -102,14 +102,6 @@ jobs:
     steps:
       - test-start
       - test-python-version
-      - run:
-          name: make-docs
-          command: |
-            make docs
-            touch docs/_build/html/.nojekyll
-      - persist_to_workspace:
-          root: docs/_build
-          paths: html
 
   build-38:
     docker:
@@ -139,6 +131,14 @@ jobs:
     steps:
       - test-start
       - test-python-version
+      - run:
+          name: make-docs
+          command: |
+            make docs
+            touch docs/_build/html/.nojekyll
+      - persist_to_workspace:
+          root: docs/_build
+          paths: html
 
   lint:
     docker:
@@ -230,7 +230,7 @@ workflows:
               only: /.*/
       - docs-deploy:
           requires:
-            - build-37
+            - build-310
           filters:
             branches:
               only: main
