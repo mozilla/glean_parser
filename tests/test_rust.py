@@ -120,7 +120,7 @@ def test_metric_type_name():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
     assert rust.type_name(event) == "EventMetric<MetricExtra>"
@@ -135,7 +135,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert rust.type_name(event) == "EventMetric<NoExtraKeys>"
+    assert rust.type_name(event) == "EventMetric<NoExtra>"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -155,7 +155,7 @@ def test_metric_type_name():
         bugs=["http://bugzilla.mozilla.com/12345"],
         notification_emails=["nobody@nowhere.com"],
     )
-    assert rust.type_name(ping) == "Ping<CustomExtra>"
+    assert rust.type_name(ping) == "Ping<NoReasonCodes>"
 
     ping = pings.Ping(
         name="custom",
@@ -165,7 +165,7 @@ def test_metric_type_name():
         notification_emails=["nobody@nowhere.com"],
         reasons={"foo": "foolicious", "bar": "barlicious"},
     )
-    assert rust.type_name(ping) == "Ping<CustomExtra>"
+    assert rust.type_name(ping) == "Ping<CustomReasonCodes>"
 
 
 def test_order_of_fields(tmpdir):

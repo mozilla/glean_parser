@@ -467,3 +467,16 @@ def test_check_ping_tag_names(tags, expected_nits):
         assert nits[0].check_name == "INVALID_TAGS"
         assert nits[0].name == "search"
         assert nits[0].msg == "Invalid tags specified in ping: grapefruit"
+
+
+def test_old_event_api():
+    """Test that the 'glinter' reports issues with the old event API."""
+    all_metrics = parser.parse_objects([ROOT / "data" / "old_event_api.yamlx"])
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value, parser_config={})
+    assert len(nits) == 1
+    assert nits[0].check_name == "OLD_EVENT_API"
+    assert nits[0].name == "old_event.name"
+    assert "Extra keys require a type" in nits[0].msg

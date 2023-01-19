@@ -37,8 +37,10 @@ telemetry:
     extra_keys:
       key1:
         description: "This is key one"
+        type: string
       key2:
         description: "This is key two"
+        type: string
     expires: never
 
   preference_toggled:
@@ -337,8 +339,10 @@ environment:
     extra_keys:
       key1:
         description: "This is key one"
+        type: string
       key2:
         description: "This is key two"
+        type: string
     expires: 2100-01-01
 
   event_no_keys:

@@ -159,10 +159,10 @@ def test_metric_type_name():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
-    assert kotlin.type_name(event) == "EventMetricType<metricKeys, NoExtras>"
+    assert kotlin.type_name(event) == "EventMetricType<MetricExtra>"
 
     event = metrics.Event(
         type="event",
@@ -174,7 +174,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert kotlin.type_name(event) == "EventMetricType<NoExtraKeys, NoExtras>"
+    assert kotlin.type_name(event) == "EventMetricType<NoExtras>"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -377,9 +377,11 @@ def test_event_extra_keys_in_correct_order(tmpdir):
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        assert "EventExtraKey { alice {" in content
-        assert "bob {" in content
-        assert "charlie {" in content
+        assert "ExampleExtra(" in content
+        assert "alice:" in content
+        assert "bob:" in content
+        assert "charlie:" in content
+        assert ": EventExtras" in content
         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
 
 
@@ -406,7 +408,7 @@ def test_arguments_are_generated_in_deterministic_order(tmpdir):
     with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'EventMetricType<exampleKeys, NoExtras> by lazy { // generated from event.example EventMetricType<exampleKeys, NoExtras>( CommonMetricData( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.PING, disabled = false ), allowedExtraKeys = listOf("alice", "bob", "charlie")) } }'  # noqa
+        expected = 'EventMetricType<ExampleExtra> by lazy { // generated from event.example EventMetricType<ExampleExtra>( CommonMetricData( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.PING, disabled = false ), allowedExtraKeys = listOf("alice", "bob", "charlie")) } }'  # noqa
         assert expected in content
 
 

@@ -53,7 +53,7 @@ def test_extra_info_generator():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
     assert markdown.extra_info(event) == [("my_extra", "an extra")]
@@ -237,7 +237,7 @@ def test_data_sensitivity():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
         data_sensitivity=["technical", "interaction"],
     )
 

@@ -5,6 +5,9 @@
 - BUGFIX: Remove internal-only fields from serialized metrics data ([#550](https://github.com/mozilla/glean_parser/pull/550))
 - FEATURE: New subcommand: `dump` to dump the metrics data as JSON ([#550](https://github.com/mozilla/glean_parser/pull/550))
 - BUGFIX: Kotlin: Generate enums with the right generic bound for ping reason codes ([#551](https://github.com/mozilla/glean_parser/pull/551)).
+- **BREAKING CHANGE:** Fully remove support for the old events API ([#549](https://github.com/mozilla/glean_parser/pull/549))
+  Adds a new lint `OLD_EVENT_API` to warn about missing `type` attributes on event extra keys.
+  Note that the Glean SDK already dropped support for the old events API.
 
 ## 6.4.0
 

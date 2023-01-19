@@ -46,18 +46,6 @@ enum class {{ obj.name|camelize }}{{ suffix }} : ReasonCode {
 }
 {%- endmacro %}
 
-{%- macro enum_decl(obj, name, suffix) -%}
-@Suppress("ClassNaming", "EnumNaming")
-enum class {{ obj.name|camelize }}{{ suffix }} : EventExtraKey {
-{% for key in obj|attr(name) %}
-    {{ key|camelize }} {
-        override fun keyName(): String = "{{ key }}"
-    }{{ "," if not loop.last }}{{ ";" if loop.last }}
-
-{% endfor %}
-}
-{%- endmacro %}
-
 {%- macro struct_decl(obj, name, suffix) -%}
 @Suppress("ClassNaming", "EnumNaming")
 data class {{ obj.name|Camelize }}{{ suffix }}(
@@ -83,12 +71,10 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 package {{ namespace }}
 
 import {{ glean_namespace }}.private.CommonMetricData // ktlint-disable import-ordering no-unused-imports
-import {{ glean_namespace }}.private.EventExtraKey // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.EventExtras // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.HistogramType // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.Lifetime // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.MemoryUnit // ktlint-disable import-ordering no-unused-imports
-import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoExtras // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.ReasonCode // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoReasonCodes // ktlint-disable import-ordering no-unused-imports
@@ -114,11 +100,7 @@ internal object {{ category_name|Camelize }} {
     {% if obj|attr("_generate_enums") %}
     {% for name, suffix in obj["_generate_enums"] %}
     {% if obj|attr(name)|length %}
-    {% if obj.has_extra_types %}
     {{ struct_decl(obj, name, suffix)|indent }}
-    {% else %}
-    {{ enum_decl(obj, name, suffix)|indent }}
-    {% endif %}
     {% endif %}
     {% endfor %}
     {% endif %}
