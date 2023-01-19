@@ -158,7 +158,7 @@ def test_reserved_extra_keys():
             notification_emails=["nobody@example.com"],
             description="description...",
             expires="never",
-            extra_keys={"glean.internal": {"description": "foo"}},
+            extra_keys={"glean.internal": {"description": "foo", "type": "string"}},
         )
 
     metrics.Event(
@@ -169,7 +169,7 @@ def test_reserved_extra_keys():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"glean.internal": {"description": "foo"}},
+        extra_keys={"glean.internal": {"description": "foo", "type": "string"}},
         _config={"allow_reserved": True},
     )
 
@@ -183,7 +183,7 @@ def test_no_unit():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"glean.internal": {"description": "foo"}},
+        extra_keys={"glean.internal": {"description": "foo", "type": "string"}},
         _config={"allow_reserved": True},
     )
 

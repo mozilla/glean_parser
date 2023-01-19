@@ -170,10 +170,10 @@ def test_metric_type_name():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
-    assert swift.type_name(event) == "EventMetricType<MetricKeys, NoExtras>"
+    assert swift.type_name(event) == "EventMetricType<MetricExtra>"
 
     event = metrics.Event(
         type="event",
@@ -185,7 +185,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert swift.type_name(event) == "EventMetricType<NoExtraKeys, NoExtras>"
+    assert swift.type_name(event) == "EventMetricType<NoExtras>"
 
     boolean = metrics.Boolean(
         type="boolean",
@@ -306,8 +306,8 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         content = fd.read()
         content = " ".join(content.split())
         assert (
-            "enum ExampleKeys: Int32, ExtraKeys "
-            "{ case alice = 0 case bob = 1 case charlie = 2" in content
+            "struct ExampleExtra: EventExtras "
+            "{ var alice: String? var bob: String? var charlie: String?" in content
         )
         assert ', ["alice", "bob", "charlie"]' in content
 

@@ -20,8 +20,11 @@ event:
       # sorted by glean_parser
       charlie:
         description: "one"
+        type: string
       alice:
         description: "two"
+        type: string
       bob:
         description: "three"
+        type: string
     expires: 2100-01-01

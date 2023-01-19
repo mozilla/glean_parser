@@ -144,53 +144,69 @@ def test_parser_schema_violation():
             extra_keys:
                 key_1:
                 description: Sample extra key
+                type: string
                 key_2:
                 description: Sample extra key
+                type: string
                 key_3:
                 description: Sample extra key
+                type: string
                 key_4:
                 description: Sample extra key
+                type: string
                 key_5:
                 description: Sample extra key
+                type: string
                 key_6:
                 description: Sample extra key
+                type: string
                 key_7:
                 description: Sample extra key
+                type: string
                 key_8:
                 description: Sample extra key
+                type: string
                 key_9:
                 description: Sample extra key
+                type: string
                 key_10:
                 description: Sample extra key
+                type: string
                 key_11:
                 description: Sample extra key
+                type: string
                 key_12:
-                  description: Sample extra key
+                description: Sample extra key
+                type: string
                 key_13:
-                  description: Sample extra key
+                description: Sample extra key
+                type: string
                 key_14:
-                  description: Sample extra key
+                description: Sample extra key
+                type: string
                 key_15:
-                  description: Sample extra key
+                description: Sample extra key
+                type: string
                 key_16:
-                  description: Sample extra key
+                description: Sample extra key
+                type: string
         ```
-        {'key_1': {'description': 'Sample extra key'},
-        'key_2': {'description': 'Sample extra key'},
-        'key_3': {'description': 'Sample extra key'},
-        'key_4': {'description': 'Sample extra key'},
-        'key_5': {'description': 'Sample extra key'},
-        'key_6': {'description': 'Sample extra key'},
-        'key_7': {'description': 'Sample extra key'},
-        'key_8': {'description': 'Sample extra key'},
-        'key_9': {'description': 'Sample extra key'},
-        'key_10': {'description': 'Sample extra key'},
-        'key_11': {'description': 'Sample extra key'},
-        'key_12': {'description': 'Sample extra key'},
-        'key_13': {'description': 'Sample extra key'},
-        'key_14': {'description': 'Sample extra key'},
-        'key_15': {'description': 'Sample extra key'},
-        'key_16': {'description': 'Sample extra key'}
+        {'key_1': {'description': 'Sample extra key','type': 'string'},
+        'key_2': {'description': 'Sample extra key','type': 'string'},
+        'key_3': {'description': 'Sample extra key','type': 'string'},
+        'key_4': {'description': 'Sample extra key','type': 'string'},
+        'key_5': {'description': 'Sample extra key','type': 'string'},
+        'key_6': {'description': 'Sample extra key','type': 'string'},
+        'key_7': {'description': 'Sample extra key','type': 'string'},
+        'key_8': {'description': 'Sample extra key','type': 'string'},
+        'key_9': {'description': 'Sample extra key','type': 'string'},
+        'key_10': {'description': 'Sample extra key','type': 'string'},
+        'key_11': {'description': 'Sample extra key','type': 'string'},
+        'key_12': {'description': 'Sample extra key','type': 'string'},
+        'key_13': {'description': 'Sample extra key','type': 'string'},
+        'key_14': {'description': 'Sample extra key','type': 'string'},
+        'key_15': {'description': 'Sample extra key','type': 'string'},
+        'key_16': {'description': 'Sample extra key','type': 'string'}
         } has too many properties
         Documentation for this node:
             The acceptable keys on the "extra" object sent with events. This is an
@@ -738,10 +754,20 @@ def test_historical_versions():
     Make sure we can load the correct version of the schema and it will
     correctly reject or not reject entries based on that.
     """
+
+    # No issues:
+    # * Bugs as numbers
+    # * event extra keys don't have a type
     contents = [
         {
             "$schema": "moz://mozilla.org/schemas/glean/metrics/1-0-0",
-            "category": {"metric": {"type": "event", "bugs": [42]}},
+            "category": {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {"key_a": {"description": "foo"}},
+                    "bugs": [42],
+                }
+            },
         }
     ]
     contents = [util.add_required(x) for x in contents]
@@ -751,10 +777,20 @@ def test_historical_versions():
     errors = list(all_metrics)
     assert len(errors) == 0
 
+    # 1 issue:
+    # * Bugs as numbers are disallowed
+    #
+    # events: not having a `type` is fine in version 2.
     contents = [
         {
             "$schema": "moz://mozilla.org/schemas/glean/metrics/2-0-0",
-            "category": {"metric": {"type": "event", "bugs": [42]}},
+            "category": {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {"key_a": {"description": "foo"}},
+                    "bugs": [42],
+                }
+            },
         }
     ]
     contents = [util.add_required(x) for x in contents]

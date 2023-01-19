@@ -48,33 +48,49 @@ gleantest.event:
     extra_keys:
       key_1:
         description: Sample extra key
+        type: string
       key_2:
         description: Sample extra key
+        type: string
       key_3:
         description: Sample extra key
+        type: string
       key_4:
         description: Sample extra key
+        type: string
       key_5:
         description: Sample extra key
+        type: string
       key_6:
         description: Sample extra key
+        type: string
       key_7:
         description: Sample extra key
+        type: string
       key_8:
         description: Sample extra key
+        type: string
       key_9:
         description: Sample extra key
+        type: string
       key_10:
         description: Sample extra key
+        type: string
       key_11:
         description: Sample extra key
+        type: string
       key_12:
         description: Sample extra key
+        type: string
       key_13:
         description: Sample extra key
+        type: string
       key_14:
         description: Sample extra key
+        type: string
       key_15:
         description: Sample extra key
+        type: string
       key_16:
         description: Sample extra key
+        type: string

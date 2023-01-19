@@ -138,7 +138,7 @@ def test_metric_class_name():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
     webext_class_name = javascript.class_name_factory("webext")
@@ -179,7 +179,7 @@ def test_import_path():
         notification_emails=["nobody@example.com"],
         description="description...",
         expires="never",
-        extra_keys={"my_extra": {"description": "an extra"}},
+        extra_keys={"my_extra": {"description": "an extra", "type": "string"}},
     )
 
     assert javascript.import_path(event.type) == "metrics/event"
