@@ -177,6 +177,8 @@ class Metric:
                 d[key] = [x.name for x in val]
         del d["name"]
         del d["category"]
+        d.pop("_config", None)
+        d.pop("_generate_enums", None)
         return d
 
     def _serialize_input(self) -> Dict[str, util.JSONType]:
