@@ -34,6 +34,18 @@ Jinja2 template is not. Please file bugs! #}
 {% if lazy %}}{% endif %}
 {%- endmacro -%}
 
+{%- macro reason_enum_decl(obj, name, suffix) -%}
+@Suppress("ClassNaming", "EnumNaming")
+enum class {{ obj.name|camelize }}{{ suffix }} : ReasonCode {
+{% for key in obj|attr(name) %}
+    {{ key|camelize }} {
+        override fun code(): Int = {{ loop.index-1 }}
+    }{{ "," if not loop.last }}{{ ";" if loop.last }}
+
+{% endfor %}
+}
+{%- endmacro %}
+
 {%- macro enum_decl(obj, name, suffix) -%}
 @Suppress("ClassNaming", "EnumNaming")
 enum class {{ obj.name|camelize }}{{ suffix }} : EventExtraKey {
@@ -78,6 +90,7 @@ import {{ glean_namespace }}.private.Lifetime // ktlint-disable import-ordering 
 import {{ glean_namespace }}.private.MemoryUnit // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoExtraKeys // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoExtras // ktlint-disable import-ordering no-unused-imports
+import {{ glean_namespace }}.private.ReasonCode // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.NoReasonCodes // ktlint-disable import-ordering no-unused-imports
 import {{ glean_namespace }}.private.TimeUnit // ktlint-disable import-ordering no-unused-imports
 {% for obj_type in obj_types %}
@@ -89,6 +102,15 @@ import {{ glean_namespace }}.private.LabeledMetricType // ktlint-disable import-
 
 internal object {{ category_name|Camelize }} {
 {% for obj in objs.values() %}
+    {% if obj.type == "ping" %}
+    {% if obj|attr("_generate_enums") %}
+    {% for name, suffix in obj["_generate_enums"] %}
+    {% if obj|attr(name)|length %}
+    {{ reason_enum_decl(obj, name, suffix)|indent }}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% else %}
     {% if obj|attr("_generate_enums") %}
     {% for name, suffix in obj["_generate_enums"] %}
     {% if obj|attr(name)|length %}
@@ -99,6 +121,7 @@ internal object {{ category_name|Camelize }} {
     {% endif %}
     {% endif %}
     {% endfor %}
+    {% endif %}
     {% endif %}
 {% endfor %}
 {% for obj in objs.values() %}

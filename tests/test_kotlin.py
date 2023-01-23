@@ -441,3 +441,37 @@ def test_event_extra_keys_with_types(tmpdir):
         assert (
             'allowedExtraKeys = listOf("enabled", "preference", "swapped")' in content
         )
+
+
+def test_reasons(tmpdir):
+    """
+    Assert that we generate the reason codes as a plain enum.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1811888
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "pings.yaml",
+        "kotlin",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(
+        ["Pings.kt", "GleanBuildInfo.kt"]
+    )
+
+    with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+    expected = '@Suppress("ClassNaming", "EnumNaming") enum class customPingMightBeEmptyReasonCodes : ReasonCode { serious { override fun code(): Int = 0 }, silly { override fun code(): Int = 1 }; }'  # noqa
+    assert expected in content
+
+    expected = "val customPing: PingType<NoReasonCodes> = // generated from custom-ping"
+    assert expected in content
+
+    expected = "val customPingMightBeEmpty: PingType<customPingMightBeEmptyReasonCodes> = // generated from custom-ping-might-be-empty"  # noqa
+    assert expected in content
