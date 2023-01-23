@@ -4,6 +4,7 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
+import json
 import re
 import sys
 import textwrap
@@ -901,3 +902,66 @@ def test_no_lint_sorted():
     assert all_objects.value["category"]["metric"].no_lint == ["lint1", "lint2"]
     assert all_objects.value["pings"]["ping"].no_lint == ["lint1", "lint2"]
     assert all_objects.value["tags"]["tag"].no_lint == ["lint1", "lint2"]
+
+
+def test_no_internal_fields_exposed():
+    """
+    We accidentally exposed fields like `_config` and `_generate_enums` before.
+    These ended up in probe-scraper output.
+
+    We replicate the code probe-scraper uses
+    and ensure we get the JSON we expect from it.
+    """
+
+    results = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "category": {
+                        "metric": {
+                            "type": "event",
+                            "extra_keys": {
+                                "key_a": {"description": "desc-a", "type": "boolean"}
+                            },
+                        }
+                    },
+                }
+            ),
+        ]
+    )
+    errs = list(results)
+    assert len(errs) == 0
+
+    metrics = {
+        metric.identifier(): metric.serialize()
+        for category, probes in results.value.items()
+        for probe_name, metric in probes.items()
+    }
+
+    expected = {
+        "category.metric": {
+            "bugs": ["http://bugzilla.mozilla.org/12345678"],
+            "data_reviews": ["https://example.com/review/"],
+            "defined_in": {"line": 3},
+            "description": "DESCRIPTION...",
+            "disabled": False,
+            "expires": "never",
+            "extra_keys": {"key_a": {"description": "desc-a", "type": "boolean"}},
+            "gecko_datapoint": "",
+            "lifetime": "ping",
+            "metadata": {},
+            "no_lint": [],
+            "notification_emails": ["nobody@example.com"],
+            "send_in_pings": ["events"],
+            "type": "event",
+            "version": 0,
+        }
+    }
+    expected_json = json.dumps(expected, sort_keys=True, indent=2)
+
+    out_json = json.dumps(
+        metrics,
+        sort_keys=True,
+        indent=2,
+    )
+    assert expected_json == out_json
