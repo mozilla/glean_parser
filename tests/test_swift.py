@@ -337,3 +337,35 @@ def test_event_extra_keys_with_types(tmpdir):
             "var swapped: Int32?" in content
         )
         assert ', ["enabled", "preference", "swapped"]' in content
+
+
+def test_reasons(tmpdir):
+    """
+    Assert that we generate the reason codes as a plain enum.
+
+    https://bugzilla.mozilla.org/show_bug.cgi?id=1811888
+    """
+
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        ROOT / "data" / "pings.yaml",
+        "swift",
+        tmpdir,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+
+    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+    expected = "enum CustomPingMightBeEmptyReasonCodes: Int, ReasonCodes { case serious = 0 case silly = 1 public func index() -> Int { return self.rawValue } }"  # noqa
+    assert expected in content
+
+    expected = "let customPing = Ping<NoReasonCodes>("
+    assert expected in content
+
+    expected = "let customPingMightBeEmpty = Ping<CustomPingMightBeEmptyReasonCodes>("
+    assert expected in content
