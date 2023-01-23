@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- FEATURE: New subcommand: `dump` to dump the metrics data as JSON ([#550](https://github.com/mozilla/glean_parser/pull/550))
+
 ## 6.4.0
 
 - BUGFIX: Correct code generation for labeled metrics in Rust ([#533](https://github.com/mozilla/glean_parser/pull/533))
