@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 7.0.0
+
 - BUGFIX: Remove internal-only fields from serialized metrics data ([#550](https://github.com/mozilla/glean_parser/pull/550))
 - FEATURE: New subcommand: `dump` to dump the metrics data as JSON ([#550](https://github.com/mozilla/glean_parser/pull/550))
 - BUGFIX: Kotlin: Generate enums with the right generic bound for ping reason codes ([#551](https://github.com/mozilla/glean_parser/pull/551)).
