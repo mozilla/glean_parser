@@ -340,10 +340,8 @@ def invalid_in_label(name):
 @pytest.mark.parametrize(
     "name",
     [
-        "name/with_slash",
-        "name#with_pound",
-        "this_name_is_too_long_and_shouldnt_be_used",
-        "",
+        "1" * 72,
+        "Møøse",
     ],
 )
 def test_invalid_names(location, name):
