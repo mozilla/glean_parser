@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- ENHANCEMENT: Labels in `labels:` fields may now contain any printable ASCII characters ([bug 1672273](https://bugzilla.mozilla.org/show_bug.cgi?id=1672273))
+
 ## 7.0.0
 
 - BUGFIX: Remove internal-only fields from serialized metrics data ([#550](https://github.com/mozilla/glean_parser/pull/550))
