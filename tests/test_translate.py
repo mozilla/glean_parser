@@ -226,10 +226,13 @@ def test_rates(tmpdir):
         numerators = [
             f"{m.category}.{m.name}" for m in category["the_denominator"].numerators
         ]
-        assert numerators == [
-            "testing.rates.has_external_denominator",
-            "testing.rates.also_has_external_denominator",
-        ]
+        # Because generation gaurantees order, this must be sorted.
+        assert numerators == sorted(
+            [
+                "testing.rates.has_external_denominator",
+                "testing.rates.also_has_external_denominator",
+            ]
+        )
 
     translate.translate_metrics(
         ROOT / "data" / "rate.yaml",
