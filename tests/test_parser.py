@@ -844,6 +844,51 @@ def test_rates():
     )  # Hasn't been transformed to "denominator" yet
 
 
+def test_ping_ordering():
+    contents = parser.parse_objects(
+        [ROOT / "data" / "pings.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errs = list(contents)
+    assert len(errs) == 0
+
+    pings = list(contents.value["pings"].keys())
+
+    assert pings == sorted(pings)
+
+
+def test_metric_ordering():
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "ordering.yaml"], config={"allow_reserved": False}
+    )
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    category = all_metrics.value["testing.ordering"]
+
+    assert len(category.values()) > 0
+    test_metrics = [f"{m.category}.{m.name}" for m in category.values()]
+
+    # Alphabetically ordered
+    assert test_metrics == [
+        "testing.ordering.a_second_test_metric",
+        "testing.ordering.first_test_metric",
+        "testing.ordering.third_test_metric",
+    ]
+
+
+def test_tag_ordering():
+    all_metrics = parser.parse_objects(ROOT / "data" / "metric-with-tags.yaml")
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    tags = all_metrics.value["telemetry"]["client_id"].metadata["tags"]
+    assert tags == sorted(tags)
+
+
 def test_text_valid():
     """
     Ensure that `text` metrics parse properly.
