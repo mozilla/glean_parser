@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 7.1.0
+
 - ENHANCEMENT: Labels in `labels:` fields may now contain any printable ASCII characters ([bug 1672273](https://bugzilla.mozilla.org/show_bug.cgi?id=1672273))
 - BUGFIX: Enforce ordering of generation of Pings, Metrics and Tags such that order is deterministic ([bug 1820334](https://bugzilla.mozilla.org/show_bug.cgi?id=1820334))
 
