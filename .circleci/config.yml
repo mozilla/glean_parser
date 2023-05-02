@@ -79,6 +79,17 @@ commands:
       - run:
           name: lint
           command: make lint
+  license-check:
+    steps:
+      - run:
+          name: install
+          command: |
+            pip install --user pip-licenses
+            CC=broken_compiler pip install . --user
+      - run:
+          name: license-check
+          command: |
+            pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)'
 
 jobs:
   build-36:
@@ -147,6 +158,13 @@ jobs:
       - test-start
       - lint
 
+  license-check:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - test-start
+      - license-check
+
   docs-deploy:
     docker:
       - image: node:8.10.0
@@ -197,6 +215,10 @@ workflows:
   build:
     jobs:
       - lint:
+          filters:
+            tags:
+              only: /.*/
+      - license-check:
           filters:
             tags:
               only: /.*/
