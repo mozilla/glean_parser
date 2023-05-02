@@ -32,7 +32,6 @@ requirements = [
     "MarkupSafe>=1.1.1,<=2.0.1",
     "jsonschema>=3.0.2",
     "PyYAML>=5.3.1",
-    "yamllint>=1.18.0",
 ]
 
 setup_requirements = [
