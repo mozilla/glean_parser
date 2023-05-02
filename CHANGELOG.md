@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove yamllint integration ([#578](https://github.com/mozilla/glean_parser/pull/578))
+
 ## 7.1.0
 
 - ENHANCEMENT: Labels in `labels:` fields may now contain any printable ASCII characters ([bug 1672273](https://bugzilla.mozilla.org/show_bug.cgi?id=1672273))

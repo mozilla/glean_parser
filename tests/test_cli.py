@@ -203,7 +203,7 @@ def test_glinter_errors(tmpdir):
         ],
     )
     assert result.exit_code == 1
-    assert "Found 2 errors" in result.output
+    assert "Found 1 errors" in result.output
 
 
 def test_translate_invalid_format(tmpdir):

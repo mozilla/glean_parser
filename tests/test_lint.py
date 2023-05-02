@@ -198,25 +198,6 @@ def test_misspelling_pings():
     assert set(["MISSPELLED_PING"]) == set(v.check_name for v in nits)
 
 
-def test_yaml_lint(capsys):
-    """Tests yamllint on files with nits."""
-    file_paths = [ROOT / "data" / "core.yaml", ROOT / "data" / "yaml_nits.yamlx"]
-
-    nits = lint.lint_yaml_files(file_paths)
-
-    assert len(nits) == 3
-    # The second rule is empty because it's a syntax error.
-    assert set(["indentation", None, "trailing-spaces"]) == set(v.rule for v in nits)
-
-    captured = capsys.readouterr()
-    lines = captured.out.split("\n")
-    for line in lines:
-        if line.strip() == "":
-            continue
-        assert "yaml_nits.yamlx" in line
-        assert "core.yaml" not in line
-
-
 def test_user_lifetime_expiration():
     """Test that expiring 'user' lifetime metrics generate a warning."""
     contents = [
