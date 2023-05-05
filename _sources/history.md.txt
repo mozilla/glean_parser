@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 7.2.0
+
 - Remove yamllint integration ([#578](https://github.com/mozilla/glean_parser/pull/578))
 
 ## 7.1.0
