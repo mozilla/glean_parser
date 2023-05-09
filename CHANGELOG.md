@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 7.2.1
+
 - Unbreak last minor release ([#579](https://github.com/mozilla/glean_parser/pull/579))
 
 ## 7.2.0
