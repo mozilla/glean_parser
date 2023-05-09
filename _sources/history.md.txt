@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Unbreak last minor release ([#579](https://github.com/mozilla/glean_parser/pull/579))
+
 ## 7.2.0
 
 - Remove yamllint integration ([#578](https://github.com/mozilla/glean_parser/pull/578))
