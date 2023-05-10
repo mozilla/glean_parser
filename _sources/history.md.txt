@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Remove exposed `lint_yaml_files` function ([#580](https://github.com/mozilla/glean_parser/pull/580))
+
 ## 7.2.1
 
 - Unbreak last minor release ([#579](https://github.com/mozilla/glean_parser/pull/579))
