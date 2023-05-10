@@ -495,15 +495,6 @@ def lint_metrics(
     return nits
 
 
-def lint_yaml_files(
-    input_filepaths: Iterable[Path],
-    file=sys.stderr,
-    parser_config: Optional[Dict[str, Any]] = None,
-) -> List:
-    """Always empty."""
-    return []
-
-
 def glinter(
     input_filepaths: Iterable[Path],
     parser_config: Optional[Dict[str, Any]] = None,
