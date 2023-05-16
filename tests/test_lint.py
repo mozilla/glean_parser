@@ -461,3 +461,18 @@ def test_old_event_api():
     assert nits[0].check_name == "OLD_EVENT_API"
     assert nits[0].name == "old_event.name"
     assert "Extra keys require a type" in nits[0].msg
+
+
+def test_unknown_pings_lint():
+    """Test that the 'glinter' reports issues with unknown pings in send_in_pings."""
+    input = [ROOT / "data" / "unknown_ping_used.yaml", ROOT / "data" / "pings.yaml"]
+    all_objects = parser.parse_objects(input)
+
+    errs = list(all_objects)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_objects.value, parser_config={})
+    assert len(nits) == 1
+    assert nits[0].check_name == "UNKNOWN_PING_REFERENCED"
+    assert nits[0].name == "all_metrics.non_existent_ping"
+    assert "does-not-exist" in nits[0].msg
