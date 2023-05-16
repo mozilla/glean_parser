@@ -1,0 +1,39 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+all_metrics:
+  valid_metric: &defaults
+    type: counter
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/123
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    send_in_pings:
+      - metrics
+      - custom-ping
+
+  only_builtins:
+    <<: *defaults
+    send_in_pings:
+      - metrics
+      - events
+
+  non_existent_ping:
+    <<: *defaults
+    send_in_pings:
+      - does-not-exist
+
+  non_existent_ping_no_lint:
+    <<: *defaults
+    send_in_pings:
+      - does-not-exist
+    no_lint:
+      - UNKNOWN_PING_REFERENCED
