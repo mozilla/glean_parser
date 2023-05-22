@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.lint &#8212; Glean Parser 7.2.2.dev4+g15658747 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 7.2.2.dev5+g31ff1872 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
@@ -58,7 +58,11 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
 
 
+<span class="c1"># Yield only an error message</span>
 <span class="n">LintGenerator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+<span class="c1"># Yield fully constructed GlinterNits</span>
+<span class="n">NitGenerator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">[</span><span class="s2">&quot;GlinterNit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CheckType"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.CheckType">[docs]</a><span class="k">class</span> <span class="nc">CheckType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
@@ -335,6 +339,40 @@
             <span class="k">yield</span> <span class="p">(</span><span class="s2">&quot;The word &#39;custom&#39; is redundant.&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="check_unknown_ping"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.check_unknown_ping">[docs]</a><span class="k">def</span> <span class="nf">check_unknown_ping</span><span class="p">(</span>
+    <span class="n">check_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">check_type</span><span class="p">:</span> <span class="n">CheckType</span><span class="p">,</span>
+    <span class="n">all_pings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">],</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">],</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NitGenerator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that all pings in `send_in_pings` for all metrics are either a builtin ping</span>
+<span class="sd">    or in the list of defined custom pings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">available_pings</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">all_pings</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">check_name</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">send_in_pings</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span>
+        <span class="k">for</span> <span class="n">target_ping</span> <span class="ow">in</span> <span class="n">send_in_pings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target_ping</span> <span class="ow">in</span> <span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">target_ping</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">available_pings</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Ping `</span><span class="si">{</span><span class="n">target_ping</span><span class="si">}</span><span class="s2"> `in `send_in_pings` is unknown.&quot;</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                <span class="n">nit</span> <span class="o">=</span> <span class="n">GlinterNit</span><span class="p">(</span>
+                    <span class="n">check_name</span><span class="p">,</span>
+                    <span class="n">name</span><span class="p">,</span>
+                    <span class="n">msg</span><span class="p">,</span>
+                    <span class="n">check_type</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">yield</span> <span class="n">nit</span></div>
+
+
 <span class="c1"># The checks that operate on an entire category of metrics:</span>
 <span class="c1">#    {NAME: (function, is_error)}</span>
 <span class="n">CATEGORY_CHECKS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
@@ -370,6 +408,20 @@
     <span class="s2">&quot;BUG_NUMBER&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_bug_number</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
     <span class="s2">&quot;TAGS_REQUIRED&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_tags_required</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
     <span class="s2">&quot;REDUNDANT_PING&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_redundant_ping</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">ALL_OBJECT_CHECKS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+    <span class="nb">str</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">[</span>
+        <span class="n">Callable</span><span class="p">[</span>
+            <span class="c1"># check name, check type, pings, metrics, config</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CheckType</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
+            <span class="n">NitGenerator</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="n">CheckType</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;UNKNOWN_PING_REFERENCED&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">check_unknown_ping</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">error</span><span class="p">),</span>
 <span class="p">}</span>
 
 
@@ -441,6 +493,29 @@
     <span class="k">return</span> <span class="n">nits</span>
 
 
+<span class="k">def</span> <span class="nf">_lint_all_objects</span><span class="p">(</span>
+    <span class="n">objects</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">,</span> <span class="n">tags</span><span class="o">.</span><span class="n">Tag</span><span class="p">]]],</span>
+    <span class="n">parser_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GlinterNit</span><span class="p">]:</span>
+    <span class="n">nits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">GlinterNit</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">pings</span> <span class="o">=</span> <span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pings&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pings</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">metrics</span> <span class="o">=</span> <span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;all_metrics&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">check_name</span><span class="p">,</span> <span class="p">(</span><span class="n">check_func</span><span class="p">,</span> <span class="n">check_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ALL_OBJECT_CHECKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">check_func</span><span class="p">(</span><span class="n">check_name</span><span class="p">,</span> <span class="n">check_type</span><span class="p">,</span> <span class="n">pings</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_nits</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">nits</span>
+
+
 <div class="viewcode-block" id="lint_metrics"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.lint_metrics">[docs]</a><span class="k">def</span> <span class="nf">lint_metrics</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span>
     <span class="n">parser_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -458,6 +533,9 @@
 
     <span class="n">nits</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">GlinterNit</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">valid_tag_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="p">[])]</span>
+
+    <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_lint_all_objects</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">))</span>
+
     <span class="k">for</span> <span class="n">category_name</span><span class="p">,</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
         <span class="k">if</span> <span class="n">category_name</span> <span class="o">==</span> <span class="s2">&quot;pings&quot;</span><span class="p">:</span>
             <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_lint_pings</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">,</span> <span class="n">valid_tag_names</span><span class="p">))</span>
