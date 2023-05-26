@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add new metric type: object ([#587](https://github.com/mozilla/glean_parser/pull/587))
+
 ## 11.1.0
 
 - Add Go log outputter (`go_server`) ([#645](https://github.com/mozilla/glean_parser/pull/645))
