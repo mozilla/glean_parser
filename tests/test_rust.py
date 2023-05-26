@@ -255,3 +255,41 @@ def test_event_extra_keys_with_types(tmp_path):
             "const ALLOWED_KEYS: &'static [&'static str] = "
             '&["enabled", "preference", "swapped"];' in content
         )
+
+
+def test_object_metric(tmp_path):
+    """
+    Assert that an object metric is created.
+    """
+    translate.translate(
+        ROOT / "data" / "object.yaml",
+        "rust",
+        tmp_path,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
+
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        assert "ObjectMetric<ThreadsObject>" in content
+        assert "ObjectMetric<ThreadsObject>" in content
+        assert (
+            "pub struct ThreadsObjectItem { "
+            "frames: ThreadsObjectItemItemFrames, "
+            "}" in content
+        )
+        assert (
+            "pub type ThreadsObjectItemItemFrames = "
+            "Vec<ThreadsObjectItemItemFramesItem>;" in content
+        )
+
+        assert (
+            "pub struct ThreadsObjectItemItemFramesItem { "
+            "module_index: Option<i64>, "
+            "ip: Option<String>, "
+            "trust: Option<String>, "
+            "}" in content
+        )

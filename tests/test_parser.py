@@ -1179,3 +1179,57 @@ def test_no_internal_fields_exposed():
         indent=2,
     )
     assert expected_json == out_json
+
+
+def test_object():
+    structure = {"type": "array", "items": {"type": "number"}}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 0, errors
+    assert len(all_metrics.value) == 1
+    assert all_metrics.value["category"]["metric"]._generate_structure == structure
+
+
+def test_object_invalid():
+    contents = [{"category": {"metric": {"type": "object"}}}]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "`object` is missing required parameter `structure`" in errors[0]
+
+    structure = {"type": "array", "items": {}}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "invalid or missing `type`" in errors[0]
+
+    structure = {"type": "array", "items": {"type": "unknown"}}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "invalid or missing `type`" in errors[0]
+
+    structure = {"type": "array", "properties": {}}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "`properties` not allowed in array structure" in errors[0]
+
+    structure = {"type": "object", "items": {}}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "`items` not allowed in object structure" in errors[0]

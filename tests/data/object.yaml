@@ -4,10 +4,46 @@
 ---
 $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
+complex.types:
+  number_array:
+    type: object
+    description: Just a list of nums.
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    structure:
+      type: array
+      items:
+        type: number
+
+  array_in_array:
+    type: object
+    description: An array of arrays of bools.
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    structure:
+      type: array
+      items:
+        type: array
+        items:
+          type: boolean
+
+# yamllint disable rule:line-length
 activity.stream:
   tiles:
     type: object
-    description: The id, position, and shim for each newtab tile.
+    description: |
+      The id, position, and shim for each newtab tile and any extra nested data,
+      e.g. `[{"id": 1, "pos": 2, "shim": "long-id", "nested": { "count": 17, "info": "more info"}}]`
     bugs:
       - https://bugzilla.mozilla.org/11137353
     data_reviews:
@@ -26,3 +62,40 @@ activity.stream:
             type: number
           shim:
             type: string
+          nested:
+            type: object
+            properties:
+              count:
+                type: number
+              info:
+                type: string
+
+crash.stack:
+  threads:
+    type: object
+    description: |
+      All threads' frame information.
+      e.g. `[{frames: [{module_index: 0, ip: "0xdecafc0ffe", trust: "scan"}]}]`
+    bugs:
+      - https://bugzilla.mozilla.org/11137353
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    structure:
+      type: array
+      items:
+        type: object
+        properties:
+          frames:
+            type: array
+            items:
+              type: object
+              properties:
+                module_index:
+                  type: number
+                ip:
+                  type: string
+                trust:
+                  type: string

@@ -115,6 +115,11 @@ def type_name(obj):
 
         return "{}<{}>".format(class_name(obj.type), generic)
 
+    generate_structure = getattr(obj, "_generate_structure", [])
+    if len(generate_structure):
+        generic = util.Camelize(obj.name) + "Object"
+        return "{}<{}>".format(class_name(obj.type), generic)
+
     return class_name(obj.type)
 
 
@@ -129,6 +134,21 @@ def extra_type_name(typ: str) -> str:
         return "String"
     elif typ == "quantity":
         return "u32"
+    else:
+        return "UNSUPPORTED"
+
+
+def structure_type_name(typ: str) -> str:
+    """
+    Returns the corresponding Rust type for structure items.
+    """
+
+    if typ == "boolean":
+        return "bool"
+    elif typ == "string":
+        return "String"
+    elif typ == "number":
+        return "i64"
     else:
         return "UNSUPPORTED"
 
@@ -190,6 +210,7 @@ def output_rust(
             ("camelize", util.camelize),
             ("type_name", type_name),
             ("extra_type_name", extra_type_name),
+            ("structure_type_name", structure_type_name),
             ("ctor", ctor),
             ("extra_keys", extra_keys),
         ),
