@@ -102,8 +102,9 @@ def test_ping_parser(tmp_path):
 def test_rust_generator():
     kdf = rust.rust_datatypes_filter
 
-    assert kdf("\n") == '"\n".into()'
-    assert kdf([42, "\n"]) == 'vec![42, "\n".into()]'
+    # The Rust datatypes filter encodes strings using JSON-escaping
+    assert kdf("\n") == '"\\n".into()'
+    assert kdf([42, "\n"]) == 'vec![42, "\\n".into()]'
     assert kdf(metrics.Lifetime.ping) == "Lifetime::Ping"
 
 

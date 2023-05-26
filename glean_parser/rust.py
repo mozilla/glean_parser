@@ -65,7 +65,7 @@ def rust_datatypes_filter(value):
             elif isinstance(value, metrics.CowString):
                 yield f'::std::borrow::Cow::from("{value.inner}")'
             elif isinstance(value, str):
-                yield f'"{value}".into()'
+                yield f"{json.dumps(value)}.into()"
             elif isinstance(value, metrics.Rate):
                 yield "CommonMetricData("
                 first = True
