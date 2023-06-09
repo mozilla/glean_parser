@@ -48,7 +48,7 @@ QUESTION = "what collection type of data do the requested measurements fall unde
 CATEGORY_MAP = {
     1: "technical",
     2: "interaction",
-    3: "web_activity",
+    3: "stored_content",
     4: "highly_sensitive",
 }
 

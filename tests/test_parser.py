@@ -905,7 +905,7 @@ def test_text_valid():
     assert all_metrics.value["valid.text"]["lifetime"].lifetime == metrics.Lifetime.ping
 
     assert all_metrics.value["valid.text"]["sensitivity"].data_sensitivity == [
-        metrics.DataSensitivity.web_activity
+        metrics.DataSensitivity.stored_content
     ]
 
 
