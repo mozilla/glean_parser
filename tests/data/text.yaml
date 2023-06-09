@@ -39,6 +39,6 @@ valid.text:
       - CHANGE-ME@example.com
     expires: 2100-01-01
     data_sensitivity:
-      - web_activity
+      - stored_content
     no_lint:
       - EXPIRATION_DATE_TOO_FAR
