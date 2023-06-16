@@ -92,21 +92,6 @@ commands:
             pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)'
 
 jobs:
-  build-36:
-    docker:
-      - image: cimg/python:3.6
-    steps:
-      - test-start
-      - test-python-version
-
-  build-36-min:
-    docker:
-      - image: cimg/python:3.6
-    steps:
-      - test-start
-      - test-min-requirements
-      - test-python-version
-
   build-37:
     docker:
       - image: cimg/python:3.7
@@ -219,14 +204,6 @@ workflows:
             tags:
               only: /.*/
       - license-check:
-          filters:
-            tags:
-              only: /.*/
-      - build-36:
-          filters:
-            tags:
-              only: /.*/
-      - build-36-min:
           filters:
             tags:
               only: /.*/

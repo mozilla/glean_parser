@@ -6,7 +6,6 @@
 from pathlib import Path
 import json
 import re
-import sys
 import textwrap
 
 import pytest
@@ -54,10 +53,6 @@ def test_parser_invalid():
     assert "could not determine a constructor for the tag" in errors[0]
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 7),
-    reason="Error messages have literal 'OrderedDict' in them on Python 3.6",
-)
 def test_parser_schema_violation():
     """1507792"""
     all_metrics = parser.parse_objects(ROOT / "data" / "schema-violation.yaml")
