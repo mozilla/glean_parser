@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Dropped support for Python 3.6 ([#615](https://github.com/mozilla/glean_parser/issues/615))
+
 ## 8.1.1
 
 - Small updates to the `javascript_server` tempalte to address lint warnings ([#598](https://github.com/mozilla/glean_parser/pull/598))

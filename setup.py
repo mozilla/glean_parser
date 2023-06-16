@@ -12,8 +12,8 @@ import sys
 from setuptools import setup, find_packages
 
 
-if sys.version_info < (3, 6):
-    print("glean_parser requires at least Python 3.6", file=sys.stderr)
+if sys.version_info < (3, 7):
+    print("glean_parser requires at least Python 3.7", file=sys.stderr)
     sys.exit(1)
 
 
@@ -27,7 +27,6 @@ requirements = [
     "appdirs>=1.4",
     "Click>=7",
     "diskcache>=4",
-    "iso8601>=0.1.10; python_version<='3.6'",
     "Jinja2>=2.10.1",
     "MarkupSafe>=1.1.1,<=2.0.1",
     "jsonschema>=3.0.2",
@@ -36,8 +35,7 @@ requirements = [
 
 setup_requirements = [
     "pytest-runner",
-    "setuptools-scm<7; python_version<='3.6'",
-    "setuptools-scm>=7; python_version>'3.6'",
+    "setuptools-scm>=7",
 ]
 
 test_requirements = [
@@ -52,7 +50,6 @@ setup(
         "Intended Audience :: Developers",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
