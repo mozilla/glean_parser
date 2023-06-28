@@ -3,6 +3,7 @@
 ## Unreleased
 
 - BREAKING CHANGE: Dropped support for Python 3.6 ([#615](https://github.com/mozilla/glean_parser/issues/615))
+- Allow metadata to configure precise timestamps in pings ([#592](https://github.com/mozilla/glean_parser/pull/592))
 
 ## 8.1.1
 
