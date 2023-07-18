@@ -78,7 +78,7 @@ def output(
     if "pings" not in objs:
         print(
             "❌ No ping definition found. Server-side environment is simplified and this"
-            + "parser doesn't generate individual metric files."
+            + " parser doesn't generate individual metric files."
         )
         return
 
