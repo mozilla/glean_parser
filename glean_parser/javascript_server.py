@@ -92,7 +92,7 @@ def output(
                     print(
                         "❌ Ignoring unsupported metric type: "
                         + f"{metric.type}:{metric.name}."
-                        + "Reach out to Glean team to add support for this metric type."
+                        + " Reach out to Glean team to add support for this metric type."
                     )
                     continue
                 for ping in metric.send_in_pings:
