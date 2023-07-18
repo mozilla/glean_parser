@@ -7,7 +7,8 @@
 """
 Outputter to generate server Javascript code for metrics.
 
-Warning: this outputter supports limited set of metrics.
+Warning: this outputter supports limited set of metrics,
+see `SUPPORTED_METRIC_TYPES` below.
 """
 from collections import defaultdict
 from pathlib import Path
@@ -16,6 +17,10 @@ from typing import Any, Dict, Optional, List
 from . import __version__
 from . import metrics
 from . import util
+
+# Adding a metric here will require updating the `generate_js_metric_type` function
+# and might require changes to the template.
+SUPPORTED_METRIC_TYPES = ["string"]
 
 
 def event_class_name(pingName: str) -> str:
@@ -89,7 +94,7 @@ def output(
     for _category_key, category_val in objs.items():
         for _metric_name, metric in category_val.items():
             if isinstance(metric, metrics.Metric):
-                if metric.type not in ["string"]:
+                if metric.type not in SUPPORTED_METRIC_TYPES:
                     print(
                         "❌ Ignoring unsupported metric type: "
                         + f"{metric.type}:{metric.name}."
