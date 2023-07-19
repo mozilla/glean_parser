@@ -45,14 +45,13 @@ def generate_metric_argument_description(metric: metrics.Metric) -> str:
 
 
 def generate_ping_factory_method(ping: str) -> str:
-    return f"create{util.Camelize(ping)}EventFn"
+    return f"create{util.Camelize(ping)}Event"
 
 
 def output(
     lang: str,
     objs: metrics.ObjectTree,
     output_dir: Path,
-    options: Optional[Dict[str, Any]] = None,
 ) -> None:
     """
     Given a tree of objects, output Javascript or Typescript code to `output_dir`.
@@ -109,18 +108,16 @@ def output(
 
     # TODO it would be nice to make sure event_name is first on the argument list
 
-    filepath = output_dir / "server_events.js"
+    extension = ".js" if lang == "javascript" else ".ts"
+    filepath = output_dir / ("server_events" + extension)
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
                 parser_version=__version__,
                 pings=ping_to_metrics,
-                extra_args=util.extra_args,
                 lang=lang,
             )
         )
-        # Jinja2 squashes the final newline, so we explicitly add it
-        fd.write("\n")
 
 
 def output_javascript(
@@ -132,16 +129,9 @@ def output_javascript(
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
-    :param options: options dictionary, with the following optional keys:
-
-        - `namespace`: The identifier of the global variable to assign to.
-                       This will only have and effect for Qt and static web sites.
-                       Default is `Glean`.
-        - `platform`: Which platform are we building for. Options are `webext` and `qt`.
-                      Default is `webext`.
     """
 
-    output("javascript", objs, output_dir, options)
+    output("javascript", objs, output_dir)
 
 
 def output_typescript(
@@ -158,14 +148,6 @@ def output_typescript(
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
-    :param options: options dictionary, with the following optional keys:
-
-        - `namespace`: The identifier of the global variable to assign to.
-                       This will only have and effect for Qt and static web sites.
-                       Default is `Glean`.
-        - `platform`: Which platform are we building for. Options are `webext` and `qt`.
-                      Default is `webext`.
     """
 
-    raise NotImplementedError("Typescript output is not implemented yet.")
-    output("typescript", objs, output_dir, options)
+    output("typescript", objs, output_dir)

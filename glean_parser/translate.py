@@ -56,6 +56,7 @@ OUTPUTTERS = {
     "javascript": Outputter(javascript.output_javascript, []),
     "typescript": Outputter(javascript.output_typescript, []),
     "javascript_server": Outputter(javascript_server.output_javascript, []),
+    "typescript_server": Outputter(javascript_server.output_typescript, []),
     "kotlin": Outputter(kotlin.output_kotlin, ["*.kt"]),
     "markdown": Outputter(markdown.output_markdown, []),
     "swift": Outputter(swift.output_swift, ["*.swift"]),
