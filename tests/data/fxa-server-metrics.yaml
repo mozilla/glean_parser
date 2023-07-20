@@ -1,0 +1,21 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+event:
+  name:
+    type: string
+    description: |
+      The name of the event
+    lifetime: ping
+    send_in_pings:
+      - accounts-events
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - https://bugzilla.mozilla.org/11566356
+    data_reviews:
+      - http://example.com/reviews
+    expires: never
