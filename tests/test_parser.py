@@ -115,13 +115,13 @@ def test_parser_schema_violation():
         """,
         """
         ```
-        gleantest.short.category:very_long_metric_name_this_is_too_long_s_well
+        gleantest.short.category:very_long_metric_name_this_is_too_long_as_well_since_it_has_sooooo_many_characters
         ```
 
-        'very_long_metric_name_this_is_too_long_s_well' is not valid under any
+        'very_long_metric_name_this_is_too_long_as_well_since_it_has_sooooo_many_characters' is not valid under any
         of the given schemas
-        'very_long_metric_name_this_is_too_long_s_well' is too long
-        """,
+        'very_long_metric_name_this_is_too_long_as_well_since_it_has_sooooo_many_characters' is too long
+        """,  # noqa: E501 #
         """
         ```
         gleantest:
