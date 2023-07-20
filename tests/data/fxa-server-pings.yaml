@@ -1,0 +1,17 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+
+accounts-events:
+  description: |
+    An account event
+  include_client_id: false
+  send_if_empty: false
+  bugs:
+    - https://bugzilla.mozilla.org/11566356
+  data_reviews:
+    - http://example.com/reviews
+  notification_emails:
+    - CHANGE-ME@example.com

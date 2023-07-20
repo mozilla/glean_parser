@@ -79,12 +79,13 @@ def output(
     # For each ping we generate code which contains all the logic for assembling it
     # with metrics, serializing, and submitting. Therefore we don't generate classes for
     # each metric as in standard outputters.
+    PING_METRIC_ERROR_MSG = (
+        " Server-side environment is simplified and this"
+        + " parser doesn't generate individual metric files. Make sure to pass all"
+        + " your ping and metric definitions in a single invocation of the parser."
+    )
     if "pings" not in objs:
-        print(
-            "❌ No ping definition found. Server-side environment is simplified and this"
-            + " parser doesn't generate individual metric files. Make sure to pass all"
-            + " your ping and metric definitions in a single invocation of the parser."
-        )
+        print("❌ No ping definition found." + PING_METRIC_ERROR_MSG)
         return
 
     # go through all metrics in objs and build a map of
@@ -106,7 +107,9 @@ def output(
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
 
-    # TODO it would be nice to make sure event_name is first on the argument list
+    if not ping_to_metrics:
+        print("❌ No pings with metrics found." + PING_METRIC_ERROR_MSG)
+        return
 
     extension = ".js" if lang == "javascript" else ".ts"
     filepath = output_dir / ("server_events" + extension)
