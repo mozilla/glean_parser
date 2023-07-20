@@ -5,7 +5,15 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-Outputter to generate server Javascript code for metrics.
+Outputter to generate server Javascript code for collecting events.
+
+This outputter is different from the rest of the outputters in that the code it
+generates does not use the Glean SDK. It is meant to be used to collect events
+using "events as pings" pattern in server-side environments. In these environments
+SDK assumptions to measurement window and connectivity don't hold.
+Generated code takes care of assembling pings with metrics, serializing to messages
+conforming to Glean schema, and logging with mozlog. Then it's the role of the ingestion
+pipeline to pick the messages up and process.
 
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
@@ -36,7 +44,6 @@ def generate_metric_argument_name(metric: metrics.Metric) -> str:
 
 
 def generate_js_metric_type(metric: metrics.Metric) -> str:
-    # TODO: this works with strings, implement other types
     return metric.type
 
 
@@ -55,6 +62,9 @@ def output(
 ) -> None:
     """
     Given a tree of objects, output Javascript or Typescript code to `output_dir`.
+
+    The output is a single file containing all the code for assembling pings with
+    metrics, serializing, and submitting.
 
     :param lang: Either "javascript" or "typescript";
     :param objects: A tree of objects (metrics and pings) as returned from
@@ -88,8 +98,9 @@ def output(
         print("❌ No ping definition found." + PING_METRIC_ERROR_MSG)
         return
 
-    # go through all metrics in objs and build a map of
+    # Go through all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
+    # for easier processing in the template.
     ping_to_metrics: Dict[str, Dict[str, List[metrics.Metric]]] = defaultdict(dict)
     for _category_key, category_val in objs.items():
         for _metric_name, metric in category_val.items():
@@ -142,11 +153,6 @@ def output_typescript(
 ) -> None:
     """
     Given a tree of objects, output Typescript code to `output_dir`.
-
-    # Note
-
-    The only difference between the typescript and javascript templates,
-    currently is the file extension.
 
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
