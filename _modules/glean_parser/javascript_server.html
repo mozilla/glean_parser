@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>glean_parser.javascript_server &#8212; Glean Parser 7.2.2.dev19+g93634756 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for glean_parser.javascript_server</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Outputter to generate server Javascript code for collecting events.</span>
+
+<span class="sd">This outputter is different from the rest of the outputters in that the code it</span>
+<span class="sd">generates does not use the Glean SDK. It is meant to be used to collect events</span>
+<span class="sd">using &quot;events as pings&quot; pattern in server-side environments. In these environments</span>
+<span class="sd">SDK assumptions to measurement window and connectivity don&#39;t hold.</span>
+<span class="sd">Generated code takes care of assembling pings with metrics, serializing to messages</span>
+<span class="sd">conforming to Glean schema, and logging with mozlog. Then it&#39;s the role of the ingestion</span>
+<span class="sd">pipeline to pick the messages up and process.</span>
+
+<span class="sd">Warning: this outputter supports limited set of metrics,</span>
+<span class="sd">see `SUPPORTED_METRIC_TYPES` below.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+
+<span class="c1"># Adding a metric here will require updating the `generate_js_metric_type` function</span>
+<span class="c1"># and might require changes to the template.</span>
+<span class="n">SUPPORTED_METRIC_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="event_class_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.event_class_name">[docs]</a><span class="k">def</span> <span class="nf">event_class_name</span><span class="p">(</span><span class="n">pingName</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">pingName</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ServerEvent&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_metric_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_metric_name">[docs]</a><span class="k">def</span> <span class="nf">generate_metric_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_metric_argument_name"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_metric_argument_name">[docs]</a><span class="k">def</span> <span class="nf">generate_metric_argument_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="generate_js_metric_type"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_js_metric_type">[docs]</a><span class="k">def</span> <span class="nf">generate_js_metric_type</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span></div>
+
+
+<div class="viewcode-block" id="generate_metric_argument_description"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_metric_argument_description">[docs]</a><span class="k">def</span> <span class="nf">generate_metric_argument_description</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="generate_ping_factory_method"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_ping_factory_method">[docs]</a><span class="k">def</span> <span class="nf">generate_ping_factory_method</span><span class="p">(</span><span class="n">ping</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;create</span><span class="si">{</span><span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">ping</span><span class="p">)</span><span class="si">}</span><span class="s2">Event&quot;</span></div>
+
+
+<div class="viewcode-block" id="output"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output">[docs]</a><span class="k">def</span> <span class="nf">output</span><span class="p">(</span>
+    <span class="n">lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Javascript or Typescript code to `output_dir`.</span>
+
+<span class="sd">    The output is a single file containing all the code for assembling pings with</span>
+<span class="sd">    metrics, serializing, and submitting.</span>
+
+<span class="sd">    :param lang: Either &quot;javascript&quot; or &quot;typescript&quot;;</span>
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">        `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
+        <span class="s2">&quot;javascript_server.jinja2&quot;</span><span class="p">,</span>
+        <span class="n">filters</span><span class="o">=</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;event_class_name&quot;</span><span class="p">,</span> <span class="n">event_class_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;metric_name&quot;</span><span class="p">,</span> <span class="n">generate_metric_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;metric_argument_name&quot;</span><span class="p">,</span> <span class="n">generate_metric_argument_name</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;js_metric_type&quot;</span><span class="p">,</span> <span class="n">generate_js_metric_type</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;metric_argument_description&quot;</span><span class="p">,</span> <span class="n">generate_metric_argument_description</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;factory_method&quot;</span><span class="p">,</span> <span class="n">generate_ping_factory_method</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># In this environment we don&#39;t use a concept of measurement window for collecting</span>
+    <span class="c1"># metrics. Only &quot;events as pings&quot; are supported.</span>
+    <span class="c1"># For each ping we generate code which contains all the logic for assembling it</span>
+    <span class="c1"># with metrics, serializing, and submitting. Therefore we don&#39;t generate classes for</span>
+    <span class="c1"># each metric as in standard outputters.</span>
+    <span class="n">PING_METRIC_ERROR_MSG</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot; Server-side environment is simplified and this&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot; parser doesn&#39;t generate individual metric files. Make sure to pass all&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot; your ping and metric definitions in a single invocation of the parser.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;pings&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ No ping definition found.&quot;</span> <span class="o">+</span> <span class="n">PING_METRIC_ERROR_MSG</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Go through all metrics in objs and build a map of</span>
+    <span class="c1"># ping-&gt;list of metric categories-&gt;list of metrics</span>
+    <span class="c1"># for easier processing in the template.</span>
+    <span class="n">ping_to_metrics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_category_key</span><span class="p">,</span> <span class="n">category_val</span> <span class="ow">in</span> <span class="n">objs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">_metric_name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">category_val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORTED_METRIC_TYPES</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;❌ Ignoring unsupported metric type: &quot;</span>
+                        <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="o">+</span> <span class="s2">&quot; Reach out to Glean team to add support for this&quot;</span>
+                        <span class="o">+</span> <span class="s2">&quot; metric type.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
+                    <span class="n">metrics_by_type</span> <span class="o">=</span> <span class="n">ping_to_metrics</span><span class="p">[</span><span class="n">ping</span><span class="p">]</span>
+                    <span class="n">metrics_list</span> <span class="o">=</span> <span class="n">metrics_by_type</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="n">metrics_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ping_to_metrics</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ No pings with metrics found.&quot;</span> <span class="o">+</span> <span class="n">PING_METRIC_ERROR_MSG</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;.js&quot;</span> <span class="k">if</span> <span class="n">lang</span> <span class="o">==</span> <span class="s2">&quot;javascript&quot;</span> <span class="k">else</span> <span class="s2">&quot;.ts&quot;</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;server_events&quot;</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">filepath</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                <span class="n">parser_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+                <span class="n">pings</span><span class="o">=</span><span class="n">ping_to_metrics</span><span class="p">,</span>
+                <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="output_javascript"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output_javascript">[docs]</a><span class="k">def</span> <span class="nf">output_javascript</span><span class="p">(</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Javascript code to `output_dir`.</span>
+
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">        `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">output</span><span class="p">(</span><span class="s2">&quot;javascript&quot;</span><span class="p">,</span> <span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="output_typescript"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output_typescript">[docs]</a><span class="k">def</span> <span class="nf">output_typescript</span><span class="p">(</span>
+    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a tree of objects, output Typescript code to `output_dir`.</span>
+
+<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
+<span class="sd">        `parser.parse_objects`.</span>
+<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">output</span><span class="p">(</span><span class="s2">&quot;typescript&quot;</span><span class="p">,</span> <span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Glean Parser</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Glean Parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics-yaml.html"><code class="docutils literal notranslate"><span class="pre">metrics.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pings-yaml.html"><code class="docutils literal notranslate"><span class="pre">pings.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tags-yaml.html"><code class="docutils literal notranslate"><span class="pre">tags.yaml</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">glean_parser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018-2022, The Glean Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -28,6 +28,14 @@ glean\_parser.javascript module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.javascript\_server module
+---------------------------------------
+
+.. automodule:: glean_parser.javascript_server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.kotlin module
 ---------------------------
 
