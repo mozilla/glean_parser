@@ -5,7 +5,7 @@
 - BREAKING CHANGE: Remove exposed `lint_yaml_files` function ([#580](https://github.com/mozilla/glean_parser/pull/580))
 - Rust: Removed `__glean_metric_maps` from the Rust Jinja template. This functionality is better placed downstream ([Bug 1816526](https://bugzilla.mozilla.org/show_bug.cgi?id=1816526))
 - New lint: check that all referenced pings are known ([#584](https://github.com/mozilla/glean_parser/pull/584))
-- Add basic server-side JavaScript outputter ([FXA-7922](https://mozilla-hub.atlassian.net/browse/FXA-7922))
+- Add experimental server-side JavaScript outputter ([FXA-7922](https://mozilla-hub.atlassian.net/browse/FXA-7922))
 
 ## 7.2.1
 
