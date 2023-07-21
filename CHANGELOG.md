@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 8.0.0
+
 - BREAKING CHANGE: Remove exposed `lint_yaml_files` function ([#580](https://github.com/mozilla/glean_parser/pull/580))
 - Rust: Removed `__glean_metric_maps` from the Rust Jinja template. This functionality is better placed downstream ([Bug 1816526](https://bugzilla.mozilla.org/show_bug.cgi?id=1816526))
 - New lint: check that all referenced pings are known ([#584](https://github.com/mozilla/glean_parser/pull/584))
