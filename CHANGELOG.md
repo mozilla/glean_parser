@@ -1,5 +1,7 @@
 # Changelog
 
+- Increased the maximum metric name length in version 2.0.0 schema ([#596](https://github.com/mozilla/glean_parser/pull/596))
+
 ## Unreleased
 
 ## 8.0.0

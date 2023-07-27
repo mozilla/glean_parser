@@ -28,7 +28,7 @@ gleantest.with.way.too.long.category.name:
     expires: never
     data_reviews: ['http://example.com']
 gleantest.short.category:
-  very_long_metric_name_this_is_too_long_s_well:
+  very_long_metric_name_this_is_too_long_as_well_since_it_has_sooooo_many_characters:
     description: A test metric
     type: boolean
     bugs:

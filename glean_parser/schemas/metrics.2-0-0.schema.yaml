@@ -42,7 +42,7 @@ definitions:
   short_id:
     allOf:
       - $ref: "#/definitions/snake_case"
-      - maxLength: 30
+      - maxLength: 70
 
   labeled_metric_id:
     type: string
