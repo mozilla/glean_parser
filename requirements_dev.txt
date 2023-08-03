@@ -13,6 +13,6 @@ Sphinx==7.1.2; python_version > '3.8'
 twine==3.8.0
 types-Jinja2==2.11.9
 types-pkg_resources==0.1.3
-types-PyYAML==6.0.6
+types-PyYAML==6.0.12.11
 wheel
 yamllint==1.28.0
