@@ -6,7 +6,7 @@ flake8-bugbear==23.7.10; python_version >= '3.8'
 mypy==1.4.1; python_version > '3.6'
 mypy==0.971; python_version <= '3.6'
 pip
-pytest-runner==5.3.1
+pytest-runner==5.3.2
 pytest==7.0.1
 recommonmark==0.7.1
 Sphinx==7.1.2; python_version > '3.8'
