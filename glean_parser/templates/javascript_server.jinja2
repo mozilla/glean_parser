@@ -74,6 +74,8 @@ class {{ ping|event_class_name }} {
    {% endfor %}
    */
   record({
+    user_agent,
+    ip_address,
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% for metric in metrics %}
     {{ metric|metric_argument_name }},
@@ -81,6 +83,8 @@ class {{ ping|event_class_name }} {
     {% endfor %}
   {% if lang == "typescript" %}
   }: {
+    user_agent: string,
+    ip_address: string,
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% for metric in metrics %}
     {{ metric|metric_argument_name }}: {{ metric|js_metric_type }};
@@ -124,6 +128,8 @@ class {{ ping|event_class_name }} {
       document_type: '{{ ping }}',
       document_version: '1',
       document_id: uuidv4(),
+      user_agent: user_agent,
+      ip_address: ip_address,
       payload: eventPayloadSerialized,
     };
 
