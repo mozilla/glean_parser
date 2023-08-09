@@ -34,6 +34,7 @@ class {{ ping|event_class_name }} {
    * @param {string} applicationId - The application ID.
    * @param {string} appDisplayVersion - The application display version.
    * @param {string} channel - The channel.
+   * @param {LoggerOptions} logger_options - The logger options.
    */
   {% if lang == "typescript" %}
   constructor(
@@ -67,6 +68,9 @@ class {{ ping|event_class_name }} {
    * Record and submit a server event object.
    * Event is logged using internal mozlog logger.
    *
+   * @param {string} user_agent - The user agent.
+   * @param {string} ip_address - The IP address. Will be used to decode Geo
+   *                              information and scrubbed at ingestion.
    {% for metric_type, metrics in metrics_by_type.items() %}
    {% for metric in metrics %}
    * @param { {{-metric|js_metric_type-}} } {{ metric|metric_argument_name }} - {{ metric|metric_argument_description }}.
