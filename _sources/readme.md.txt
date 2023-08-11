@@ -16,7 +16,7 @@ code for various integrations, linting and coverage testing.
 
 ## Requirements
 
--   Python 3.6 (or later)
+-   Python 3.7 (or later)
 
 The following library requirements are installed automatically when
 `glean_parser` is installed by `pip`.
@@ -27,10 +27,6 @@ The following library requirements are installed automatically when
 -   Jinja2
 -   jsonschema
 -   PyYAML
-
-Additionally on Python 3.6:
-
--   iso8601
 
 ## Usage
 

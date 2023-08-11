@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.util &#8212; Glean Parser 8.1.2.dev6+g2c389986 documentation</title>
+    <title>glean_parser.util &#8212; Glean Parser 8.1.2.dev7+gbcb0982c documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=039e1c02" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=17b7adce"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=0ad4cc09"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -35,7 +35,6 @@
 <span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
 <span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -52,28 +51,13 @@
 <span class="kn">from</span> <span class="nn">jsonschema</span> <span class="kn">import</span> <span class="n">_utils</span>  <span class="c1"># type: ignore</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">iso8601</span>  <span class="c1"># type: ignore</span>
 
-    <span class="k">def</span> <span class="nf">date_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+<div class="viewcode-block" id="date_fromisoformat"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.date_fromisoformat">[docs]</a><span class="k">def</span> <span class="nf">date_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">datetime_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">parse_date</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">iso8601</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
 
-<span class="k">else</span><span class="p">:</span>
-
-<div class="viewcode-block" id="date_fromisoformat"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.date_fromisoformat">[docs]</a>    <span class="k">def</span> <span class="nf">date_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="datetime_fromisoformat"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.datetime_fromisoformat">[docs]</a>    <span class="k">def</span> <span class="nf">datetime_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span></div>
+<div class="viewcode-block" id="datetime_fromisoformat"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.datetime_fromisoformat">[docs]</a><span class="k">def</span> <span class="nf">datetime_fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">datestr</span><span class="p">)</span></div>
 
 
 <span class="n">TESTING_MODE</span> <span class="o">=</span> <span class="s2">&quot;pytest&quot;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
@@ -86,21 +70,9 @@
 <span class="sd">This is only an approximation -- this should really be a recursive type.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Adapted from</span>
-<span class="c1"># https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml</span>
 
-
-<span class="c1"># A wrapper around OrderedDict for Python &lt; 3.7 (where dict ordering is not</span>
-<span class="c1"># maintained by default), and regular dict everywhere else.</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-
-    <span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-<span class="k">else</span><span class="p">:</span>
-
-<div class="viewcode-block" id="DictWrapper"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.DictWrapper">[docs]</a>    <span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+<div class="viewcode-block" id="DictWrapper"><a class="viewcode-back" href="../../glean_parser.html#glean_parser.util.DictWrapper">[docs]</a><span class="k">class</span> <span class="nc">DictWrapper</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">pass</span></div>
 
 
 <span class="k">class</span> <span class="nc">_NoDatesSafeLoader</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">):</span>
