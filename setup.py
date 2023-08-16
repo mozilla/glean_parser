@@ -28,7 +28,6 @@ requirements = [
     "Click>=7",
     "diskcache>=4",
     "Jinja2>=2.10.1",
-    "MarkupSafe>=1.1.1,<=2.0.1",
     "jsonschema>=3.0.2",
     "PyYAML>=5.3.1",
 ]
