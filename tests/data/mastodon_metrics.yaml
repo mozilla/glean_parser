@@ -44,5 +44,3 @@ action:
     description: |
       API status code returned in response.
     <<: *defaults
-
-
