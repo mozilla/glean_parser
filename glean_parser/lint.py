@@ -286,6 +286,23 @@ def check_old_event_api(
         yield ("The old event API is gone. Extra keys require a type.")
 
 
+def check_metric_on_events_lifetime(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    """A non-event metric on the Events ping only makes sense if its value
+    is immutable over the life of the ping."""
+    if (
+        "events" in metric.send_in_pings
+        and "all_pings" not in metric.send_in_pings
+        and metric.type != "event"
+        and metric.lifetime == metrics.Lifetime.ping
+    ):
+        yield (
+            "Non-event metrics sent on the Events ping should not have the ping"
+            " lifetime."
+        )
+
+
 def check_redundant_ping(
     pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -366,6 +383,7 @@ METRIC_CHECKS: Dict[
     "USER_LIFETIME_EXPIRATION": (check_user_lifetime_expiration, CheckType.warning),
     "EXPIRED": (check_expired_metric, CheckType.warning),
     "OLD_EVENT_API": (check_old_event_api, CheckType.warning),
+    "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
 }
 
 

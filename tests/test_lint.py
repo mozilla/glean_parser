@@ -181,8 +181,16 @@ def test_misspelling_pings():
         {
             "user_data": {
                 "counter": {"type": "counter", "send_in_pings": ["metric"]},
-                "string": {"type": "string", "send_in_pings": ["event"]},
-                "string2": {"type": "string", "send_in_pings": ["metrics", "events"]},
+                "string": {
+                    "type": "string",
+                    "lifetime": "application",
+                    "send_in_pings": ["event"],
+                },
+                "string2": {
+                    "type": "string",
+                    "lifetime": "application",
+                    "send_in_pings": ["metrics", "events"],
+                },
             }
         }
     ]
@@ -277,6 +285,28 @@ def test_expires_too_far_in_the_future():
 
     assert len(nits) == 1
     assert set(["EXPIRATION_DATE_TOO_FAR"]) == set(v.check_name for v in nits)
+
+
+def test_invalid_lifetime_for_metric_on_events_ping():
+    """Test that a `ping` lifetime, non-event metric, fails when sent on the
+    Metrics ping"""
+    contents = [
+        {
+            "user_data": {
+                "invalid_lifetime": {
+                    "type": "counter",
+                    "lifetime": "ping",
+                    "send_in_pings": "events",
+                }
+            }
+        }
+    ]
+
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+
+    errs = list(all_metrics)
+    assert len(errs) == 1
 
 
 def test_translate_missing_input_files(tmpdir):
@@ -472,7 +502,7 @@ def test_unknown_pings_lint():
     assert len(errs) == 0
 
     nits = lint.lint_metrics(all_objects.value, parser_config={})
-    assert len(nits) == 1
+    assert len(nits) == 2
     assert nits[0].check_name == "UNKNOWN_PING_REFERENCED"
     assert nits[0].name == "all_metrics.non_existent_ping"
     assert "does-not-exist" in nits[0].msg
