@@ -1,7 +1,7 @@
 black==23.3.0
 coverage==7.2.7
 flake8==6.1.0; python_version >= '3.8'
-flake8-bugbear==23.7.10; python_version >= '3.8'
+flake8-bugbear==23.9.16; python_version >= '3.8'
 mypy==1.4.1
 pip
 pytest-runner==5.3.2
