@@ -17,7 +17,7 @@ def test_parser_rb_server_ping_no_metrics(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "mastodon_pings.yaml",
+        ROOT / "data" / "mastodon_event_stream.yaml",
         "ruby_server",
         tmpdir,
     )
@@ -31,7 +31,7 @@ def test_parser_rb_server_metrics_no_ping(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "mastodon_metrics.yaml",
+        ROOT / "data" / "mastodon_event_stream.yaml",
         "ruby_server",
         tmpdir,
     )
@@ -62,8 +62,7 @@ def test_parser_rb_server(tmpdir):
 
     translate.translate(
         [
-            ROOT / "data" / "mastodon_pings.yaml",
-            ROOT / "data" / "mastodon_metrics.yaml",
+            ROOT / "data" / "mastodon_event_stream.yaml"
         ],
         "ruby_server",
         tmpdir,
