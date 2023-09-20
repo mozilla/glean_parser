@@ -5,12 +5,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
-Outputter to generate server Ruby code for collecting events using the
+Outputter to generate Ruby code for collecting events using the
 "Event Stream" pattern.
 
 This outputter is different from the rest of the outputters in that the code it
 generates does not use the Glean SDK. It is meant to be used to collect events
-using "Event Stream" pattern in server-side environments. In these environments
+using the "Event Stream" pattern in server-side environments. In these environments
 SDK assumptions to measurement window and connectivity don't hold.
 Generated code takes care of assembling pings as events, serializing to messages
 conforming to Glean schema, and logging with a custom logger. 

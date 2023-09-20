@@ -14,14 +14,14 @@ require 'securerandom'
 require 'logger'
 require 'rbconfig'
 
-
 # this will be used for identifying logs that need to forward to Moz Data Pipeline
 GLEAN_EVENT_MOZLOG_TYPE = 'glean-server-event'
 
+# helper module to get OS level info for logs
 module OS
   def self.name
     case RbConfig::CONFIG['host_os']
-    
+
     when /linux/
       'Linux'
     when /darwin/
@@ -36,14 +36,6 @@ module OS
       RbConfig::CONFIG['host_os']
     end
   end
-  def self.version
-    version = RbConfig::CONFIG['build_os'].match('\d{1,2}\.*\d{0,2}\.*\d{0,3}').to_s
-    if !version.nil?
-        version.to_s
-    else
-        'Unknown'
-    end
-  end
 end
 
 module GleanHelper
@@ -52,25 +44,30 @@ module GleanHelper
   {% for event_type, event_object in event_types.items() %}
   class {{ (event_category + '.' + event_type) | event_class_name }}
     # see comments for init parameter descriptions
-    def initialize(application_id:, app_display_version:, app_channel:, user_agent:, ip_address:, event_extra)
+    def initialize(application_id:, app_display_version:, app_channel:, user_agent:, ip_address:, event_extra:)
       @application_id = application_id # string - Application Id to identify application per Glean standards
       @app_display_version = app_display_version # string - Application Id to identify application per Glean standards
       @app_channel = app_channel # string - Application Id to identify application per Glean standards
       @user_agent = user_agent # string - The user agent per Glean standards
       @ip_address = ip_address # string - The IP address that will be used to decode Geo information and scrubbed at ingestion per Glean standards
-      @event_extra = event_extra # string - JSON blob containing the backend event payload
+      @event_extra = event_extra # Struct - Ruby struct containing the backend event payload
     end
 
     def record
-      t = Time.now
+      t = Time.zone.now
       t_utc = t.utc
+
+      # event extra is expected to be a struct to enforce some level of schema.
+
+      raise 'event_extra must be a Struct!' unless @event_extra.is_a?(Struct)
+
       event_payload = {
         # `Unknown` fields below are required in the Glean schema, however they are not useful in server context.
         'client_info' => {
           'telemetry_sdk_build' => 'glean_parser v{{ parser_version }}',
           'first_run_date' => 'Unknown',
           'os' => OS.name,
-          'os_version' => OS.version,
+          'os_version' => 'Unknown',
           'architecture' => 'Unknown',
           'app_build' => 'Unknown',
           'app_display_version' => @app_display_version,
@@ -81,9 +78,9 @@ module GleanHelper
           'start_time' => t_utc,
           'end_time' => t_utc,
         },
-        'event' => '{{ event_category + '.' + event_type }}'
-        'event_timestamp' => t_utc
-        'event_extra' => event_extra,
+        'event' => '{{ event_category + '.' + event_type }}',
+        'event_timestamp' => t_utc,
+        'event_extra' => @event_extra.to_h.to_json,
       }
       serialized_event_payload = event_payload.to_json
       # This is the message structure that Decoder expects: https://github.com/mozilla/gcp-ingestion/pull/2400.
@@ -112,27 +109,31 @@ end
 
 # use the following examples for adding the loggers to your controller
 # class ApplicationController < ActionController::Base
-    # add glean server side log for controller calls
-    # around_action :emit_server_side_events
+# add glean server side log for controller calls
+# around_action :emit_server_side_events
 
 # ...
 
-# logic to create event extra json string
+# CategoryTypeStruct = Struct.new(:attribute_1, :attribute_2)
 
-#...
+# ...
 
 # private
 # def emit_server_side_events
-  # yield
+# yield
 # ensure
-  # GleanHelper::CategoryTypeServerEvent.new(
-    # application_id:'ruby app name',
-    # app_display_version:'ruby app name as `X.X.X`',
-    # app_channel:'environment for exampe, `production` or `development`',
-    # user_agent:'string or expression',
-    # ip_address:'string or expression',
-    # event_extra: 'json_string'
-  # ).record
+# new_event = CategoryTypeStruct.new(
+#   attribute_1:'test',
+#   attribute_2:'test'
+# )
+# GleanHelper::CategoryTypeServerEvent.new(
+# application_id:'ruby app name',
+# app_display_version:'ruby app name as `X.X.X`',
+# app_channel:'environment for exampe, `production` or `development`',
+# user_agent:'string or expression',
+# ip_address:'string or expression',
+# event_extra:new_event
+# ).record
 # end
 # end
 
