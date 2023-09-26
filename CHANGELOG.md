@@ -3,6 +3,8 @@
 ## Unreleased
 
 - BREAKING CHANE: `ping` lifetime metrics on the events ping are now disallowed ([#625](https://github.com/mozilla/glean_parser/pull/625))
+- Disallow `unit` field for anything but quantity ([#630](https://github.com/mozilla/glean_parser/pull/630)).
+  Note that this was already considered the case, now the code enforces it.
 
 ## 9.0.0
 
