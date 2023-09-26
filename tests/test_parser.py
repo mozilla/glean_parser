@@ -1039,3 +1039,18 @@ def test_no_internal_fields_exposed():
         indent=2,
     )
     assert expected_json == out_json
+
+
+def test_unit_not_accepted_on_nonquantity():
+    results = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "category": {"metric": {"type": "counter", "unit": "quantillions"}},
+                }
+            ),
+        ]
+    )
+    errs = list(results)
+    assert len(errs) == 1
+    assert "got an unexpected keyword argument 'unit'" in str(errs[0])
