@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANE: `ping` lifetime metrics on the events ping are now disallowed ([#625](https://github.com/mozilla/glean_parser/pull/625))
+
 ## 9.0.0
 
 - BREAKING CHANGE: Dropped support for Python 3.6 ([#615](https://github.com/mozilla/glean_parser/issues/615))
