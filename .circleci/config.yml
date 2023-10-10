@@ -94,21 +94,21 @@ commands:
 jobs:
   build-37:
     docker:
-      - image: cimg/python:3.7
+      - image: cimg/python:3.7-node
     steps:
       - test-start
       - test-python-version
 
   build-38:
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.8-node
     steps:
       - test-start
       - test-python-version
 
   build-38-min:
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.8-node
     steps:
       - test-start
       - test-min-requirements
@@ -116,14 +116,14 @@ jobs:
 
   build-39:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.9-node
     steps:
       - test-start
       - test-python-version
 
   build-310:
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.10-node
     steps:
       - test-start
       - test-python-version
