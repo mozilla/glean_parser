@@ -16,7 +16,6 @@ import urllib.request
 import appdirs  # type: ignore
 import diskcache  # type: ignore
 import jinja2
-import jsonschema  # type: ignore
 from jsonschema import _utils  # type: ignore
 import yaml
 
@@ -238,23 +237,6 @@ def keep_value(f):
         return ValueKeepingGenerator(f(*args, **kwargs))
 
     return g
-
-
-def get_null_resolver(schema):
-    """
-    Returns a JSON Pointer resolver that does nothing.
-
-    This lets us handle the moz: URLs in our schemas.
-    """
-
-    class NullResolver(jsonschema.RefResolver):
-        def resolve_remote(self, uri):
-            if uri in self.store:
-                return self.store[uri]
-            if uri == "":
-                return self.referrer
-
-    return NullResolver.from_schema(schema)
 
 
 def fetch_remote_url(url: str, cache: bool = True):

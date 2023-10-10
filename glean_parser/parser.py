@@ -111,11 +111,10 @@ def _load_schemas() -> Dict[str, Tuple[Any, Any]]:
     schemas = {}
     for schema_path in SCHEMAS_DIR.glob("*.yaml"):
         schema = util.load_yaml_or_json(schema_path)
-        resolver = util.get_null_resolver(schema)
         validator_class = jsonschema.validators.validator_for(schema)
         _update_validator(validator_class)
         validator_class.check_schema(schema)
-        validator = validator_class(schema, resolver=resolver)
+        validator = validator_class(schema)
         schemas[schema["$id"]] = (schema, validator)
     return schemas
 

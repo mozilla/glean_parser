@@ -32,12 +32,10 @@ def _get_ping_schema(schema_url):
 def _validate_ping(ins, outs, schema_url):
     schema = _get_ping_schema(schema_url)
 
-    resolver = util.get_null_resolver(schema)
-
     document = json.load(ins)
 
     validator_class = jsonschema.validators.validator_for(schema)
-    validator = validator_class(schema, resolver=resolver)
+    validator = validator_class(schema)
 
     has_error = 0
     for error in validator.iter_errors(document):
