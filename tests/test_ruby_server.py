@@ -11,49 +11,55 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
-def test_parser_rb_server_ping_no_metrics(tmpdir):
-    """Test that no files are generated if only ping definitions
-    are provided without any metrics."""
+def test_parser_rb_server_ping_file(tmpdir, capsys):
+    """Test that no files are generated if only ping definition
+    is provided."""
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "mastodon_event_stream.yaml",
+        [
+            ROOT / "data" / "ruby_server_metrics.yaml",
+            ROOT / "data" / "ruby_server_pings.yaml",
+        ],
         "ruby_server",
         tmpdir,
     )
-
+    captured = capsys.readouterr()
     assert all(False for _ in tmpdir.iterdir())
+    assert (
+        "ping definition found. Server-side environment is simplified" in captured.out
+    )
 
 
-def test_parser_rb_server_metrics_no_ping(tmpdir):
-    """Test that no files are generated if only metric definitions
-    are provided without pings."""
+def test_parser_rb_server_no_event_metrics(tmpdir, capsys):
+    """Test that no files are generated if no event metrics."""
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        ROOT / "data" / "mastodon_event_stream.yaml",
+        [ROOT / "data" / "ruby_server_no_events.yaml"],
         "ruby_server",
         tmpdir,
     )
-
+    captured = capsys.readouterr()
     assert all(False for _ in tmpdir.iterdir())
+    assert "no events found...at least one event metric is required" in captured.out
 
 
-def test_parser_rb_server_metrics_unsupported_type(tmpdir, capfd):
+def test_parser_rb_server_metrics_unsupported_type(tmpdir, capsys):
     """Test that no files are generated if only metric definitions
     are provided without pings."""
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
         [
-            ROOT / "data" / "mastodon_pings.yaml",
-            ROOT / "data" / "all_metrics.yaml",
+            ROOT / "data" / "ruby_server_metrics_unsupported.yaml",
         ],
         "ruby_server",
         tmpdir,
     )
-    out, err = capfd.readouterr()
-    assert len(out.split("\n")) == 20
+    captured = capsys.readouterr()
+    assert "Ignoring unsupported metric type" in captured.out
+    assert "boolean" in captured.out
 
 
 def test_parser_rb_server(tmpdir):
@@ -61,9 +67,7 @@ def test_parser_rb_server(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        [
-            ROOT / "data" / "mastodon_event_stream.yaml"
-        ],
+        [ROOT / "data" / "ruby_server_metrics.yaml"],
         "ruby_server",
         tmpdir,
     )
