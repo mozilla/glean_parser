@@ -12,8 +12,8 @@ generates does not use the Glean SDK. It is meant to be used to collect events
 using "events as pings" pattern in server-side environments. In these environments
 SDK assumptions to measurement window and connectivity don't hold.
 Generated code takes care of assembling pings with metrics, serializing to messages
-conforming to Glean schema, and logging with mozlog. Then it's the role of the ingestion
-pipeline to pick the messages up and process.
+conforming to Glean schema, and logging using a standard Ruby logger. 
+Then it's the role of the ingestion pipeline to pick the messages up and process.
 
 Warning: this outputter supports a limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
