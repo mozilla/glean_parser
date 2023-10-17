@@ -47,10 +47,8 @@ def event_class_name(metric: metrics.Metric) -> str:
     return f"{util.Camelize(generate_metric_argument_name(metric))}Event"
 
 
-def output(
-    lang: str,
-    objs: metrics.ObjectTree,
-    output_dir: Path,
+def output_ruby(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]]
 ) -> None:
     """
     Given a tree of objects, output ruby code to `output_dir`.
@@ -58,7 +56,6 @@ def output(
     The output is a single file containing all the code for assembling pings with
     metrics, serializing, and submitting.
 
-    :param lang: "ruby";
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
@@ -127,20 +124,5 @@ def output(
             template.render(
                 parser_version=__version__,
                 pings=ping_to_metrics,
-                lang=lang,
             )
         )
-
-
-def output_ruby(
-    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
-) -> None:
-    """
-    Given a tree of objects, output ruby code to `output_dir`.
-
-    :param objects: A tree of objects (metrics and pings) as returned from
-        `parser.parse_objects`.
-    :param output_dir: Path to an output directory to write to.
-    """
-
-    output("ruby", objs, output_dir)
