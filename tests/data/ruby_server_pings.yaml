@@ -10,8 +10,8 @@ mastodon-action:
   include_client_id: true
   send_if_empty: false
   bugs:
-    - https://mozilla-hub.atlassian.net/browse/TBD
+    - TBD
   data_reviews:
-    - https://bugzilla.mozilla.org/show_bug.cgi?id=TBD
+    - TBD
   notification_emails:
-    - breyes@mozilla.com
+    - fake@fake.com
