@@ -69,6 +69,8 @@ module Glean
       event:
     )
       t_utc = Time.now.utc
+      # Increment sequence
+      @initial_seq += 1
       event_payload = {{
         # `Unknown` fields below are required in the Glean schema, however they are not useful in server context.
         'client_info' => {{
@@ -82,7 +84,7 @@ module Glean
           'app_channel' => @app_channel,
         }},
         'ping_info' => {{
-          'seq' => @initial_seq += 1,
+          'seq' => @initial_seq,
           'start_time' => t_utc,
           'end_time' => t_utc,
         }},

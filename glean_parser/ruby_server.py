@@ -24,8 +24,6 @@ from typing import Any, Dict, List, Optional
 
 from . import __version__, metrics, util
 
-# Adding a metric here will require updating the `generate_js_metric_type` function
-# and might require changes to the template.
 SUPPORTED_METRIC_TYPES = ["string", "event"]
 
 
@@ -83,11 +81,12 @@ def output(
     # with metrics, serializing, and submitting. Therefore we don't generate classes for
     # each metric as in standard outputters.
     PING_METRIC_ERROR_MSG = (
-        " Server-side environment is simplified and only supports the `events` ping."
+        " Server-side environment is simplified and only supports the events ping type."
         + " You should not be including pings.yaml with your parser call"
+        + " or referencing any other pings in your metric configuration."
     )
     if "pings" in objs:
-        print("❌ ping definition found." + PING_METRIC_ERROR_MSG)
+        print("❌ Ping definition found." + PING_METRIC_ERROR_MSG)
         return
 
     # Go through all metrics in objs and build a map of
@@ -106,11 +105,20 @@ def output(
                     )
                     continue
                 for ping in metric.send_in_pings:
+                    if ping != "events":
+                        (
+                            print(
+                                "❌ Non-events ping reference found."
+                                + PING_METRIC_ERROR_MSG
+                                + f"Ignoring the {ping} ping type."
+                            )
+                        )
+                        continue
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
     if "event" not in ping_to_metrics["events"]:
-        print("❌ no events found...at least one event metric is required")
+        print("❌ No event metrics found...at least one event metric is required")
         return
     extension = ".rb"
     filepath = output_dir / ("server_events" + extension)

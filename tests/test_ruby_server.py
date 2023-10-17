@@ -12,7 +12,7 @@ ROOT = Path(__file__).parent
 
 
 def test_parser_rb_server_ping_file(tmpdir, capsys):
-    """Test that no files are generated if only ping definition
+    """Test that no files are generated if ping definition
     is provided."""
     tmpdir = Path(str(tmpdir))
 
@@ -27,7 +27,7 @@ def test_parser_rb_server_ping_file(tmpdir, capsys):
     captured = capsys.readouterr()
     assert all(False for _ in tmpdir.iterdir())
     assert (
-        "ping definition found. Server-side environment is simplified" in captured.out
+        "Ping definition found. Server-side environment is simplified" in captured.out
     )
 
 
@@ -42,12 +42,14 @@ def test_parser_rb_server_no_event_metrics(tmpdir, capsys):
     )
     captured = capsys.readouterr()
     assert all(False for _ in tmpdir.iterdir())
-    assert "no events found...at least one event metric is required" in captured.out
+    assert (
+        "No event metrics found...at least one event metric is required"
+        in captured.out
+    )
 
 
 def test_parser_rb_server_metrics_unsupported_type(tmpdir, capsys):
-    """Test that no files are generated if only metric definitions
-    are provided without pings."""
+    """Test that no files are generated with unsupported metric types."""
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
@@ -60,6 +62,22 @@ def test_parser_rb_server_metrics_unsupported_type(tmpdir, capsys):
     captured = capsys.readouterr()
     assert "Ignoring unsupported metric type" in captured.out
     assert "boolean" in captured.out
+
+
+def test_parser_rb_server_pings_unsupported_type(tmpdir, capsys):
+    """Test that no files are generated with ping types that are not `events`."""
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        [
+            ROOT / "data" / "ruby_server_pings_unsupported.yaml",
+        ],
+        "ruby_server",
+        tmpdir,
+    )
+    captured = capsys.readouterr()
+    assert "Non-events ping reference found" in captured.out
+    assert "Ignoring the tests ping type" in captured.out
 
 
 def test_parser_rb_server(tmpdir):
