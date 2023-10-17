@@ -55,7 +55,7 @@ commands:
           command: CC=broken_compiler pip install . --user
       - run:
           name: test
-          command: make test
+          command: make test-full
 
   lint:
     parameters:
