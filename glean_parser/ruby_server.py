@@ -83,7 +83,7 @@ def output(
     # with metrics, serializing, and submitting. Therefore we don't generate classes for
     # each metric as in standard outputters.
     PING_METRIC_ERROR_MSG = (
-        " Server-side environment is simplified and only supports the events ping type"
+        " Server-side environment is simplified and only supports the `events` ping."
         + " You should not be including pings.yaml with your parser call"
     )
     if "pings" in objs:
