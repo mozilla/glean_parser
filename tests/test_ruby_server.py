@@ -43,8 +43,7 @@ def test_parser_rb_server_no_event_metrics(tmpdir, capsys):
     captured = capsys.readouterr()
     assert all(False for _ in tmpdir.iterdir())
     assert (
-        "No event metrics found...at least one event metric is required"
-        in captured.out
+        "No event metrics found...at least one event metric is required" in captured.out
     )
 
 
