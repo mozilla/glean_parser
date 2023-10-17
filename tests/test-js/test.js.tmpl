@@ -1,25 +1,17 @@
 import { createAccountsEventsEvent } from ".//* IMPORT */";
 
-class StringLogger {
-  constructor() {
-    this._buffer = "";
-  }
-
+class PrintLogger {
   write(msg) {
-    this._buffer += msg;
-  }
-
-  get() {
-    return this._buffer;
+    console.log(msg);
   }
 }
 
-let string_logger = new StringLogger;
+let logger = new PrintLogger;
 
 let logger_options = {
   app: "glean-test",
   fmt: 'pretty',
-  stream: string_logger,
+  stream: logger,
 };
 let events = /* FACTORY */({
   applicationId: "glean.test",
@@ -29,7 +21,3 @@ let events = /* FACTORY */({
 });
 
 /* CODE */
-
-let buf = string_logger.get();
-let log = JSON.parse(buf);
-console.log(log.Fields.payload);
