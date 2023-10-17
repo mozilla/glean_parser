@@ -99,7 +99,7 @@ def run_logger(code_dir, import_file, factory, code):
     return subprocess.check_output(["node", "test.js"], cwd=code_dir).decode("utf-8")
 
 
-@pytest.mark.web_dependency
+@pytest.mark.node_dependency
 def test_run_logging(tmpdir):
     tmpdir = Path(str(tmpdir))
 
