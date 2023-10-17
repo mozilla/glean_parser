@@ -15,7 +15,7 @@ Generated code takes care of assembling pings with metrics, serializing to messa
 conforming to Glean schema, and logging with mozlog. Then it's the role of the ingestion
 pipeline to pick the messages up and process.
 
-Warning: this outputter supports limited set of metrics,
+Warning: this outputter supports a limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 """
 from collections import defaultdict
