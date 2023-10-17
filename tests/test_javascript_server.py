@@ -5,6 +5,7 @@
 
 from pathlib import Path
 import io
+import json
 import pytest
 import shutil
 import subprocess
@@ -117,7 +118,16 @@ def test_run_logging(tmpdir):
 events.record({ user_agent: "glean-test/1.0", event_name: "testing" });
     """
 
-    payload = run_logger(tmpdir, "server_events.js", factory, code)
+    logged_output = run_logger(tmpdir, "server_events.js", factory, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload = fields["payload"]
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "accounts-events" == fields["document_type"]
+    assert "1" == fields["document_version"]
+    assert "glean-test/1.0" == fields["user_agent"]
 
     schema_url = (
         "https://raw.githubusercontent.com/mozilla-services/"
