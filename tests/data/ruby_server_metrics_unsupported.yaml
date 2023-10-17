@@ -15,7 +15,7 @@ identifiers:
     data_reviews:
       - TBD
     notification_emails:
-      - kdemtchouk@mozilla.com
+      - fake@fake.com
     expires: never
     send_in_pings:
       - events
