@@ -42,8 +42,6 @@ module Glean
       @app_id = app_id # string - Application Id to identify application per Glean standards
       @app_display_version = app_display_version # string - Version of application emitting the event
       @app_channel = app_channel # string - Application Id to identify application per Glean standards
-      @first_run_date = Time.now.utc
-      @initial_seq = 0 # int - Using this to replicate the Glean seq logic
       @logger = Logger.new(logger_options)
 
       # Logger configuration
@@ -69,13 +67,11 @@ module Glean
       event:
     )
       t_utc = Time.now.utc
-      # Increment sequence
-      @initial_seq += 1
       event_payload = {{
         # `Unknown` fields below are required in the Glean schema, however they are not useful in server context.
         'client_info' => {{
           'telemetry_sdk_build' => '{current_version}',
-          'first_run_date' => @first_run_date,
+          'first_run_date' => 'Unknown',
           'os' => OS.name,
           'os_version' => 'Unknown',
           'architecture' => 'Unknown',
@@ -84,7 +80,7 @@ module Glean
           'app_channel' => @app_channel,
         }},
         'ping_info' => {{
-          'seq' => @initial_seq,
+          'seq' => 0,
           'start_time' => t_utc,
           'end_time' => t_utc,
         }},
@@ -107,10 +103,6 @@ module Glean
         'payload' => serialized_event_payload,
       }}
       @logger.info(ping)
-      return unless @initial_seq == 1_000_000_000
-
-      @initial_seq = 0
-      @first_run_date = t.utc
     end
     attr_accessor :backend_object_update
   end

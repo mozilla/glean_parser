@@ -17,6 +17,7 @@ identifiers:
     notification_emails:
       - fake@fake.com
     expires: never
+    lifetime: application
     send_in_pings:
       - events
 

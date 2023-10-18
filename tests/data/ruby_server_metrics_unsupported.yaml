@@ -16,6 +16,7 @@ identifiers:
       - TBD
     notification_emails:
       - fake@fake.com
+    lifetime: application
     expires: never
     send_in_pings:
       - events
