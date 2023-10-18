@@ -67,6 +67,18 @@ module Glean
       event:
     )
       t_utc = Time.now.utc
+      # create raw metrics hash that can have nil values
+      metrics_raw = {{
+        'string' => {{
+          'identifiers.fxa_account_id' => identifiers_fxa_account_id,
+        }},
+      }}
+      # filter out key value pairs where value is nil
+      metrics_raw.each do |key, value|
+        metrics_raw[key] = value.compact.transform_values(&:to_s)
+      end
+      # filter out metrics with empty hashes
+      metrics = metrics_raw.reject {{ |_k, v| v.empty? }}
       event_payload = {{
         # `Unknown` fields below are required in the Glean schema, however they are not useful in server context.
         'client_info' => {{
@@ -84,11 +96,7 @@ module Glean
           'start_time' => t_utc,
           'end_time' => t_utc,
         }},
-        'metrics' => {{
-          'string' => {{
-            'identifiers.fxa_account_id' => identifiers_fxa_account_id,
-          }},
-        }},
+        'metrics' => metrics,
         'events' => event,
       }}
       serialized_event_payload = event_payload.to_json
@@ -128,17 +136,11 @@ module Glean
         {{
           'category' => 'backend',
           'name' => 'object_update',
-          'timestamp' => Time.now.utc,
+          'timestamp' => (Time.now.utc.to_f * 1000).to_i,
           'extra' => [
-            {{
-              'key' => 'object_type',
-              'value' => object_type,
-            }},
-            {{
-              'key' => 'object_state',
-              'value' => object_state,
-            }},
-          ],
+            ['object_type', object_type],
+            ['object_state', object_state],
+          ].to_h,
         }},
       ]
       @glean._record(
