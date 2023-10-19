@@ -297,6 +297,7 @@ class CustomDistribution(Metric):
         self.histogram_type = getattr(
             HistogramType, kwargs.pop("histogram_type", "exponential")
         )
+        self.unit = kwargs.pop("unit", None)
         super().__init__(*args, **kwargs)
 
 
