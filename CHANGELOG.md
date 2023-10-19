@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 10.0.0
+
 - Add Ruby log outputter (`ruby_server`) ([#620](https://github.com/mozilla/glean_parser/pull/620))
 - BREAKING CHANE: `ping` lifetime metrics on the events ping are now disallowed ([#625](https://github.com/mozilla/glean_parser/pull/625))
 - Disallow `unit` field for anything but quantity ([#630](https://github.com/mozilla/glean_parser/pull/630)).
