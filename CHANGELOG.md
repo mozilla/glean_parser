@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 10.0.1
+
 - Allow `unit` field for custom distribution again ([#633](https://github.com/mozilla/glean_parser/pull/633))
 
 ## 10.0.0
