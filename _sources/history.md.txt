@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Allow `unit` field for custom distribution again ([#633](https://github.com/mozilla/glean_parser/pull/633))
+
 ## 10.0.0
 
 - Add Ruby log outputter (`ruby_server`) ([#620](https://github.com/mozilla/glean_parser/pull/620))
