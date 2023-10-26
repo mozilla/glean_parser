@@ -14,6 +14,12 @@ def pytest_addoption(parser):
         default=False,
         help="Run tests that require node.js",
     )
+    parser.addoption(
+        "--run-ruby-tests",
+        action="store_true",
+        default=False,
+        help="Run tests that require Ruby",
+    )
 
 
 def pytest_collection_modifyitems(config, items):
@@ -28,3 +34,9 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "node_dependency" in item.keywords:
                 item.add_marker(skip_node)
+
+    if not config.getoption("--run-ruby-tests"):
+        skip_ruby = pytest.mark.skip(reason="Need --run-ruby-tests option to run")
+        for item in items:
+            if "ruby_dependency" in item.keywords:
+                item.add_marker(skip_ruby)
