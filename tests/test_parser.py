@@ -10,6 +10,7 @@ import textwrap
 
 import pytest
 
+from glean_parser import lint
 from glean_parser import metrics
 from glean_parser import parser
 
@@ -1076,3 +1077,26 @@ def test_unit_accepted_on_custom_dist():
     )
     errs = list(results)
     assert len(errs) == 0
+
+
+def test_unit_accepted_on_string_but_warns():
+    results = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "category": {
+                        "metric": {
+                            "type": "string",
+                            "unit": "quantillions",
+                        }
+                    },
+                }
+            ),
+        ]
+    )
+    errs = list(results)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(results.value)
+    assert len(nits) == 1
+    assert set(["UNIT_ON_STRING"]) == set(v.check_name for v in nits)

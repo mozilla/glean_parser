@@ -303,6 +303,15 @@ def check_metric_on_events_lifetime(
         )
 
 
+def check_unit_on_string(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    """`unit` was allowed on all metrics and recently disallowed.
+    To unbreak things we had to add it back to `string` metrics, but now warn"""
+    if isinstance(metric, metrics.String) and metric.unit:
+        yield "`unit` not allwed on string metric"
+
+
 def check_redundant_ping(
     pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -384,6 +393,7 @@ METRIC_CHECKS: Dict[
     "EXPIRED": (check_expired_metric, CheckType.warning),
     "OLD_EVENT_API": (check_old_event_api, CheckType.warning),
     "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
+    "UNIT_ON_STRING": (check_unit_on_string, CheckType.warning),
 }
 
 
