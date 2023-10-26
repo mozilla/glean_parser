@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Allow `unit` field for string again, but warn about it in the linter ([#634](https://github.com/mozilla/glean_parser/pull/634))
+
 ## 10.0.1
 
 - Allow `unit` field for custom distribution again ([#633](https://github.com/mozilla/glean_parser/pull/633))

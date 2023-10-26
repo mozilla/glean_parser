@@ -222,6 +222,11 @@ class Boolean(Metric):
 class String(Metric):
     typename = "string"
 
+    def __init__(self, *args, **kwargs):
+        # Deprecated. Kept here to unbreak stuff.
+        self.unit = kwargs.pop("unit", None)
+        Metric.__init__(self, *args, **kwargs)
+
 
 class StringList(Metric):
     typename = "string_list"
