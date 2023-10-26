@@ -47,7 +47,7 @@ test: ## run tests quickly with the default Python
 	py.test
 
 test-full:  ## run tests, including those with additional dependencies
-	py.test --run-web-tests --run-node-tests
+	py.test --run-web-tests --run-node-tests --run-ruby-tests
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source glean_parser -m pytest

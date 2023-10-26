@@ -44,7 +44,8 @@ commands:
             sudo apt upgrade -q
             sudo apt install \
                 --yes --no-install-recommends \
-                openjdk-11-jdk-headless
+                openjdk-11-jdk-headless \
+                ruby
             make install-kotlin-linters
       - run:
           name: Install glean_parser

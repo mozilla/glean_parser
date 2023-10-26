@@ -1,0 +1,9 @@
+require_relative ".//* IMPORT */"
+
+events = Glean::GleanEventsLogger.new(
+  app_id: "glean.test",
+  app_display_version: "0.0.1",
+  app_channel: "testing",
+  logger_options: $stdout
+)
+/* CODE */
