@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 10.0.2
+
 - Allow `unit` field for string again, but warn about it in the linter ([#634](https://github.com/mozilla/glean_parser/pull/634))
 
 ## 10.0.1
