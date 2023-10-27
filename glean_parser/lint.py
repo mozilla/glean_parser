@@ -309,7 +309,7 @@ def check_unit_on_string(
     """`unit` was allowed on all metrics and recently disallowed.
     To unbreak things we had to add it back to `string` metrics, but now warn"""
     if isinstance(metric, metrics.String) and metric.unit:
-        yield "`unit` not allwed on string metric"
+        yield "The `unit` property is not allowed for string metrics."
 
 
 def check_redundant_ping(
