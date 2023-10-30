@@ -312,6 +312,16 @@ def check_unit_on_string(
         yield "The `unit` property is not allowed for string metrics."
 
 
+def check_empty_datareview(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    disallowed_datareview = ["", "todo"]
+    data_reviews = [dr.lower() in disallowed_datareview for dr in metric.data_reviews]
+
+    if any(data_reviews):
+        yield "List of data reviews should not contain empty strings or TODO markers."
+
+
 def check_redundant_ping(
     pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -394,6 +404,7 @@ METRIC_CHECKS: Dict[
     "OLD_EVENT_API": (check_old_event_api, CheckType.warning),
     "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
     "UNIT_ON_STRING": (check_unit_on_string, CheckType.warning),
+    "EMPTY_DATAREVIEW": (check_empty_datareview, CheckType.warning),
 }
 
 

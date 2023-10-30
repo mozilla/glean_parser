@@ -506,3 +506,32 @@ def test_unknown_pings_lint():
     assert nits[0].check_name == "UNKNOWN_PING_REFERENCED"
     assert nits[0].name == "all_metrics.non_existent_ping"
     assert "does-not-exist" in nits[0].msg
+
+
+@pytest.mark.parametrize(
+    "metric, num_nits",
+    [
+        ({"metric": {"data_reviews": ["12345"]}}, 0),
+        ({"metric": {"data_reviews": ["12345", "", "TODO"]}}, 1),
+        ({"metric": {"data_reviews": [""]}}, 1),
+        ({"metric": {"data_reviews": [""], "no_lint": ["EMPTY_DATAREVIEW"]}}, 0),
+        ({"metric": {"data_reviews": ["TODO"]}}, 1),
+        ({"metric": {"data_reviews": ["TODO"], "no_lint": ["EMPTY_DATAREVIEW"]}}, 0),
+    ],
+)
+def test_empty_datareviews(metric, num_nits):
+    """
+    Test that the list of data reviews does not contain empty strings or TODO markers
+    """
+    content = {"category": metric}
+    content = util.add_required(content)
+    all_metrics = parser.parse_objects(content)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["EMPTY_DATAREVIEW"]) == set(v.check_name for v in nits)
