@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 10.0.3
+
 - Warn about empty or TODO-tagged data reviews in the list ([#634](https://github.com/mozilla/glean_parser/pull/634))
 - Allow `unit` field on all metrics, but warn for all but quantity and custom distribution ([#636](https://github.com/mozilla/glean_parser/pull/636))
 
