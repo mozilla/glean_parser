@@ -55,6 +55,7 @@ class Metric:
         disabled: bool = False,
         lifetime: str = "ping",
         send_in_pings: Optional[List[str]] = None,
+        unit: Optional[str] = None,
         gecko_datapoint: str = "",
         no_lint: Optional[List[str]] = None,
         data_sensitivity: Optional[List[str]] = None,
@@ -85,6 +86,7 @@ class Metric:
         if send_in_pings is None:
             send_in_pings = ["default"]
         self.send_in_pings = send_in_pings
+        self.unit = unit
         self.gecko_datapoint = gecko_datapoint
         if no_lint is None:
             no_lint = []
@@ -175,6 +177,8 @@ class Metric:
                 d[key] = [x.name for x in val]
         del d["name"]
         del d["category"]
+        if not d["unit"]:
+            d.pop("unit")
         d.pop("_config", None)
         d.pop("_generate_enums", None)
         return d
@@ -222,11 +226,6 @@ class Boolean(Metric):
 class String(Metric):
     typename = "string"
 
-    def __init__(self, *args, **kwargs):
-        # Deprecated. Kept here to unbreak stuff.
-        self.unit = kwargs.pop("unit", None)
-        Metric.__init__(self, *args, **kwargs)
-
 
 class StringList(Metric):
     typename = "string_list"
@@ -238,10 +237,6 @@ class Counter(Metric):
 
 class Quantity(Metric):
     typename = "quantity"
-
-    def __init__(self, *args, **kwargs):
-        self.unit = kwargs.pop("unit")
-        Metric.__init__(self, *args, **kwargs)
 
 
 class TimeUnit(enum.Enum):
@@ -302,7 +297,6 @@ class CustomDistribution(Metric):
         self.histogram_type = getattr(
             HistogramType, kwargs.pop("histogram_type", "exponential")
         )
-        self.unit = kwargs.pop("unit", None)
         super().__init__(*args, **kwargs)
 
 
