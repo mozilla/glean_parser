@@ -308,7 +308,8 @@ def check_unexpected_unit(
 ) -> LintGenerator:
     """
     `unit` was allowed on all metrics and recently disallowed.
-    We now warn about its use on all but quantity metrics.
+    We now warn about its use on all but quantity and custom distribution
+    metrics.
     """
     allowed_types = [metrics.Quantity, metrics.CustomDistribution]
     if not any([isinstance(metric, ty) for ty in allowed_types]) and metric.unit:
