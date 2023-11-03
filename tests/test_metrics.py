@@ -187,7 +187,7 @@ def test_no_unit():
         _config={"allow_reserved": True},
     )
 
-    assert not hasattr(event, "unit")
+    assert not event.unit
 
 
 def test_jwe_is_rejected():

@@ -303,13 +303,20 @@ def check_metric_on_events_lifetime(
         )
 
 
-def check_unit_on_string(
+def check_unexpected_unit(
     metric: metrics.Metric, parser_config: Dict[str, Any]
 ) -> LintGenerator:
-    """`unit` was allowed on all metrics and recently disallowed.
-    To unbreak things we had to add it back to `string` metrics, but now warn"""
-    if isinstance(metric, metrics.String) and metric.unit:
-        yield "The `unit` property is not allowed for string metrics."
+    """
+    `unit` was allowed on all metrics and recently disallowed.
+    We now warn about its use on all but quantity and custom distribution
+    metrics.
+    """
+    allowed_types = [metrics.Quantity, metrics.CustomDistribution]
+    if not any([isinstance(metric, ty) for ty in allowed_types]) and metric.unit:
+        yield (
+            "The `unit` property is only allowed for quantity "
+            + "and custom distribution metrics."
+        )
 
 
 def check_empty_datareview(
@@ -403,7 +410,7 @@ METRIC_CHECKS: Dict[
     "EXPIRED": (check_expired_metric, CheckType.warning),
     "OLD_EVENT_API": (check_old_event_api, CheckType.warning),
     "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
-    "UNIT_ON_STRING": (check_unit_on_string, CheckType.warning),
+    "UNEXPECTED_UNIT": (check_unexpected_unit, CheckType.warning),
     "EMPTY_DATAREVIEW": (check_empty_datareview, CheckType.warning),
 }
 

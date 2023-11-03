@@ -535,3 +535,48 @@ def test_empty_datareviews(metric, num_nits):
     assert len(nits) == num_nits
     if num_nits > 0:
         assert set(["EMPTY_DATAREVIEW"]) == set(v.check_name for v in nits)
+
+
+@pytest.mark.parametrize(
+    "metric, num_nits",
+    [
+        ({"metric": {"type": "quantity", "unit": "sheep"}}, 0),
+        (
+            {
+                "metric": {
+                    "type": "custom_distribution",
+                    "unit": "quantillions",
+                    "range_max": 100,
+                    "bucket_count": 100,
+                    "histogram_type": "linear",
+                }
+            },
+            0,
+        ),
+        ({"metric": {"type": "string", "unit": "quantillions"}}, 1),
+        ({"metric": {"type": "counter", "unit": "quantillions"}}, 1),
+        (
+            {
+                "metric": {
+                    "type": "string",
+                    "unit": "quantillions",
+                    "no_lint": ["UNEXPECTED_UNIT"],
+                }
+            },
+            0,
+        ),
+    ],
+)
+def test_unit_on_metrics(metric, num_nits):
+    content = {"category": metric}
+    content = util.add_required(content)
+    all_metrics = parser.parse_objects(content)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["UNEXPECTED_UNIT"]) == set(v.check_name for v in nits)
