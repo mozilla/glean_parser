@@ -17,6 +17,13 @@ pipeline to pick the messages up and process.
 
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
+
+Note on `event` metric type:
+It is advised to use `event` metric type in server-side environments. In this case API
+generated here will have a `record{event}` method per event metric.
+For historical reasons we also support custom pings-as-events pattern where event name
+is encoded in a String metric. In this case API generated here will have a single
+`record` method which takes event name as a parameter.
 """
 from collections import defaultdict
 from pathlib import Path
@@ -28,11 +35,14 @@ from . import util
 
 # Adding a metric here will require updating the `generate_js_metric_type` function
 # and might require changes to the template.
-SUPPORTED_METRIC_TYPES = ["string"]
+SUPPORTED_METRIC_TYPES = ["string", "event"]
 
 
-def event_class_name(pingName: str) -> str:
-    return util.Camelize(pingName) + "ServerEvent"
+def event_class_name(pingName: str, event_metric_exists: bool) -> str:
+    # For compatibility with FxA codebase we don't want to add "Logger" suffix
+    # when custom pings without event metrics are used.
+    suffix = "Logger" if event_metric_exists else ""
+    return util.Camelize(pingName) + "ServerEvent" + suffix
 
 
 def generate_metric_name(metric: metrics.Metric) -> str:
@@ -47,12 +57,20 @@ def generate_js_metric_type(metric: metrics.Metric) -> str:
     return metric.type
 
 
-def generate_metric_argument_description(metric: metrics.Metric) -> str:
-    return metric.description.replace("\n", " ").rstrip()
+def generate_ping_factory_method(ping: str, event_metric_exists: bool) -> str:
+    # `ServerEventLogger` better describes role of the class that this factory
+    # method generates, but for compatibility with existing FxA codebase
+    # we use `Event` suffix if no event metrics are defined.
+    suffix = "ServerEventLogger" if event_metric_exists else "Event"
+    return f"create{util.Camelize(ping)}{suffix}"
 
 
-def generate_ping_factory_method(ping: str) -> str:
-    return f"create{util.Camelize(ping)}Event"
+def generate_event_metric_record_function_name(metric: metrics.Metric) -> str:
+    return f"record{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
+
+
+def clean_string(s: str) -> str:
+    return s.replace("\n", " ").rstrip()
 
 
 def output(
@@ -79,8 +97,12 @@ def output(
             ("metric_name", generate_metric_name),
             ("metric_argument_name", generate_metric_argument_name),
             ("js_metric_type", generate_js_metric_type),
-            ("metric_argument_description", generate_metric_argument_description),
             ("factory_method", generate_ping_factory_method),
+            (
+                "event_metric_record_function_name",
+                generate_event_metric_record_function_name,
+            ),
+            ("clean_string", clean_string),
         ),
     )
 
@@ -98,6 +120,8 @@ def output(
         print("❌ No ping definition found." + PING_METRIC_ERROR_MSG)
         return
 
+    EVENT_METRIC_EXISTS = False
+
     # Go through all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
     # for easier processing in the template.
@@ -113,6 +137,10 @@ def output(
                         + " metric type."
                     )
                     continue
+                if metric.type == "event":
+                    # This is used in the template - generated code is slightly
+                    # different when event metric type is used.
+                    EVENT_METRIC_EXISTS = True
                 for ping in metric.send_in_pings:
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
@@ -129,6 +157,7 @@ def output(
             template.render(
                 parser_version=__version__,
                 pings=ping_to_metrics,
+                event_metric_exists=EVENT_METRIC_EXISTS,
                 lang=lang,
             )
         )

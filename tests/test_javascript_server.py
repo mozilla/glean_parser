@@ -71,7 +71,16 @@ def test_parser_js_server(tmpdir):
 def test_generate_ping_factory_method():
     ping = "accounts_events"
     expected_result = "createAccountsEventsEvent"
-    result = javascript_server.generate_ping_factory_method(ping)
+    result = javascript_server.generate_ping_factory_method(
+        ping, event_metric_exists=False
+    )
+    assert result == expected_result
+
+    ping = "accounts_events"
+    expected_result = "createAccountsEventsServerEventLogger"
+    result = javascript_server.generate_ping_factory_method(
+        ping, event_metric_exists=True
+    )
     assert result == expected_result
 
 
