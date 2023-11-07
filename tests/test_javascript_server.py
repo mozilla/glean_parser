@@ -110,7 +110,7 @@ def run_logger(code_dir, import_file, factory, code):
 
 
 @pytest.mark.node_dependency
-def test_run_logging(tmpdir):
+def test_logging_custom_ping_as_events(tmpdir):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
@@ -124,7 +124,7 @@ def test_run_logging(tmpdir):
 
     factory = "createAccountsEventsEvent"
     code = """
-events.record({ user_agent: "glean-test/1.0", event_name: "testing" });
+eventLogger.record({ user_agent: "glean-test/1.0", event_name: "testing" });
     """
 
     logged_output = run_logger(tmpdir, "server_events.js", factory, code)
@@ -135,6 +135,54 @@ events.record({ user_agent: "glean-test/1.0", event_name: "testing" });
     assert "glean-server-event" == logged_output["Type"]
     assert "glean.test" == fields["document_namespace"]
     assert "accounts-events" == fields["document_type"]
+    assert "1" == fields["document_version"]
+    assert "glean-test/1.0" == fields["user_agent"]
+
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(payload)
+    output = io.StringIO()
+    assert (
+        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
+    ), output.getvalue()
+
+
+@pytest.mark.node_dependency
+def test_logging_events_ping_with_event_metrics(tmpdir):
+    tmpdir = "/tmp/glean-js-server"
+    tmpdir = Path(str(tmpdir))
+
+    translate.translate(
+        [
+            ROOT / "data" / "ruby_server_metrics.yaml",
+        ],
+        "javascript_server",
+        tmpdir,
+    )
+
+    factory = "createEventsServerEventLogger"
+    code = """
+eventLogger.recordBackendObjectUpdate({
+  user_agent: 'glean-test/1.0',
+  ip_address: '2a02:a311:803c:6300:4074:5cf2:91ac:d546',
+  identifiers_fxa_account_id: 'abc',
+  object_type: 'unknown',
+  object_state: 'great',
+});
+    """
+
+    logged_output = run_logger(tmpdir, "server_events.js", factory, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload = fields["payload"]
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "events" == fields["document_type"]
     assert "1" == fields["document_version"]
     assert "glean-test/1.0" == fields["user_agent"]
 

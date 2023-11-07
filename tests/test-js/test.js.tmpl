@@ -1,4 +1,4 @@
-import { createAccountsEventsEvent } from ".//* IMPORT */";
+import { /* FACTORY */ } from ".//* IMPORT */";
 
 class PrintLogger {
   write(msg) {
@@ -13,7 +13,7 @@ let logger_options = {
   fmt: 'pretty',
   stream: logger,
 };
-let events = /* FACTORY */({
+let eventLogger = /* FACTORY */({
   applicationId: "glean.test",
   appDisplayVersion: "0.0.1",
   channel: "testing",
