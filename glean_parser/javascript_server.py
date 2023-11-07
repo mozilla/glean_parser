@@ -21,7 +21,8 @@ see `SUPPORTED_METRIC_TYPES` below.
 There are two patterns for event structure supported in this environment:
 * Events as `Event` metric type, where we generate a single class per ping with
   `record{event_name}` method for each event metric. This is recommended to use for new
-  applications as it allows to fully leverage standard Data Platform tools post-ingestion.
+  applications as it allows to fully leverage standard Data Platform tools
+  post-ingestion.
 * Custom pings-as-events, where for each ping we generate a class with a single `record`
   method, usually with an `event_name` string metric.
 
@@ -145,11 +146,13 @@ def output(
         # submissions won't pass validation at ingestion.
         if EVENT_METRIC_EXISTS:
             if "events" not in ping_to_metrics:
-                # Event metrics can be sent in standard `events` ping or in custom pings.
+                # Event metrics can be sent in standard `events` ping
+                # or in custom pings.
                 print(
                     "❌ "
                     + PING_METRIC_ERROR_MSG
-                    + "\n You need to either send your event metrics in standard `events` ping or define a custom one."
+                    + "\n You need to either send your event metrics in standard"
+                    + " `events` ping or define a custom one."
                 )
                 return
         else:
