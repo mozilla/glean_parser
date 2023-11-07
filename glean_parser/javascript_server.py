@@ -9,8 +9,8 @@ Outputter to generate server Javascript code for collecting events.
 
 This outputter is different from the rest of the outputters in that the code it
 generates does not use the Glean SDK. It is meant to be used to collect events
-using "events as pings" pattern in server-side environments. In these environments
-SDK assumptions to measurement window and connectivity don't hold.
+in server-side environments. In these environments SDK assumptions to measurement
+window and connectivity don't hold.
 Generated code takes care of assembling pings with metrics, serializing to messages
 conforming to Glean schema, and logging with mozlog. Then it's the role of the ingestion
 pipeline to pick the messages up and process.
@@ -18,12 +18,14 @@ pipeline to pick the messages up and process.
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 
-Note on `event` metric type:
-It is advised to use `event` metric type in server-side environments. In this case API
-generated here will have a `record{event}` method per event metric.
-For historical reasons we also support custom pings-as-events pattern where event name
-is encoded in a String metric. In this case API generated here will have a single
-`record` method which takes event name as a parameter.
+There are two patterns for event structure supported in this environment:
+* Events as `Event` metric type, where we generate a single class per ping with
+  `record{event_name}` method for each event metric. This is recommended to use for new
+  applications as it allows to fully leverage standard Data Platform tools post-ingestion.
+* Custom pings-as-events, where for each ping we generate a class with a single `record`
+  method, usually with an `event_name` string metric.
+
+Therefore, unlike in other outputters, here we don't generate classes for each metric.
 """
 from collections import defaultdict
 from pathlib import Path
@@ -106,20 +108,6 @@ def output(
         ),
     )
 
-    # In this environment we don't use a concept of measurement window for collecting
-    # metrics. Only "events as pings" are supported.
-    # For each ping we generate code which contains all the logic for assembling it
-    # with metrics, serializing, and submitting. Therefore we don't generate classes for
-    # each metric as in standard outputters.
-    PING_METRIC_ERROR_MSG = (
-        " Server-side environment is simplified and this"
-        + " parser doesn't generate individual metric files. Make sure to pass all"
-        + " your ping and metric definitions in a single invocation of the parser."
-    )
-    if "pings" not in objs:
-        print("❌ No ping definition found." + PING_METRIC_ERROR_MSG)
-        return
-
     EVENT_METRIC_EXISTS = False
 
     # Go through all metrics in objs and build a map of
@@ -145,6 +133,28 @@ def output(
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
+
+    PING_METRIC_ERROR_MSG = (
+        " Server-side environment is simplified and this"
+        + " parser doesn't generate individual metric files. Make sure to pass all"
+        + " your ping and metric definitions in a single invocation of the parser."
+    )
+    if "pings" not in objs:
+        # If events are meant to be sent in custom pings, we need to make sure they
+        # are defined. Otherwise we won't have destination tables defined and
+        # submissions won't pass validation at ingestion.
+        if EVENT_METRIC_EXISTS:
+            if "events" not in ping_to_metrics:
+                # Event metrics can be sent in standard `events` ping or in custom pings.
+                print(
+                    "❌ "
+                    + PING_METRIC_ERROR_MSG
+                    + "\n You need to either send your event metrics in standard `events` ping or define a custom one."
+                )
+                return
+        else:
+            print("❌ No ping definition found." + PING_METRIC_ERROR_MSG)
+            return
 
     if not ping_to_metrics:
         print("❌ No pings with metrics found." + PING_METRIC_ERROR_MSG)
