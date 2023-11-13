@@ -109,7 +109,7 @@ def output(
         ),
     )
 
-    EVENT_METRIC_EXISTS = False
+    event_metric_exists = False
 
     # Go through all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
