@@ -41,11 +41,11 @@ from . import util
 SUPPORTED_METRIC_TYPES = ["string", "event"]
 
 
-def event_class_name(pingName: str, event_metric_exists: bool) -> str:
+def event_class_name(ping_name: str, event_metric_exists: bool) -> str:
     # For compatibility with FxA codebase we don't want to add "Logger" suffix
     # when custom pings without event metrics are used.
     suffix = "Logger" if event_metric_exists else ""
-    return util.Camelize(pingName) + "ServerEvent" + suffix
+    return util.Camelize(ping_name) + "ServerEvent" + suffix
 
 
 def generate_metric_name(metric: metrics.Metric) -> str:
