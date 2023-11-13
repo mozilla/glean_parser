@@ -129,7 +129,7 @@ def output(
                 if metric.type == "event":
                     # This is used in the template - generated code is slightly
                     # different when event metric type is used.
-                    EVENT_METRIC_EXISTS = True
+                    event_metric_exists = True
                 for ping in metric.send_in_pings:
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
