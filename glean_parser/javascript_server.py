@@ -170,7 +170,7 @@ def output(
             template.render(
                 parser_version=__version__,
                 pings=ping_to_metrics,
-                event_metric_exists=EVENT_METRIC_EXISTS,
+                event_metric_exists=event_metric_exists,
                 lang=lang,
             )
         )
