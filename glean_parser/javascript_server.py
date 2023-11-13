@@ -144,7 +144,7 @@ def output(
         # If events are meant to be sent in custom pings, we need to make sure they
         # are defined. Otherwise we won't have destination tables defined and
         # submissions won't pass validation at ingestion.
-        if EVENT_METRIC_EXISTS:
+        if event_metric_exists:
             if "events" not in ping_to_metrics:
                 # Event metrics can be sent in standard `events` ping
                 # or in custom pings.
