@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for event metric type in server-side JavaScript outputter ([DENG-1736](https://mozilla-hub.atlassian.net/browse/DENG-1736))
+
 ## 10.0.3
 
 - Warn about empty or TODO-tagged data reviews in the list ([#634](https://github.com/mozilla/glean_parser/pull/634))
