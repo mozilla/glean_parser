@@ -158,7 +158,7 @@ def test_logging_events_ping_with_event_metrics(tmpdir):
 
     translate.translate(
         [
-            ROOT / "data" / "ruby_server_metrics.yaml",
+            ROOT / "data" / "server_metrics_with_event.yaml",
         ],
         "javascript_server",
         tmpdir,
