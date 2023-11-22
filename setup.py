@@ -12,8 +12,8 @@ import sys
 from setuptools import setup, find_packages
 
 
-if sys.version_info < (3, 7):
-    print("glean_parser requires at least Python 3.7", file=sys.stderr)
+if sys.version_info < (3, 8):
+    print("glean_parser requires at least Python 3.8", file=sys.stderr)
     sys.exit(1)
 
 
@@ -49,7 +49,6 @@ setup(
         "Intended Audience :: Developers",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
