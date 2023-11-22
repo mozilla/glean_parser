@@ -4,6 +4,7 @@
 
 - Add updated logging logic for Ruby Server ([#642](https://github.com/mozilla/glean_parser/pull/642))
 - Add support for event metric type in server-side JavaScript outputter ([DENG-1736](https://mozilla-hub.atlassian.net/browse/DENG-1736))
+- BREAKING CHANGE: Dropped support for Python 3.7 ([#638](https://github.com/mozilla/glean_parser/pull/638))
 
 ## 10.0.3
 

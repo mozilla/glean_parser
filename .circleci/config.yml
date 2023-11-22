@@ -95,13 +95,6 @@ commands:
             pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)'
 
 jobs:
-  build-37:
-    docker:
-      - image: cimg/python:3.7-node
-    steps:
-      - test-start
-      - test-python-version
-
   build-38:
     docker:
       - image: cimg/python:3.8-node
@@ -176,7 +169,7 @@ jobs:
 
   pypi-deploy:
     docker:
-      - image: cimg/python:3.7
+      - image: cimg/python:3.8
     steps:
       - checkout
       - run:
@@ -210,10 +203,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - build-37:
-          filters:
-            tags:
-              only: /.*/
       - build-38:
           filters:
             tags:
@@ -238,7 +227,7 @@ workflows:
               only: main
       - pypi-deploy:
           requires:
-            - build-37
+            - build-38
           filters:
             branches:
               ignore: /.*/
