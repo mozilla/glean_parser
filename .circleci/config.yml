@@ -132,16 +132,30 @@ jobs:
           root: docs/_build
           paths: html
 
+  build-311:
+    docker:
+      - image: cimg/python:3.11-node
+    steps:
+      - test-start
+      - test-python-version
+
+  build-312:
+    docker:
+      - image: cimg/python:3.12-node
+    steps:
+      - test-start
+      - test-python-version
+
   lint:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.12
     steps:
       - test-start
       - lint
 
   license-check:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.12
     steps:
       - test-start
       - license-check
@@ -216,6 +230,14 @@ workflows:
             tags:
               only: /.*/
       - build-310:
+          filters:
+            tags:
+              only: /.*/
+      - build-311:
+          filters:
+            tags:
+              only: /.*/
+      - build-312:
           filters:
             tags:
               only: /.*/
