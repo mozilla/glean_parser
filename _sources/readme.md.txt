@@ -16,7 +16,7 @@ code for various integrations, linting and coverage testing.
 
 ## Requirements
 
--   Python 3.7 (or later)
+-   Python 3.8 (or later)
 
 The following library requirements are installed automatically when
 `glean_parser` is installed by `pip`.
