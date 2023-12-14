@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix javascript_server template to include non-event metric parameters in #record call for event metrics ([#643](https://github.com/mozilla/glean_parser/pull/643))
+
 ## 11.0.0
 
 - Add updated logging logic for Ruby Server ([#642](https://github.com/mozilla/glean_parser/pull/642))
