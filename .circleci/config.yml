@@ -45,7 +45,8 @@ commands:
             sudo apt install \
                 --yes --no-install-recommends \
                 openjdk-11-jdk-headless \
-                ruby
+                ruby \
+                golang-go
             make install-kotlin-linters
       - run:
           name: Install glean_parser

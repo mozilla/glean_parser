@@ -17,6 +17,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional
 
 from . import lint
 from . import parser
+from . import go_server
 from . import javascript
 from . import javascript_server
 from . import kotlin
@@ -54,6 +55,7 @@ class Outputter:
 
 
 OUTPUTTERS = {
+    "go_server": Outputter(go_server.output_go, []),
     "javascript": Outputter(javascript.output_javascript, []),
     "typescript": Outputter(javascript.output_typescript, []),
     "javascript_server": Outputter(javascript_server.output_javascript, []),
