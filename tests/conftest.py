@@ -20,6 +20,12 @@ def pytest_addoption(parser):
         default=False,
         help="Run tests that require Ruby",
     )
+    parser.addoption(
+        "--run-go-tests",
+        action="store_true",
+        default=False,
+        help="Run tests that require Go",
+    )
 
 
 def pytest_collection_modifyitems(config, items):
@@ -40,3 +46,9 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "ruby_dependency" in item.keywords:
                 item.add_marker(skip_ruby)
+
+    if not config.getoption("--run-go-tests"):
+        skip_go = pytest.mark.skip(reason="Need --run-go-tests option to run")
+        for item in items:
+            if "go_dependency" in item.keywords:
+                item.add_marker(skip_go)

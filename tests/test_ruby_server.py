@@ -24,7 +24,7 @@ def test_parser_rb_server_ping_file(tmpdir, capsys):
     translate.translate(
         [
             ROOT / "data" / "server_metrics_with_event.yaml",
-            ROOT / "data" / "ruby_server_pings.yaml",
+            ROOT / "data" / "server_pings.yaml",
         ],
         "ruby_server",
         tmpdir,
@@ -41,7 +41,7 @@ def test_parser_rb_server_no_event_metrics(tmpdir, capsys):
     tmpdir = Path(str(tmpdir))
 
     translate.translate(
-        [ROOT / "data" / "ruby_server_no_events.yaml"],
+        [ROOT / "data" / "server_metrics_no_events_no_pings.yaml"],
         "ruby_server",
         tmpdir,
     )
