@@ -237,7 +237,13 @@ class {{ ping|event_class_name(event_metric_exists) }} {
     this.#record({
       user_agent,
       ip_address,
-      identifiers_fxa_account_id,
+      {% for metric_type, metrics in metrics_by_type.items() %}
+      {% if metric_type != 'event' %}
+      {% for metric in metrics %}
+      {{ metric|metric_argument_name }},
+      {% endfor %}
+      {% endif %}
+      {% endfor %}
       event
     });
   }
