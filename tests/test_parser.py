@@ -185,6 +185,111 @@ def test_parser_schema_violation():
                 key_16:
                 description: Sample extra key
                 type: string
+                key_17:
+                description: Sample extra key
+                type: string
+                key_18:
+                description: Sample extra key
+                type: string
+                key_19:
+                description: Sample extra key
+                type: string
+                key_20:
+                description: Sample extra key
+                type: string
+                key_21:
+                description: Sample extra key
+                type: string
+                key_22:
+                description: Sample extra key
+                type: string
+                key_23:
+                description: Sample extra key
+                type: string
+                key_24:
+                description: Sample extra key
+                type: string
+                key_25:
+                description: Sample extra key
+                type: string
+                key_26:
+                description: Sample extra key
+                type: string
+                key_27:
+                description: Sample extra key
+                type: string
+                key_28:
+                description: Sample extra key
+                type: string
+                key_29:
+                description: Sample extra key
+                type: string
+                key_30:
+                description: Sample extra key
+                type: string
+                key_31:
+                description: Sample extra key
+                type: string
+                key_32:
+                description: Sample extra key
+                type: string
+                key_33:
+                description: Sample extra key
+                type: string
+                key_34:
+                description: Sample extra key
+                type: string
+                key_35:
+                description: Sample extra key
+                type: string
+                key_36:
+                description: Sample extra key
+                type: string
+                key_37:
+                description: Sample extra key
+                type: string
+                key_38:
+                description: Sample extra key
+                type: string
+                key_39:
+                description: Sample extra key
+                type: string
+                key_40:
+                description: Sample extra key
+                type: string
+                key_41:
+                description: Sample extra key
+                type: string
+                key_42:
+                description: Sample extra key
+                type: string
+                key_43:
+                description: Sample extra key
+                type: string
+                key_44:
+                description: Sample extra key
+                type: string
+                key_45:
+                description: Sample extra key
+                type: string
+                key_46:
+                description: Sample extra key
+                type: string
+                key_47:
+                description: Sample extra key
+                type: string
+                key_48:
+                description: Sample extra key
+                type: string
+                key_49:
+                description: Sample extra key
+                type: string
+                key_50:
+                description: Sample extra key
+                type: string
+                key_51:
+                description: Sample extra key
+                type: string
         ```
         {'key_1': {'description': 'Sample extra key','type': 'string'},
         'key_2': {'description': 'Sample extra key','type': 'string'},
@@ -201,12 +306,47 @@ def test_parser_schema_violation():
         'key_13': {'description': 'Sample extra key','type': 'string'},
         'key_14': {'description': 'Sample extra key','type': 'string'},
         'key_15': {'description': 'Sample extra key','type': 'string'},
-        'key_16': {'description': 'Sample extra key','type': 'string'}
+        'key_16': {'description': 'Sample extra key','type': 'string'},
+        'key_17': {'description': 'Sample extra key','type': 'string'},
+        'key_18': {'description': 'Sample extra key','type': 'string'},
+        'key_19': {'description': 'Sample extra key','type': 'string'},
+        'key_20': {'description': 'Sample extra key','type': 'string'},
+        'key_21': {'description': 'Sample extra key','type': 'string'},
+        'key_22': {'description': 'Sample extra key','type': 'string'},
+        'key_23': {'description': 'Sample extra key','type': 'string'},
+        'key_24': {'description': 'Sample extra key','type': 'string'},
+        'key_25': {'description': 'Sample extra key','type': 'string'},
+        'key_26': {'description': 'Sample extra key','type': 'string'},
+        'key_27': {'description': 'Sample extra key','type': 'string'},
+        'key_28': {'description': 'Sample extra key','type': 'string'},
+        'key_29': {'description': 'Sample extra key','type': 'string'},
+        'key_30': {'description': 'Sample extra key','type': 'string'},
+        'key_31': {'description': 'Sample extra key','type': 'string'},
+        'key_32': {'description': 'Sample extra key','type': 'string'},
+        'key_33': {'description': 'Sample extra key','type': 'string'},
+        'key_34': {'description': 'Sample extra key','type': 'string'},
+        'key_35': {'description': 'Sample extra key','type': 'string'},
+        'key_36': {'description': 'Sample extra key','type': 'string'},
+        'key_37': {'description': 'Sample extra key','type': 'string'},
+        'key_38': {'description': 'Sample extra key','type': 'string'},
+        'key_39': {'description': 'Sample extra key','type': 'string'},
+        'key_40': {'description': 'Sample extra key','type': 'string'},
+        'key_41': {'description': 'Sample extra key','type': 'string'},
+        'key_42': {'description': 'Sample extra key','type': 'string'},
+        'key_43': {'description': 'Sample extra key','type': 'string'},
+        'key_44': {'description': 'Sample extra key','type': 'string'},
+        'key_45': {'description': 'Sample extra key','type': 'string'},
+        'key_46': {'description': 'Sample extra key','type': 'string'},
+        'key_47': {'description': 'Sample extra key','type': 'string'},
+        'key_48': {'description': 'Sample extra key','type': 'string'},
+        'key_49': {'description': 'Sample extra key','type': 'string'},
+        'key_50': {'description': 'Sample extra key','type': 'string'},
+        'key_51': {'description': 'Sample extra key','type': 'string'}
         } has too many properties
         Documentation for this node:
             The acceptable keys on the "extra" object sent with events. This is an
             object mapping the key to an object containing metadata about the key.
-            A maximum of 15 extra keys is allowed.
+            A maximum of 50 extra keys is allowed.
             This metadata object has the following keys:
                 - `description`: **Required.** A description of the key.
             Valid when `type`_ is `event`.
