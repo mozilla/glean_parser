@@ -309,7 +309,7 @@ def test_invalid_lifetime_for_metric_on_events_ping():
     assert len(errs) == 1
 
 
-def test_translate_missing_input_files(tmpdir):
+def test_translate_missing_input_files(tmp_path):
     with pytest.raises(FileNotFoundError):
         lint.glinter(
             [ROOT / "data" / "missing.yaml"],

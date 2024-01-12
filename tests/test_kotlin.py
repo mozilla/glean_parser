@@ -50,19 +50,17 @@ def run_linters(files):
     run_detekt(files)
 
 
-def test_parser(tmpdir):
+def test_parser(tmp_path):
     """Test translating metrics to Kotlin files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         [
             "CorePing.kt",
             "Telemetry.kt",
@@ -74,68 +72,64 @@ def test_parser(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with (tmpdir / "CorePing.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "CorePing.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "True if the user has set Firefox as the default browser." in content
         # Make sure the namespace option is in effect
         assert "package Foo" in content
 
-    with (tmpdir / "Telemetry.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Telemetry.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "جمع 搜集" in content
 
-    with (tmpdir / "GleanInternalMetrics.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "GleanInternalMetrics.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert 'category = ""' in content
 
-    with (tmpdir / "GleanBuildInfo.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "GleanBuildInfo.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "buildDate = Calendar.getInstance" in content
 
-    run_linters(tmpdir.glob("*.kt"))
+    run_linters(tmp_path.glob("*.kt"))
 
 
-def test_parser_all_metrics(tmpdir):
+def test_parser_all_metrics(tmp_path):
     """Test translating ALL metric types to Kotlin files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "all_metrics.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo", "with_buildinfo": "false"},
         {"allow_reserved": False},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["AllMetrics.kt"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["AllMetrics.kt"])
 
-    run_linters(tmpdir.glob("*.kt"))
+    run_linters(tmp_path.glob("*.kt"))
 
 
-def test_ping_parser(tmpdir):
+def test_ping_parser(tmp_path):
     """Test translating pings to Kotlin files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Pings.kt", "GleanBuildInfo.kt"]
     )
 
     # Make sure descriptions made it in
-    with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Pings.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "This is a custom ping" in content
         # Make sure the namespace option is in effect
         assert "package Foo" in content
 
-    run_linters(tmpdir.glob("*.kt"))
+    run_linters(tmp_path.glob("*.kt"))
 
 
 def test_kotlin_generator():
@@ -207,25 +201,25 @@ def test_metric_type_name():
     assert kotlin.type_name(ping) == "PingType<customReasonCodes>"
 
 
-def test_duplicate(tmpdir):
+def test_duplicate(tmp_path):
     """
     Test that there aren't duplicate imports when using a labeled and
     non-labeled version of the same metric.
 
     https://github.com/mozilla-mobile/android-components/issues/2793
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "duplicate_labeled.yaml", "kotlin", tmpdir, {"namespace": "Foo"}
+        ROOT / "data" / "duplicate_labeled.yaml",
+        "kotlin",
+        tmp_path,
+        {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Category.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert (
             content.count(
@@ -235,36 +229,32 @@ def test_duplicate(tmpdir):
         )
 
 
-def test_glean_namespace(tmpdir):
+def test_glean_namespace(tmp_path):
     """
     Test that setting the glean namespace works.
     """
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "duplicate_labeled.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo", "glean_namespace": "Bar"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Category.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Category.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Category.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert content.count("import Bar.private.CounterMetricType") == 1
 
 
-def test_gecko_datapoints(tmpdir):
+def test_gecko_datapoints(tmp_path):
     """Test translating metrics to Kotlin files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "gecko.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"glean_namespace": "Bar"},
         {"allow_reserved": True},
     )
@@ -276,12 +266,12 @@ def test_gecko_datapoints(tmpdir):
         "NonGeckoMetrics.kt",
         "GleanBuildInfo.kt",
     ]
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["GleanGeckoMetricsMapping.kt"] + metrics_files
     )
 
     # Make sure descriptions made it in
-    with (tmpdir / "GleanGeckoMetricsMapping.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "GleanGeckoMetricsMapping.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         # Make sure we're adding the relevant Glean SDK import, once.
         assert content.count("import Bar.private.HistogramMetricBase") == 1
@@ -346,35 +336,32 @@ def test_gecko_datapoints(tmpdir):
         assert expected_func in content
 
     for file_name in metrics_files:
-        with (tmpdir / file_name).open("r", encoding="utf-8") as fd:
+        with (tmp_path / file_name).open("r", encoding="utf-8") as fd:
             content = fd.read()
             assert "HistogramMetricBase" not in content
 
-    run_linters(tmpdir.glob("*.kt"))
+    run_linters(tmp_path.glob("*.kt"))
 
 
-def test_event_extra_keys_in_correct_order(tmpdir):
+def test_event_extra_keys_in_correct_order(tmp_path):
     """
     Assert that the extra keys appear in the parameter and the enumeration in
     the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Event.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert "ExampleExtra(" in content
@@ -385,52 +372,46 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
 
 
-def test_arguments_are_generated_in_deterministic_order(tmpdir):
+def test_arguments_are_generated_in_deterministic_order(tmp_path):
     """
     Assert that arguments on generated code are always in the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1666192
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Event.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Event.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         expected = 'EventMetricType<ExampleExtra> by lazy { // generated from event.example EventMetricType<ExampleExtra>( CommonMetricData( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.PING, disabled = false ), allowedExtraKeys = listOf("alice", "bob", "charlie")) } }'  # noqa
         assert expected in content
 
 
-def test_event_extra_keys_with_types(tmpdir):
+def test_event_extra_keys_with_types(tmp_path):
     """
     Assert that the extra keys with types appear with their corresponding types.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Core.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Core.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Core.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (
@@ -445,27 +426,24 @@ def test_event_extra_keys_with_types(tmpdir):
         )
 
 
-def test_reasons(tmpdir):
+def test_reasons(tmp_path):
     """
     Assert that we generate the reason codes as a plain enum.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1811888
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "kotlin",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["Pings.kt", "GleanBuildInfo.kt"]
     )
 
-    with (tmpdir / "Pings.kt").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Pings.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
 

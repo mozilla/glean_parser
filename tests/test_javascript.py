@@ -14,19 +14,17 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
-def test_parser_js(tmpdir):
+def test_parser_js(tmp_path):
     """Test translating metrics to Javascript files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         None,
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         [
             "corePing.js",
             "telemetry.js",
@@ -37,47 +35,43 @@ def test_parser_js(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with (tmpdir / "corePing.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "corePing.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "True if the user has set Firefox as the default browser." in content
 
-    with (tmpdir / "telemetry.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "telemetry.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "جمع 搜集" in content
 
-    with (tmpdir / "gleanInternalMetrics.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "gleanInternalMetrics.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert 'category: ""' in content
 
 
-def test_parser_js_all_metrics(tmpdir):
+def test_parser_js_all_metrics(tmp_path):
     """Test translating metrics to Javascript files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "all_metrics.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         None,
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["allMetrics.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["allMetrics.js"])
 
 
-def test_parser_ts(tmpdir):
+def test_parser_ts(tmp_path):
     """Test translating metrics to Typescript files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "typescript",
-        tmpdir,
+        tmp_path,
         None,
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         [
             "corePing.ts",
             "telemetry.ts",
@@ -88,38 +82,36 @@ def test_parser_ts(tmpdir):
     )
 
     # Make sure descriptions made it in
-    with (tmpdir / "corePing.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "corePing.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "use strict" not in content
         assert "True if the user has set Firefox as the default browser." in content
 
-    with (tmpdir / "telemetry.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "telemetry.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "use strict" not in content
         assert "جمع 搜集" in content
 
-    with (tmpdir / "gleanInternalMetrics.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "gleanInternalMetrics.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "use strict" not in content
         assert 'category: ""' in content
 
 
-def test_ping_parser(tmpdir):
+def test_ping_parser(tmp_path):
     """Test translating pings to Javascript files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         None,
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["pings.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["pings.js"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "pings.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "pings.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "This is a custom ping" in content
 
@@ -205,20 +197,17 @@ def test_import_path():
     assert javascript.import_path(ping.type) == "ping"
 
 
-def test_labeled_subtype_is_imported(tmpdir):
+def test_labeled_subtype_is_imported(tmp_path):
     """
     Test that both the LabeledMetricType and its subtype are imported
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "single_labeled.yaml", "javascript", tmpdir, None
+        ROOT / "data" / "single_labeled.yaml", "javascript", tmp_path, None
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["category.js"])
 
-    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "category.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert (
             content.count(
@@ -234,23 +223,20 @@ def test_labeled_subtype_is_imported(tmpdir):
         )
 
 
-def test_duplicate(tmpdir):
+def test_duplicate(tmp_path):
     """
     Test that there aren't duplicate imports when using a labeled and
     non-labeled version of the same metric.
 
     https://github.com/mozilla-mobile/android-components/issues/2793
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "duplicate_labeled.yaml", "javascript", tmpdir, None
+        ROOT / "data" / "duplicate_labeled.yaml", "javascript", tmp_path, None
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["category.js"])
 
-    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "category.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert (
             content.count(
@@ -260,116 +246,102 @@ def test_duplicate(tmpdir):
         )
 
 
-def test_reasons(tmpdir):
-    tmpdir = Path(str(tmpdir))
+def test_reasons(tmp_path):
+    translate.translate(ROOT / "data" / "pings.yaml", "javascript", tmp_path, None)
 
-    translate.translate(ROOT / "data" / "pings.yaml", "javascript", tmpdir, None)
+    translate.translate(ROOT / "data" / "pings.yaml", "typescript", tmp_path, None)
 
-    translate.translate(ROOT / "data" / "pings.yaml", "typescript", tmpdir, None)
+    assert set(x.name for x in tmp_path.iterdir()) == set(["pings.js", "pings.ts"])
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["pings.js", "pings.ts"])
-
-    with (tmpdir / "pings.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "pings.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "export const CustomPingMightBeEmptyReasonCodes" in content
         assert "export const RealPingMightBeEmptyReasonCodes" not in content
 
-    with (tmpdir / "pings.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "pings.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "export enum CustomPingMightBeEmptyReasonCodes" in content
         assert "export enum RealPingMightBeEmptyReasonCodes" not in content
 
 
-def test_event_extra_keys_in_correct_order(tmpdir):
+def test_event_extra_keys_in_correct_order(tmp_path):
     """
     Assert that the extra keys appear in the parameter and the enumeration in
     the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         None,
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["event.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["event.js"])
 
-    with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "event.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert '["alice", "bob", "charlie"]' in content
 
 
-def test_arguments_are_generated_in_deterministic_order(tmpdir):
+def test_arguments_are_generated_in_deterministic_order(tmp_path):
     """
     Assert that arguments on generated code are always in the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1666192
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         None,
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["event.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["event.js"])
 
-    with (tmpdir / "event.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "event.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         expected = 'export const example = new EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, }, ["alice", "bob", "charlie"]);'  # noqa
         assert expected in content
 
 
-def test_qt_platform_template_includes_expected_imports(tmpdir):
+def test_qt_platform_template_includes_expected_imports(tmp_path):
     """
     Assert that when the platform is Qt, the template does not contain
     import/export statements.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "single_labeled.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         {"platform": "qt", "version": "0.14"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["category.js", "qmldir"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["category.js", "qmldir"])
 
-    with (tmpdir / "category.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "category.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert content.count(".import org.mozilla.Glean 0.14") == 1
         assert content.count("export") == 0
 
 
-def test_qt_platform_generated_correct_qmldir_file(tmpdir):
+def test_qt_platform_generated_correct_qmldir_file(tmp_path):
     """
     Assert that when the platform is Qt, a qmldir is also generated
     with the expected files listed in it.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
         {"platform": "qt", "version": "0.14"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         [
             "corePing.js",
             "telemetry.js",
@@ -380,7 +352,7 @@ def test_qt_platform_generated_correct_qmldir_file(tmpdir):
         ]
     )
 
-    with (tmpdir / "qmldir").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "qmldir").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert content.count("CorePing 0.14 corePing.js") == 1
         assert content.count("Telemetry 0.14 telemetry.js") == 1
@@ -390,22 +362,19 @@ def test_qt_platform_generated_correct_qmldir_file(tmpdir):
         assert content.count("depends org.mozilla.Glean 0.14") == 1
 
 
-def test_event_extra_keys_with_types(tmpdir):
+def test_event_extra_keys_with_types(tmp_path):
     """
     Assert that the extra keys with types appear with their corresponding types.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "typescript",
-        tmpdir,
+        tmp_path,
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["core.ts"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["core.ts"])
 
-    with (tmpdir / "core.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "core.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (
@@ -421,44 +390,41 @@ def test_event_extra_keys_with_types(tmpdir):
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "javascript",
-        tmpdir,
+        tmp_path,
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["core.js", "core.ts"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["core.js", "core.ts"])
 
-    with (tmpdir / "core.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "core.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert "new EventMetricType({" in content
         assert '"enabled", "preference", "swapped"' in content
 
 
-def test_build_info_is_generated_when_option_is_present(tmpdir):
+def test_build_info_is_generated_when_option_is_present(tmp_path):
     """
     Assert that build info is generated
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "single_labeled.yaml",
         "typescript",
-        tmpdir,
+        tmp_path,
         {"with_buildinfo": "true"},
     )
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["gleanBuildInfo.ts", "category.ts"]
     )
 
     translate.translate(
         ROOT / "data" / "single_labeled.yaml",
         "typescript",
-        tmpdir,
+        tmp_path,
         {"with_buildinfo": "true", "build_date": "2022-03-01T14:10+01:00"},
     )
-    assert set(x.name for x in tmpdir.iterdir()) == set(
+    assert set(x.name for x in tmp_path.iterdir()) == set(
         ["gleanBuildInfo.ts", "category.ts"]
     )
-    with (tmpdir / "gleanBuildInfo.ts").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "gleanBuildInfo.ts").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "new Date(2022, 2, 1, 14, 10, 0)" in content

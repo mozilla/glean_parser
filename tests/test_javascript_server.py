@@ -18,52 +18,46 @@ from glean_parser import validate_ping
 ROOT = Path(__file__).parent
 
 
-def test_parser_js_server_ping_no_metrics(tmpdir):
+def test_parser_js_server_ping_no_metrics(tmp_path):
     """Test that no files are generated if only ping definitions
     are provided without any metrics."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "fxa-server-pings.yaml",
         "javascript_server",
-        tmpdir,
+        tmp_path,
     )
 
-    assert all(False for _ in tmpdir.iterdir())
+    assert all(False for _ in tmp_path.iterdir())
 
 
-def test_parser_js_server_metrics_no_ping(tmpdir):
+def test_parser_js_server_metrics_no_ping(tmp_path):
     """Test that no files are generated if only metric definitions
     are provided without pings."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "fxa-server-metrics.yaml",
         "javascript_server",
-        tmpdir,
+        tmp_path,
     )
 
-    assert all(False for _ in tmpdir.iterdir())
+    assert all(False for _ in tmp_path.iterdir())
 
 
-def test_parser_js_server(tmpdir):
+def test_parser_js_server(tmp_path):
     """Test that no files are generated if only metric definitions
     are provided without pings."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         [
             ROOT / "data" / "fxa-server-pings.yaml",
             ROOT / "data" / "fxa-server-metrics.yaml",
         ],
         "javascript_server",
-        tmpdir,
+        tmp_path,
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["server_events.js"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.js"])
 
     # Make sure string metric made it in
-    with (tmpdir / "server_events.js").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "server_events.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "'event.name': event_name" in content
 
@@ -110,16 +104,14 @@ def run_logger(code_dir, import_file, factory, code):
 
 
 @pytest.mark.node_dependency
-def test_logging_custom_ping_as_events(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
+def test_logging_custom_ping_as_events(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "fxa-server-pings.yaml",
             ROOT / "data" / "fxa-server-metrics.yaml",
         ],
         "javascript_server",
-        tmpdir,
+        tmp_path,
     )
 
     factory = "createAccountsEventsEvent"
@@ -127,7 +119,7 @@ def test_logging_custom_ping_as_events(tmpdir):
 eventLogger.record({ user_agent: "glean-test/1.0", event_name: "testing" });
     """
 
-    logged_output = run_logger(tmpdir, "server_events.js", factory, code)
+    logged_output = run_logger(tmp_path, "server_events.js", factory, code)
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
     payload = fields["payload"]
@@ -152,16 +144,13 @@ eventLogger.record({ user_agent: "glean-test/1.0", event_name: "testing" });
 
 
 @pytest.mark.node_dependency
-def test_logging_events_ping_with_event_metrics(tmpdir):
-    tmpdir = "/tmp/glean-js-server"
-    tmpdir = Path(str(tmpdir))
-
+def test_logging_events_ping_with_event_metrics(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "server_metrics_with_event.yaml",
         ],
         "javascript_server",
-        tmpdir,
+        tmp_path,
     )
 
     factory = "createEventsServerEventLogger"
@@ -175,7 +164,7 @@ eventLogger.recordBackendObjectUpdate({
 });
     """
 
-    logged_output = run_logger(tmpdir, "server_events.js", factory, code)
+    logged_output = run_logger(tmp_path, "server_events.js", factory, code)
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
     payload = fields["payload"]

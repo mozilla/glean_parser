@@ -44,18 +44,16 @@ def run_linters(files):
             )
 
 
-def test_parser(tmpdir):
+def test_parser(tmp_path):
     """Test translating metrics to Rust files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "core.yaml", "rust", tmpdir, {}, {"allow_reserved": True}
+        ROOT / "data" / "core.yaml", "rust", tmp_path, {}, {"allow_reserved": True}
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["glean_metrics.rs"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
         assert "True if the user has set Firefox as the default browser." in content
@@ -64,25 +62,23 @@ def test_parser(tmpdir):
 
     # We don't have a cargo.toml, not sure what to do here aside from creating a fake
     # one for the purpose of running cargo fmt and cargo clippy
-    # run_linters(tmpdir.glob("*.rs"))
+    # run_linters(tmp_path.glob("*.rs"))
 
 
-def test_ping_parser(tmpdir):
+def test_ping_parser(tmp_path):
     """Test translating pings to Rust files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "rust",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["glean_metrics.rs"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
         assert "This is a custom ping" in content
@@ -100,7 +96,7 @@ def test_ping_parser(tmpdir):
     # TODO we need a cargo.toml to run `cargo fmt` and `cargo clippy`
     # and I'm not quite sure how to do that in a non-Rust project for
     # the purpose of testing
-    run_linters(tmpdir.glob("*.rs"))
+    run_linters(tmp_path.glob("*.rs"))
 
 
 def test_rust_generator():
@@ -168,16 +164,14 @@ def test_metric_type_name():
     assert rust.type_name(ping) == "Ping<CustomReasonCodes>"
 
 
-def test_order_of_fields(tmpdir):
+def test_order_of_fields(tmp_path):
     """Test that translating metrics to Rust files keeps a stable order of fields."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "core.yaml", "rust", tmpdir, {}, {"allow_reserved": True}
+        ROOT / "data" / "core.yaml", "rust", tmp_path, {}, {"allow_reserved": True}
     )
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "glean_metrics.rs").open("r", encoding="utf-8")
+    fd = (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
@@ -205,26 +199,23 @@ def test_order_of_fields(tmpdir):
     assert expected_fields == first_metric_fields[:size]
 
 
-def test_event_extra_keys_in_correct_order(tmpdir):
+def test_event_extra_keys_in_correct_order(tmp_path):
     """
     Assert that the extra keys appear in the parameter and the enumeration in
     the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "rust",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["glean_metrics.rs"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
 
-    with (tmpdir / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (
@@ -238,23 +229,20 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         )
 
 
-def test_event_extra_keys_with_types(tmpdir):
+def test_event_extra_keys_with_types(tmp_path):
     """
     Assert that the extra keys with types appear with their corresponding types.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "rust",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["glean_metrics.rs"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
 
-    with (tmpdir / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (

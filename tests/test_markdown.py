@@ -14,22 +14,20 @@ from glean_parser import translate
 ROOT = Path(__file__).parent
 
 
-def test_parser(tmpdir):
+def test_parser(tmp_path):
     """Test translating metrics to Markdown files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "markdown",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo", "introduction_extra": "Extra Intro Text Bar"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["metrics.md"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "is assembled out of the box by the Glean SDK." in content
         # Make sure the table structure is in place
@@ -159,44 +157,39 @@ def test_review_title():
     assert markdown.ping_review_title("http://example.com/reviews", index) == "Review 1"
 
 
-def test_reasons(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
+def test_reasons(tmp_path):
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "markdown",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["metrics.md"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "- `serious`: A serious reason for sending a ping." in content
 
 
-def test_event_extra_keys_in_correct_order(tmpdir):
+def test_event_extra_keys_in_correct_order(tmp_path):
     """
     Assert that the extra keys appear in the parameter and the enumeration in
     the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "markdown",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["metrics.md"])
 
-    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         print(content)
         content = " ".join(content.split())
@@ -207,23 +200,21 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         )
 
 
-def test_send_if_empty_metrics(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
+def test_send_if_empty_metrics(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "send_if_empty_with_metrics.yaml",
             ROOT / "data" / "pings.yaml",
         ],
         "markdown",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["metrics.md"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["metrics.md"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "metrics.md").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "metrics.md").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "Lorem ipsum dolor sit amet, consectetur adipiscing elit." in content
 
