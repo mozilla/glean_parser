@@ -32,18 +32,16 @@ def run_linters(files):
             subprocess.check_call(["swiftlint", "lint", filepath])
 
 
-def test_parser(tmpdir):
+def test_parser(tmp_path):
     """Test translating metrics to Swift files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
+        ROOT / "data" / "core.yaml", "swift", tmp_path, {}, {"allow_reserved": True}
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
         assert "True if the user has set Firefox as the default browser." in content
@@ -52,90 +50,82 @@ def test_parser(tmpdir):
         assert "class GleanBuild" in content
         assert "BuildInfo(buildDate:" in content
 
-    run_linters(tmpdir.glob("*.swift"))
+    run_linters(tmp_path.glob("*.swift"))
 
 
-def test_parser_no_build_info(tmpdir):
+def test_parser_no_build_info(tmp_path):
     """Test translating metrics to Swift files without build info."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"with_buildinfo": "false"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
         assert "class GleanBuild" not in content
 
-    run_linters(tmpdir.glob("*.swift"))
+    run_linters(tmp_path.glob("*.swift"))
 
 
-def test_parser_custom_build_date(tmpdir):
+def test_parser_custom_build_date(tmp_path):
     """Test translating metrics to Swift files without build info."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "core.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"build_date": "2020-01-01T17:30:00"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
         assert "class GleanBuild" in content
         assert "BuildInfo(buildDate:" in content
         assert "year: 2020, month: 1, day: 1" in content
 
-    run_linters(tmpdir.glob("*.swift"))
+    run_linters(tmp_path.glob("*.swift"))
 
 
-def test_parser_all_metrics(tmpdir):
+def test_parser_all_metrics(tmp_path):
     """Test translating ALL metric types to Swift files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "all_metrics.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
         {"allow_reserved": False},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
-    run_linters(tmpdir.glob("*.swift"))
+    run_linters(tmp_path.glob("*.swift"))
 
 
-def test_ping_parser(tmpdir):
+def test_ping_parser(tmp_path):
     """Test translating pings to Swift files."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
         {"allow_reserved": True},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
     # Make sure descriptions made it in
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "This is a custom ping" in content
         # Make sure the namespace option is in effect
@@ -146,7 +136,7 @@ def test_ping_parser(tmpdir):
             in content
         )
 
-    run_linters(tmpdir.glob("*.swift"))
+    run_linters(tmp_path.glob("*.swift"))
 
 
 def test_swift_generator():
@@ -218,16 +208,14 @@ def test_metric_type_name():
     assert swift.type_name(ping) == "Ping<CustomReasonCodes>"
 
 
-def test_order_of_fields(tmpdir):
+def test_order_of_fields(tmp_path):
     """Test that translating metrics to Swift files keeps a stable order of fields."""
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
-        ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
+        ROOT / "data" / "core.yaml", "swift", tmp_path, {}, {"allow_reserved": True}
     )
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
+    fd = (tmp_path / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
@@ -255,54 +243,47 @@ def test_order_of_fields(tmpdir):
     assert expected_fields == first_metric_fields[:size]
 
 
-def test_no_import_glean(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
+def test_no_import_glean(tmp_path):
     translate.translate(
-        ROOT / "data" / "core.yaml", "swift", tmpdir, {}, {"allow_reserved": True}
+        ROOT / "data" / "core.yaml", "swift", tmp_path, {}, {"allow_reserved": True}
     )
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
+    fd = (tmp_path / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
     assert "import Glean" not in content
 
 
-def test_import_glean(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
-    translate.translate(ROOT / "data" / "smaller.yaml", "swift", tmpdir, {}, {})
+def test_import_glean(tmp_path):
+    translate.translate(ROOT / "data" / "smaller.yaml", "swift", tmp_path, {}, {})
 
     # Make sure descriptions made it in
-    fd = (tmpdir / "Metrics.swift").open("r", encoding="utf-8")
+    fd = (tmp_path / "Metrics.swift").open("r", encoding="utf-8")
     content = fd.read()
     fd.close()
 
     assert "import Glean" in content
 
 
-def test_event_extra_keys_in_correct_order(tmpdir):
+def test_event_extra_keys_in_correct_order(tmp_path):
     """
     Assert that the extra keys appear in the parameter and the enumeration in
     the same order.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1648768
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "event_key_ordering.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (
@@ -312,23 +293,20 @@ def test_event_extra_keys_in_correct_order(tmpdir):
         assert ', ["alice", "bob", "charlie"]' in content
 
 
-def test_event_extra_keys_with_types(tmpdir):
+def test_event_extra_keys_with_types(tmp_path):
     """
     Assert that the extra keys with types appear with their corresponding types.
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "events_with_types.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
         assert (
@@ -339,25 +317,22 @@ def test_event_extra_keys_with_types(tmpdir):
         assert ', ["enabled", "preference", "swapped"]' in content
 
 
-def test_reasons(tmpdir):
+def test_reasons(tmp_path):
     """
     Assert that we generate the reason codes as a plain enum.
 
     https://bugzilla.mozilla.org/show_bug.cgi?id=1811888
     """
-
-    tmpdir = Path(str(tmpdir))
-
     translate.translate(
         ROOT / "data" / "pings.yaml",
         "swift",
-        tmpdir,
+        tmp_path,
         {"namespace": "Foo"},
     )
 
-    assert set(x.name for x in tmpdir.iterdir()) == set(["Metrics.swift"])
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
-    with (tmpdir / "Metrics.swift").open("r", encoding="utf-8") as fd:
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
 

@@ -25,8 +25,8 @@ def test_translate_unknown_format():
     assert "Unknown output format" in str(e)
 
 
-def test_all_metrics(tmpdir):
-    output = Path(str(tmpdir)) / "tags_test"
+def test_all_metrics(tmp_path):
+    output = tmp_path / "tags_test"
 
     translate.translate(
         [ROOT / "data" / "all_metrics.yaml"],
@@ -40,8 +40,8 @@ def test_all_metrics(tmpdir):
     assert len(list(output.iterdir())) == 1
 
 
-def test_translate_missing_directory(tmpdir):
-    output = Path(str(tmpdir)) / "foo"
+def test_translate_missing_directory(tmp_path):
+    output = tmp_path / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -53,8 +53,8 @@ def test_translate_missing_directory(tmpdir):
     assert len(list(output.iterdir())) == 6
 
 
-def test_translate_missing_input_files(tmpdir):
-    output = Path(str(tmpdir))
+def test_translate_missing_input_files(tmp_path):
+    output = tmp_path
 
     with pytest.raises(FileNotFoundError):
         translate.translate(
@@ -72,8 +72,8 @@ def test_translate_missing_input_files(tmpdir):
     )
 
 
-def test_translate_remove_obsolete_kotlin_files(tmpdir):
-    output = Path(str(tmpdir)) / "foo"
+def test_translate_remove_obsolete_kotlin_files(tmp_path):
+    output = tmp_path / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -89,8 +89,8 @@ def test_translate_remove_obsolete_kotlin_files(tmpdir):
     assert len(list(output.iterdir())) == 2
 
 
-def test_translate_retains_existing_markdown_files(tmpdir):
-    output = Path(str(tmpdir)) / "foo"
+def test_translate_retains_existing_markdown_files(tmp_path):
+    output = tmp_path / "foo"
 
     translate.translate(
         ROOT / "data" / "core.yaml",
@@ -133,7 +133,7 @@ def test_translate_expires():
     assert objs["metrics"]["d"].disabled is False
 
 
-def test_translate_send_in_pings(tmpdir):
+def test_translate_send_in_pings(tmp_path):
     contents = [
         {
             "baseline": {
@@ -154,8 +154,8 @@ def test_translate_send_in_pings(tmpdir):
     assert objs["baseline"]["c"].send_in_pings == ["custom", "metrics"]
 
 
-def test_translate_dont_remove_extra_files(tmpdir):
-    output = Path(str(tmpdir)) / "foo"
+def test_translate_dont_remove_extra_files(tmp_path):
+    output = tmp_path / "foo"
     output.mkdir()
 
     with (output / "extra.txt").open("w") as fd:
@@ -172,20 +172,18 @@ def test_translate_dont_remove_extra_files(tmpdir):
     assert "extra.txt" in [str(x.name) for x in output.iterdir()]
 
 
-def test_external_translator(tmpdir):
-    tmpdir = Path(str(tmpdir))
-
+def test_external_translator(tmp_path):
     def external_translator(all_objects, output_dir, options):
         assert {"foo": "bar", "allow_reserved": True} == options
 
         for category in all_objects:
-            with (tmpdir / category).open("w") as fd:
+            with (tmp_path / category).open("w") as fd:
                 for metric in category:
                     fd.write(f"{metric}\n")
 
     translate.translate_metrics(
         ROOT / "data" / "core.yaml",
-        Path(str(tmpdir)),
+        tmp_path,
         external_translator,
         [],
         options={"foo": "bar"},
@@ -196,7 +194,7 @@ def test_external_translator(tmpdir):
 
     expected_keys = set(content.keys()) - set(["$schema"])
 
-    assert set(x.name for x in tmpdir.iterdir()) == expected_keys
+    assert set(x.name for x in tmp_path.iterdir()) == expected_keys
 
 
 def test_getting_line_number():
@@ -207,7 +205,7 @@ def test_getting_line_number():
     assert metrics["core_ping"]["seq"].defined_in["line"] == 69
 
 
-def test_rates(tmpdir):
+def test_rates(tmp_path):
     def external_translator(all_objects, output_dir, options):
         category = all_objects["testing.rates"]
         assert category["has_internal_denominator"].type == "rate"
@@ -236,7 +234,7 @@ def test_rates(tmpdir):
 
     translate.translate_metrics(
         ROOT / "data" / "rate.yaml",
-        Path(str(tmpdir)),
+        tmp_path,
         external_translator,
         [],
         options={"foo": "bar"},
@@ -244,8 +242,8 @@ def test_rates(tmpdir):
     )
 
 
-def test_with_tags(tmpdir):
-    output = Path(str(tmpdir)) / "tags_test"
+def test_with_tags(tmp_path):
+    output = tmp_path / "tags_test"
 
     translate.translate(
         [

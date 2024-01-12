@@ -25,7 +25,7 @@ def test_basic_help():
     assert "Show this message and exit." in help_result.output
 
 
-def test_translate(tmpdir):
+def test_translate(tmp_path):
     """Test the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
@@ -34,7 +34,7 @@ def test_translate(tmpdir):
             "translate",
             str(ROOT / "data" / "core.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
             "-s",
@@ -43,7 +43,7 @@ def test_translate(tmpdir):
         ],
     )
     assert result.exit_code == 0
-    assert set(os.listdir(str(tmpdir))) == set(
+    assert set(os.listdir(str(tmp_path))) == set(
         [
             "CorePing.kt",
             "Telemetry.kt",
@@ -53,14 +53,14 @@ def test_translate(tmpdir):
             "GleanBuildInfo.kt",
         ]
     )
-    for filename in os.listdir(str(tmpdir)):
-        path = Path(str(tmpdir)) / filename
+    for filename in os.listdir(str(tmp_path)):
+        path = tmp_path / filename
         with path.open(encoding="utf-8") as fd:
             content = fd.read()
         assert "package Foo" in content
 
 
-def test_translate_no_buildinfo(tmpdir):
+def test_translate_no_buildinfo(tmp_path):
     """Test the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
@@ -69,7 +69,7 @@ def test_translate_no_buildinfo(tmpdir):
             "translate",
             str(ROOT / "data" / "core.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
             "-s",
@@ -80,7 +80,7 @@ def test_translate_no_buildinfo(tmpdir):
         ],
     )
     assert result.exit_code == 0
-    assert set(os.listdir(str(tmpdir))) == set(
+    assert set(os.listdir(str(tmp_path))) == set(
         [
             "CorePing.kt",
             "Telemetry.kt",
@@ -89,14 +89,14 @@ def test_translate_no_buildinfo(tmpdir):
             "GleanInternalMetrics.kt",
         ]
     )
-    for filename in os.listdir(str(tmpdir)):
-        path = Path(str(tmpdir)) / filename
+    for filename in os.listdir(str(tmp_path)):
+        path = tmp_path / filename
         with path.open(encoding="utf-8") as fd:
             content = fd.read()
         assert "package Foo" in content
 
 
-def test_translate_build_date(tmpdir):
+def test_translate_build_date(tmp_path):
     """Test with a custom build date."""
     runner = CliRunner()
     result = runner.invoke(
@@ -105,7 +105,7 @@ def test_translate_build_date(tmpdir):
             "translate",
             str(ROOT / "data" / "core.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
             "-s",
@@ -117,14 +117,14 @@ def test_translate_build_date(tmpdir):
     )
     assert result.exit_code == 0
 
-    path = Path(str(tmpdir)) / "GleanBuildInfo.kt"
+    path = tmp_path / "GleanBuildInfo.kt"
     with path.open(encoding="utf-8") as fd:
         content = fd.read()
     assert "buildDate = Calendar.getInstance" in content
     assert "cal.set(2020, 0, 1, 17, 30" in content
 
 
-def test_translate_fixed_build_date(tmpdir):
+def test_translate_fixed_build_date(tmp_path):
     """Test with a custom build date."""
     runner = CliRunner()
     result = runner.invoke(
@@ -133,7 +133,7 @@ def test_translate_fixed_build_date(tmpdir):
             "translate",
             str(ROOT / "data" / "core.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
             "-s",
@@ -145,14 +145,14 @@ def test_translate_fixed_build_date(tmpdir):
     )
     assert result.exit_code == 0
 
-    path = Path(str(tmpdir)) / "GleanBuildInfo.kt"
+    path = tmp_path / "GleanBuildInfo.kt"
     with path.open(encoding="utf-8") as fd:
         content = fd.read()
     assert "buildDate = Calendar.getInstance" in content
     assert "cal.set(1970" in content
 
 
-def test_translate_borked_build_date(tmpdir):
+def test_translate_borked_build_date(tmp_path):
     """Test with a custom build date."""
     runner = CliRunner()
     result = runner.invoke(
@@ -161,7 +161,7 @@ def test_translate_borked_build_date(tmpdir):
             "translate",
             str(ROOT / "data" / "core.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
             "-s",
@@ -174,7 +174,7 @@ def test_translate_borked_build_date(tmpdir):
     assert result.exit_code == 1
 
 
-def test_translate_errors(tmpdir):
+def test_translate_errors(tmp_path):
     """Test the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
@@ -183,16 +183,16 @@ def test_translate_errors(tmpdir):
             "translate",
             str(ROOT / "data" / "invalid.yamlx"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
         ],
     )
     assert result.exit_code == 1
-    assert len(os.listdir(str(tmpdir))) == 0
+    assert len(os.listdir(str(tmp_path))) == 0
 
 
-def test_glinter_errors(tmpdir):
+def test_glinter_errors(tmp_path):
     """Test that the 'glinter' command reports all errors."""
     runner = CliRunner()
     result = runner.invoke(
@@ -206,18 +206,25 @@ def test_glinter_errors(tmpdir):
     assert "Found 1 errors" in result.output
 
 
-def test_translate_invalid_format(tmpdir):
+def test_translate_invalid_format(tmp_path):
     """Test passing an invalid format to the 'translate' command."""
     runner = CliRunner()
     result = runner.invoke(
         __main__.main,
-        ["translate", str(ROOT / "data" / "core.yaml"), "-o", str(tmpdir), "-f", "foo"],
+        [
+            "translate",
+            str(ROOT / "data" / "core.yaml"),
+            "-o",
+            str(tmp_path),
+            "-f",
+            "foo",
+        ],
     )
     assert result.exit_code == 2
     assert re.search("Invalid value for ['\"]--format['\"]", result.output)
 
 
-def test_reject_jwe(tmpdir):
+def test_reject_jwe(tmp_path):
     """Test that the JWE type is rejected"""
     runner = CliRunner()
     result = runner.invoke(
@@ -226,16 +233,16 @@ def test_reject_jwe(tmpdir):
             "translate",
             str(ROOT / "data" / "jwe.yaml"),
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
         ],
     )
     assert result.exit_code == 1
-    assert len(os.listdir(str(tmpdir))) == 0
+    assert len(os.listdir(str(tmp_path))) == 0
 
 
-def test_wrong_key_lint(tmpdir):
+def test_wrong_key_lint(tmp_path):
     """Test that the 'glinter' reports a wrong key used."""
     runner = CliRunner()
     result = runner.invoke(
@@ -251,7 +258,7 @@ def test_wrong_key_lint(tmpdir):
     assert "Found 3 errors" in result.output
 
 
-def test_no_file_is_an_error(tmpdir):
+def test_no_file_is_an_error(tmp_path):
     """Test that 'translate' fails when no files are passed."""
     runner = CliRunner()
     result = runner.invoke(
@@ -259,7 +266,7 @@ def test_no_file_is_an_error(tmpdir):
         [
             "translate",
             "-o",
-            str(tmpdir),
+            str(tmp_path),
             "-f",
             "kotlin",
         ],
@@ -267,11 +274,11 @@ def test_no_file_is_an_error(tmpdir):
     assert result.exit_code == 1
 
 
-def test_no_file_can_be_skipped(tmpdir):
+def test_no_file_can_be_skipped(tmp_path):
     """Test that 'translate' works when no files are passed but flag is set."""
     runner = CliRunner()
     result = runner.invoke(
         __main__.main,
-        ["translate", "-o", str(tmpdir), "-f", "kotlin", "--allow-missing-files"],
+        ["translate", "-o", str(tmp_path), "-f", "kotlin", "--allow-missing-files"],
     )
     assert result.exit_code == 0
