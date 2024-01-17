@@ -20,6 +20,14 @@ glean\_parser.data\_review module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.go\_server module
+-------------------------------
+
+.. automodule:: glean_parser.go_server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.javascript module
 -------------------------------
 
