@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Add Go log outputter (`go_server`) ([#645](https://github.com/mozilla/glean_parser/pull/645))
+- Add Python log outputter (`python_server`) ([MPP-3642](https://mozilla-hub.atlassian.net/browse/MPP-3642))
 
 ## 11.0.1
 
