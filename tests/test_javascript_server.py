@@ -13,6 +13,8 @@ import subprocess
 from glean_parser import javascript_server
 from glean_parser import translate
 from glean_parser import validate_ping
+from glean_parser.metrics import Metric
+from unittest.mock import Mock
 
 
 ROOT = Path(__file__).parent
@@ -65,15 +67,13 @@ def test_parser_js_server(tmp_path):
 def test_generate_ping_factory_method():
     ping = "accounts_events"
     expected_result = "createAccountsEventsEvent"
-    result = javascript_server.generate_ping_factory_method(
-        ping, event_metric_exists=False
-    )
+    result = javascript_server.generate_ping_factory_method(ping, metrics_by_type={})
     assert result == expected_result
 
     ping = "accounts_events"
     expected_result = "createAccountsEventsServerEventLogger"
     result = javascript_server.generate_ping_factory_method(
-        ping, event_metric_exists=True
+        ping, metrics_by_type={"event": [Mock(spec=Metric)]}
     )
     assert result == expected_result
 
