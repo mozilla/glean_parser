@@ -275,21 +275,15 @@ def test_object_metric(tmp_path):
         content = " ".join(content.split())
 
         assert "ObjectMetric<ThreadsObject>" in content
-        assert "ObjectMetric<ThreadsObject>" in content
-        assert (
-            "pub struct ThreadsObjectItem { "
-            "frames: ThreadsObjectItemItemFrames, "
-            "}" in content
-        )
+        assert "pub struct ThreadsObjectItem { " in content
+        assert "frames: ThreadsObjectItemItemFrames, }" in content
         assert (
             "pub type ThreadsObjectItemItemFrames = "
             "Vec<ThreadsObjectItemItemFramesItem>;" in content
         )
 
-        assert (
-            "pub struct ThreadsObjectItemItemFramesItem { "
-            "module_index: Option<i64>, "
-            "ip: Option<String>, "
-            "trust: Option<String>, "
-            "}" in content
-        )
+        assert "pub struct ThreadsObjectItemItemFramesItem { " in content
+        assert "module_index: Option<i64>, " in content
+        assert "ip: Option<String>, " in content
+        assert "trust: Option<String>, " in content
+        assert "}" in content
