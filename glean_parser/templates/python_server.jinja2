@@ -96,7 +96,6 @@ class {{ ping|camelize }}ServerEventLogger:
 
 
         self.emit_record(now, ping)
-        
     def emit_record(self, now: datetime, ping:dict[str, Any]) -> None:
         """Log the ping to STDOUT.
         Applications might want to override this method to use their own logging.
