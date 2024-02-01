@@ -105,7 +105,7 @@ class {{ ping|camelize }}ServerEventLogger:
             "Timestamp": now.isoformat(),
             "Logger": "glean",
             "Type": GLEAN_EVENT_MOZLOG_TYPE,
-            "Fields": ping
+            "Fields": ping,
         }
         ping_envelope_serialized = json.dumps(ping_envelope)
 
