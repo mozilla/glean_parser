@@ -155,7 +155,7 @@ class {{ ping|camelize }}ServerEventLogger:
             {% if event.extra_keys %}
             "extra": {
                 {% for extra, metadata in event.extra_keys.items() %}
-                "{{ extra }}": str({{ extra }}),
+                "{{ extra }}": str({{ extra }}){% if 'bool' == metadata.type|py_metric_type %}.lower(){% endif %},
                 {% endfor %}
             },
             {% endif %}
