@@ -209,27 +209,27 @@ class {{ ping|event_class_name(metrics_by_type) }} {
     {% endfor %}
   {% if lang == "typescript" %}
   }: {
-    user_agent: string,
-    ip_address: string,
+    user_agent: string;
+    ip_address: string;
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% if metric_type != 'event' %}
     {% for metric in metrics %}
-    {{ metric|metric_argument_name }}: {{ metric|js_metric_type }},
+    {{ metric|metric_argument_name }}: {{ metric|js_metric_type }};
     {% endfor %}
     {% endif %}
     {% endfor %}
     {% for extra, metadata in event.extra_keys.items() %}
-    {{ extra }}: {{metadata.type}},
+    {{ extra }}: {{metadata.type}};
     {% endfor %}
   {% endif %}
   }) {
     const event = {
-      'category': '{{ event.category }}',
-      'name': '{{ event.name }}',
+      category: '{{ event.category }}',
+      name: '{{ event.name }}',
       {% if event.extra_keys %}
-      'extra': {
+      extra: {
         {% for extra, metadata in event.extra_keys.items() %}
-        '{{ extra }}': {{ extra }},
+        {{ extra }}: {{ extra }},
         {% endfor %}
       },
       {% endif %}
@@ -244,7 +244,7 @@ class {{ ping|event_class_name(metrics_by_type) }} {
       {% endfor %}
       {% endif %}
       {% endfor %}
-      event
+      event,
     });
   }
   {% endfor %}
