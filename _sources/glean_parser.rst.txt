@@ -92,6 +92,14 @@ glean\_parser.pings module
    :undoc-members:
    :show-inheritance:
 
+glean\_parser.python\_server module
+-----------------------------------
+
+.. automodule:: glean_parser.python_server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glean\_parser.ruby\_server module
 ---------------------------------
 

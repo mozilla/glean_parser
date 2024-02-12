@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>glean_parser package &#8212; Glean Parser 11.0.2.dev9+gb61277fd documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 11.0.2.dev10+g63e61eee documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=ab837f08"></script>
+    <script src="_static/documentation_options.js?v=fa59a8d6"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -1364,6 +1364,63 @@ the input <cite>filepaths</cite> do not exist.</p></li>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#glean_parser.pings.Ping.type" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="module-glean_parser.python_server">
+<span id="glean-parser-python-server-module"></span><h2>glean_parser.python_server module<a class="headerlink" href="#module-glean_parser.python_server" title="Link to this heading">¶</a></h2>
+<p>Outputter to generate server Python code for collecting events.</p>
+<p>This outputter is different from the rest of the outputters in that the code it
+generates does not use the Glean SDK. It is meant to be used to collect events
+in server-side environments. In these environments SDK assumptions to measurement
+window and connectivity don’t hold.
+Generated code takes care of assembling pings with metrics, and serializing to messages
+conforming to Glean schema.</p>
+<p>Warning: this outputter supports limited set of metrics,
+see <cite>SUPPORTED_METRIC_TYPES</cite> below.</p>
+<p>The generated code creates a <cite>ServerEventLogger</cite> class for each ping that has
+at least one event metric. The class has a <cite>record</cite> method for each event metric.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.camelize">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">camelize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#camelize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.camelize" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.clean_string">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">clean_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#clean_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.clean_string" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.generate_event_record_function_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">generate_event_record_function_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#generate_event_record_function_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.generate_event_record_function_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.generate_metric_type">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">generate_metric_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#generate_metric_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.generate_metric_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.generate_ping_factory_method">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">generate_ping_factory_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#generate_ping_factory_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.generate_ping_factory_method" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.python_server.output_python">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.python_server.</span></span><span class="sig-name descname"><span class="pre">output_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">Ping</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.tags.Tag" title="glean_parser.tags.Tag"><span class="pre">Tag</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/glean_parser/python_server.html#output_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.python_server.output_python" title="Link to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Python code to <cite>output_dir</cite>.</p>
+<p>The output is a file containing all the code for assembling pings with
+metrics, serializing, and submitting, and an empty <cite>__init__.py</cite> file to
+make the directory a package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</p></li>
+<li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
