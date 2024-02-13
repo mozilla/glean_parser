@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 12.0.0
+
 - Add new metric type object (only Rust codegen support right now) ([#587](https://github.com/mozilla/glean_parser/pull/587))
 
 ## 11.1.0
