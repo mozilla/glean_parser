@@ -21,18 +21,19 @@ Jinja2 template is not. Please file bugs! #}
     {% endif %}
 
 {% elif struct.type == "object" %}
-    #[derive(Debug, Hash, Eq, PartialEq, SerdeSerialize)]
+    #[derive(Debug, Hash, Eq, PartialEq, ::glean::traits::__serde::Serialize, ::glean::traits::__serde::Deserialize)]
+    #[serde(crate = "::glean::traits::__serde")]
     pub struct {{ name }} {
         {% for itemname, val in struct.properties.items() %}
           {% if val.type == "object" %}
           #[serde(skip_serializing_if = "Option::is_none")]
-          {{itemname|snake_case}}: Option<{{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}>,
+          pub {{itemname|snake_case}}: Option<{{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}>,
           {% elif val.type == "array" %}
           #[serde(skip_serializing_if = "Vec::is_empty")]
-          {{itemname|snake_case}}: {{ name ~ "Item" ~ itemname|Camelize }},
+          pub {{itemname|snake_case}}: {{ name ~ "Item" ~ itemname|Camelize }},
           {% else %}
           #[serde(skip_serializing_if = "Option::is_none")]
-          {{itemname|snake_case}}: Option<{{val.type|structure_type_name}}>,
+          pub {{itemname|snake_case}}: Option<{{val.type|structure_type_name}}>,
           {% endif %}
         {% endfor %}
     }
@@ -96,7 +97,7 @@ pub static {{ obj.name|snake_case }}: ::glean::private::__export::Lazy<::glean::
 {% else %}
 pub mod {{ category.name|snake_case }} {
     #[allow(unused_imports)] // HistogramType might be unusued, let's avoid warnings
-    use glean::{private::*, traits::ExtraKeys, traits::NoExtraKeys, serde::Serialize, serde::Deserialize, CommonMetricData, HistogramType, Lifetime, TimeUnit, MemoryUnit};
+    use glean::{private::*, traits::ExtraKeys, traits::NoExtraKeys, CommonMetricData, HistogramType, Lifetime, TimeUnit, MemoryUnit};
     {% for obj in category.objs.values() %}
 
     {% if obj|attr("_generate_structure") %}
