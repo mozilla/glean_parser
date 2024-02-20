@@ -21,7 +21,7 @@ type LoggerOptions = { app: string; fmt?: 'heka' };
 type Event = {
   category: string;
   name: string;
-  extra: Record<string, any>;
+  extra?: Record<string, any>;
   timestamp?: number;
 };
 {% endif %}

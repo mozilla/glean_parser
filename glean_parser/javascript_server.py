@@ -140,6 +140,10 @@ def output(
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
+    
+    # Order pings_to_metrics for backwards compatibility with the existing FxA codebase.
+    # Put pings without `event` type metrics first.
+    ping_to_metrics = dict(sorted(ping_to_metrics.items(), key=lambda item: "event" in item[1]))
 
     PING_METRIC_ERROR_MSG = (
         " Server-side environment is simplified and this"
