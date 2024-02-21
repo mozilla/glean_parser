@@ -51,3 +51,18 @@ custom-ping-might-be-empty:
     serious:
       A serious reason for sending a ping.
   no_lint: [REDUNDANT_PING]
+
+custom-ping-no-info:
+  description:
+    A custom ping with no info sections
+  include_client_id: false
+  send_if_empty: true
+  bugs:
+    - http://bugzilla.mozilla.com/1866559
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  metadata:
+    include_info_sections: false
+  no_lint: [REDUNDANT_PING]

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Support metadata field `include_info_sections` ([bug 1866559](https://bugzilla.mozilla.org/show_bug.cgi?id=1866559))
+
 ## 12.0.1
 
 - Fix Rust codegen for object metric type ([#662](https://github.com/mozilla/glean_parser/pull/662))
