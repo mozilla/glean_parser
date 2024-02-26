@@ -12,13 +12,7 @@ Jinja2 template is not. Please file bugs! #}
 {% if struct.type == "array" %}
     pub type {{ name }} = Vec<{{ name }}Item>;
 
-    {% if struct["items"].type == "object" %}
     {{ generate_structure(name ~ "Item", struct["items"]) }}
-    {% elif struct["items"].type == "array" %}
-    {{ generate_structure(name ~ "Item", struct["items"]) }}
-    {% else %}
-    {{ generate_structure(name ~ "Item", struct["items"]) }}
-    {% endif %}
 
 {% elif struct.type == "object" %}
     #[derive(Debug, Hash, Eq, PartialEq, ::glean::traits::__serde::Serialize, ::glean::traits::__serde::Deserialize)]
