@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pings.yaml file &#8212; Glean Parser 12.0.1.dev2+g55e271ac documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 12.0.2.dev1+gcd51dc43 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=2802038e"></script>
+    <script src="_static/documentation_options.js?v=f1803158"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -125,6 +125,18 @@ entirety below:</p>
 <span class="w">            </span><span class="no">When `false` Glean uses minute-precise timestamps for</span>
 <span class="w">            </span><span class="no">the ping&#39;s start/end time.</span>
 <span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="w">        </span><span class="nt">include_info_sections</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Include Info Sections</span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">            </span><span class="no">When `true`, assemble and include the `client_info` and `ping_info`</span>
+<span class="w">            </span><span class="no">sections in the ping on submission.</span>
+<span class="w">            </span><span class="no">When `false`, omit the `client_info` and `ping_info` sections when</span>
+<span class="w">            </span><span class="no">assembling the ping on submission.</span>
+<span class="w">            </span><span class="no">Defaults to `true`.</span>
+
+<span class="w">            </span><span class="no">Interaction with `include_client_id`: `include_client_id` only takes</span>
+<span class="w">            </span><span class="no">effect when `metadata.include_info_sections` is `true`.</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
 
 <span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 
@@ -134,6 +146,9 @@ entirety below:</p>
 <span class="w">        </span><span class="no">**Required.**</span>
 
 <span class="w">        </span><span class="no">When `true`, include the `client_id` value in the ping.</span>
+
+<span class="w">        </span><span class="no">Interaction with `metadata.include_info_sections`: `include_client_id`</span>
+<span class="w">        </span><span class="no">only takes effect when `metadata.include_info_sections` is `true`.</span>
 <span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
 
 <span class="w">    </span><span class="nt">send_if_empty</span><span class="p">:</span>
