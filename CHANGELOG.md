@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 13.0.0
+
 - BREAKING CHANGE: Support metadata field `include_info_sections` ([bug 1866559](https://bugzilla.mozilla.org/show_bug.cgi?id=1866559))
 
 ## 12.0.1
