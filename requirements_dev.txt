@@ -5,7 +5,7 @@ flake8-bugbear==24.2.6
 mypy==1.4.1
 pip
 pytest-runner==5.3.2
-pytest==8.0.0
+pytest==8.1.0
 recommonmark==0.7.1
 Sphinx==7.2.5; python_version > '3.8'
 twine==5.0.0
