@@ -129,7 +129,7 @@ def update_lines(
 
     for line in lines_iter:
         output.append(line)
-        if line.startswith(f"    data_reviews:"):
+        if line.startswith("    data_reviews:"):
             break
 
     for line in lines_iter:
