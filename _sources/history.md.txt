@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 13.0.1
+
+- Use faster C yaml parser if available ([#677](https://github.com/mozilla/glean_parser/pull/677))
+
 ## 13.0.0
 
 - BREAKING CHANGE: Support metadata field `include_info_sections` ([bug 1866559](https://bugzilla.mozilla.org/show_bug.cgi?id=1866559))
