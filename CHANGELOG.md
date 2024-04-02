@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Expose the optional `enabled` property on pings, defaulting to `enabled: true` ([#681](https://github.com/mozilla/glean_parser/pull/681))
+
 ## 13.0.1
 
 - Use faster C yaml parser if available ([#677](https://github.com/mozilla/glean_parser/pull/677))
