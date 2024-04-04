@@ -50,6 +50,7 @@ class Ping:
         if enabled is None:
             enabled = True
         self.enabled = enabled
+        self.schedules_pings: List[str] = []
         if data_reviews is None:
             data_reviews = []
         self.data_reviews = data_reviews
@@ -97,6 +98,9 @@ class Ping:
         modified_dict = util.remove_output_params(modified_dict, "precise_timestamps")
         modified_dict = util.remove_output_params(
             modified_dict, "include_info_sections"
+        )
+        modified_dict = util.remove_output_params(
+            modified_dict, "schedules_pings"
         )
         return modified_dict
 

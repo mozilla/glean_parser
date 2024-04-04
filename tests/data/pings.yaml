@@ -94,3 +94,20 @@ custom-ping-disabled:
     - CHANGE-ME@test-only.com
   enabled: false
   no_lint: [REDUNDANT_PING]
+
+custom-with-ping-schedule:
+  description:
+    A custom ping with a ping schedule
+  include_client_id: true
+  send_if_empty: true
+  bugs:
+    - http://bugzilla.mozilla.com/1866559
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  metadata:
+    ping_schedule:
+      - custom-ping-no-info
+      - custom-ping-might-be-empty
+  no_lint: [REDUNDANT_PING]

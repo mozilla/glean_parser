@@ -75,9 +75,31 @@ def test_send_if_empty():
     errors = list(parser.parse_objects([content]))
     assert len(errors) == 0
 
+
 def test_send_if_disabled():
     content = {"disabled-ping": {"include_client_id": True, "enabled": False}}
 
     util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))
     assert len(errors) == 0
+
+
+def test_ping_schedule():
+    content = {
+        "piggyback-ping": {"include_client_id": True, "metadata": {"ping_schedule": ["trigger-ping"]}},
+        "trigger-ping": {"include_client_id": True}
+    }
+
+    util.add_required_ping(content)
+    all_pings = parser.parse_objects([content])
+    errors = list(all_pings)
+    assert len(errors) == 0
+    assert "piggyback-ping" in all_pings.value["pings"]["trigger-ping"].schedules_pings
+
+
+def test_no_self_ping_schedule():
+    content = {"my_ping": {"include_client_id": True, "metadata": {"ping_schedule": ["my_ping"]}}}
+
+    util.add_required_ping(content)
+    errors = list(parser.parse_objects([content]))
+    assert "my_ping" in errors[0]

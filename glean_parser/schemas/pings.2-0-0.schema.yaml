@@ -96,6 +96,16 @@ additionalProperties:
             Interaction with `include_client_id`: `include_client_id` only takes
             effect when `metadata.include_info_sections` is `true`.
           type: boolean
+        ping_schedule:
+          title: Ping Schedule
+          description: |
+            An optional array of ping names. When one of the listed pings is
+            sent, then this ping will also be sent. A ping cannot list its own
+            name in `ping_schedule`.
+          type: array
+          items:
+            type: string
+            maxLength: 30
 
       default: {}
 
