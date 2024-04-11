@@ -74,3 +74,10 @@ def test_send_if_empty():
     util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))
     assert len(errors) == 0
+
+def test_send_if_disabled():
+    content = {"disabled-ping": {"include_client_id": True, "enabled": False}}
+
+    util.add_required_ping(content)
+    errors = list(parser.parse_objects([content]))
+    assert len(errors) == 0

@@ -31,7 +31,7 @@ class Ping:
         reasons: Optional[Dict[str, str]] = None,
         defined_in: Optional[Dict] = None,
         no_lint: Optional[List[str]] = None,
-        enabled: Optional[bool] = True,
+        enabled: Optional[bool] = None,
         _validated: bool = False,
     ):
         # Avoid cyclical import
@@ -47,6 +47,8 @@ class Ping:
         self.metadata = metadata
         self.precise_timestamps = self.metadata.get("precise_timestamps", True)
         self.include_info_sections = self.metadata.get("include_info_sections", True)
+        if enabled is None:
+            enabled = True
         self.enabled = enabled
         if data_reviews is None:
             data_reviews = []
