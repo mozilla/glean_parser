@@ -175,6 +175,18 @@ additionalProperties:
       additionalProperties:
         type: string
 
+    enabled:
+      title: Whether or not this ping is enabled
+      description: |
+        **Optional.**
+
+        When `true`, the ping will be sent as usual.
+        When `false`, the ping will not be sent, but the data will continue to
+        be collected but will not be cleared when the ping is submitted.
+
+        Defaults to `true` if omitted.
+      type: boolean
+
     no_lint:
       title: Lint checks to skip
       description: |

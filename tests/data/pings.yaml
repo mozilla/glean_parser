@@ -66,3 +66,31 @@ custom-ping-no-info:
   metadata:
     include_info_sections: false
   no_lint: [REDUNDANT_PING]
+
+custom-ping-enabled:
+  description:
+    A custom ping with an explicit enabled property set to true
+  include_client_id: false
+  send_if_empty: true
+  bugs:
+    - http://bugzilla.mozilla.com/1866559
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  enabled: true
+  no_lint: [REDUNDANT_PING]
+
+custom-ping-disabled:
+  description:
+    A custom ping with an explicit enabled property set to false
+  include_client_id: false
+  send_if_empty: true
+  bugs:
+    - http://bugzilla.mozilla.com/1866559
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  enabled: false
+  no_lint: [REDUNDANT_PING]

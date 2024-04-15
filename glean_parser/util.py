@@ -531,6 +531,7 @@ ping_args = [
     "send_if_empty",
     "precise_timestamps",
     "include_info_sections",
+    "enabled",
     "reason_codes",
 ]
 
