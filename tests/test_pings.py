@@ -86,8 +86,11 @@ def test_send_if_disabled():
 
 def test_ping_schedule():
     content = {
-        "piggyback-ping": {"include_client_id": True, "metadata": {"ping_schedule": ["trigger-ping"]}},
-        "trigger-ping": {"include_client_id": True}
+        "piggyback-ping": {
+            "include_client_id": True,
+            "metadata": {"ping_schedule": ["trigger-ping"]},
+        },
+        "trigger-ping": {"include_client_id": True},
     }
 
     util.add_required_ping(content)
@@ -98,7 +101,12 @@ def test_ping_schedule():
 
 
 def test_no_self_ping_schedule():
-    content = {"my_ping": {"include_client_id": True, "metadata": {"ping_schedule": ["my_ping"]}}}
+    content = {
+        "my_ping": {
+            "include_client_id": True,
+            "metadata": {"ping_schedule": ["my_ping"]},
+        }
+    }
 
     util.add_required_ping(content)
     errors = list(parser.parse_objects([content]))

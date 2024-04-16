@@ -455,3 +455,36 @@ def test_reasons(tmp_path):
 
     expected = "val customPingMightBeEmpty: PingType<customPingMightBeEmptyReasonCodes> = // generated from custom-ping-might-be-empty"  # noqa
     assert expected in content
+
+
+def test_object_metric(tmp_path):
+    """
+    Assert that an object metric is created.
+    """
+    translate.translate(
+        ROOT / "data" / "object.yaml",
+        "kotlin",
+        tmp_path,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(
+        ["ActivityStream.kt", "ComplexTypes.kt", "CrashStack.kt", "GleanBuildInfo.kt"]
+    )
+
+    with (tmp_path / "CrashStack.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        assert "ObjectMetricType<ThreadsObject>" in content
+        assert "data class ThreadsObject(" in content
+        assert "data class ThreadsObjectItem(" in content
+        assert (
+            "var frames: ThreadsObjectItemItemFrames = ThreadsObjectItemItemFrames"
+            in content
+        )
+
+        assert "data class ThreadsObjectItemItemFramesItem(" in content
+        assert "var moduleIndex: Int? = null," in content
+        assert "var ip: String? = null," in content
+        assert "var trust: String? = null," in content
