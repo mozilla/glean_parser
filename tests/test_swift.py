@@ -344,3 +344,34 @@ def test_reasons(tmp_path):
 
     expected = "let customPingMightBeEmpty = Ping<CustomPingMightBeEmptyReasonCodes>("
     assert expected in content
+
+
+def test_object_metric(tmp_path):
+    """
+    Assert that an object metric is created.
+    """
+    translate.translate(
+        ROOT / "data" / "object.yaml",
+        "swift",
+        tmp_path,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
+
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        assert "ObjectMetricType<ThreadsObject>" in content
+        assert "typealias ThreadsObject = [ThreadsObjectItem]" in content
+        assert "struct ThreadsObjectItem: Codable, Equatable, ObjectSerialize {" in content
+        assert (
+            "var frames: ThreadsObjectItemItemFrames"
+            in content
+        )
+
+        assert "struct ThreadsObjectItemItemFramesItem: Codable, Equatable, ObjectSerialize {" in content
+        assert "var moduleIndex: Int64?" in content
+        assert "var ip: String?" in content
+        assert "var trust: String?" in content

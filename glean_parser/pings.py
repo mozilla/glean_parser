@@ -99,9 +99,7 @@ class Ping:
         modified_dict = util.remove_output_params(
             modified_dict, "include_info_sections"
         )
-        modified_dict = util.remove_output_params(
-            modified_dict, "schedules_pings"
-        )
+        modified_dict = util.remove_output_params(modified_dict, "schedules_pings")
         return modified_dict
 
     def identifier(self) -> str:
