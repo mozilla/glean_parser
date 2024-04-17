@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Fix missing `ping_arg` in util.py ([#687](https://github.com/mozilla/glean_parser/pull/687))
+
 ## 14.0.0
 
 - BREAKING CHANGE: Expose the optional `enabled` property on pings, defaulting to `enabled: true` ([#681](https://github.com/mozilla/glean_parser/pull/681))
