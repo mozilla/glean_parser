@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 14.0.1
 
 - BUGFIX: Fix missing `ping_arg` in util.py ([#687](https://github.com/mozilla/glean_parser/pull/687))
 
