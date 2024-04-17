@@ -75,5 +75,5 @@ install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
 	test -f ktlint || curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
 	echo "03c9f9f78f80bcdb44c292d95e4d9abf221daf5e377673c1b6675a8003eab94d *ktlint" | shasum -a256 -c -
 	chmod a+x ktlint
-	test -f detekt-cli.jar || curl -sSL --output "detekt-cli.jar" https://github.com/detekt/detekt/releases/download/v1.16.0/detekt-cli-1.16.0-all.jar
-	echo "dd63aae60cce4b0516ffc11d31b6280d4010ab481754c7e49b2c9e78db877ca4 *detekt-cli.jar" | shasum -a256 -c -
+	test -f detekt-cli.jar || curl -sSL --output "detekt-cli.jar" https://github.com/detekt/detekt/releases/download/v1.23.6/detekt-cli-1.23.6-all.jar
+	echo "898dcf810e891f449e4e3f9f4a4e2dc75aecf8e1089df41a42a69adb2cbbcffa *detekt-cli.jar" | shasum -a256 -c -
