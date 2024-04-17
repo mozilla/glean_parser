@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript_server &#8212; Glean Parser 13.0.2.dev5+g8dd987b7 documentation</title>
+    <title>glean_parser.javascript_server &#8212; Glean Parser 13.0.2.dev6+g42284c92 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=cc978262"></script>
+    <script src="../../_static/documentation_options.js?v=440e0833"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -76,9 +76,12 @@
 
 <div class="viewcode-block" id="event_class_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.event_class_name">[docs]</a>
-<span class="k">def</span> <span class="nf">event_class_name</span><span class="p">(</span><span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event_metric_exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">event_class_name</span><span class="p">(</span>
+    <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metrics_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="c1"># For compatibility with FxA codebase we don&#39;t want to add &quot;Logger&quot; suffix</span>
     <span class="c1"># when custom pings without event metrics are used.</span>
+    <span class="n">event_metric_exists</span> <span class="o">=</span> <span class="s2">&quot;event&quot;</span> <span class="ow">in</span> <span class="n">metrics_by_type</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;Logger&quot;</span> <span class="k">if</span> <span class="n">event_metric_exists</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
     <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">ping_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;ServerEvent&quot;</span> <span class="o">+</span> <span class="n">suffix</span></div>
 
@@ -107,10 +110,13 @@
 
 <div class="viewcode-block" id="generate_ping_factory_method">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_ping_factory_method">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_ping_factory_method</span><span class="p">(</span><span class="n">ping</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">event_metric_exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">generate_ping_factory_method</span><span class="p">(</span>
+    <span class="n">ping</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metrics_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="c1"># `ServerEventLogger` better describes role of the class that this factory</span>
     <span class="c1"># method generates, but for compatibility with existing FxA codebase</span>
     <span class="c1"># we use `Event` suffix if no event metrics are defined.</span>
+    <span class="n">event_metric_exists</span> <span class="o">=</span> <span class="s2">&quot;event&quot;</span> <span class="ow">in</span> <span class="n">metrics_by_type</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;ServerEventLogger&quot;</span> <span class="k">if</span> <span class="n">event_metric_exists</span> <span class="k">else</span> <span class="s2">&quot;Event&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;create</span><span class="si">{</span><span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">ping</span><span class="p">)</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
@@ -190,6 +196,12 @@
                     <span class="n">metrics_by_type</span> <span class="o">=</span> <span class="n">ping_to_metrics</span><span class="p">[</span><span class="n">ping</span><span class="p">]</span>
                     <span class="n">metrics_list</span> <span class="o">=</span> <span class="n">metrics_by_type</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="p">[])</span>
                     <span class="n">metrics_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+    <span class="c1"># Order pings_to_metrics for backwards compatibility with the existing FxA codebase.</span>
+    <span class="c1"># Put pings without `event` type metrics first.</span>
+    <span class="n">ping_to_metrics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="nb">sorted</span><span class="p">(</span><span class="n">ping_to_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="s2">&quot;event&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">)</span>
 
     <span class="n">PING_METRIC_ERROR_MSG</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s2">&quot; Server-side environment is simplified and this&quot;</span>
