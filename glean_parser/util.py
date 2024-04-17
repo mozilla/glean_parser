@@ -532,6 +532,7 @@ ping_args = [
     "precise_timestamps",
     "include_info_sections",
     "enabled",
+    "schedules_pings",
     "reason_codes",
 ]
 
