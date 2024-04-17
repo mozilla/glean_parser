@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 14.0.0
+
 - BREAKING CHANGE: Expose the optional `enabled` property on pings, defaulting to `enabled: true` ([#681](https://github.com/mozilla/glean_parser/pull/681))
 - BREAKING CHANGE: Support metadata field `ping_schedule` for pings ([bug 1804711](https://bugzilla.mozilla.org/show_bug.cgi?id=1804711))
 - Add support for event metric type in server JavaScript outputter ([DENG-2407](https://mozilla-hub.atlassian.net/browse/DENG-2407))
