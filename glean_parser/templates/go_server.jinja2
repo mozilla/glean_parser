@@ -10,7 +10,7 @@ package glean
 // required imports
 import (
 	"encoding/json"
-	"fmt"
+    "log/slog"
 	"strconv"
 	"time"
 
@@ -157,7 +157,7 @@ func (g GleanEventsLogger) record(
 	if envelopeErr != nil {
 		panic("Unable to marshal log envelope to json")
 	}
-	fmt.Println(string(envelopeJson))
+	slog.Debug(string(envelopeJson))
 }
 
 {% for event in events_ping["event"] %}
