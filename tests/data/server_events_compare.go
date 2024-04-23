@@ -9,7 +9,7 @@ package glean
 // required imports
 import (
 	"encoding/json"
-	"fmt"
+    "log/slog"
 	"strconv"
 	"time"
 
@@ -155,12 +155,13 @@ func (g GleanEventsLogger) record(
 	if envelopeErr != nil {
 		panic("Unable to marshal log envelope to json")
 	}
-	fmt.Println(string(envelopeJson))
+	slog.Debug(string(envelopeJson))
 }
 
 type EventBackendTestEvent struct {
   MetricName string // Test string metric
   MetricRequestCount int64 // Test quantity metric
+  MetricRequestDatetime string // Test datetime metric
   EventFieldString string // A string extra field
   EventFieldQuantity int64 // A quantity extra field
   EventFieldBool bool // A boolean extra field
@@ -178,6 +179,9 @@ func (g GleanEventsLogger) RecordEventBackendTestEvent(
 		},
 		"quantity": {
 			"metric.request_count": params.MetricRequestCount,
+		},
+		"datetime": {
+			"metric.request_datetime": params.MetricRequestDatetime,
 		},
 	}
 	var extraKeys = map[string]string{

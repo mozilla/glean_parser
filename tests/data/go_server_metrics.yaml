@@ -36,6 +36,21 @@ metric:
       - http://example.com/reviews
     expires: never
 
+  request_datetime:
+    type: datetime
+    description: |
+        Test datetime metric
+    lifetime: application
+    send_in_pings:
+      - events
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - https://bugzilla.mozilla.org/1
+    data_reviews:
+      - http://example.com/reviews
+    expires: never
+
 backend:
   test_event:
     type: event
