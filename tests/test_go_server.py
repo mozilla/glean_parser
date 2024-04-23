@@ -4,14 +4,9 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
-import io
-import json
-import pytest
-import subprocess
 
 import glean_parser
 from glean_parser import translate
-from glean_parser import validate_ping
 
 ROOT = Path(__file__).parent
 
