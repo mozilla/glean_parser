@@ -1,5 +1,7 @@
 # Changelog
+# Unreleased
 
+- Add Go log outputter support for datetime (`go_server`) ([#693](https://github.com/mozilla/glean_parser/pull/693))
 ## 14.0.1
 
 - BUGFIX: Fix missing `ping_arg` in util.py ([#687](https://github.com/mozilla/glean_parser/pull/687))
