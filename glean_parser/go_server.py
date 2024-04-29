@@ -59,7 +59,7 @@ def generate_metric_type(metric_type: str) -> str:
     elif metric_type == "boolean":
         return "bool"
     elif metric_type == "datetime":
-        return "string"
+        return "time.Time"
     else:
         print("❌ Unable to generate Go type from metric type: " + metric_type)
         exit
