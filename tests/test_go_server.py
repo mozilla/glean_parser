@@ -76,7 +76,6 @@ def test_parser_go_server_metrics_unsupported_type(tmp_path, capsys):
         "timespan",
         "uuid",
         "url",
-        "datetime",
     ]
     for t in unsupported_types:
         assert t in captured.out
