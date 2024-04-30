@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-# This file defines metrics that are recorder by the Glean SDK
+# This file defines metrics that are recorded by the Glean SDK
 # but are not sent with the server-side Glean pings. They were
 # deployed erroneously to some BQ tables in the past, and are now
 # included for compatibility reasons. They are not used in new
