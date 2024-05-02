@@ -52,7 +52,7 @@ def test_expires():
     """
     for date, expired in [
         ("2018-06-10", True),
-        (datetime.datetime.utcnow().date().isoformat(), True),
+        (datetime.datetime.now(datetime.timezone.utc).date().isoformat(), True),
         ("3000-01-01", False),
     ]:
         m = metrics.Boolean(
