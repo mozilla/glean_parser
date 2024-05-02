@@ -385,6 +385,21 @@ def check_unknown_ping(
                 yield nit
 
 
+def check_distribution_lifetime(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    """*_distribution metrics should only be ping-lifetime, because otherwise
+    we will send the same samples more than once."""
+    if (
+        metric.type.endswith("_distribution")
+        and metric.lifetime != metrics.Lifetime.ping
+    ):
+        yield (
+            "Distribution metrics ought to have ping lifetime. Otherwise, their"
+            " samples could be submitted multiple times."
+        )
+
+
 # The checks that operate on an entire category of metrics:
 #    {NAME: (function, is_error)}
 CATEGORY_CHECKS: Dict[
@@ -412,6 +427,7 @@ METRIC_CHECKS: Dict[
     "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
     "UNEXPECTED_UNIT": (check_unexpected_unit, CheckType.warning),
     "EMPTY_DATAREVIEW": (check_empty_datareview, CheckType.warning),
+    "DISTRIBUTION_NON_PING_LIFETIME": (check_distribution_lifetime, CheckType.error),
 }
 
 

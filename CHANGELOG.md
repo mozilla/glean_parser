@@ -5,6 +5,8 @@
 
 - Add Go log outputter support for datetime (`go_server`) ([#693](https://github.com/mozilla/glean_parser/pull/693))
 
+- NEW LINT: Forbid (via lint) non-ping lifetimes for `*_distribution` metrics ([bug 1886810](https://bugzilla.mozilla.org/show_bug.cgi?id=1886810))
+
 ## 14.0.1
 
 - BUGFIX: Fix missing `ping_arg` in util.py ([#687](https://github.com/mozilla/glean_parser/pull/687))

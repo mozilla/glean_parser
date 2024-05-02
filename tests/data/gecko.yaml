@@ -9,7 +9,6 @@ page.perf:
     type: timing_distribution
     gecko_datapoint: GV_PAGE_LOAD_MS
     time_unit: millisecond
-    lifetime: application
     description: >
       A sample timing distribution metric exported from Gecko.
     bugs:
@@ -24,7 +23,6 @@ page.perf:
     type: timing_distribution
     gecko_datapoint: GV_PAGE_RELOAD_MS
     time_unit: millisecond
-    lifetime: application
     description: >
       Another sample timing distribution metric exported from Gecko.
     bugs:
@@ -62,7 +60,6 @@ gfx.content.checkerboard:
     type: timing_distribution
     gecko_datapoint: CHECKERBOARD_DURATION
     time_unit: millisecond
-    lifetime: application
     description: >
       A sample timing distribution metric exported from Gecko.
     bugs:
@@ -121,7 +118,6 @@ non.gecko.metrics:
   app_load_time:
     type: timing_distribution
     time_unit: millisecond
-    lifetime: application
     description: >
       A sample timing distribution that is not tied to a Gecko datapoint.
     bugs:
