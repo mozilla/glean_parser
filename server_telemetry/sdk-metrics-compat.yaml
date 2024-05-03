@@ -1,0 +1,108 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# This file defines metrics that are recorded by the Glean SDK
+# but are not sent with the server-side Glean pings. They were
+# deployed erroneously to some BQ tables in the past, and are now
+# included for compatibility reasons. They are not used in new
+# server-side code.
+
+---
+$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+
+glean.client.annotation:
+  experimentation_id:
+    type: string
+    lifetime: application
+    send_in_pings:
+      - all-pings
+    description: |
+      An experimentation identifier derived and provided by the application
+      for the purpose of experimentation enrollment.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1848201
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1848201#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - glean-team@mozilla.com
+    expires: never
+
+glean.error:
+  invalid_value:
+    type: labeled_counter
+    description: |
+      Counts the number of times a metric was set to an invalid value.
+      The labels are the `category.name` identifier of the metric.
+    bugs:
+      - https://bugzilla.mozilla.org/1499761
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1499761#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - glean-team@mozilla.com
+    expires: never
+    send_in_pings:
+      - all-pings
+    no_lint:
+      - COMMON_PREFIX
+
+  invalid_label:
+    type: labeled_counter
+    description: |
+      Counts the number of times a metric was set with an invalid label.
+      The labels are the `category.name` identifier of the metric.
+    bugs:
+      - https://bugzilla.mozilla.org/1499761
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1499761#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - glean-team@mozilla.com
+    expires: never
+    send_in_pings:
+      - all-pings
+    no_lint:
+      - COMMON_PREFIX
+
+  invalid_state:
+    type: labeled_counter
+    description: |
+      Counts the number of times a timing metric was used incorrectly.
+      The labels are the `category.name` identifier of the metric.
+    bugs:
+      - https://bugzilla.mozilla.org/1566380
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1499761#c5
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - glean-team@mozilla.com
+    expires: never
+    send_in_pings:
+      - all-pings
+    no_lint:
+      - COMMON_PREFIX
+
+  invalid_overflow:
+    type: labeled_counter
+    description: |
+      Counts the number of times a metric was set a value that overflowed.
+      The labels are the `category.name` identifier of the metric.
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1591912
+    data_reviews:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1591912#c3
+    data_sensitivity:
+      - technical
+    notification_emails:
+      - glean-team@mozilla.com
+    expires: never
+    send_in_pings:
+      - all-pings
+    no_lint:
+      - COMMON_PREFIX
