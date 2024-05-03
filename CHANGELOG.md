@@ -1,5 +1,10 @@
 # Changelog
-# Unreleased
+
+## Unreleased
+
+## 14.1.1
+
+- Replace deprecated methods and package ([#699](https://github.com/mozilla/glean_parser/pull/699))
 
 ## 14.1.0
 
