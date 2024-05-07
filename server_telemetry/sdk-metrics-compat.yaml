@@ -9,7 +9,7 @@
 # server-side code.
 
 ---
-$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
 glean.client.annotation:
   experimentation_id:
