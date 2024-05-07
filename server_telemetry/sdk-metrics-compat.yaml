@@ -16,7 +16,7 @@ glean.client.annotation:
     type: string
     lifetime: application
     send_in_pings:
-      - all-pings
+      - events
     description: |
       An experimentation identifier derived and provided by the application
       for the purpose of experimentation enrollment.
@@ -46,7 +46,7 @@ glean.error:
       - glean-team@mozilla.com
     expires: never
     send_in_pings:
-      - all-pings
+      - events
     no_lint:
       - COMMON_PREFIX
 
@@ -65,7 +65,7 @@ glean.error:
       - glean-team@mozilla.com
     expires: never
     send_in_pings:
-      - all-pings
+      - events
     no_lint:
       - COMMON_PREFIX
 
@@ -84,7 +84,7 @@ glean.error:
       - glean-team@mozilla.com
     expires: never
     send_in_pings:
-      - all-pings
+      - events
     no_lint:
       - COMMON_PREFIX
 
@@ -103,6 +103,6 @@ glean.error:
       - glean-team@mozilla.com
     expires: never
     send_in_pings:
-      - all-pings
+      - events
     no_lint:
       - COMMON_PREFIX
