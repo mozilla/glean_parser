@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 14.1.2
+
+- ping schedule: Gracefully handle missing ping ([#705](https://github.com/mozilla/glean_parser/pull/705))
+
 ## 14.1.1
 
 - Replace deprecated methods and package ([#699](https://github.com/mozilla/glean_parser/pull/699))
