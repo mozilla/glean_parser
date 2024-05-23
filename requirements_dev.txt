@@ -4,7 +4,7 @@ pip
 pytest-runner==5.3.2
 pytest==8.2.0
 recommonmark==0.7.1
-ruff==0.4.2
+ruff==0.4.5
 Sphinx==7.3.7; python_version > '3.8'
 twine==5.0.0
 types-Jinja2==2.11.9
