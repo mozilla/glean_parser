@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 14.1.3
+
+- Fix Kotlin/Swift code generation for object metrics, now generating top-level typealiases where needed ([#722](https://github.com/mozilla/glean_parser/pull/722))
+
 ## 14.1.2
 
 - ping schedule: Gracefully handle missing ping ([#705](https://github.com/mozilla/glean_parser/pull/705))
