@@ -472,6 +472,13 @@ def test_object_metric(tmp_path):
         ["ActivityStream.kt", "ComplexTypes.kt", "CrashStack.kt", "GleanBuildInfo.kt"]
     )
 
+    with (tmp_path / "ComplexTypes.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        assert "typealias ArrayInArrayObjectItemItem = Boolean" in content
+        assert "typealias NumberArrayObjectItem = Int" in content
+
     with (tmp_path / "CrashStack.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
