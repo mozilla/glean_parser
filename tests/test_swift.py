@@ -363,6 +363,9 @@ def test_object_metric(tmp_path):
         content = fd.read()
         content = " ".join(content.split())
 
+        assert "typealias ArrayInArrayObjectItemItem = Bool" in content
+        assert "typealias NumberArrayObjectItem = Int64" in content
+
         assert "ObjectMetricType<ThreadsObject>" in content
         assert "typealias ThreadsObject = [ThreadsObjectItem]" in content
         assert "struct ThreadsObjectItem: Codable, Equatable, ObjectSerialize {" in content
