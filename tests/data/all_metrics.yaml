@@ -118,3 +118,30 @@ all_metrics:
   text:
     <<: *defaults
     type: text
+
+  labeled_custom_distribution:
+    <<: *defaults
+    type: labeled_custom_distribution
+    range_min: 0
+    range_max: 100
+    bucket_count: 10
+    histogram_type: linear
+    labels:
+      - aLabel
+      - 2label
+
+  labeled_memory_distribution:
+    <<: *defaults
+    type: labeled_memory_distribution
+    memory_unit: kilobyte
+    labels:
+      - aLabel
+      - 2label
+
+  labeled_timing_distribution:
+    <<: *defaults
+    type: labeled_timing_distribution
+    time_unit: millisecond
+    labels:
+      - aLabel
+      - 2label
