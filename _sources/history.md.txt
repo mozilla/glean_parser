@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New Metric Types: `labeled_{custom|memory|timing}_distribution` ([bug 1657947](https://bugzilla.mozilla.org/show_bug.cgi?id=1657947))
+
 ## 14.1.3
 
 - Fix Kotlin/Swift code generation for object metrics, now generating top-level typealiases where needed ([#722](https://github.com/mozilla/glean_parser/pull/722))
