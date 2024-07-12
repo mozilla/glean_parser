@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 14.2.0
+
 - New Metric Types: `labeled_{custom|memory|timing}_distribution` ([bug 1657947](https://bugzilla.mozilla.org/show_bug.cgi?id=1657947))
 
 ## 14.1.3
