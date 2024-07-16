@@ -487,11 +487,11 @@ def test_object_metric(tmp_path):
         assert "data class ThreadsObject(" in content
         assert "data class ThreadsObjectItem(" in content
         assert (
-            "var frames: ThreadsObjectItemItemFrames = ThreadsObjectItemItemFrames"
+            "var frames: ThreadsObjectItemFrames = ThreadsObjectItemFrames"
             in content
         )
 
-        assert "data class ThreadsObjectItemItemFramesItem(" in content
+        assert "data class ThreadsObjectItemFramesItem(" in content
         assert "var moduleIndex: Int? = null," in content
         assert "var ip: String? = null," in content
         assert "var trust: String? = null," in content
