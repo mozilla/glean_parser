@@ -107,10 +107,10 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
     @Serializable
     data class {{ name }}(
         {% for itemname, val in struct.properties.items() %}
-          {% if val.type == "object" %}
+          {% if val.type == "array" %}
+          var {{itemname|camelize}}: {{ name ~ itemname|Camelize }} = {{ name ~ itemname|Camelize }}(),
+          {% elif val.type == "object" %}
           var {{itemname|camelize}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}? = null,
-          {% elif val.type == "array" %}
-          var {{itemname|camelize}}: {{ name ~ "Item" ~ itemname|Camelize }} = {{ name ~ "Item" ~ itemname|Camelize }}(),
           {% else %}
           var {{itemname|camelize}}: {{val.type|structure_type_name}}? = null,
           {% endif %}
@@ -123,7 +123,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 
     {% for itemname, val in struct.properties.items() %}
         {% if val.type == "array" %}
-        {% set nested_name = name ~ "Item" ~ itemname|Camelize %}
+        {% set nested_name = name ~ itemname|Camelize %}
         {{ generate_structure(nested_name, val) }}
         {% elif val.type == "object" %}
         {% set nested_name = name ~ "Item" ~ itemname|Camelize ~ "Object" %}
@@ -141,7 +141,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 {%- elif struct.type == "object" -%}
     {% for itemname, val in struct.properties.items() %}
         {% if val.type == "array" %}
-        {% set nested_name = name ~ "Item" ~ itemname|Camelize %}
+        {% set nested_name = name ~ itemname|Camelize %}
         {{ generate_structure_typealias(nested_name, val) }}
         {% elif val.type == "object" %}
         {% set nested_name = name ~ "Item" ~ itemname|Camelize ~ "Object" %}

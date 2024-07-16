@@ -20,12 +20,12 @@ Jinja2 template is not. Please file bugs! #}
     #[serde(deny_unknown_fields)]
     pub struct {{ name }} {
         {% for itemname, val in struct.properties.items() %}
-          {% if val.type == "object" %}
+          {% if val.type == "array" %}
+          #[serde(skip_serializing_if = "Vec::is_empty", default = "Vec::new")]
+          pub {{itemname|snake_case}}: {{ name ~ itemname|Camelize }},
+          {% elif val.type == "object" %}
           #[serde(skip_serializing_if = "Option::is_none")]
           pub {{itemname|snake_case}}: Option<{{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}>,
-          {% elif val.type == "array" %}
-          #[serde(skip_serializing_if = "Vec::is_empty", default = "Vec::new")]
-          pub {{itemname|snake_case}}: {{ name ~ "Item" ~ itemname|Camelize }},
           {% else %}
           #[serde(skip_serializing_if = "Option::is_none")]
           pub {{itemname|snake_case}}: Option<{{val.type|structure_type_name}}>,
@@ -35,7 +35,7 @@ Jinja2 template is not. Please file bugs! #}
 
     {% for itemname, val in struct.properties.items() %}
         {% if val.type == "array" %}
-        {% set nested_name = name ~ "Item" ~ itemname|Camelize %}
+        {% set nested_name = name ~ itemname|Camelize %}
         {{ generate_structure(nested_name, val) }}
         {% elif val.type == "object" %}
         {% set nested_name = name ~ "Item" ~ itemname|Camelize ~ "Object" %}
