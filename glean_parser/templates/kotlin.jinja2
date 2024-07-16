@@ -68,7 +68,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 
 {%- macro generate_structure(name, struct) %}
 {%- if struct.type == "array" -%}
-    @Serializable
+    @Serializable(with = {{name}}.Serializer::class)
     data class {{ name }}(var items: MutableList<{{ name }}Item> = mutableListOf()) : ObjectSerialize {
         fun add(elem: {{ name }}Item) = items.add(elem)
 
@@ -84,6 +84,20 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 
         override fun intoSerializedObject(): String {
             return Json.encodeToString(items)
+        }
+
+        internal object Serializer : KSerializer<{{name}}> {
+            @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+            override val descriptor = listSerialDescriptor<String>()
+
+            override fun deserialize(decoder: Decoder): {{ name }} {
+                val list = decoder.decodeSerializableValue(ListSerializer(serializer<{{name}}Item>()))
+                return {{name}}(items = list.toMutableList())
+            }
+
+            override fun serialize(encoder: Encoder, value: {{name}}) {
+                encoder.encodeSerializableValue(ListSerializer(serializer<{{name}}Item>()), value.items)
+            }
         }
     }
 
@@ -160,9 +174,15 @@ import {{ glean_namespace }}.private.{{ obj_type }} // ktlint-disable import-ord
 import {{ glean_namespace }}.private.LabeledMetricType // ktlint-disable import-ordering
 {% endif %}
 {% if has_object_metrics %}
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 {% endif %}
 
 {# HACK HACK HACK -- typealiases MUST BE top-level #}
