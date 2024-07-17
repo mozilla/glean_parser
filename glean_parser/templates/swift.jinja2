@@ -54,7 +54,7 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
     struct {{ name }}: Codable, Equatable, ObjectSerialize {
         {% for itemname, val in struct.properties.items() %}
           {% if val.type == "array" %}
-          var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize }}
+          var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize }} = []
           {% elif val.type == "object" %}
           var {{itemname|camelize|variable_name}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}?
           {% else %}
