@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Add the `module_spec` option to the javascript_server outputter ([#726](https://github.com/mozilla/glean_parser/pull/726))
+- BUGFIX: Fix the Rust codegen for changes to how `labeled_*` metrics are constructed ([bug 1909244](https://bugzilla.mozilla.org/show_bug.cgi?id=1909244))
 
 ## 14.2.0
 
