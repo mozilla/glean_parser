@@ -48,3 +48,8 @@ backend:
         description: >
           A JSON representation of the latest state of the object.
         type: string
+      linking:
+        description: >
+          Indicates the initial linking of the Mozilla account and
+          the third-party account.
+        type: boolean

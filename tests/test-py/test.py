@@ -13,4 +13,5 @@ logger.record_backend_object_update(
     identifiers_fxa_account_id="test-py-project",
     object_type="some_object_type",
     object_state="some_object_state",
+    linking=True,
 )

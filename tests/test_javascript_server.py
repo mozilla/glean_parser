@@ -161,6 +161,7 @@ eventLogger.recordBackendObjectUpdate({
   identifiers_fxa_account_id: 'abc',
   object_type: 'unknown',
   object_state: 'great',
+  linking: true,
 });
     """
 

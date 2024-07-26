@@ -103,6 +103,7 @@ module Glean
       # extras to pass into event detail
       object_type:,
       object_state:,
+      linking:,
       # The user's FxA account ID, if available.
       identifiers_fxa_account_id:,
       # full user_agent value from controller context
@@ -116,8 +117,9 @@ module Glean
           'name' => 'object_update',
           'timestamp' => (Time.now.utc.to_f * 1000).to_i,
           'extra' => [
-            ['object_type', object_type],
-            ['object_state', object_state],
+            ['object_type', object_type.to_s],
+            ['object_state', object_state.to_s],
+            ['linking', linking.to_s],
           ].to_h,
         }},
       ]

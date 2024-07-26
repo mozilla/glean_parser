@@ -133,6 +133,7 @@ def test_run_logging(tmp_path):
 events.backend_object_update.record(
     object_type: "type",
     object_state: "state",
+    linking: true,
     identifiers_fxa_account_id: nil,
     user_agent: "glean-test/1.0",
     ip_address: "127.0.0.1"

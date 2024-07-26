@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix JS and Ruby server templates to correctly send event extra values as strings ([DENG-4405](https://mozilla-hub.atlassian.net/browse/DENG-4405))
+
 ## 14.3.0
 
 - Add the `module_spec` option to the javascript_server outputter ([#726](https://github.com/mozilla/glean_parser/pull/726))
