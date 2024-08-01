@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 14.3.1
+
 - Fix JS and Ruby server templates to correctly send event extra values as strings ([DENG-4405](https://mozilla-hub.atlassian.net/browse/DENG-4405))
 
 ## 14.3.0
