@@ -194,7 +194,8 @@ def test_event_extra_keys_in_correct_order(tmp_path):
         print(content)
         content = " ".join(content.split())
         assert (
-            r"<ul><li>alice: two</li>"
+            r"<ul><li>And1WithExtraCasing: four</li>"
+            r"<li>alice: two</li>"
             r"<li>bob: three</li>"
             r"<li>charlie: one</li></ul>" in content
         )

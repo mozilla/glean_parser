@@ -288,9 +288,9 @@ def test_event_extra_keys_in_correct_order(tmp_path):
         content = " ".join(content.split())
         assert (
             "struct ExampleExtra: EventExtras "
-            "{ var alice: String? var bob: String? var charlie: String?" in content
+            "{ var and1withextracasing: Bool? var alice: String? var bob: String? var charlie: String?" in content
         )
-        assert ', ["alice", "bob", "charlie"]' in content
+        assert ', ["And1WithExtraCasing", "alice", "bob", "charlie"]' in content
 
 
 def test_event_extra_keys_with_types(tmp_path):

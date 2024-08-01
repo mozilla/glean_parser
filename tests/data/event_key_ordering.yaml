@@ -27,4 +27,7 @@ event:
       bob:
         description: "three"
         type: string
+      And1WithExtraCasing:
+        description: "four"
+        type: boolean
     expires: 2100-01-01
