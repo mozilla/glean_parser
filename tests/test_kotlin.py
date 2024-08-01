@@ -365,11 +365,12 @@ def test_event_extra_keys_in_correct_order(tmp_path):
         content = fd.read()
         content = " ".join(content.split())
         assert "ExampleExtra(" in content
+        assert "and1withextracasing:" in content
         assert "alice:" in content
         assert "bob:" in content
         assert "charlie:" in content
         assert ": EventExtras" in content
-        assert 'allowedExtraKeys = listOf("alice", "bob", "charlie")' in content
+        assert 'allowedExtraKeys = listOf("And1WithExtraCasing", "alice", "bob", "charlie")' in content
 
 
 def test_arguments_are_generated_in_deterministic_order(tmp_path):
@@ -392,7 +393,7 @@ def test_arguments_are_generated_in_deterministic_order(tmp_path):
     with (tmp_path / "Event.kt").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'EventMetricType<ExampleExtra> by lazy { // generated from event.example EventMetricType<ExampleExtra>( CommonMetricData( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.PING, disabled = false ), allowedExtraKeys = listOf("alice", "bob", "charlie")) } }'  # noqa
+        expected = 'EventMetricType<ExampleExtra> by lazy { // generated from event.example EventMetricType<ExampleExtra>( CommonMetricData( category = "event", name = "example", sendInPings = listOf("events"), lifetime = Lifetime.PING, disabled = false ), allowedExtraKeys = listOf("And1WithExtraCasing", "alice", "bob", "charlie")) } }'  # noqa
         assert expected in content
 
 

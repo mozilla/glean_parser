@@ -96,6 +96,9 @@ all_metrics:
       source:
         description: Source of this event
         type: string
+      extraKeyNOTJUSTdotted.snake:
+        description: An extra key with an expressive name.
+        type: boolean
 
   quantity:
     <<: *defaults
