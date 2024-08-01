@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Fix Rust codegen to properly handle events with multiple types of extras ([bug 1911165](https://bugzilla.mozilla.org/show_bug.cgi?id=1911165))
+
 ## 14.4.0
 
 - Fix JS and Ruby server templates to correctly send event extra values as strings ([DENG-4405](https://mozilla-hub.atlassian.net/browse/DENG-4405))
