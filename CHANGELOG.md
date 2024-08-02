@@ -8,6 +8,7 @@
 
 - Fix JS and Ruby server templates to correctly send event extra values as strings ([DENG-4405](https://mozilla-hub.atlassian.net/browse/DENG-4405))
 - ENHANCEMENT: Extra keys in `extra_keys:` fields may now contain any printable ASCII characters ([bug 1910976](https://bugzilla.mozilla.org/show_bug.cgi?id=1910976))
+- Updating Kotlin template import statement as part of removing `service-glean` from Android Components. ([bug 1906941](https://bugzilla.mozilla.org/show_bug.cgi?id=1906941))
 
 ## 14.3.0
 
