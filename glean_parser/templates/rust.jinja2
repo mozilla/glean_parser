@@ -21,7 +21,7 @@ Jinja2 template is not. Please file bugs! #}
     pub struct {{ name }} {
         {% for itemname, val in struct.properties.items() %}
           {% if val.type == "array" %}
-          #[serde(skip_serializing_if = "Vec::is_empty", default = "Vec::new")]
+          #[serde(skip_serializing_if = "Vec::is_empty", default = "Vec::new", deserialize_with = "::glean::traits::__serde_helper::vec_null")]
           pub {{itemname|snake_case}}: {{ name ~ itemname|Camelize }},
           {% elif val.type == "object" %}
           #[serde(skip_serializing_if = "Option::is_none")]
