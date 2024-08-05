@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 14.5.1
+
+- BUGFIX: Rust object metrics: Accept `null` in place of empty arrays
+
 ## 14.5.0
 
 - BUGFIX: Fix Rust codegen to properly handle events with multiple types of extras ([bug 1911165](https://bugzilla.mozilla.org/show_bug.cgi?id=1911165))
