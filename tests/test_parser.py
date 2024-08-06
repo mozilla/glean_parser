@@ -5,13 +5,16 @@
 
 from pathlib import Path
 import json
+import os
 import re
 import textwrap
+import tempfile
 
 import pytest
 
 from glean_parser import metrics
 from glean_parser import parser
+from glean_parser.util import load_yaml_or_json
 
 import util
 
@@ -1179,6 +1182,21 @@ def test_no_internal_fields_exposed():
         indent=2,
     )
     assert expected_json == out_json
+
+
+def test_json_loader():
+    yaml_input = ROOT / "data" / "all_metrics.yaml"
+    yaml_obj = load_yaml_or_json(yaml_input)
+
+    with tempfile.NamedTemporaryFile(suffix=".json", mode="w+", delete=False) as fd:
+        json.dump(yaml_obj, fd)
+        json_input = Path(fd.name)
+
+    json_obj = load_yaml_or_json(json_input)
+
+    os.remove(json_input)
+
+    assert yaml_obj == json_obj
 
 
 def test_object():
