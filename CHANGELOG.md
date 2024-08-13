@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **Breaking change:** Updating Kotlin template import statement as part of removing `service-glean` from Android Components. ([bug 1906941](https://bugzilla.mozilla.org/show_bug.cgi?id=1906941))
+- **Breaking change:** Do not generate Geckoview Streaming helper code ([#743](https://github.com/mozilla/glean_parser/pull/743))
 
 ## 14.5.2
 
