@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Breaking change:** Updating Kotlin template import statement as part of removing `service-glean` from Android Components. ([bug 1906941](https://bugzilla.mozilla.org/show_bug.cgi?id=1906941))
+
 ## 14.5.2
 
 - Revert updating Kotlin template import statement as part of removing `service-glean` from Android Components.
