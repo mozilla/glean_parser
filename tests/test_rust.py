@@ -132,7 +132,7 @@ def test_metric_type_name():
         expires="never",
     )
 
-    assert rust.type_name(event) == "EventMetric<NoExtra>"
+    assert rust.type_name(event) == "EventMetric<NoExtraKeys>"
 
     boolean = metrics.Boolean(
         type="boolean",
