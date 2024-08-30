@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Rust codegen: use correctly named parameter for events without extras ([#750](https://github.com/mozilla/glean_parser/pull/750))
+
 ## 15.0.0
 
 - **Breaking change:** Updating Kotlin template import statement as part of removing `service-glean` from Android Components. ([bug 1906941](https://bugzilla.mozilla.org/show_bug.cgi?id=1906941))
