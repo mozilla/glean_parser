@@ -24,11 +24,11 @@ with open("CHANGELOG.md", encoding="utf-8") as history_file:
     history = history_file.read()
 
 requirements = [
-    "appdirs>=1.4",
     "Click>=7",
     "diskcache>=4",
     "Jinja2>=2.10.1",
     "jsonschema>=3.0.2",
+    "platformdirs",
     "PyYAML>=5.3.1",
 ]
 
