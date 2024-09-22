@@ -28,7 +28,7 @@ requirements = [
     "diskcache>=4",
     "Jinja2>=2.10.1",
     "jsonschema>=3.0.2",
-    "platformdirs",
+    "platformdirs>=4.1.0",
     "PyYAML>=5.3.1",
 ]
 
