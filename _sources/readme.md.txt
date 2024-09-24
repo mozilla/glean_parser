@@ -21,11 +21,11 @@ code for various integrations, linting and coverage testing.
 The following library requirements are installed automatically when
 `glean_parser` is installed by `pip`.
 
--   appdirs
 -   Click
 -   diskcache
 -   Jinja2
 -   jsonschema
+-   platformdirs
 -   PyYAML
 
 ## Usage
