@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Bugfix: Remove unused keyword argument from exception ([#755](https://github.com/mozilla/glean_parser/pull/755))
+
 ## 15.0.1
 
 - Rust codegen: use correctly named parameter for events without extras ([#750](https://github.com/mozilla/glean_parser/pull/750))
