@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add Go log outputter support for custom pings (`go_server`) ([???](https://github.com/mozilla/glean_parser/pull/???))
+- Add Go log outputter support for custom pings (`go_server`) ([#758](https://github.com/mozilla/glean_parser/pull/758))
 
 ## 15.0.1
 
