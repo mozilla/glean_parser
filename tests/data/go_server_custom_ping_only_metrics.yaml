@@ -11,13 +11,13 @@ metric:
       Test string metric
     lifetime: application
     send_in_pings:
-      - events
+      - server-telemetry-scenario-one
     notification_emails:
       - CHANGE-ME@example.com
     bugs:
-      - https://bugzilla.mozilla.org/1
+      - TBD
     data_reviews:
-      - http://example.com/reviews
+      - TBD
     expires: never
 
   request_count:
@@ -27,13 +27,13 @@ metric:
       Test quantity metric
     lifetime: application
     send_in_pings:
-      - events
+      - server-telemetry-scenario-one
     notification_emails:
       - CHANGE-ME@example.com
     bugs:
-      - https://bugzilla.mozilla.org/1
+      - TBD
     data_reviews:
-      - http://example.com/reviews
+      - TBD
     expires: never
 
   request_datetime:
@@ -42,37 +42,26 @@ metric:
         Test datetime metric
     lifetime: application
     send_in_pings:
-      - events
+      - server-telemetry-scenario-one
     notification_emails:
       - CHANGE-ME@example.com
     bugs:
-      - https://bugzilla.mozilla.org/1
+      - TBD
     data_reviews:
-      - http://example.com/reviews
+      - TBD
     expires: never
 
-backend:
-  test_event:
-    type: event
+  request_bool:
+    type: boolean
     description: >
-      test event
+      boolean
+    lifetime: application
+    send_in_pings:
+      - server-telemetry-scenario-one
+    notification_emails:
+      - CHANGE-ME@example.com
     bugs:
       - TBD
     data_reviews:
       - TBD
-    notification_emails:
-      - fake@fake.com
     expires: never
-    extra_keys:
-      event_field_string:
-        description: >
-          A string extra field
-        type: string
-      event_field_quantity:
-        description: >
-          A quantity extra field
-        type: quantity
-      event_field_bool:
-        description: >
-          A boolean extra field
-        type: boolean

@@ -128,7 +128,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 	}
 }
 
-// method called by each event method.
+// method called by each event or custom ping method.
 // construct the ping, wrap it in the envelope, and print to stdout
 func (g GleanEventsLogger) record(
 	documentType string,
@@ -159,12 +159,13 @@ func (g GleanEventsLogger) record(
 }
 
 type EventBackendTestEvent struct {
-  MetricName string // Test string metric
-  MetricRequestCount int64 // Test quantity metric
-  MetricRequestDatetime time.Time // Test datetime metric
-  EventFieldString string // A string extra field
-  EventFieldQuantity int64 // A quantity extra field
-  EventFieldBool bool // A boolean extra field
+    MetricName string // Test string metric
+    MetricRequestBool bool // boolean
+    MetricRequestCount int64 // Test quantity metric
+    MetricRequestDatetime time.Time // Test datetime metric
+    EventFieldString string // A string extra field
+    EventFieldQuantity int64 // A quantity extra field
+    EventFieldBool bool // A boolean extra field
 }
 
 // Record and submit an EventBackendTestEvent event.
@@ -176,6 +177,9 @@ func (g GleanEventsLogger) RecordEventBackendTestEvent(
 	var metrics = metrics{
 		"string": {
             "metric.name": params.MetricName,
+		},
+		"boolean": {
+            "metric.request_bool": params.MetricRequestBool,
 		},
 		"quantity": {
             "metric.request_count": params.MetricRequestCount,
@@ -203,8 +207,7 @@ func (g GleanEventsLogger) RecordEventBackendTestEvent(
 // Record and submit an EventBackendTestEvent event omitting user request info
 // test event
 func (g GleanEventsLogger) RecordEventBackendTestEventWithoutUserInfo(
-  params EventBackendTestEvent,
+    params EventBackendTestEvent,
 ) {
 	g.RecordEventBackendTestEvent(defaultRequestInfo, params)
 }
-

@@ -6,21 +6,6 @@ $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
 
 metric:
-  bool:
-    type: boolean
-    description: >
-      boolean
-    bugs:
-      - TBD
-    data_reviews:
-      - TBD
-    notification_emails:
-      - fake@fake.com
-    lifetime: application
-    expires: never
-    send_in_pings:
-      - events
-
   labeled_bool:
     type: labeled_boolean
     description: >
@@ -30,7 +15,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -45,11 +30,35 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
       - events
+
+  object:
+    type: object
+    description: >
+      json object
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+    structure:
+      type: array
+      items:
+        type: object
+        properties:
+          attribute_one:
+            type: string
+          attribute_two:
+            type: number
 
   string_list:
     type: string_list
@@ -60,7 +69,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -75,7 +84,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -90,7 +99,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -105,7 +114,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -120,7 +129,7 @@ metric:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     lifetime: application
     expires: never
     send_in_pings:
@@ -136,7 +145,7 @@ backend:
     data_reviews:
       - TBD
     notification_emails:
-      - fake@fake.com
+      - CHANGE-ME@example.com
     expires: never
     extra_keys:
       event_field_1:
