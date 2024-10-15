@@ -96,6 +96,29 @@ additionalProperties:
             Interaction with `include_client_id`: `include_client_id` only takes
             effect when `metadata.include_info_sections` is `true`.
           type: boolean
+        included_info_sections:
+          title: List of included info sections
+          description: |
+              A list of client_info sections to include.
+              Basically overwrites include_client_id and include_info_sections.
+          type: array
+          items:
+            type: string
+            enum:
+              - client_id
+              - app_build
+              - app_channel
+              - app_display_version
+              - build_date
+              - architecture
+              - device_manufacturer
+              - device_model
+              - first_run_date
+              - os
+              - os_version
+              - android_sdk_version
+              - telemetry_sdk_build
+              - locale
         ping_schedule:
           title: Ping Schedule
           description: |

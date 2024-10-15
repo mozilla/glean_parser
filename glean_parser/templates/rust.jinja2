@@ -96,8 +96,13 @@ CommonMetricData {
 #[allow(non_upper_case_globals, dead_code)]
 /// {{ obj.description|wordwrap() | replace('\n', '\n/// ') }}
 #[rustfmt::skip]
+{% if obj.metadata["included_info_sections"] %}
+{% set included_info_sections = obj.metadata["included_info_sections"] %}
+{% else %}
+{% set included_info_sections = [] %}
+{% endif %}
 pub static {{ obj.name|snake_case }}: ::glean::private::__export::Lazy<::glean::private::PingType> =
-    ::glean::private::__export::Lazy::new(|| ::glean::private::PingType::new("{{ obj.name }}", {{ obj.include_client_id|rust }}, {{ obj.send_if_empty|rust }}, {{ obj.precise_timestamps|rust }}, {{ obj.include_info_sections|rust }}, {{ obj.enabled|rust }}, {{ obj.schedules_pings|rust }}, {{ obj.reason_codes|rust }}));
+    ::glean::private::__export::Lazy::new(|| ::glean::private::PingType::new("{{ obj.name }}", {{ obj.include_client_id|rust }}, {{ obj.send_if_empty|rust }}, {{ obj.precise_timestamps|rust }}, {{ obj.include_info_sections|rust }}, {{ obj.enabled|rust }}, {{ obj.schedules_pings|rust }}, {{ obj.reason_codes|rust }}, {{ included_info_sections|rust }}));
 {% endfor %}
 {% else %}
 pub mod {{ category.name|snake_case }} {
