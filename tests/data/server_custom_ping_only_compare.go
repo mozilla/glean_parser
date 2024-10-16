@@ -128,7 +128,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 	}
 }
 
-// method called by each event or custom ping method.
+// method called by each events or custom ping method.
 // construct the ping, wrap it in the envelope, and print to stdout
 func (g GleanEventsLogger) record(
 	documentType string,
@@ -158,11 +158,46 @@ func (g GleanEventsLogger) record(
 	fmt.Println(string(envelopeJson))
 }
 
+func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
+	return gleanEvent{
+		Category:  category,
+		Name:      name,
+		Timestamp: time.Now().UnixMilli(),
+		Extra: extra,
+	}
+}
+
+type EventBackendSpecialEvent struct {
+    EventFieldString string // A string extra field
+    EventFieldQuantity int64 // A quantity extra field
+    EventFieldBool bool // A boolean extra field
+}
+
+func (e EventBackendSpecialEvent) gleanEvent() gleanEvent {
+    return newGleanEvent(
+        "backend",
+        "special_event",
+        map[string]string{
+            "event_field_string": e.EventFieldString,
+            "event_field_quantity": fmt.Sprintf("%d", e.EventFieldQuantity),
+            "event_field_bool": fmt.Sprintf("%t", e.EventFieldBool),
+        },
+    )
+}
+
+type PingServerTelemetryScenarioOneEvent interface {
+    isPingServerTelemetryScenarioOneEvent()
+    gleanEvent() gleanEvent
+}
+
+func (e EventBackendSpecialEvent) isPingServerTelemetryScenarioOneEvent() {}
+
 type PingServerTelemetryScenarioOne struct {
     MetricName string // Test string metric
     MetricRequestBool bool // boolean
     MetricRequestCount int64 // Test quantity metric
     MetricRequestDatetime time.Time // Test datetime metric
+    Events []PingServerTelemetryScenarioOneEvent // valid events for this ping
 }
 
 // Record and submit a PingServerTelemetryScenarioOne custom Ping
@@ -184,7 +219,12 @@ func (g GleanEventsLogger) RecordPingServerTelemetryScenarioOne(
 			"metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
         },
     }
-    g.record("server-telemetry-scenario-one", requestInfo, metrics, []gleanEvent{})
+
+    events := []gleanEvent{}
+	for _, e := range params.Events {
+		events = append(events, e.gleanEvent())
+	}
+    g.record("server-telemetry-scenario-one", requestInfo, metrics, events)
 }
 
 // Record and submit a PingServerTelemetryScenarioOne custom Ping omitting user request info

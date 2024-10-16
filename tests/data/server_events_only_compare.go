@@ -128,7 +128,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 	}
 }
 
-// method called by each event or custom ping method.
+// method called by each events or custom ping method.
 // construct the ping, wrap it in the envelope, and print to stdout
 func (g GleanEventsLogger) record(
 	documentType string,
@@ -158,56 +158,78 @@ func (g GleanEventsLogger) record(
 	fmt.Println(string(envelopeJson))
 }
 
+func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
+	return gleanEvent{
+		Category:  category,
+		Name:      name,
+		Timestamp: time.Now().UnixMilli(),
+		Extra: extra,
+	}
+}
+
 type EventBackendTestEvent struct {
-    MetricName string // Test string metric
-    MetricRequestBool bool // boolean
-    MetricRequestCount int64 // Test quantity metric
-    MetricRequestDatetime time.Time // Test datetime metric
     EventFieldString string // A string extra field
     EventFieldQuantity int64 // A quantity extra field
     EventFieldBool bool // A boolean extra field
 }
 
-// Record and submit an EventBackendTestEvent event.
-// test event
-func (g GleanEventsLogger) RecordEventBackendTestEvent(
-	requestInfo RequestInfo,
-	params EventBackendTestEvent,
-) {
-	var metrics = metrics{
-		"string": {
-            "metric.name": params.MetricName,
-		},
-		"boolean": {
-            "metric.request_bool": params.MetricRequestBool,
-		},
-		"quantity": {
-            "metric.request_count": params.MetricRequestCount,
-		},
-		"datetime": {
-			"metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
-		},
-	}
-	var extraKeys = map[string]string{
-		"event_field_string": params.EventFieldString,
-		"event_field_quantity": fmt.Sprintf("%d", params.EventFieldQuantity),
-		"event_field_bool": fmt.Sprintf("%t", params.EventFieldBool),
-	}
-	var events = []gleanEvent{
-		gleanEvent{
-			Category:  "backend",
-			Name:      "test_event",
-			Timestamp: time.Now().UnixMilli(),
-			Extra:     extraKeys,
-		},
-	}
-	g.record("events", requestInfo, metrics, events)
+func (e EventBackendTestEvent) gleanEvent() gleanEvent {
+    return newGleanEvent(
+        "backend",
+        "test_event",
+        map[string]string{
+            "event_field_string": e.EventFieldString,
+            "event_field_quantity": fmt.Sprintf("%d", e.EventFieldQuantity),
+            "event_field_bool": fmt.Sprintf("%t", e.EventFieldBool),
+        },
+    )
 }
 
-// Record and submit an EventBackendTestEvent event omitting user request info
-// test event
-func (g GleanEventsLogger) RecordEventBackendTestEventWithoutUserInfo(
-    params EventBackendTestEvent,
+type PingEventsEvent interface {
+    isPingEventsEvent()
+    gleanEvent() gleanEvent
+}
+
+func (e EventBackendTestEvent) isPingEventsEvent() {}
+
+type PingEvents struct {
+    MetricName string // Test string metric
+    MetricRequestBool bool // boolean
+    MetricRequestCount int64 // Test quantity metric
+    MetricRequestDatetime time.Time // Test datetime metric
+    Events []PingEventsEvent // valid events for this ping
+}
+
+// Record and submit a PingEvents custom Ping
+func (g GleanEventsLogger) RecordPingEvents(
+    requestInfo RequestInfo,
+    params PingEvents,
 ) {
-	g.RecordEventBackendTestEvent(defaultRequestInfo, params)
+    var metrics = metrics{
+        "string": {
+            "metric.name": params.MetricName,
+        },
+        "boolean": {
+            "metric.request_bool": params.MetricRequestBool,
+        },
+        "quantity": {
+            "metric.request_count": params.MetricRequestCount,
+        },
+        "datetime": {
+			"metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
+        },
+    }
+
+    events := []gleanEvent{}
+	for _, e := range params.Events {
+		events = append(events, e.gleanEvent())
+	}
+    g.record("events", requestInfo, metrics, events)
+}
+
+// Record and submit a PingEvents custom Ping omitting user request info
+func (g GleanEventsLogger) RecordPingEventsWithoutUserInfo(
+    params PingEvents,
+) {
+    g.RecordPingEvents(defaultRequestInfo, params)
 }

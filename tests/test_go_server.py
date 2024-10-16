@@ -164,19 +164,23 @@ def test_run_logging_events_ping(tmp_path):
     )
 
     code = """
-    logger.RecordEventBackendTestEvent(
+    logger.RecordPingEvents(
         glean.RequestInfo{
             UserAgent: "glean-test/1.0",
             IpAddress: "127.0.0.1",
         },
-        glean.EventBackendTestEvent{
+        glean.PingEvents{
             MetricName:            "string value",
             MetricRequestBool:     true,
             MetricRequestCount:    10,
             MetricRequestDatetime: time.Now(),
-            EventFieldString:      "event extra string value",
-            EventFieldQuantity:    100,
-            EventFieldBool:        false,
+            Events: []glean.PingEventsEvent{
+                glean.EventBackendTestEvent{
+                    EventFieldString:      "event extra string value",
+                    EventFieldQuantity:    100,
+                    EventFieldBool:        false,
+                },
+            },
         },
     )
     """
@@ -229,6 +233,65 @@ def test_run_logging_custom_ping(tmp_path):
             MetricRequestBool:     true,
             MetricRequestCount:    20,
             MetricRequestDatetime: time.Now(),
+        },
+    )
+    """
+
+    logged_output = run_logger(tmp_path, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload = fields["payload"]
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "server-telemetry-scenario-one" == fields["document_type"]
+    assert "1" == fields["document_version"]
+    assert "glean-test/1.0" == fields["user_agent"]
+
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(payload)
+    output = io.StringIO()
+    assert (
+        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
+    ), output.getvalue()
+
+
+@pytest.mark.go_dependency
+def test_run_logging_custom_ping_with_event(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    code = """
+    logger.RecordPingServerTelemetryScenarioOne(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.PingServerTelemetryScenarioOne{
+            MetricName:            "string value",
+            MetricRequestBool:     true,
+            MetricRequestCount:    20,
+            MetricRequestDatetime: time.Now(),
+            Events: []glean.PingServerTelemetryScenarioOneEvent{
+                glean.EventBackendSpecialEvent{
+                    EventFieldString: "exta value string",
+                    EventFieldQuantity: 30,
+                    EventFieldBool: true,
+                },
+            },
         },
     )
     """

@@ -42,6 +42,10 @@ def generate_ping_type_name(ping_name: str) -> str:
     return f"Ping{util.Camelize(ping_name)}"
 
 
+def generate_ping_events_type_name(ping_name: str) -> str:
+    return f"Ping{util.Camelize(ping_name)}Event"
+
+
 def generate_event_type_name(metric: metrics.Metric) -> str:
     return f"Event{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
 
@@ -95,6 +99,7 @@ def output_go(
         "go_server.jinja2",
         filters=(
             ("ping_type_name", generate_ping_type_name),
+            ("ping_events_type_name", generate_ping_events_type_name),
             ("event_type_name", generate_event_type_name),
             ("event_extra_name", generate_extra_name),
             ("metric_name", generate_metric_name),
@@ -103,6 +108,9 @@ def output_go(
             ("clean_string", clean_string),
         ),
     )
+
+    # unique list of event metrics used in any ping
+    event_metrics: List[metrics.Metric] = []
 
     # Go through all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
@@ -121,6 +129,9 @@ def output_go(
                     continue
 
                 for ping in metric.send_in_pings:
+                    if metric.type == "event" and metric not in event_metrics:
+                        event_metrics.append(metric)
+
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
@@ -141,6 +152,6 @@ def output_go(
             template.render(
                 parser_version=__version__,
                 pings=ping_to_metrics,
-                events_ping=ping_to_metrics["events"]
+                events=event_metrics
             )
         )

@@ -65,3 +65,31 @@ metric:
     data_reviews:
       - TBD
     expires: never
+
+backend:
+  special_event:
+    type: event
+    description: >
+      special event
+    send_in_pings:
+      - server-telemetry-scenario-one
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - fake@fake.com
+    expires: never
+    extra_keys:
+      event_field_string:
+        description: >
+          A string extra field
+        type: string
+      event_field_quantity:
+        description: >
+          A quantity extra field
+        type: quantity
+      event_field_bool:
+        description: >
+          A boolean extra field
+        type: boolean
