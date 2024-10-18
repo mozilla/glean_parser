@@ -228,7 +228,7 @@ type {{ ping|ping_type_name }} struct {
     {% endif %}
 }
 
-// Record and submit a {{ ping|ping_type_name }} custom Ping
+// Record and submit `{{ ping }}` ping
 func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
     requestInfo RequestInfo,
     params {{ ping|ping_type_name }},
