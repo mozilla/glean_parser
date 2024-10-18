@@ -258,7 +258,7 @@ func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
     g.record("{{ ping }}", requestInfo, metrics, events)
 }
 
-// Record and submit a {{ ping|ping_type_name }} custom Ping omitting user request info
+// Record and submit `{{ ping }}` ping omitting user request info
 func (g GleanEventsLogger) Record{{ ping|ping_type_name}}WithoutUserInfo(
     params {{ ping|ping_type_name}},
 ) {
