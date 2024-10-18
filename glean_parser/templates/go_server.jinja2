@@ -224,7 +224,7 @@ type {{ ping|ping_type_name }} struct {
     {% endif %}
     {% endfor %}
     {% if metrics_by_type['event'] %}
-    Events []{{ ping|ping_events_type_name }} // valid events for this ping
+    Event {{ ping|ping_events_type_name }} // valid event for this ping
     {% endif %}
 }
 
@@ -251,8 +251,8 @@ func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
 
     events := []gleanEvent{}
     {% if metrics_by_type['event'] %}
-	for _, e := range params.Events {
-		events = append(events, e.gleanEvent())
+    if params.Event != nil {
+		events = append(events, params.Event.gleanEvent())
 	}
     {% endif %}
     g.record("{{ ping }}", requestInfo, metrics, events)

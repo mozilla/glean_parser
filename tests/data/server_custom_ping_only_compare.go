@@ -197,7 +197,7 @@ type PingServerTelemetryScenarioOne struct {
     MetricRequestBool bool // boolean
     MetricRequestCount int64 // Test quantity metric
     MetricRequestDatetime time.Time // Test datetime metric
-    Events []PingServerTelemetryScenarioOneEvent // valid events for this ping
+    Event PingServerTelemetryScenarioOneEvent // valid event for this ping
 }
 
 // Record and submit a PingServerTelemetryScenarioOne custom Ping
@@ -221,8 +221,8 @@ func (g GleanEventsLogger) RecordPingServerTelemetryScenarioOne(
     }
 
     events := []gleanEvent{}
-	for _, e := range params.Events {
-		events = append(events, e.gleanEvent())
+    if params.Event != nil {
+		events = append(events, params.Event.gleanEvent())
 	}
     g.record("server-telemetry-scenario-one", requestInfo, metrics, events)
 }

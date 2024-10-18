@@ -197,7 +197,7 @@ type PingEvents struct {
     MetricRequestBool bool // boolean
     MetricRequestCount int64 // Test quantity metric
     MetricRequestDatetime time.Time // Test datetime metric
-    Events []PingEventsEvent // valid events for this ping
+    Event PingEventsEvent // valid event for this ping
 }
 
 // Record and submit a PingEvents custom Ping
@@ -221,8 +221,8 @@ func (g GleanEventsLogger) RecordPingEvents(
     }
 
     events := []gleanEvent{}
-	for _, e := range params.Events {
-		events = append(events, e.gleanEvent())
+    if params.Event != nil {
+		events = append(events, params.Event.gleanEvent())
 	}
     g.record("events", requestInfo, metrics, events)
 }

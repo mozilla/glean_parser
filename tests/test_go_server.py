@@ -174,12 +174,10 @@ def test_run_logging_events_ping(tmp_path):
             MetricRequestBool:     true,
             MetricRequestCount:    10,
             MetricRequestDatetime: time.Now(),
-            Events: []glean.PingEventsEvent{
-                glean.EventBackendTestEvent{
-                    EventFieldString:      "event extra string value",
-                    EventFieldQuantity:    100,
-                    EventFieldBool:        false,
-                },
+            Event: glean.EventBackendTestEvent{
+                EventFieldString:      "event extra string value",
+                EventFieldQuantity:    100,
+                EventFieldBool:        false,
             },
         },
     )
@@ -210,7 +208,7 @@ def test_run_logging_events_ping(tmp_path):
 
 
 @pytest.mark.go_dependency
-def test_run_logging_custom_ping(tmp_path):
+def test_run_logging_custom_ping_without_event(tmp_path):
     glean_module_path = tmp_path / "glean"
 
     translate.translate(
@@ -285,12 +283,10 @@ def test_run_logging_custom_ping_with_event(tmp_path):
             MetricRequestBool:     true,
             MetricRequestCount:    20,
             MetricRequestDatetime: time.Now(),
-            Events: []glean.PingServerTelemetryScenarioOneEvent{
-                glean.EventBackendSpecialEvent{
-                    EventFieldString: "exta value string",
-                    EventFieldQuantity: 30,
-                    EventFieldBool: true,
-                },
+            Event: glean.EventBackendSpecialEvent{
+                EventFieldString: "exta value string",
+                EventFieldQuantity: 30,
+                EventFieldBool: true,
             },
         },
     )
