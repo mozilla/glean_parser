@@ -199,7 +199,7 @@ func (e {{ event|event_type_name }}) gleanEvent() gleanEvent {
 }
 {% endfor %}
 {% endif %}
-{# struct & methods for submitting custom pings #}
+{# struct & methods for submitting pings #}
 {% for ping, metrics_by_type in pings.items() %}
 {% if metrics_by_type['event'] %}
 
