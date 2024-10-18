@@ -164,17 +164,17 @@ def test_run_logging_events_ping(tmp_path):
     )
 
     code = """
-    logger.RecordPingEvents(
+    logger.RecordEventsPing(
         glean.RequestInfo{
             UserAgent: "glean-test/1.0",
             IpAddress: "127.0.0.1",
         },
-        glean.PingEvents{
+        glean.EventsPing{
             MetricName:            "string value",
             MetricRequestBool:     true,
             MetricRequestCount:    10,
             MetricRequestDatetime: time.Now(),
-            Event: glean.EventBackendTestEvent{
+            Event: glean.BackendTestEventEvent{
                 EventFieldString:      "event extra string value",
                 EventFieldQuantity:    100,
                 EventFieldBool:        false,
@@ -221,12 +221,12 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     )
 
     code = """
-    logger.RecordPingServerTelemetryScenarioOne(
+    logger.RecordServerTelemetryScenarioOnePing(
         glean.RequestInfo{
             UserAgent: "glean-test/1.0",
             IpAddress: "127.0.0.1",
         },
-        glean.PingServerTelemetryScenarioOne{
+        glean.ServerTelemetryScenarioOnePing{
             MetricName:            "string value",
             MetricRequestBool:     true,
             MetricRequestCount:    20,
@@ -273,17 +273,17 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     )
 
     code = """
-    logger.RecordPingServerTelemetryScenarioOne(
+    logger.RecordServerTelemetryScenarioOnePing(
         glean.RequestInfo{
             UserAgent: "glean-test/1.0",
             IpAddress: "127.0.0.1",
         },
-        glean.PingServerTelemetryScenarioOne{
+        glean.ServerTelemetryScenarioOnePing{
             MetricName:            "string value",
             MetricRequestBool:     true,
             MetricRequestCount:    20,
             MetricRequestDatetime: time.Now(),
-            Event: glean.EventBackendSpecialEvent{
+            Event: glean.BackendSpecialEventEvent{
                 EventFieldString: "exta value string",
                 EventFieldQuantity: 30,
                 EventFieldBool: true,

@@ -36,15 +36,15 @@ SUPPORTED_METRIC_TYPES = ["string", "quantity", "event", "datetime", "boolean"]
 
 
 def generate_ping_type_name(ping_name: str) -> str:
-    return f"Ping{util.Camelize(ping_name)}"
+    return f"{util.Camelize(ping_name)}Ping"
 
 
 def generate_ping_events_type_name(ping_name: str) -> str:
-    return f"Ping{util.Camelize(ping_name)}Event"
+    return f"{util.Camelize(ping_name)}PingEvent"
 
 
 def generate_event_type_name(metric: metrics.Metric) -> str:
-    return f"Event{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
+    return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}Event"
 
 
 def generate_metric_name(metric: metrics.Metric) -> str:
