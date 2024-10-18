@@ -148,3 +148,11 @@ all_metrics:
     labels:
       - aLabel
       - 2label
+
+  labeled_quantity:
+    <<: *defaults
+    type: labeled_quantity
+    unit: tabs
+    labels:
+      - aLabel
+      - 2label
