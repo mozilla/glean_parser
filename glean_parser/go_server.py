@@ -17,12 +17,9 @@ conforming to Glean schema.
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 
-The generated code creates the following:
-* Two methods for logging an Event metric
-    one with and one without user request info specified
-* Two methods for logging each custom ping
-    one with and one without user request info specified
-* Both event and ping pairs of methods, if the events ping and custom pings are both defined
+Generated code creates two methods for each ping (`RecordPingX` and `RecordPingXWithoutUserInfo`)
+that are used for submitting (logging) them.
+If pings have `event` metrics assigned, they can be passed to these methods.
 """
 
 from collections import defaultdict
