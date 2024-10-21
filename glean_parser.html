@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>glean_parser package &#8212; Glean Parser 15.0.2.dev5+g303b23c4 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 15.0.2.dev6+gc32ce043 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=c9414f3b"></script>
+    <script src="_static/documentation_options.js?v=5f643990"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -97,11 +97,9 @@ Generated code takes care of assembling pings with metrics, and serializing to m
 conforming to Glean schema.</p>
 <p>Warning: this outputter supports limited set of metrics,
 see <cite>SUPPORTED_METRIC_TYPES</cite> below.</p>
-<p>The generated code creates the following:
-* Two methods for logging an Event metric</p>
-<blockquote>
-<div><p>one with and one without user request info specified</p>
-</div></blockquote>
+<p>Generated code creates two methods for each ping (<cite>RecordPingX</cite> and <cite>RecordPingXWithoutUserInfo</cite>)
+that are used for submitting (logging) them.
+If pings have <cite>event</cite> metrics assigned, they can be passed to these methods.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.go_server.clean_string">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.go_server.</span></span><span class="sig-name descname"><span class="pre">clean_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/go_server.html#clean_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.go_server.clean_string" title="Link to this definition">¶</a></dt>
@@ -130,6 +128,16 @@ see <cite>SUPPORTED_METRIC_TYPES</cite> below.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="glean_parser.go_server.generate_metric_type">
 <span class="sig-prename descclassname"><span class="pre">glean_parser.go_server.</span></span><span class="sig-name descname"><span class="pre">generate_metric_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/go_server.html#generate_metric_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.go_server.generate_metric_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.go_server.generate_ping_events_type_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.go_server.</span></span><span class="sig-name descname"><span class="pre">generate_ping_events_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ping_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/go_server.html#generate_ping_events_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.go_server.generate_ping_events_type_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.go_server.generate_ping_type_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.go_server.</span></span><span class="sig-name descname"><span class="pre">generate_ping_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ping_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/go_server.html#generate_ping_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.go_server.generate_ping_type_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
