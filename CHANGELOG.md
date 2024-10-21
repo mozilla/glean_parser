@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 15.1.0
 
 - Bugfix: Remove unused keyword argument from exception ([#755](https://github.com/mozilla/glean_parser/pull/755))
 - Add Go log outputter support for custom pings (`go_server`) ([#758](https://github.com/mozilla/glean_parser/pull/758))
