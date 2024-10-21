@@ -128,7 +128,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 	}
 }
 
-// method called by each event method.
+// method called by each ping-specific record method.
 // construct the ping, wrap it in the envelope, and print to stdout
 func (g GleanEventsLogger) record(
 	documentType string,
@@ -158,53 +158,78 @@ func (g GleanEventsLogger) record(
 	fmt.Println(string(envelopeJson))
 }
 
-type EventBackendTestEvent struct {
-  MetricName string // Test string metric
-  MetricRequestCount int64 // Test quantity metric
-  MetricRequestDatetime time.Time // Test datetime metric
-  EventFieldString string // A string extra field
-  EventFieldQuantity int64 // A quantity extra field
-  EventFieldBool bool // A boolean extra field
+func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
+	return gleanEvent{
+		Category:  category,
+		Name:      name,
+		Timestamp: time.Now().UnixMilli(),
+		Extra: extra,
+	}
 }
 
-// Record and submit an EventBackendTestEvent event.
-// test event
-func (g GleanEventsLogger) RecordEventBackendTestEvent(
-	requestInfo RequestInfo,
-	params EventBackendTestEvent,
+type BackendTestEventEvent struct {
+    EventFieldString string // A string extra field
+    EventFieldQuantity int64 // A quantity extra field
+    EventFieldBool bool // A boolean extra field
+}
+
+func (e BackendTestEventEvent) gleanEvent() gleanEvent {
+    return newGleanEvent(
+        "backend",
+        "test_event",
+        map[string]string{
+            "event_field_string": e.EventFieldString,
+            "event_field_quantity": fmt.Sprintf("%d", e.EventFieldQuantity),
+            "event_field_bool": fmt.Sprintf("%t", e.EventFieldBool),
+        },
+    )
+}
+
+type EventsPingEvent interface {
+    isEventsPingEvent()
+    gleanEvent() gleanEvent
+}
+
+func (e BackendTestEventEvent) isEventsPingEvent() {}
+
+type EventsPing struct {
+    MetricName string // Test string metric
+    MetricRequestBool bool // boolean
+    MetricRequestCount int64 // Test quantity metric
+    MetricRequestDatetime time.Time // Test datetime metric
+    Event EventsPingEvent // valid event for this ping
+}
+
+// Record and submit `events` ping
+func (g GleanEventsLogger) RecordEventsPing(
+    requestInfo RequestInfo,
+    params EventsPing,
 ) {
-	var metrics = metrics{
-		"string": {
+    var metrics = metrics{
+        "string": {
             "metric.name": params.MetricName,
-		},
-		"quantity": {
+        },
+        "boolean": {
+            "metric.request_bool": params.MetricRequestBool,
+        },
+        "quantity": {
             "metric.request_count": params.MetricRequestCount,
-		},
-		"datetime": {
+        },
+        "datetime": {
 			"metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
-		},
+        },
+    }
+
+    events := []gleanEvent{}
+    if params.Event != nil {
+		events = append(events, params.Event.gleanEvent())
 	}
-	var extraKeys = map[string]string{
-		"event_field_string": params.EventFieldString,
-		"event_field_quantity": fmt.Sprintf("%d", params.EventFieldQuantity),
-		"event_field_bool": fmt.Sprintf("%t", params.EventFieldBool),
-	}
-	var events = []gleanEvent{
-		gleanEvent{
-			Category:  "backend",
-			Name:      "test_event",
-			Timestamp: time.Now().UnixMilli(),
-			Extra:     extraKeys,
-		},
-	}
-	g.record("events", requestInfo, metrics, events)
+    g.record("events", requestInfo, metrics, events)
 }
 
-// Record and submit an EventBackendTestEvent event omitting user request info
-// test event
-func (g GleanEventsLogger) RecordEventBackendTestEventWithoutUserInfo(
-  params EventBackendTestEvent,
+// Record and submit `events` ping omitting user request info
+func (g GleanEventsLogger) RecordEventsPingWithoutUserInfo(
+    params EventsPing,
 ) {
-	g.RecordEventBackendTestEvent(defaultRequestInfo, params)
+    g.RecordEventsPing(defaultRequestInfo, params)
 }
-
