@@ -1,10 +1,13 @@
 # Changelog
 
+## 15.2.0
+
+- New Metric Type: `labeled_quantity` ([bug 1925346](https://bugzilla.mozilla.org/show_bug.cgi?id=1925346))
+
 ## 15.1.0
 
 - Bugfix: Remove unused keyword argument from exception ([#755](https://github.com/mozilla/glean_parser/pull/755))
 - Add Go log outputter support for custom pings (`go_server`) ([#758](https://github.com/mozilla/glean_parser/pull/758))
-- New Metric Type: `labeled_quantity` ([bug 1925346](https://bugzilla.mozilla.org/show_bug.cgi?id=1925346))
 
 ## 15.0.1
 
