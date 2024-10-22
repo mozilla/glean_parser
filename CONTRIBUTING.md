@@ -132,7 +132,9 @@ $ py.test tests.test_glean_parser
 
 A reminder for the maintainers on how to deploy.
 
-Get a clean main branch with all of the changes from `upstream`:
+- Ask around if there are any PRs folks want to get into your release.
+
+- Get a clean main branch with all of the changes from `upstream`:
 
 ```sh
 $ git checkout main
@@ -170,8 +172,13 @@ $ git rebase upstream/main
 - Tagging the release will trigger a CI workflow which will build the
   distribution of `glean_parser` and publish it to PyPI.
 
-The continuous integration system will then automatically deploy to
-PyPI.
+    - The continuous integration system will then automatically deploy to
+      PyPI.
+
+- Post a message to
+  [#glean:mozilla.org](https://chat.mozilla.org/#/room/#glean:mozilla.org)
+  announcing the new release.
+    - Include a copy of the release-specific changelog if you want to be fancy.
 
 See also:
 
