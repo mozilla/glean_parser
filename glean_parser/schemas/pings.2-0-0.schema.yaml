@@ -96,11 +96,11 @@ additionalProperties:
             Interaction with `include_client_id`: `include_client_id` only takes
             effect when `metadata.include_info_sections` is `true`.
           type: boolean
-        included_info_sections:
-          title: List of included info sections
+        included_info_fields:
+          title: List of included info fields
           description: |
-              A list of client_info sections to include.
-              Basically overwrites include_client_id and include_info_sections.
+              A list of fields to be included in this ping's `client_info` section.
+              If not set, all known fields are included.
           type: array
           items:
             type: string
