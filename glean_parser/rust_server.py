@@ -102,7 +102,7 @@ def output_rust(
             ("event_extra_name", generate_extra_name),
             ("metric_name", generate_metric_name),
             ("metric_argument_name", generate_metric_argument_name),
-            ("go_metric_type", generate_metric_type),
+            ("rust_metric_type", generate_metric_type),
             ("clean_string", clean_string),
             ),
         )
@@ -110,8 +110,8 @@ def output_rust(
     # Unique list of event metrics used in any ping.
     event_metrics: list[metrics.Metric] = []
 
-    # Go though all metrics in objs and build a mpa of 
-    # ping-> list of metric categories->list of metrics
+    # Go though all metrics in objs and build a map of 
+    # ping->list of metric categories->list of metrics
     # for easier processing in the template.
     ping_to_metrics: dict[str, dict[str, list[metrics.Metric]]] = defaultdict(dict)
 
@@ -130,4 +130,28 @@ def output_rust(
                 for ping in metric.send_in_pings:
                     if metric.type == "event" and metric not in event_metrics:
                         event_metrics.append(metric)
+                    
+                    metrics_by_type = ping_to_metrics[ping]
+                    metrics_list = metrics_by_type.setdefault(metric.type, [])
+                    metrics_list.append(metric)
+
+    PING_METRIC_ERROR_MSG = (
+        " Server-side environment is simplified and this"
+        + " parser doesn't generate individual metric files. Make sure to pass all"
+        + " your ping and metric definitions in a single invocation of the parser."
+    )
+    if not ping_to_metrics:
+        print(f"❌ No pings with metrics found {PING_METRIC_ERROR_MSG}.")
+        return
+    
+    extension = ".rs"
+    filepath = output_dir / (f"server_events{extension}")
+    with filepath.open("w", encoding="utf-8") as fd:
+        fd.write(
+            template.render(
+                parser_vesrion=__version__,
+                pings=ping_to_metrics,
+                events=event_metrics,
+            )
+        )
                     
