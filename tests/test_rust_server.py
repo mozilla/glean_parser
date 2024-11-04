@@ -25,3 +25,26 @@ def test_parser_rust_server_ping_no_metrics(tmp_path, capsys):
         tmp_path,
     )
     assert all(False for _ in tmp_path.iterdir())
+
+def test_parser_rust_server_metrics_unsupported_type(tmp_path, capsys):
+    """Test that no files are generated with unsupported metric types."""
+    translate.translate(
+        [
+            ROOT / "data" / "rust_server_metrics_unsupported.yaml",
+        ],
+        "go_server",
+        tmp_path,
+    )
+    captured = capsys.readouterr()
+    assert "Ignoring unsupported metric type" in captured.out
+    unsupported_types = [
+        "boolean",
+        "labeled_boolean",
+        "labeled_string",
+        "string_list",
+        "timespan",
+        "uuid",
+        "url",
+    ]
+    for t in unsupported_types:
+        assert t in captured.out
