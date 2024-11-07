@@ -54,6 +54,10 @@ def generate_extra_name(extra: str) -> str:
     """Returns camel-case string of extra value."""
     return util.Camelize(extra)
 
+def generate_snake_case_name(value: str) -> str:
+    """Returns a snake-case function or attribute name."""
+    return util.camel_or_pascal_to_snake_case(value)
+
 def generate_metric_argument_name(metric: metrics.Metric) -> str:
     """Returns camel-case string of metric argument name."""
     return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
@@ -104,6 +108,7 @@ def output_rust(
             ("metric_argument_name", generate_metric_argument_name),
             ("rust_metric_type", generate_metric_type),
             ("clean_string", clean_string),
+            ("snake_case", generate_snake_case_name),
             ),
         )
     
