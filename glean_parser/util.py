@@ -545,6 +545,7 @@ ping_args = [
     "enabled",
     "schedules_pings",
     "reason_codes",
+    "follows_collection_enabled",
 ]
 
 
