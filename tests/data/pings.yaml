@@ -111,3 +111,17 @@ custom-with-ping-schedule:
       - custom-ping-no-info
       - custom-ping-might-be-empty
   no_lint: [REDUNDANT_PING]
+
+nofollows:
+  description:
+    A custom ping with follows-collection-enabled=false
+  include_client_id: false
+  send_if_empty: true
+  bugs:
+    - http://bugzilla.mozilla.com/1866559
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  metadata:
+    follows_collection_enabled: false
