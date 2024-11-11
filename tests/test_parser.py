@@ -1208,7 +1208,8 @@ def test_object_invalid():
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "invalid or missing `type`" in errors[0]
+    assert "missing `type`" in errors[0]
+    assert "Allowed: [" in errors[0]
 
     structure = {"type": "array", "items": {"type": "unknown"}}
     contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
@@ -1216,7 +1217,8 @@ def test_object_invalid():
     all_metrics = parser.parse_objects(contents)
     errors = list(all_metrics)
     assert len(errors) == 1
-    assert "invalid or missing `type`" in errors[0]
+    assert "invalid `type`" in errors[0]
+    assert "found: unknown, allowed: [" in errors[0]
 
     structure = {"type": "array", "properties": {}}
     contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
