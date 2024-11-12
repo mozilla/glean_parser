@@ -78,19 +78,18 @@ def generate_metric_argument_name(metric: metrics.Metric) -> str:
 
 def generate_metric_type(metric_type: str) -> str:
     """Return string representation of metric type in Rust."""
-    match metric_type:
-        case "quantity":
-            return "u64"
-        case "string":
-            return "String"
-        case "boolean":
-            return "bool"
-        case "datetime":
-            return "chrono::DateTime<Utc>"
-        case _:
-            print(f"❌ Unable to generate Rust type from metric type: {metric_type}")
-            exit()
-            return "NONE"
+    if metric_type == "quantity":
+        return "u64"
+    elif metric_type == "string":
+        return "String"
+    elif metric_type == "boolean":
+        return "bool"
+    elif metric_type == "datetime":
+        return "chrono::DateTime<Utc>"
+    else:
+        print(f"❌ Unable to generate Rust type from metric type: {metric_type}")
+        exit()
+        return "NONE"
 
 
 def clean_string(s: str) -> str:
