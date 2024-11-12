@@ -190,13 +190,13 @@ impl GleanEventsLogger {
 {# each event has a specific type and method to create a gleanEvent #}
 {% for event in metrics_by_type['event'] %}
 
-struct {{ event|event_type_name }} {
+pub struct {{ event|event_type_name }} {
     // metadata for event in `extra_keys`
     {% for extra, metadata in event.extra_keys.items() %}
     {% if extra|event_extra_name == "event" %}
-    {{ extra|event_extra_name|snake_case }}: Box<dyn {{ metadata.type|rust_metric_type }}>, // {{ metadata.description|clean_string }}
+    pub {{ extra|event_extra_name|snake_case }}: Box<dyn {{ metadata.type|rust_metric_type }}>, // {{ metadata.description|clean_string }}
     {% else %}
-    {{ extra|event_extra_name|snake_case }}: {{ metadata.type|rust_metric_type }}, // {{ metadata.description|clean_string }}
+    pub {{ extra|event_extra_name|snake_case }}: {{ metadata.type|rust_metric_type }}, // {{ metadata.description|clean_string }}
     {% endif %}
     {% endfor %}
 }
@@ -246,16 +246,16 @@ pub trait {{ ping|ping_events_type_name }} {
 }
 {% endif %}
 
-struct {{ ping|ping_type_name }} {
+pub struct {{ ping|ping_type_name }} {
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% if metric_type != 'event' %}
     {% for metric in metrics %}
-    {{ metric|metric_argument_name|snake_case }}: {{ metric_type|rust_metric_type}}, // {{ metric.description|clean_string }}
+    pub {{ metric|metric_argument_name|snake_case }}: {{ metric_type|rust_metric_type}}, // {{ metric.description|clean_string }}
     {% endfor %}
     {% endif %}
     {% endfor %}
     {% if metrics_by_type['event'] %}
-    event: Box<dyn {{ ping|ping_events_type_name }}>, // valid event of  `{{ ping|ping_events_type_name }}` for this ping
+    pub event: Box<dyn {{ ping|ping_events_type_name }}>, // valid event of  `{{ ping|ping_events_type_name }}` for this ping
     {% endif %}
 }
 
