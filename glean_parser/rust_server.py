@@ -24,7 +24,7 @@ If pings have `event` metrics assigned, they can be passed to these methods.
 
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, Optional, List
 
 from . import __version__
 from . import metrics
@@ -98,7 +98,7 @@ def clean_string(s: str) -> str:
 
 
 def output_rust(
-    objs: metrics.ObjectTree, output_dir: Path, options: dict[str, Any] | None
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]]
 ) -> None:
     """
     Given a tree of objects, output Rust code to `output_dir`.
@@ -128,12 +128,12 @@ def output_rust(
     )
 
     # Unique list of event metrics used in any ping.
-    event_metrics: list[metrics.Metric] = []
+    event_metrics: List[metrics.Metric] = []
 
     # Go though all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
     # for easier processing in the template.
-    ping_to_metrics: dict[str, dict[str, list[metrics.Metric]]] = defaultdict(dict)
+    ping_to_metrics: Dict[str, Dict[str, List[metrics.Metric]]] = defaultdict(dict)
 
     for _category_key, category_val in objs.items():
         for _metric_name, metric in category_val.items():
