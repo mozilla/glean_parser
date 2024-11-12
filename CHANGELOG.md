@@ -2,14 +2,13 @@
 
 ## Unreleased
 
+- Add rust_server feature to glean_parser to allow Rust server-side metrics ([#772](https://github.com/mozilla/glean_parser/pull/772))
 - Replace `panic`s with returned errors (`go_server`) ([#777](https://github.com/mozilla/glean_parser/pull/777))
 - Enable configurable Writer for log output (`go_server`) ([#775](https://github.com/mozilla/glean_parser/pull/775))
 
 ## 15.2.1
 
 - Allow earlier versions of platformdirs ([#769](https://github.com/mozilla/glean_parser/pull/769))
-
-## 15.2.0
 
 - New Metric Type: `labeled_quantity` ([bug 1925346](https://bugzilla.mozilla.org/show_bug.cgi?id=1925346))
 
