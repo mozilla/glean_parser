@@ -1,0 +1,18 @@
+// main.rs.tmpl
+pub mod glean {
+    pub mod server_events;
+}
+
+use crate::glean::server_events::*;
+
+use chrono::Utc;
+
+fn main() {
+    let logger = GleanEventsLogger {
+        app_id: "glean.test".to_string(),
+        app_display_version: "0.0.1".to_string(),
+        app_channel: "nightly".to_string(),
+    };
+
+    /* CODE */
+}
