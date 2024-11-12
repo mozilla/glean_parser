@@ -77,8 +77,3 @@ install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
 	chmod a+x ktlint
 	test -f detekt-cli.jar || curl -sSL --output "detekt-cli.jar" https://github.com/detekt/detekt/releases/download/v1.23.6/detekt-cli-1.23.6-all.jar
 	echo "898dcf810e891f449e4e3f9f4a4e2dc75aecf8e1089df41a42a69adb2cbbcffa *detekt-cli.jar" | shasum -a256 -c -
-
-install-rust: ## install rustup and rust toolchain
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-	echo 'source "$$HOME/.cargo/env"' >> ~/.bashrc  # Add Rust to bash startup
-	. ~/.bashrc  # Reload bashrc to include Rust in PATH

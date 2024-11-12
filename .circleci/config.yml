@@ -60,7 +60,10 @@ commands:
                 ruby \
                 golang-go
             make install-kotlin-linters
+<<<<<<< HEAD
       - setup-rust-toolchain
+=======
+>>>>>>> 71c4f91e (review comments)
       - run:
           name: Install glean_parser
           # Set CC to something that isn't a working compiler so we
