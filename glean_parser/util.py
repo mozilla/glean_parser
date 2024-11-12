@@ -189,6 +189,7 @@ def snake_case(value: str) -> str:
     """
     return value.lower().replace(".", "_").replace("-", "_")
 
+
 def camel_or_pascal_to_snake_case(value: str) -> str:
     """
     Convert Camel Case or Pascal Case to Snake Case.
@@ -196,7 +197,8 @@ def camel_or_pascal_to_snake_case(value: str) -> str:
     Any capitalized values beyond the first token are lowered
     and an `_` is inserted.
     """
-    return re.sub(r'(?<!^)(?=[A-Z])', '_', value).lower()
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", value).lower()
+
 
 def screaming_case(value: str) -> str:
     """
