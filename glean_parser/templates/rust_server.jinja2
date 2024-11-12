@@ -255,7 +255,7 @@ pub struct {{ ping|ping_type_name }} {
     {% endif %}
     {% endfor %}
     {% if metrics_by_type['event'] %}
-    pub event: Box<dyn {{ ping|ping_events_type_name }}>, // valid event of  `{{ ping|ping_events_type_name }}` for this ping
+    pub event: Option<Box<dyn {{ ping|ping_events_type_name }}>>, // valid event of  `{{ ping|ping_events_type_name }}` for this ping
     {% endif %}
 }
 
@@ -285,8 +285,9 @@ impl GleanEventsLogger {
 
         {% if metrics_by_type['event'] %}
         let mut events: Vec<GleanEvent> = Vec::new();
-        let event = &params.event;
-        events.push(event.glean_event());
+        if let Some(event) = &params.event {
+            events.push(event.glean_event());
+        }
         
         {% else %}
         let events: Vec<GleanEvent> = Vec::new();
