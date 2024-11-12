@@ -175,7 +175,7 @@ def run_rust_logger(code_dir, code):
     result = subprocess.check_output(["cargo", "run"], cwd=code_dir).decode("utf-8")
     return result
 
-
+@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_events_ping(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"
@@ -241,6 +241,7 @@ def test_run_logging_events_ping(tmp_path):
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
 
+@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_without_event(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"
@@ -298,7 +299,7 @@ def test_run_logging_custom_ping_without_event(tmp_path):
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
 
-
+@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_with_event(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"

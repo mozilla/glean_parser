@@ -32,7 +32,7 @@ from . import util
 
 # Adding a metric here will require updating the `generate_metric_type` function
 # and require adjustments to `metrics` variables the the template.
-SUPPORTED_METRIC_TYPES: list[str] = [
+SUPPORTED_METRIC_TYPES: List[str] = [
     "string",
     "quantity",
     "event",
