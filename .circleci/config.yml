@@ -2,6 +2,18 @@
 version: 2.1
 
 commands:
+  setup-rust-toolchain:
+    steps:
+      - run:
+          name: Installing rustup
+          command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      - run:
+          name: Setup custom Rust environment variables
+          command: |
+            echo 'export PATH=$HOME/.cargo/bin:$PATH' >> $BASH_ENV
+            echo "export RUST_BACKTRACE=1" >> $BASH_ENV
+            echo "export CARGO_INCREMENTAL=0" >> $BASH_ENV
+
   test-start:
     steps:
       - checkout
@@ -48,6 +60,7 @@ commands:
                 ruby \
                 golang-go
             make install-kotlin-linters
+      - setup-rust-toolchain
       - run:
           name: Install glean_parser
           # Set CC to something that isn't a working compiler so we
