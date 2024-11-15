@@ -36,7 +36,7 @@ pub struct RequestInfo {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ClientInfo {
     telemetry_sdk_build: String,
-    fist_run_date: String,
+    first_run_date: String,
     os: String,
     os_version: String,
     architecture: String,
@@ -107,7 +107,7 @@ impl GleanEventsLogger {
         // Fields with default values are required in the Glean schema, but not used in server context
         ClientInfo {
             telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_string(),
-            fist_run_date: "Unknown".to_string(),
+            first_run_date: "Unknown".to_string(),
             os: "Unknown".to_string(),
             os_version: "Unknown".to_string(),
             architecture: "Unknown".to_string(),
@@ -199,9 +199,10 @@ impl EventsPingEvent for BackendTestEventEvent {
         // If there are none, an empty, immutable HashMap is created.
         let mut extra: HashMap<String, String> = HashMap::new();
 
-            extra.insert("event_field_string".to_string(), self.event_field_string.to_string());
-            extra.insert("event_field_quantity".to_string(), self.event_field_quantity.to_string());
-            extra.insert("event_field_bool".to_string(), self.event_field_bool.to_string());
+        extra.insert("event_field_string".to_string(), self.event_field_string.to_string());
+        extra.insert("event_field_quantity".to_string(), self.event_field_quantity.to_string());
+        extra.insert("event_field_bool".to_string(), self.event_field_bool.to_string());
+
         new_glean_event(
             "backend",
             "test_event",
@@ -230,24 +231,34 @@ impl GleanEventsLogger {
     pub fn record_events_ping(&self, request_info: &RequestInfo, params: &EventsPing) {
         // Define the outer `Metrics` map that holds the metric type.
         let mut metrics = Metrics::new();
-        // Define the inner map to insert into `Metrics`
+        // Create corresponding metric value maps to insert into `Metrics`.
         let mut string_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
         string_map.insert(
-            "metric.name".to_string(), serde_json::Value::String(params.metric_name.to_string().clone()),
+            "metric.name".to_string(),
+            serde_json::Value::String(params.metric_name.to_string()),
         );
-        metrics.insert("string".to_string(), string_map.clone());
-        string_map.insert(
-            "metric.request_bool".to_string(), serde_json::Value::String(params.metric_request_bool.to_string().clone()),
+        metrics.insert("string".to_string(), string_map);
+
+        let mut boolean_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        boolean_map.insert(
+            "metric.request_bool".to_string(),
+            serde_json::Value::Bool(params.metric_request_bool.into()),
         );
-        metrics.insert("boolean".to_string(), string_map.clone());
-        string_map.insert(
-            "metric.request_count".to_string(), serde_json::Value::String(params.metric_request_count.to_string().clone()),
+        metrics.insert("boolean".to_string(), boolean_map);
+
+        let mut quantity_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        quantity_map.insert(
+            "metric.request_count".to_string(),
+            serde_json::Value::Number(params.metric_request_count.into()),
         );
-        metrics.insert("quantity".to_string(), string_map.clone());
-        string_map.insert(
-			"metric.request_datetime".to_string(), serde_json::Value::String(params.metric_request_datetime.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
+        metrics.insert("quantity".to_string(), quantity_map);
+
+        let mut datetime_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        datetime_map.insert(
+		    "metric.request_datetime".to_string(),
+            serde_json::Value::String(params.metric_request_datetime.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
         );
-        metrics.insert("datetime".to_string(), string_map.clone());
+        metrics.insert("datetime".to_string(), datetime_map);
 
 
         let mut events: Vec<GleanEvent> = Vec::new();

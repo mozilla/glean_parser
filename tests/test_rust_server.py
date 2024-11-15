@@ -175,7 +175,6 @@ def run_rust_logger(code_dir, code):
     result = subprocess.check_output(["cargo", "run"], cwd=code_dir).decode("utf-8")
     return result
 
-@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_events_ping(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"
@@ -225,7 +224,6 @@ def test_run_logging_events_ping(tmp_path):
     assert "1" == fields["document_version"]
     assert "glean-test/1.0" == fields["user_agent"]
 
-    # NOTE: Schema validation bug results in inaccurate assertion
     schema_url = (
         "https://raw.githubusercontent.com/mozilla-services/"
         "mozilla-pipeline-schemas/main/"
@@ -235,13 +233,10 @@ def test_run_logging_events_ping(tmp_path):
     payload = fields["payload"]
     input = io.StringIO(payload)
     output = io.StringIO()
-
-    # This results in inaccurate validation for all data types
     assert (
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
 
-@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_without_event(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"
@@ -285,7 +280,6 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     assert "1" == fields["document_version"]
     assert "glean-test/1.0" == fields["user_agent"]
 
-    # NOTE: Schema validation bug results in inaccurate assertion
     schema_url = (
         "https://raw.githubusercontent.com/mozilla-services/"
         "mozilla-pipeline-schemas/main/"
@@ -299,7 +293,6 @@ def test_run_logging_custom_ping_without_event(tmp_path):
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
 
-@pytest.mark.skip
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_with_event(tmp_path):
     glean_module_path = tmp_path / "src" / "glean"
@@ -351,7 +344,6 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     assert "1" == fields["document_version"]
     assert "glean-test/1.0" == fields["user_agent"]
 
-    # NOTE: Schema validation bug results in inaccurate assertion
     schema_url = (
         "https://raw.githubusercontent.com/mozilla-services/"
         "mozilla-pipeline-schemas/main/"
@@ -361,6 +353,7 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     payload = fields["payload"]
     input = io.StringIO(payload)
     output = io.StringIO()
+
     assert (
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
