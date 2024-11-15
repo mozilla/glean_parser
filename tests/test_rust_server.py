@@ -127,13 +127,8 @@ def run_rust_logger(code_dir, code):
     """
     Run the Rust logger and capture the output sent to STDOUT.
     """
-    
     # Define paths
-    # code_dir = Path(code_dir)
-    # src_dir = code_dir / "src"
-    # src_dir.mkdir(parents=True, exist_ok=True)
     tmpl_code_path = Path("test.rs.tmpl")
-    # test_rs_path = src_dir / "main.rs"
     
     # Read and replace placeholder in the template
     tmpl_code = ""
@@ -216,9 +211,9 @@ def test_run_logging_events_ping(tmp_path):
 
     logged_output = run_rust_logger(tmp_path, code)
     logged_output = json.loads(logged_output)
-    fields = logged_output["fields"]
+    fields = logged_output["Fields"]
 
-    assert "glean-server-event" == logged_output["type"]
+    assert "glean-server-event" == logged_output["Type"]
     assert "glean.test" == fields["document_namespace"]
     assert "events" == fields["document_type"]
     assert "1" == fields["document_version"]
@@ -272,9 +267,9 @@ def test_run_logging_custom_ping_without_event(tmp_path):
 
     logged_output = run_rust_logger(tmp_path, code)
     logged_output = json.loads(logged_output)
-    fields = logged_output["fields"]
+    fields = logged_output["Fields"]
 
-    assert "glean-server-event" == logged_output["type"]
+    assert "glean-server-event" == logged_output["Type"]
     assert "glean.test" == fields["document_namespace"]
     assert "server-telemetry-scenario-one" == fields["document_type"]
     assert "1" == fields["document_version"]
@@ -335,10 +330,10 @@ def test_run_logging_custom_ping_with_event(tmp_path):
 
     logged_output = run_rust_logger(tmp_path, code)
     logged_output = json.loads(logged_output)
-    fields = logged_output["fields"]
+    fields = logged_output["Fields"]
 
 
-    assert "glean-server-event" == logged_output["type"]
+    assert "glean-server-event" == logged_output["Type"]
     assert "glean.test" == fields["document_namespace"]
     assert "server-telemetry-scenario-one" == fields["document_type"]
     assert "1" == fields["document_version"]
