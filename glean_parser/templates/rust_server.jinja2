@@ -37,7 +37,7 @@ pub struct RequestInfo {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ClientInfo {
     telemetry_sdk_build: String,
-    fist_run_date: String,
+    first_run_date: String,
     os: String,
     os_version: String,
     architecture: String,
@@ -108,7 +108,7 @@ impl GleanEventsLogger {
         // Fields with default values are required in the Glean schema, but not used in server context
         ClientInfo {
             telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_string(),
-            fist_run_date: "Unknown".to_string(),
+            first_run_date: "Unknown".to_string(),
             os: "Unknown".to_string(),
             os_version: "Unknown".to_string(),
             architecture: "Unknown".to_string(),
@@ -215,15 +215,16 @@ impl {{ ping|ping_events_type_name }} for {{ event|event_type_name }} {
         {% endif %}
 
         {% for extra, metadata in event.extra_keys.items() %}
-            {# convert all extra fields to string for submission #}
-            {% if metadata.type == 'boolean' %}
-            extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
-            {% elif metadata.type == 'quantity' %}
-            extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
-            {% else %}
-            extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
-            {% endif %}
+        {# convert all extra fields to string for submission #}
+        {% if metadata.type == 'boolean' %}
+        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        {% elif metadata.type == 'quantity' %}
+        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        {% else %}
+        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        {% endif %}
         {% endfor %}
+
         new_glean_event(
             "{{ event.category }}",
             "{{ event.name }}",
@@ -265,23 +266,31 @@ impl GleanEventsLogger {
     pub fn record_{{ ping|ping_type_name|snake_case }}(&self, request_info: &RequestInfo, params: &{{ ping|ping_type_name}}) {
         // Define the outer `Metrics` map that holds the metric type.
         let mut metrics = Metrics::new();
-        // Define the inner map to insert into `Metrics`
-        let mut string_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        // Create corresponding metric value maps to insert into `Metrics`.
         {% for metric_type, metrics in metrics_by_type.items() %}
         {% if metric_type != 'event' %}
+        let mut {{metric_type}}_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
         {% for metric in metrics %}
-        string_map.insert(
+        {{metric_type}}_map.insert(
             {% if metric_type == 'datetime' %}
-			"{{ metric|metric_name }}".to_string(), serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
+		    "{{ metric|metric_name }}".to_string(),
+            serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
+            {% elif metric_type == 'quantity' %}
+            "{{ metric|metric_name }}".to_string(),
+            serde_json::Value::Number(params.{{ metric|metric_argument_name|snake_case }}.into()),
+            {% elif metric_type == 'boolean' %}
+            "{{ metric|metric_name }}".to_string(),
+            serde_json::Value::Bool(params.{{ metric|metric_argument_name|snake_case }}.into()),
             {% else %}
-            "{{ metric|metric_name }}".to_string(), serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.to_string().clone()),
+            "{{ metric|metric_name }}".to_string(),
+            serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.to_string()),
             {% endif %}
         );
-        metrics.insert("{{ metric_type }}".to_string(), string_map.clone());
         {% endfor %}
+        metrics.insert("{{ metric_type }}".to_string(), {{metric_type}}_map);
+
         {% endif %}
         {% endfor %}
-
 
         {% if metrics_by_type['event'] %}
         let mut events: Vec<GleanEvent> = Vec::new();
