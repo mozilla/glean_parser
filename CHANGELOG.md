@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Allow specifying a subset of interesting metrics to actually collect. Other metrics will be built, but marked as disabled ([bug 1931277](https://bugzilla.mozilla.org/show_bug.cgi?id=1911165)).
 - Replace `panic`s with returned errors (`go_server`) ([#777](https://github.com/mozilla/glean_parser/pull/777))
 - Enable configurable Writer for log output (`go_server`) ([#775](https://github.com/mozilla/glean_parser/pull/775))
 

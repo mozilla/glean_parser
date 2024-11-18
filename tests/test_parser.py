@@ -723,6 +723,40 @@ def test_do_not_disable_expired():
     assert metrics["category"]["metric"].disabled is False
 
 
+def test_interesting_disables_others():
+    # Test that if we get an "interesting" config param, only the metrics in
+    # the provided config files are enabled.
+
+    # We'll have aall_metrics.yaml available loaded.
+    all_metrics = ROOT / "data" / "all_metrics.yaml"
+    # But, only the metrics in metric-with-tags.yaml are marked as interesting
+    # so every other metric will be marked as disabled.
+    metrics_with_tags_yaml = ROOT / "data" / "metric-with-tags.yaml"
+    interesting = [Path(path) for path in [ metrics_with_tags_yaml ]]
+    config = {"interesting": interesting}
+
+    all_metrics = parser.parse_objects([all_metrics, metrics_with_tags_yaml], config)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    interesting_metrics = parser.parse_objects([metrics_with_tags_yaml])
+    errors = list(interesting_metrics)
+    assert len(errors) == 0
+
+    metrics = all_metrics.value
+    for category_key, category_val in metrics.items():
+        if category_key == "tags":
+          continue
+
+        for metric_key, metric_val in sorted(category_val.items()):
+            cat = interesting_metrics.value.get(category_key)
+            if cat and cat.get(metric_key):
+              disabled = cat.get(metric_key).disabled
+            else:
+              disabled = True
+            assert metrics[category_key][metric_key].disabled is disabled
+
+
 def test_send_in_pings_restrictions():
     """Test that invalid ping names are disallowed in `send_in_pings`."""
     all_metrics = parser.parse_objects(ROOT / "data" / "invalid-ping-names.yaml")
