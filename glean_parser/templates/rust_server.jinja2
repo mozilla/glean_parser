@@ -80,8 +80,8 @@ pub fn new_glean_event(
     extra: std::collections::HashMap<String, String>,
 ) -> GleanEvent {
     GleanEvent {
-        category: category.to_string(),
-        name: name.to_string(),
+        category: category.to_owned(),
+        name: name.to_owned(),
         timestamp: Utc::now().timestamp_millis(),
         extra,
     }
@@ -106,12 +106,12 @@ impl GleanEventsLogger {
     fn create_client_info(&self) -> ClientInfo {
         // Fields with default values are required in the Glean schema, but not used in server context
         ClientInfo {
-            telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_string(),
-            first_run_date: "Unknown".to_string(),
-            os: "Unknown".to_string(),
-            os_version: "Unknown".to_string(),
-            architecture: "Unknown".to_string(),
-            app_build: "Unknown".to_string(),
+            telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_owned(),
+            first_run_date: "Unknown".to_owned(),
+            os: "Unknown".to_owned(),
+            os_version: "Unknown".to_owned(),
+            architecture: "Unknown".to_owned(),
+            app_build: "Unknown".to_owned(),
             app_display_version: self.app_display_version.clone(),
             app_channel: self.app_channel.clone(),
         }
@@ -138,8 +138,8 @@ impl GleanEventsLogger {
         let document_id = Uuid::new_v4().to_string();
         Ping {
             document_namespace: self.app_id.clone(),
-            document_type: document_type.to_string(),
-            document_version: "1".to_string(),
+            document_type: document_type.to_owned(),
+            document_version: "1".to_owned(),
             document_id,
             user_agent: Some(config.user_agent.clone()),
             ip_address: Some(config.ip_address.clone()),
@@ -167,7 +167,7 @@ impl GleanEventsLogger {
         let ping: Ping = self.create_ping(document_type, request_info, &telemetry_payload);
 
         let envelope: LogEnvelope = LogEnvelope {
-            log_type: GLEAN_EVENT_MOZLOG_TYPE.to_string(),
+            log_type: GLEAN_EVENT_MOZLOG_TYPE.to_owned(),
             fields: ping,
         };
         let envelope_json =
@@ -214,11 +214,11 @@ impl {{ ping|ping_events_type_name }} for {{ event|event_type_name }} {
         {% for extra, metadata in event.extra_keys.items() %}
         {# convert all extra fields to string for submission #}
         {% if metadata.type == 'boolean' %}
-        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        extra.insert("{{ extra }}".to_owned(), self.{{ extra|event_extra_name|snake_case }}.to_string());
         {% elif metadata.type == 'quantity' %}
-        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        extra.insert("{{ extra }}".to_owned(), self.{{ extra|event_extra_name|snake_case }}.to_string());
         {% else %}
-        extra.insert("{{ extra }}".to_string(), self.{{ extra|event_extra_name|snake_case }}.to_string());
+        extra.insert("{{ extra }}".to_owned(), self.{{ extra|event_extra_name|snake_case }}.to_string());
         {% endif %}
         {% endfor %}
 
@@ -270,21 +270,21 @@ impl GleanEventsLogger {
         {% for metric in metrics %}
         {{metric_type}}_map.insert(
             {% if metric_type == 'datetime' %}
-		    "{{ metric|metric_name }}".to_string(),
+		    "{{ metric|metric_name }}".to_owned(),
             serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
             {% elif metric_type == 'quantity' %}
-            "{{ metric|metric_name }}".to_string(),
+            "{{ metric|metric_name }}".to_owned(),
             serde_json::Value::Number(params.{{ metric|metric_argument_name|snake_case }}.into()),
             {% elif metric_type == 'boolean' %}
-            "{{ metric|metric_name }}".to_string(),
+            "{{ metric|metric_name }}".to_owned(),
             serde_json::Value::Bool(params.{{ metric|metric_argument_name|snake_case }}.into()),
             {% else %}
-            "{{ metric|metric_name }}".to_string(),
+            "{{ metric|metric_name }}".to_owned(),
             serde_json::Value::String(params.{{ metric|metric_argument_name|snake_case }}.to_string()),
             {% endif %}
         );
         {% endfor %}
-        metrics.insert("{{ metric_type }}".to_string(), {{metric_type}}_map);
+        metrics.insert("{{ metric_type }}".to_owned(), {{metric_type}}_map);
 
         {% endif %}
         {% endfor %}
