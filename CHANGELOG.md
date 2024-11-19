@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Enable configurable Writer for log output (`go_server`) ([#](https://github.com/mozilla/glean_parser/pull/))
+- Enable configurable Writer for log output (`go_server`) ([#775](https://github.com/mozilla/glean_parser/pull/775))
 
 ## 15.2.1
 
