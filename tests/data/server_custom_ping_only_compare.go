@@ -10,6 +10,7 @@ package glean
 import (
 	"encoding/json"
     "fmt"
+	"io"
 	"strconv"
 	"time"
 
@@ -23,6 +24,7 @@ type GleanEventsLogger struct {
 	AppID             string // Application Id to identify application per Glean standards
 	AppDisplayVersion string // Version of application emitting the event
 	AppChannel        string // Channel to differentiate logs from prod/beta/staging/devel
+	Writer            io.Writer // Writer to output to. Normal operation expects os.Stdout
 }
 
 // exported type for public method parameters
@@ -155,7 +157,9 @@ func (g GleanEventsLogger) record(
 	if envelopeErr != nil {
 		panic("Unable to marshal log envelope to json")
 	}
-	fmt.Println(string(envelopeJson))
+	if g.Writer != nil {
+		fmt.Fprintln(g.Writer, string(envelopeJson))
+	}
 }
 
 func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
