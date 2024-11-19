@@ -103,7 +103,7 @@ func (g GleanEventsLogger) createClientInfo() clientInfo {
 }
 
 func createPingInfo() pingInfo {
-	var now = time.Now().UTC().Format("2006-01-02T15:04:05.000Z")
+	now := time.Now().UTC().Format("2006-01-02T15:04:05.000Z")
 	return pingInfo{
 		Seq:       0,
 		StartTime: now,
@@ -111,21 +111,30 @@ func createPingInfo() pingInfo {
 	}
 }
 
-func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) ping {
-	var payloadJson, payloadErr = json.Marshal(payload)
-	if payloadErr != nil {
-		panic("Unable to marshal payload to json")
+func newDocumentID() string {
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		return ""
 	}
-	var documentId = uuid.New()
+	return uuid.String()
+}
+
+func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
+	payloadJson, payloadErr := json.Marshal(payload)
+	if payloadErr != nil {
+		return ping{}, nil // TODO: define error
+		//panic("Unable to marshal payload to json")
+	}
+
 	return ping{
 		DocumentNamespace: g.AppID,
 		DocumentType:      documentType,
 		DocumentVersion:   "1",
-		DocumentID:        documentId.String(),
+		DocumentID:        newDocumentID(),
 		UserAgent:         config.UserAgent,
 		IpAddress:         config.IpAddress,
 		Payload:           string(payloadJson),
-	}
+	}, nil
 }
 
 // method called by each ping-specific record method.
@@ -135,27 +144,31 @@ func (g GleanEventsLogger) record(
 	requestInfo RequestInfo,
 	metrics metrics,
 	events []gleanEvent,
-) {
-	var telemetryPayload = pingPayload{
+) error {
+	telemetryPayload := pingPayload{
 		ClientInfo: g.createClientInfo(),
 		PingInfo:   createPingInfo(),
 		Metrics:    metrics,
 		Events:     events,
 	}
 
-	var ping = g.createPing(documentType, requestInfo, telemetryPayload)
+	ping, err := g.createPing(documentType, requestInfo, telemetryPayload)
+	if err != nil {
+		return err
+	}
 
-	var envelope = logEnvelope{
+	envelope := logEnvelope{
 		Timestamp: strconv.FormatInt(time.Now().UnixNano(), 10),
 		Logger:    "glean",
 		Type:      gleanEventMozlogType,
 		Fields:    ping,
 	}
-	var envelopeJson, envelopeErr = json.Marshal(envelope)
+	envelopeJson, envelopeErr := json.Marshal(envelope)
 	if envelopeErr != nil {
-		panic("Unable to marshal log envelope to json")
+		return err
 	}
 	fmt.Println(string(envelopeJson))
+	return nil
 }
 
 func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
@@ -205,7 +218,7 @@ func (g GleanEventsLogger) RecordEventsPing(
     requestInfo RequestInfo,
     params EventsPing,
 ) {
-    var metrics = metrics{
+	metrics := metrics{
         "string": {
             "metric.name": params.MetricName,
         },
