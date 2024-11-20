@@ -18,13 +18,6 @@ import (
 	"github.com/google/uuid"
 )
 
-var (
-	ErrNilWriter       = errors.New("writer not specified")
-	ErrPingMarshal     = errors.New("unable to marshal ping")
-	ErrEnvelopeMarshal = errors.New("unable to marshal envelope")
-	ErrDocumentID      = errors.New("unable to generate documentID")
-)
-
 // log type string used to identify logs to process in the Moz Data Pipeline
 var gleanEventMozlogType string = "glean-server-event"
 
@@ -128,12 +121,12 @@ func createPingInfo() pingInfo {
 func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
 	payloadJson, err := json.Marshal(payload)
 	if err != nil {
-		return ping{}, errors.Join(ErrPingMarshal, err)
+		return ping{}, err
 	}
 
 	uuid, err := uuid.NewRandom()
 	if err != nil {
-		return ping{}, errors.Join(ErrDocumentID, err)
+		return ping{}, err
 	}
 
 	return ping{
@@ -156,7 +149,7 @@ func (g GleanEventsLogger) record(
 	events []gleanEvent,
 ) error {
 	if g.Writer == nil {
-		return ErrNilWriter
+		return errors.New("writer not specified")
 	}
 
 	telemetryPayload := pingPayload{
@@ -179,7 +172,7 @@ func (g GleanEventsLogger) record(
 	}
 	envelopeJson, err := json.Marshal(envelope)
 	if err != nil {
-		return errors.Join(ErrEnvelopeMarshal, err)
+		return err
 	}
 
 	fmt.Fprintln(g.Writer, string(envelopeJson))
