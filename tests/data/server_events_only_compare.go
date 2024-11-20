@@ -124,7 +124,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 		return ping{}, err
 	}
 
-	uuid, err := uuid.NewRandom()
+	documentID, err := uuid.NewRandom()
 	if err != nil {
 		return ping{}, err
 	}
@@ -133,7 +133,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 		DocumentNamespace: g.AppID,
 		DocumentType:      documentType,
 		DocumentVersion:   "1",
-		DocumentID:        uuid.String(),
+		DocumentID:        documentID.String(),
 		UserAgent:         config.UserAgent,
 		IpAddress:         config.IpAddress,
 		Payload:           string(payloadJson),
