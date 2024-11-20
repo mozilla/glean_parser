@@ -9,12 +9,20 @@ package glean
 // required imports
 import (
 	"encoding/json"
-    "fmt"
+	"errors"
+	"fmt"
 	"io"
 	"strconv"
 	"time"
 
 	"github.com/google/uuid"
+)
+
+var (
+	ErrNilWriter       = errors.New("writer not specified")
+	ErrPingMarshal     = errors.New("unable to marshal ping")
+	ErrEnvelopeMarshal = errors.New("unable to marshal envelope")
+	ErrDocumentID      = errors.New("unable to generate documentID")
 )
 
 // log type string used to identify logs to process in the Moz Data Pipeline
@@ -117,26 +125,22 @@ func createPingInfo() pingInfo {
 	}
 }
 
-func newDocumentID() string {
+func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
+	payloadJson, err := json.Marshal(payload)
+	if err != nil {
+		return ping{}, errors.Join(ErrPingMarshal, err)
+	}
+
 	uuid, err := uuid.NewRandom()
 	if err != nil {
-		return ""
-	}
-	return uuid.String()
-}
-
-func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
-	payloadJson, payloadErr := json.Marshal(payload)
-	if payloadErr != nil {
-		return ping{}, nil // TODO: define error
-		//panic("Unable to marshal payload to json")
+		return ping{}, errors.Join(ErrDocumentID, err)
 	}
 
 	return ping{
 		DocumentNamespace: g.AppID,
 		DocumentType:      documentType,
 		DocumentVersion:   "1",
-		DocumentID:        newDocumentID(),
+		DocumentID:        uuid.String(),
 		UserAgent:         config.UserAgent,
 		IpAddress:         config.IpAddress,
 		Payload:           string(payloadJson),
@@ -151,6 +155,10 @@ func (g GleanEventsLogger) record(
 	metrics metrics,
 	events []gleanEvent,
 ) error {
+	if g.Writer == nil {
+		return ErrNilWriter
+	}
+
 	telemetryPayload := pingPayload{
 		ClientInfo: g.createClientInfo(),
 		PingInfo:   createPingInfo(),
@@ -169,13 +177,12 @@ func (g GleanEventsLogger) record(
 		Type:      gleanEventMozlogType,
 		Fields:    ping,
 	}
-	envelopeJson, envelopeErr := json.Marshal(envelope)
-	if envelopeErr != nil {
-		return err
+	envelopeJson, err := json.Marshal(envelope)
+	if err != nil {
+		return errors.Join(ErrEnvelopeMarshal, err)
 	}
-	if g.Writer != nil {
-		fmt.Fprintln(g.Writer, string(envelopeJson))
-	}
+
+	fmt.Fprintln(g.Writer, string(envelopeJson))
 	return nil
 }
 
@@ -189,68 +196,68 @@ func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
 }
 
 type BackendTestEventEvent struct {
-    EventFieldString string // A string extra field
-    EventFieldQuantity int64 // A quantity extra field
-    EventFieldBool bool // A boolean extra field
+	EventFieldString string // A string extra field
+	EventFieldQuantity int64 // A quantity extra field
+	EventFieldBool bool // A boolean extra field
 }
 
 func (e BackendTestEventEvent) gleanEvent() gleanEvent {
-    return newGleanEvent(
-        "backend",
-        "test_event",
-        map[string]string{
-            "event_field_string": e.EventFieldString,
-            "event_field_quantity": fmt.Sprintf("%d", e.EventFieldQuantity),
-            "event_field_bool": fmt.Sprintf("%t", e.EventFieldBool),
-        },
-    )
+	return newGleanEvent(
+		"backend",
+		"test_event",
+		map[string]string{
+			"event_field_string": e.EventFieldString,
+			"event_field_quantity": fmt.Sprintf("%d", e.EventFieldQuantity),
+			"event_field_bool": fmt.Sprintf("%t", e.EventFieldBool),
+		},
+	)
 }
 
 type EventsPingEvent interface {
-    isEventsPingEvent()
-    gleanEvent() gleanEvent
+	isEventsPingEvent()
+	gleanEvent() gleanEvent
 }
 
 func (e BackendTestEventEvent) isEventsPingEvent() {}
 
 type EventsPing struct {
-    MetricName string // Test string metric
-    MetricRequestBool bool // boolean
-    MetricRequestCount int64 // Test quantity metric
-    MetricRequestDatetime time.Time // Test datetime metric
-    Event EventsPingEvent // valid event for this ping
+	MetricName string // Test string metric
+	MetricRequestBool bool // boolean
+	MetricRequestCount int64 // Test quantity metric
+	MetricRequestDatetime time.Time // Test datetime metric
+	Event EventsPingEvent // valid event for this ping
 }
 
 // Record and submit `events` ping
 func (g GleanEventsLogger) RecordEventsPing(
-    requestInfo RequestInfo,
-    params EventsPing,
-) {
+	requestInfo RequestInfo,
+	params EventsPing,
+) error {
 	metrics := metrics{
-        "string": {
-            "metric.name": params.MetricName,
-        },
-        "boolean": {
-            "metric.request_bool": params.MetricRequestBool,
-        },
-        "quantity": {
-            "metric.request_count": params.MetricRequestCount,
-        },
-        "datetime": {
+		"string": {
+			"metric.name": params.MetricName,
+		},
+		"boolean": {
+			"metric.request_bool": params.MetricRequestBool,
+		},
+		"quantity": {
+			"metric.request_count": params.MetricRequestCount,
+		},
+		"datetime": {
 			"metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
-        },
-    }
+		},
+	}
 
-    events := []gleanEvent{}
-    if params.Event != nil {
+	events := []gleanEvent{}
+	if params.Event != nil {
 		events = append(events, params.Event.gleanEvent())
 	}
-    g.record("events", requestInfo, metrics, events)
+	return g.record("events", requestInfo, metrics, events)
 }
 
 // Record and submit `events` ping omitting user request info
 func (g GleanEventsLogger) RecordEventsPingWithoutUserInfo(
-    params EventsPing,
-) {
-    g.RecordEventsPing(defaultRequestInfo, params)
+	params EventsPing,
+) error {
+	return g.RecordEventsPing(defaultRequestInfo, params)
 }

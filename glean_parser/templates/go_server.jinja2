@@ -10,12 +10,20 @@ package glean
 // required imports
 import (
 	"encoding/json"
-    "fmt"
+	"errors"
+	"fmt"
 	"io"
 	"strconv"
 	"time"
 
 	"github.com/google/uuid"
+)
+
+var (
+	ErrNilWriter       = errors.New("writer not specified")
+	ErrPingMarshal     = errors.New("unable to marshal ping")
+	ErrEnvelopeMarshal = errors.New("unable to marshal envelope")
+	ErrDocumentID      = errors.New("unable to generate documentID")
 )
 
 // log type string used to identify logs to process in the Moz Data Pipeline
@@ -119,26 +127,22 @@ func createPingInfo() pingInfo {
 	}
 }
 
-func newDocumentID() string {
+func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
+	payloadJson, err := json.Marshal(payload)
+	if err != nil {
+		return ping{}, errors.Join(ErrPingMarshal, err)
+	}
+
 	uuid, err := uuid.NewRandom()
 	if err != nil {
-		return ""
-	}
-	return uuid.String()
-}
-
-func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
-	payloadJson, payloadErr := json.Marshal(payload)
-	if payloadErr != nil {
-		return ping{}, nil // TODO: define error
-		//panic("Unable to marshal payload to json")
+		return ping{}, errors.Join(ErrDocumentID, err)
 	}
 
 	return ping{
 		DocumentNamespace: g.AppID,
 		DocumentType:      documentType,
 		DocumentVersion:   "1",
-		DocumentID:        newDocumentID(),
+		DocumentID:        uuid.String(),
 		UserAgent:         config.UserAgent,
 		IpAddress:         config.IpAddress,
 		Payload:           string(payloadJson),
@@ -153,6 +157,10 @@ func (g GleanEventsLogger) record(
 	metrics metrics,
 	events []gleanEvent,
 ) error {
+	if g.Writer == nil {
+		return ErrNilWriter
+	}
+
 	telemetryPayload := pingPayload{
 		ClientInfo: g.createClientInfo(),
 		PingInfo:   createPingInfo(),
@@ -171,13 +179,12 @@ func (g GleanEventsLogger) record(
 		Type:      gleanEventMozlogType,
 		Fields:    ping,
 	}
-	envelopeJson, envelopeErr := json.Marshal(envelope)
-	if envelopeErr != nil {
-		return err
+	envelopeJson, err := json.Marshal(envelope)
+	if err != nil {
+		return errors.Join(ErrEnvelopeMarshal, err)
 	}
-	if g.Writer != nil {
-		fmt.Fprintln(g.Writer, string(envelopeJson))
-	}
+
+	fmt.Fprintln(g.Writer, string(envelopeJson))
 	return nil
 }
 {# if any ping has an event metric, create methods and types for them #}
@@ -195,28 +202,28 @@ func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
 {% for event in events %}
 
 type {{ event|event_type_name }} struct {
-    {% for extra, metadata in event.extra_keys.items() %}
-    {{ extra|event_extra_name }} {{ metadata.type|go_metric_type }} // {{ metadata.description|clean_string }}
-    {% endfor %}
+	{% for extra, metadata in event.extra_keys.items() %}
+	{{ extra|event_extra_name }} {{ metadata.type|go_metric_type }} // {{ metadata.description|clean_string }}
+	{% endfor %}
 }
 
 func (e {{ event|event_type_name }}) gleanEvent() gleanEvent {
-    return newGleanEvent(
-        "{{ event.category }}",
-        "{{ event.name }}",
-        map[string]string{
-        {% for extra, metadata in event.extra_keys.items() %}
-            {# convert all extra fields to string for submission #}
-            {% if metadata.type == 'boolean' %}
-            "{{ extra }}": fmt.Sprintf("%t", e.{{ extra|event_extra_name }}),
-            {% elif metadata.type == 'quantity' %}
-            "{{ extra }}": fmt.Sprintf("%d", e.{{ extra|event_extra_name }}),
-            {% else %}
-            "{{ extra }}": e.{{ extra|event_extra_name }},
-            {% endif %}
-        {% endfor %}
-        },
-    )
+	return newGleanEvent(
+		"{{ event.category }}",
+		"{{ event.name }}",
+		map[string]string{
+		{% for extra, metadata in event.extra_keys.items() %}
+			{# convert all extra fields to string for submission #}
+			{% if metadata.type == 'boolean' %}
+			"{{ extra }}": fmt.Sprintf("%t", e.{{ extra|event_extra_name }}),
+			{% elif metadata.type == 'quantity' %}
+			"{{ extra }}": fmt.Sprintf("%d", e.{{ extra|event_extra_name }}),
+			{% else %}
+			"{{ extra }}": e.{{ extra|event_extra_name }},
+			{% endif %}
+		{% endfor %}
+		},
+	)
 }
 {% endfor %}
 {% endif %}
@@ -226,8 +233,8 @@ func (e {{ event|event_type_name }}) gleanEvent() gleanEvent {
 
 {# interface that eligible events for this ping will implement #}
 type {{ ping|ping_events_type_name }} interface {
-    is{{ping|ping_events_type_name }}()
-    gleanEvent() gleanEvent
+	is{{ping|ping_events_type_name }}()
+	gleanEvent() gleanEvent
 }
 
 {# create functions for valid events for this ping #}
@@ -237,52 +244,52 @@ func (e {{ metric|event_type_name}}) is{{ ping|ping_events_type_name }}() {}
 {% endif %}
 
 type {{ ping|ping_type_name }} struct {
-    {% for metric_type, metrics in metrics_by_type.items() %}
-    {% if metric_type != 'event' %}
-    {% for metric in metrics %}
-    {{ metric|metric_argument_name }} {{ metric_type|go_metric_type}} // {{ metric.description|clean_string }}
-    {% endfor %}
-    {% endif %}
-    {% endfor %}
-    {% if metrics_by_type['event'] %}
-    Event {{ ping|ping_events_type_name }} // valid event for this ping
-    {% endif %}
+	{% for metric_type, metrics in metrics_by_type.items() %}
+	{% if metric_type != 'event' %}
+	{% for metric in metrics %}
+	{{ metric|metric_argument_name }} {{ metric_type|go_metric_type}} // {{ metric.description|clean_string }}
+	{% endfor %}
+	{% endif %}
+	{% endfor %}
+	{% if metrics_by_type['event'] %}
+	Event {{ ping|ping_events_type_name }} // valid event for this ping
+	{% endif %}
 }
 
 // Record and submit `{{ ping }}` ping
 func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
-    requestInfo RequestInfo,
-    params {{ ping|ping_type_name }},
-) {
+	requestInfo RequestInfo,
+	params {{ ping|ping_type_name }},
+) error {
 	metrics := metrics{
-    {% for metric_type, metrics in metrics_by_type.items() %}
-    {% if metric_type != 'event' %}
-        "{{ metric_type }}": {
-        {% for metric in metrics %}
-            {% if metric_type == 'datetime' %}
+	{% for metric_type, metrics in metrics_by_type.items() %}
+	{% if metric_type != 'event' %}
+		"{{ metric_type }}": {
+		{% for metric in metrics %}
+			{% if metric_type == 'datetime' %}
 			"{{ metric|metric_name }}": params.{{ metric|metric_argument_name }}.Format("2006-01-02T15:04:05.000Z"),
-            {% else %}
-            "{{ metric|metric_name }}": params.{{ metric|metric_argument_name }},
-            {% endif %}
-        {% endfor %}
-        },
-    {% endif %}
-    {% endfor %}
-    }
+			{% else %}
+			"{{ metric|metric_name }}": params.{{ metric|metric_argument_name }},
+			{% endif %}
+		{% endfor %}
+		},
+	{% endif %}
+	{% endfor %}
+	}
 
-    events := []gleanEvent{}
-    {% if metrics_by_type['event'] %}
-    if params.Event != nil {
+	events := []gleanEvent{}
+	{% if metrics_by_type['event'] %}
+	if params.Event != nil {
 		events = append(events, params.Event.gleanEvent())
 	}
-    {% endif %}
-    g.record("{{ ping }}", requestInfo, metrics, events)
+	{% endif %}
+	return g.record("{{ ping }}", requestInfo, metrics, events)
 }
 
 // Record and submit `{{ ping }}` ping omitting user request info
 func (g GleanEventsLogger) Record{{ ping|ping_type_name}}WithoutUserInfo(
-    params {{ ping|ping_type_name}},
-) {
-    g.Record{{ ping|ping_type_name }}(defaultRequestInfo, params)
+	params {{ ping|ping_type_name}},
+) error {
+	return g.Record{{ ping|ping_type_name }}(defaultRequestInfo, params)
 }
 {% endfor %}
