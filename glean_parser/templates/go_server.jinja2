@@ -11,6 +11,7 @@ package glean
 import (
 	"encoding/json"
     "fmt"
+	"io"
 	"strconv"
 	"time"
 
@@ -20,10 +21,15 @@ import (
 // log type string used to identify logs to process in the Moz Data Pipeline
 var gleanEventMozlogType string = "glean-server-event"
 
+// A GleanEventsLogger produces output in the required format for Glean to ingest.
+// Glean ingestion requires the output to be written to os.Stdout. Writing to a different
+// output will require the consumer to handle any closing as appropriate for the Writer.
+// e.g. if writing to a file.
 type GleanEventsLogger struct {
 	AppID             string // Application Id to identify application per Glean standards
 	AppDisplayVersion string // Version of application emitting the event
 	AppChannel        string // Channel to differentiate logs from prod/beta/staging/devel
+	Writer            io.Writer // Writer to output to. Normal operation expects os.Stdout
 }
 
 // exported type for public method parameters
@@ -169,7 +175,9 @@ func (g GleanEventsLogger) record(
 	if envelopeErr != nil {
 		return err
 	}
-	fmt.Println(string(envelopeJson))
+	if g.Writer != nil {
+		fmt.Fprintln(g.Writer, string(envelopeJson))
+	}
 	return nil
 }
 {# if any ping has an event metric, create methods and types for them #}
