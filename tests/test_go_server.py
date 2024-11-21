@@ -140,7 +140,6 @@ def run_logger(code_dir, code, imports=""):
 
     tmpl_code = tmpl_code.replace("/* CODE */", code).replace("/* IMPORTS */", imports)
 
-    print(tmpl_code)
     with open(code_dir / "test.go", "w") as fp:
         fp.write(tmpl_code)
 
