@@ -129,7 +129,7 @@ def test_parser_go_server_custon_ping_only(tmp_path):
     assert content == compare
 
 
-def run_logger(code_dir, code):
+def run_logger(code_dir, code, imports=""):
     """
     Run the Go logger and capture the output sent to STDOUT.
     """
@@ -138,7 +138,7 @@ def run_logger(code_dir, code):
     with open(ROOT / "test-go" / "test.go.tmpl", "r") as fp:
         tmpl_code = fp.read()
 
-    tmpl_code = tmpl_code.replace("/* CODE */", code)
+    tmpl_code = tmpl_code.replace("/* CODE */", code).replace("/* IMPORTS */", imports)
 
     with open(code_dir / "test.go", "w") as fp:
         fp.write(tmpl_code)
@@ -257,6 +257,89 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     assert (
         validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
     ), output.getvalue()
+
+
+@pytest.mark.go_dependency
+def test_run_logging_discard_writer(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    imports = """
+    "io"
+    "fmt"
+    """
+
+    code = """
+    logger.Writer = io.Discard
+    err := logger.RecordServerTelemetryScenarioOnePing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.ServerTelemetryScenarioOnePing{
+            MetricName:            "string value",
+            MetricRequestBool:     true,
+            MetricRequestCount:    20,
+            MetricRequestDatetime: time.Now(),
+        },
+    )
+    if err != nil {
+        fmt.Println(err)
+    }
+    """
+
+    # validate the code ran successfully and produced no output
+    logged_output = run_logger(tmp_path, code, imports=imports)
+    assert logged_output == ""
+
+
+@pytest.mark.go_dependency
+def test_run_logging_nil_writer(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    imports = """
+    "fmt"
+    """
+
+    code = """
+    logger.Writer = nil
+    err := logger.RecordServerTelemetryScenarioOnePing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.ServerTelemetryScenarioOnePing{
+            MetricName:            "string value",
+            MetricRequestBool:     true,
+            MetricRequestCount:    20,
+            MetricRequestDatetime: time.Now(),
+        },
+    )
+    if err != nil {
+        fmt.Println(err)
+    }
+    """
+
+    # validate only output produced is the printing of the returned error
+    logged_output = run_logger(tmp_path, code, imports=imports)
+    assert logged_output == "writer not specified\n"
 
 
 @pytest.mark.go_dependency
