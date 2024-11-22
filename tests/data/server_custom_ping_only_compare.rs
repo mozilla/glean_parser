@@ -1,3 +1,6 @@
+//! This Server Events crate encapsulates the core functionality related to
+//! emitting Glean server metrics.
+
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -15,24 +18,28 @@ use uuid::Uuid;
 const GLEAN_EVENT_MOZLOG_TYPE: &str = "glean-server-event";
 
 // Code below is static, regardless of what is defined in `metrics.yaml`:
+
+/// The GleanEventsLogger produces output in the required format for Glean to ingest.
+/// Glean ingestion requires the output to be written to stdout. Writing to a different
+/// output will require the consumer to handle any closing as appropriate for the Writer.
 pub struct GleanEventsLogger {
-    // Application Id to identify application per Glean standards
+    /// Application Id to identify application per Glean standards
     pub app_id: String,
-    // Version of application emitting the event
+    /// Version of application emitting the event
     pub app_display_version: String,
-    // Channel to differentiate logs from prod/beta/staging/devel
+    /// Channel to differentiate logs from prod/beta/staging/devel
     pub app_channel: String,
 }
 
-// Exported type for public method parameters
-// Default impl empty values will be omitted in json from ping struct definition
+/// Struct containing request metadata. Record calls can be made with this being left empty.
+/// Default impl empty values will be omitted in json from ping struct definition.
 #[derive(Default, Serialize, Deserialize)]
 pub struct RequestInfo {
     pub user_agent: String,
     pub ip_address: String,
 }
 
-// Struct to construct the glean ping
+/// Struct encapsulating client application data to construct Glean ping.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ClientInfo {
     telemetry_sdk_build: String,
@@ -45,6 +52,7 @@ pub struct ClientInfo {
     app_channel: String,
 }
 
+/// Ping metadata struct.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PingInfo {
     seq: u32,
@@ -64,6 +72,7 @@ impl Default for PingInfo {
     }
 }
 
+/// Struct containing ping metadata.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Ping {
     document_namespace: String,
@@ -75,8 +84,13 @@ pub struct Ping {
     payload: String,
 }
 
+/// Glean Metrics type expressed by a String key of the supported metric types
+/// ("string", "quantity", "event", "datetime", "boolean") and a HashMap
+/// of each metric (defined in `metrics.yaml`) corresponding to its
+/// serialized value.
 type Metrics = HashMap<String, HashMap<String, serde_json::Value>>;
 
+/// Struct defining the `Event` metric type.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GleanEvent {
     category: String,
@@ -88,7 +102,7 @@ pub struct GleanEvent {
 pub fn new_glean_event(
     category: &str,
     name: &str,
-    extra: std::collections::HashMap<String, String>,
+    extra: HashMap<String, String>,
 ) -> GleanEvent {
     GleanEvent {
         category: category.to_owned(),
@@ -97,6 +111,9 @@ pub fn new_glean_event(
         extra,
     }
 }
+
+/// Struct encapsulating the telemetry payload, including the metrics and events,
+/// in addition to client and ping metadata.
 #[derive(Serialize, Deserialize, Debug)]
 struct PingPayload {
     client_info: ClientInfo,
@@ -105,8 +122,10 @@ struct PingPayload {
     events: Vec<GleanEvent>,
 }
 
+/// Logging envelope that is serialized for emission to stdout.
 #[derive(Serialize, Deserialize)]
 struct LogEnvelope {
+    // MozLog compliant format. https://wiki.mozilla.org/Firefox/Services/Logging
     #[serde(rename = "Type")]
     log_type: String,
     #[serde(rename = "Fields")]
@@ -114,8 +133,9 @@ struct LogEnvelope {
 }
 
 impl GleanEventsLogger {
+    /// Create ClientInfo struct from values defined in GleanEventsLogger.
     fn create_client_info(&self) -> ClientInfo {
-        // Fields with default values are required in the Glean schema, but not used in server context
+        // Fields with default values are required in the Glean schema, but not used in server context.
         ClientInfo {
             telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_owned(),
             first_run_date: "Unknown".to_owned(),
@@ -128,6 +148,7 @@ impl GleanEventsLogger {
         }
     }
 
+    /// Method used to encapsulate ping metadata and PingPayload.
     fn create_ping(
         &self,
         document_type: &str,
@@ -149,8 +170,7 @@ impl GleanEventsLogger {
     }
 
     /// Method called by each ping-specific record method.
-    /// The goal is to construct the ping, wrap it in the envelope
-    /// and print to stdout.
+    /// The goal is to construct the ping, wrap it in the envelope and print to stdout.
     fn record(
         &self,
         document_type: &str,
@@ -181,12 +201,15 @@ impl GleanEventsLogger {
 
 // Metrics of the `event` type. Anything defined in `extra_keys` has it's own struct field.
 // The appended `Event` term to any metric of the event type implies the ping event.
-
+/// Struct containing metadata defined in `extra_keys` if they are defined. Otherwise empty.
 pub struct BackendSpecialEventEvent {
-    // metadata for event in `extra_keys`
-    pub event_field_string: String, // A string extra field
-    pub event_field_quantity: u64, // A quantity extra field
-    pub event_field_bool: bool, // A boolean extra field
+    // Metadata for event in `extra_keys`
+    /// A string extra field
+    pub event_field_string: String,
+    /// A quantity extra field
+    pub event_field_quantity: u64,
+    /// A boolean extra field
+    pub event_field_bool: bool,
 }
 
 // Implementing the ServerTelemetryScenarioOnePingEvent trait for the generated struct BackendSpecialEventEvent
@@ -211,48 +234,56 @@ impl ServerTelemetryScenarioOnePingEvent for BackendSpecialEventEvent {
 }
 
 
-/// Marker trait for events per ping
+/// Marker trait for events per ping.
 pub trait ServerTelemetryScenarioOnePingEvent {
-    fn glean_event(&self) -> GleanEvent;  // Returns an instance of GleanEvent
+    fn glean_event(&self) -> GleanEvent;
 }
 
+/// Struct containing defined metrics and event(s) from `metrics.yaml`.
+/// Encompasses the core Glean Ping Event and its data.
 pub struct ServerTelemetryScenarioOnePing {
-    pub metric_name: String, // Test string metric
-    pub metric_request_bool: bool, // boolean
-    pub metric_request_count: u64, // Test quantity metric
-    pub metric_request_datetime: chrono::DateTime<Utc>, // Test datetime metric
-    pub event: Option<Box<dyn ServerTelemetryScenarioOnePingEvent>>, // valid event of  `ServerTelemetryScenarioOnePingEvent` for this ping
+    /// Test string metric
+    pub metric_name: String,
+    /// boolean
+    pub metric_request_bool: bool,
+    /// Test quantity metric
+    pub metric_request_count: u64,
+    /// Test datetime metric
+    pub metric_request_datetime: chrono::DateTime<Utc>,
+    /// valid event of  `ServerTelemetryScenarioOnePingEvent` for this ping
+    pub event: Option<Box<dyn ServerTelemetryScenarioOnePingEvent>>,
 }
 
 // Record and submit `server-telemetry-scenario-one` ping
 impl GleanEventsLogger {
-    /// General `record_events_ping` function
+    /// General `record_events_ping` function for core Glean Ping Event - Record and submit `events` ping.
+    /// Collects a HashMap of parametrized key value pairs and events to be recorded.
     pub fn record_server_telemetry_scenario_one_ping(&self, request_info: &RequestInfo, params: &ServerTelemetryScenarioOnePing) {
         // Define the outer `Metrics` map that holds the metric type.
         let mut metrics = Metrics::new();
         // Create corresponding metric value maps to insert into `Metrics`.
-        let mut string_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        let mut string_map: HashMap<String, serde_json::Value> = HashMap::new();
         string_map.insert(
             "metric.name".to_owned(),
             serde_json::Value::String(params.metric_name.to_string()),
         );
         metrics.insert("string".to_owned(), string_map);
 
-        let mut boolean_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        let mut boolean_map: HashMap<String, serde_json::Value> = HashMap::new();
         boolean_map.insert(
             "metric.request_bool".to_owned(),
             serde_json::Value::Bool(params.metric_request_bool.into()),
         );
         metrics.insert("boolean".to_owned(), boolean_map);
 
-        let mut quantity_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        let mut quantity_map: HashMap<String, serde_json::Value> = HashMap::new();
         quantity_map.insert(
             "metric.request_count".to_owned(),
             serde_json::Value::Number(params.metric_request_count.into()),
         );
         metrics.insert("quantity".to_owned(), quantity_map);
 
-        let mut datetime_map: HashMap<String, serde_json::Value> = std::collections::HashMap::new();
+        let mut datetime_map: HashMap<String, serde_json::Value> = HashMap::new();
         datetime_map.insert(
 		    "metric.request_datetime".to_owned(),
             serde_json::Value::String(params.metric_request_datetime.format("%Y-%m-%dT%H:%M:%S%.3fZ").to_string()),
@@ -269,8 +300,8 @@ impl GleanEventsLogger {
     }
 }
 
-// Record and submit `server-telemetry-scenario-one` ping omitting user request info
 impl GleanEventsLogger {
+    /// Record and submit `events` ping while omitting user request info.
     pub fn record_server_telemetry_scenario_one_ping_without_user_info(
     &self,
     params: &ServerTelemetryScenarioOnePing

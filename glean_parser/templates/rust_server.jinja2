@@ -53,6 +53,7 @@ pub struct ClientInfo {
     app_channel: String,
 }
 
+/// Ping metadata struct.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PingInfo {
     seq: u32,
@@ -72,6 +73,7 @@ impl Default for PingInfo {
     }
 }
 
+/// Struct containing ping metadata.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Ping {
     document_namespace: String,
@@ -83,8 +85,13 @@ pub struct Ping {
     payload: String,
 }
 
+/// Glean Metrics type expressed by a String key of the supported metric types
+/// ("string", "quantity", "event", "datetime", "boolean") and a HashMap
+/// of each metric (defined in `metrics.yaml`) corresponding to its
+/// serialized value.
 type Metrics = HashMap<String, HashMap<String, serde_json::Value>>;
 
+/// Struct defining the `Event` metric type.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GleanEvent {
     category: String,
@@ -105,6 +112,9 @@ pub fn new_glean_event(
         extra,
     }
 }
+
+/// Struct encapsulating the telemetry payload, including the metrics and events,
+/// in addition to client and ping metadata.
 #[derive(Serialize, Deserialize, Debug)]
 struct PingPayload {
     client_info: ClientInfo,
@@ -113,8 +123,10 @@ struct PingPayload {
     events: Vec<GleanEvent>,
 }
 
+/// Logging envelope that is serialized for emission to stdout.
 #[derive(Serialize, Deserialize)]
 struct LogEnvelope {
+    // MozLog compliant format. https://wiki.mozilla.org/Firefox/Services/Logging
     #[serde(rename = "Type")]
     log_type: String,
     #[serde(rename = "Fields")]
@@ -122,8 +134,9 @@ struct LogEnvelope {
 }
 
 impl GleanEventsLogger {
+    /// Create ClientInfo struct from values defined in GleanEventsLogger.
     fn create_client_info(&self) -> ClientInfo {
-        // Fields with default values are required in the Glean schema, but not used in server context
+        // Fields with default values are required in the Glean schema, but not used in server context.
         ClientInfo {
             telemetry_sdk_build: "glean_parser v15.0.2.dev17+g81fec69a".to_owned(),
             first_run_date: "Unknown".to_owned(),
@@ -136,6 +149,7 @@ impl GleanEventsLogger {
         }
     }
 
+    /// Method used to encapsulate ping metadata and PingPayload.
     fn create_ping(
         &self,
         document_type: &str,
@@ -157,8 +171,7 @@ impl GleanEventsLogger {
     }
 
     /// Method called by each ping-specific record method.
-    /// The goal is to construct the ping, wrap it in the envelope
-    /// and print to stdout.
+    /// The goal is to construct the ping, wrap it in the envelope and print to stdout.
     fn record(
         &self,
         document_type: &str,
@@ -195,9 +208,9 @@ impl GleanEventsLogger {
 {# Loop over each event associated with the current ping #}
 {# each event has a specific type and method to create a gleanEvent #}
 {% for event in metrics_by_type['event'] %}
-
+/// Struct containing metadata defined in `extra_keys` if they are defined. Otherwise empty.
 pub struct {{ event|event_type_name }} {
-    // metadata for event in `extra_keys`
+    // Metadata for event in `extra_keys`
     {% for extra, metadata in event.extra_keys.items() %}
     {% if extra|event_extra_name == "event" %}
     /// {{ metadata.description|clean_string }}
@@ -249,12 +262,14 @@ impl {{ ping|ping_events_type_name }} for {{ event|event_type_name }} {
 {% if metrics_by_type['event'] %}
 
 {# interface that eligible events for this ping will implement #}
-/// Marker trait for events per ping
+/// Marker trait for events per ping.
 pub trait {{ ping|ping_events_type_name }} {
     fn glean_event(&self) -> GleanEvent;
 }
 {% endif %}
 
+/// Struct containing defined metrics and event(s) from `metrics.yaml`.
+/// Encompasses the core Glean Ping Event and its data.
 pub struct {{ ping|ping_type_name }} {
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% if metric_type != 'event' %}
@@ -272,7 +287,8 @@ pub struct {{ ping|ping_type_name }} {
 
 // Record and submit `{{ ping }}` ping
 impl GleanEventsLogger {
-    /// General `record_events_ping` function
+    /// General `record_events_ping` function for core Glean Ping Event - Record and submit `events` ping.
+    /// Collects a HashMap of parametrized key value pairs and events to be recorded.
     pub fn record_{{ ping|ping_type_name|snake_case }}(&self, request_info: &RequestInfo, params: &{{ ping|ping_type_name}}) {
         // Define the outer `Metrics` map that holds the metric type.
         let mut metrics = Metrics::new();
@@ -315,8 +331,8 @@ impl GleanEventsLogger {
     }
 }
 
-// Record and submit `{{ ping }}` ping omitting user request info
 impl GleanEventsLogger {
+    /// Record and submit `events` ping while omitting user request info.
     pub fn record_{{ ping|ping_type_name|snake_case }}_without_user_info(
     &self,
     params: &{{ ping|ping_type_name}}
