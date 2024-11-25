@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pings.yaml file &#8212; Glean Parser 15.2.2.dev5+gab115d4e documentation</title>
+    <title>pings.yaml file &#8212; Glean Parser 15.2.2.dev7+g83826081 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=755a4787"></script>
+    <script src="_static/documentation_options.js?v=c82f3bb4"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -136,6 +136,13 @@ entirety below:</p>
 
 <span class="w">            </span><span class="no">Interaction with `include_client_id`: `include_client_id` only takes</span>
 <span class="w">            </span><span class="no">effect when `metadata.include_info_sections` is `true`.</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="w">        </span><span class="nt">follows_collection_enabled</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Follows Collection Enabled</span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">            </span><span class="no">Whether this ping follows the built-in collection enabled flag.</span>
+
+<span class="w">            </span><span class="no">Setting this to `false` always sets `enabled=false` too.</span>
 <span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
 <span class="w">        </span><span class="nt">ping_schedule</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ping Schedule</span>
