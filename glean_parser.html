@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>glean_parser package &#8212; Glean Parser 15.2.2.dev4+g785b47e8 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 15.2.2.dev5+gab115d4e documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=561dd86b"></script>
+    <script src="_static/documentation_options.js?v=755a4787"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -1631,6 +1631,93 @@ not LabeledMetric&lt;T&gt;::new</p>
 </dd></dl>
 
 </section>
+<section id="module-glean_parser.rust_server">
+<span id="glean-parser-rust-server-module"></span><h2>glean_parser.rust_server module<a class="headerlink" href="#module-glean_parser.rust_server" title="Link to this heading">¶</a></h2>
+<p>Outputter to generate server Rust code for collecting events.</p>
+<p>This outputter is different from the rest of the outputters in that the code it
+generates does not use the Glean SDK. It is meant to be used to collect events
+in server-side environments. In these environments, SDK assumptions that define measurement
+windows and connectivity don’t hold.
+Generated code takes care of assembling pings with metrics, and serializing to messages
+conforming to Glean schema.</p>
+<p>Warning: this outputter supports limited set of metrics,
+see <cite>SUPPORTED_METRIC_TYPES</cite> below.</p>
+<p>Generated code creates two methods for each ping (<cite>RecordPingX</cite> and <cite>RecordPingXWithoutUserInfo</cite>)
+that are used for submitting (logging) them.
+If pings have <cite>event</cite> metrics assigned, they can be passed to these methods.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.clean_string">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">clean_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#clean_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.clean_string" title="Link to this definition">¶</a></dt>
+<dd><p>Strip strings of any newlines and trailing space.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_event_type_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_event_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_event_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_event_type_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case string of event type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_extra_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_extra_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_extra_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_extra_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case string of extra value.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_metric_argument_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_metric_argument_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_metric_argument_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_metric_argument_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case string of metric argument name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_metric_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_metric_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_metric_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_metric_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case string of metric name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_metric_type">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_metric_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_metric_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_metric_type" title="Link to this definition">¶</a></dt>
+<dd><p>Return string representation of metric type in Rust.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_ping_events_type_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_ping_events_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ping_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_ping_events_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_ping_events_type_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case event type name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_ping_type_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_ping_type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ping_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_ping_type_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_ping_type_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns camel-case string of ping name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.generate_snake_case_name">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">generate_snake_case_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#generate_snake_case_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.generate_snake_case_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a snake-case function or attribute name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_server.output_rust">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_server.</span></span><span class="sig-name descname"><span class="pre">output_rust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">Ping</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.tags.Tag" title="glean_parser.tags.Tag"><span class="pre">Tag</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_server.html#output_rust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_server.output_rust" title="Link to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Rust code to <cite>output_dir</cite>.</p>
+<p>The output is a single file containing all the code for assembling pings with
+metrics, serializing, and submitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objects</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</p></li>
+<li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
+<li><p><strong>options</strong> – Optional dictionary of additional configuration options</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-glean_parser.swift">
 <span id="glean-parser-swift-module"></span><h2>glean_parser.swift module<a class="headerlink" href="#module-glean_parser.swift" title="Link to this heading">¶</a></h2>
 <p>Outputter to generate Swift code for metrics.</p>
@@ -1893,6 +1980,14 @@ it will use that date.
 Note that any timezone offset will be ignored and UTC will be used.
 Otherwise it will throw an error.</p>
 <p>If <cite>date</cite> is <cite>None</cite> it will use the current date &amp; time.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.util.camel_or_pascal_to_snake_case">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.util.</span></span><span class="sig-name descname"><span class="pre">camel_or_pascal_to_snake_case</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/glean_parser/util.html#camel_or_pascal_to_snake_case"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.util.camel_or_pascal_to_snake_case" title="Link to this definition">¶</a></dt>
+<dd><p>Convert Camel Case or Pascal Case to Snake Case.</p>
+<p>Any capitalized values beyond the first token are lowered
+and an <cite>_</cite> is inserted.</p>
 </dd></dl>
 
 <dl class="py function">
