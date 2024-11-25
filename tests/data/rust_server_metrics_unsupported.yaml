@@ -1,0 +1,153 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+metric:
+  labeled_bool:
+    type: labeled_boolean
+    description: >
+      labeled boolean
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  labeled_string:
+    type: labeled_string
+    description: >
+      labeled string
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  object:
+    type: object
+    description: >
+      json object
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+    structure:
+      type: array
+      items:
+        type: object
+        properties:
+          attribute_one:
+            type: string
+          attribute_two:
+            type: number
+
+  string_list:
+    type: string_list
+    description: >
+      string list
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  timespan:
+    type: timespan
+    description: >
+      timespan
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  uuid:
+    type: uuid
+    description: >
+      uuid
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  url:
+    type: url
+    description: >
+      url
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+  datetime:
+    type: datetime
+    description: >
+      datetime
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+
+backend:
+  test_event:
+    type: event
+    description: >
+      test event
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    extra_keys:
+      event_field_1:
+        description: >
+          A first extra field
+        type: string
