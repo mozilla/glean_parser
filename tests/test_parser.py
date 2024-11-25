@@ -44,6 +44,10 @@ def test_parser():
     assert pings["really-custom-ping"].name == "really-custom-ping"
     assert pings["really-custom-ping"].include_client_id is True
 
+    # `follows_collection_enabled` forces `enabled=false`
+    assert pings["nofollows"].follows_collection_enabled is False
+    assert pings["nofollows"].enabled is False
+
 
 def test_parser_invalid():
     """Test the basics of parsing a single file."""

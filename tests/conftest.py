@@ -26,6 +26,12 @@ def pytest_addoption(parser):
         default=False,
         help="Run tests that require Go",
     )
+    parser.addoption(
+        "--run-rust-tests",
+        action="store_true",
+        default=False,
+        help="Run tests that require Rust",
+    )
 
 
 def pytest_collection_modifyitems(config, items):
@@ -52,3 +58,9 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "go_dependency" in item.keywords:
                 item.add_marker(skip_go)
+
+    if not config.getoption("--run-rust-tests"):
+        skip_rust = pytest.mark.skip(reason="Need --run-rust-tests option to run")
+        for item in items:
+            if "rust_dependency" in item.keywords:
+                item.add_marker(skip_rust)
