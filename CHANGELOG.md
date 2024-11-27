@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+## 16.1.0
+
 - Allow specifying a subset of interesting metrics to actually collect. Other metrics will be built, but marked as disabled ([bug 1931277](https://bugzilla.mozilla.org/show_bug.cgi?id=1911165)).
+
+## 16.0.0
+
 - BREAKING CHANGE: Support `follows_collection_enabled` for pings ([#776](https://github.com/mozilla/glean_parser/pull/776))
 - Add rust_server feature to glean_parser to allow Rust server-side metrics ([#772](https://github.com/mozilla/glean_parser/pull/772))
 - Replace `panic`s with returned errors (`go_server`) ([#777](https://github.com/mozilla/glean_parser/pull/777))
