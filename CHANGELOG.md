@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New lint: error when there are metrics whose names are too similar ([bug 1934099](https://bugzilla.mozilla.org/show_bug.cgi?id=1934099))
+
 ## 16.1.0
 
 - Allow specifying a subset of interesting metrics to actually collect. Other metrics will be built, but marked as disabled ([bug 1931277](https://bugzilla.mozilla.org/show_bug.cgi?id=1911165)).

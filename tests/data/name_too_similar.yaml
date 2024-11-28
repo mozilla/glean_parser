@@ -1,0 +1,31 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+all_metrics:
+  valid_metric: &defaults
+    type: counter
+    lifetime: ping
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/123
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+  validmetric:
+    <<: *defaults
+
+  similar_nolint:
+    <<: *defaults
+    no_lint:
+      - NAME_TOO_SIMILAR
+
+  similar_no_lint:
+    <<: *defaults
+    no_lint:
+      - NAME_TOO_SIMILAR
