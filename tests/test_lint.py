@@ -508,6 +508,22 @@ def test_unknown_pings_lint():
     assert "does-not-exist" in nits[0].msg
 
 
+def test_name_too_similar_lint():
+    """Ensure the 'glinter' reports metrics whose names are too similar."""
+    # Note: NAME_TOO_SIMILAR is an all-object lint meaning we need pings for it to work.
+    input = [ROOT / "data" / "name_too_similar.yaml", ROOT / "data" / "pings.yaml"]
+    all_objects = parser.parse_objects(input)
+
+    errs = list(all_objects)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_objects.value, parser_config={})
+    assert len(nits) == 1
+    assert nits[0].check_name == "NAME_TOO_SIMILAR"
+    assert nits[0].name == "all_metrics.validmetric"
+    assert "all_metrics.valid_metric" in nits[0].msg
+
+
 @pytest.mark.parametrize(
     "metric, num_nits",
     [
