@@ -1273,3 +1273,11 @@ def test_object_invalid():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "`items` not allowed in object structure" in errors[0]
+
+    structure = {"type": "string"}
+    contents = [{"category": {"metric": {"type": "object", "structure": structure}}}]
+    contents = [util.add_required(x) for x in contents]
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "invalid `type` in object structure." in errors[0]
