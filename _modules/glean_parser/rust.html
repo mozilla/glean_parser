@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.rust &#8212; Glean Parser 16.1.1.dev1+gac5e3a1f documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <title>glean_parser.rust &#8212; Glean Parser 16.1.1.dev2+g604d07db documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=cb2c288b"></script>
+    <script src="../../_static/documentation_options.js?v=c9c382ff"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -40,21 +40,21 @@
 <span class="sd">Outputter to generate Rust code for metrics.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tags</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">pings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">tags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
 
 
 <div class="viewcode-block" id="rust_datatypes_filter">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.rust_datatypes_filter">[docs]</a>
-<span class="k">def</span> <span class="nf">rust_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rust_datatypes_filter</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A Jinja2 filter that renders Rust literals.</span>
 
@@ -69,8 +69,8 @@
 <span class="sd">        (for external Denominators&#39; Numerators lists)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">class</span> <span class="nc">RustEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">iterencode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">RustEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">iterencode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RustEncoder doesn&#39;t know dicts </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
@@ -120,7 +120,7 @@
 
 <div class="viewcode-block" id="ctor">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.ctor">[docs]</a>
-<span class="k">def</span> <span class="nf">ctor</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ctor</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the scope and name of the constructor to use for a metric object.</span>
 <span class="sd">    Necessary because LabeledMetric&lt;T&gt; is constructed using LabeledMetric::new</span>
@@ -134,7 +134,7 @@
 
 <div class="viewcode-block" id="type_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.type_name">[docs]</a>
-<span class="k">def</span> <span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">type_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Rust type to use for a given metric or ping object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -166,7 +166,7 @@
 
 <div class="viewcode-block" id="extra_type_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.extra_type_name">[docs]</a>
-<span class="k">def</span> <span class="nf">extra_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extra_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the corresponding Rust type for event&#39;s extra key types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -184,7 +184,7 @@
 
 <div class="viewcode-block" id="structure_type_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.structure_type_name">[docs]</a>
-<span class="k">def</span> <span class="nf">structure_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">structure_type_name</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the corresponding Rust type for structure items.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="class_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.class_name">[docs]</a>
-<span class="k">def</span> <span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">class_name</span><span class="p">(</span><span class="n">obj_type</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Rust class name for a given metric or ping type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -216,7 +216,7 @@
 
 <div class="viewcode-block" id="extra_keys">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.extra_keys">[docs]</a>
-<span class="k">def</span> <span class="nf">extra_keys</span><span class="p">(</span><span class="n">allowed_extra_keys</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extra_keys</span><span class="p">(</span><span class="n">allowed_extra_keys</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the &amp;&#39;static [&amp;&#39;static str] ALLOWED_EXTRA_KEYS for impl ExtraKeys</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -226,12 +226,12 @@
 
 <div class="viewcode-block" id="Category">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.Category">[docs]</a>
-<span class="k">class</span> <span class="nc">Category</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Category</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Data struct holding information about a metric to be used in the template.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">objs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">,</span> <span class="n">pings</span><span class="o">.</span><span class="n">Ping</span><span class="p">,</span> <span class="n">tags</span><span class="o">.</span><span class="n">Tag</span><span class="p">]],</span>
@@ -245,7 +245,7 @@
 
 <div class="viewcode-block" id="output_rust">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.rust.output_rust">[docs]</a>
-<span class="k">def</span> <span class="nf">output_rust</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">output_rust</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript_server &#8212; Glean Parser 16.1.1.dev1+gac5e3a1f documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <title>glean_parser.javascript_server &#8212; Glean Parser 16.1.1.dev2+g604d07db documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=cb2c288b"></script>
+    <script src="../../_static/documentation_options.js?v=c9c382ff"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -61,13 +61,13 @@
 <span class="sd">Therefore, unlike in other outputters, here we don&#39;t generate classes for each metric.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
 
 <span class="c1"># Adding a metric here will require updating the `generate_js_metric_type` function</span>
 <span class="c1"># and might require changes to the template.</span>
@@ -76,7 +76,7 @@
 
 <div class="viewcode-block" id="event_class_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.event_class_name">[docs]</a>
-<span class="k">def</span> <span class="nf">event_class_name</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">event_class_name</span><span class="p">(</span>
     <span class="n">ping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metrics_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="c1"># For compatibility with FxA codebase we don&#39;t want to add &quot;Logger&quot; suffix</span>
@@ -89,28 +89,28 @@
 
 <div class="viewcode-block" id="generate_metric_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_metric_name">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_metric_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_metric_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="generate_metric_argument_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_metric_argument_name">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_metric_argument_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_metric_argument_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="generate_js_metric_type">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_js_metric_type">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_js_metric_type</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_js_metric_type</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span></div>
 
 
 
 <div class="viewcode-block" id="generate_ping_factory_method">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_ping_factory_method">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_ping_factory_method</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_ping_factory_method</span><span class="p">(</span>
     <span class="n">ping</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metrics_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="c1"># `ServerEventLogger` better describes role of the class that this factory</span>
@@ -124,21 +124,21 @@
 
 <div class="viewcode-block" id="generate_event_metric_record_function_name">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.generate_event_metric_record_function_name">[docs]</a>
-<span class="k">def</span> <span class="nf">generate_event_metric_record_function_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_event_metric_record_function_name</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;record</span><span class="si">{</span><span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="p">)</span><span class="si">}{</span><span class="n">util</span><span class="o">.</span><span class="n">Camelize</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="clean_string">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.clean_string">[docs]</a>
-<span class="k">def</span> <span class="nf">clean_string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_string</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
 
 
 
 <div class="viewcode-block" id="output">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output">[docs]</a>
-<span class="k">def</span> <span class="nf">output</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">output</span><span class="p">(</span>
     <span class="n">lang</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
@@ -259,7 +259,7 @@
 
 <div class="viewcode-block" id="output_javascript">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output_javascript">[docs]</a>
-<span class="k">def</span> <span class="nf">output_javascript</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">output_javascript</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -280,7 +280,7 @@
 
 <div class="viewcode-block" id="output_typescript">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.javascript_server.output_typescript">[docs]</a>
-<span class="k">def</span> <span class="nf">output_typescript</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">output_typescript</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

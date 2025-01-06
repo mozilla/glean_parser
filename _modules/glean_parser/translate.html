@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.translate &#8212; Glean Parser 16.1.1.dev1+gac5e3a1f documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <title>glean_parser.translate &#8212; Glean Parser 16.1.1.dev2+g604d07db documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=cb2c288b"></script>
+    <script src="../../_static/documentation_options.js?v=c9c382ff"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -40,31 +40,31 @@
 <span class="sd">High-level interface for translating `metrics.yaml` into other formats.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">lint</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parser</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">go_server</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">javascript</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">javascript_server</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">python_server</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">kotlin</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">markdown</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ruby_server</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">rust</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">rust_server</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">swift</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">lint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">parser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">go_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">javascript</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">javascript_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">kotlin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">markdown</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">ruby_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">rust</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">rust_server</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">swift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
 
 
 <div class="viewcode-block" id="Outputter">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.Outputter">[docs]</a>
-<span class="k">class</span> <span class="nc">Outputter</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Outputter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to define an output format.</span>
 
@@ -77,7 +77,7 @@
 <span class="sd">      writing new results to it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">output_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">clear_patterns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -108,7 +108,7 @@
 
 <div class="viewcode-block" id="transform_metrics">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.transform_metrics">[docs]</a>
-<span class="k">def</span> <span class="nf">transform_metrics</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transform_metrics</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transform the object model from one that represents the YAML definitions</span>
 <span class="sd">    to one that reflects the type specifics needed by code generators.</span>
@@ -145,7 +145,7 @@
 
 <div class="viewcode-block" id="translate_metrics">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.translate_metrics">[docs]</a>
-<span class="k">def</span> <span class="nf">translate_metrics</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">translate_metrics</span><span class="p">(</span>
     <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">translation_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
@@ -239,7 +239,7 @@
 
 <div class="viewcode-block" id="translate">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.translate.translate">[docs]</a>
-<span class="k">def</span> <span class="nf">translate</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">translate</span><span class="p">(</span>
     <span class="n">input_filepaths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span>
     <span class="n">output_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>

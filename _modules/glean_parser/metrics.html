@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.metrics &#8212; Glean Parser 16.1.1.dev1+gac5e3a1f documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <title>glean_parser.metrics &#8212; Glean Parser 16.1.1.dev2+g604d07db documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=cb2c288b"></script>
+    <script src="../../_static/documentation_options.js?v=c9c382ff"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -40,13 +40,13 @@
 <span class="sd">Classes for each of the high-level metric types.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa</span>
 
 
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pings</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tags</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">pings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">tags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
 
 
 <span class="c1"># Important: if the values are ever changing here, make sure</span>
@@ -54,7 +54,7 @@
 <span class="c1"># break there.</span>
 <div class="viewcode-block" id="Lifetime">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Lifetime">[docs]</a>
-<span class="k">class</span> <span class="nc">Lifetime</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Lifetime</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">ping</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">application</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">user</span> <span class="o">=</span> <span class="mi">2</span></div>
@@ -63,7 +63,7 @@
 
 <div class="viewcode-block" id="DataSensitivity">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.DataSensitivity">[docs]</a>
-<span class="k">class</span> <span class="nc">DataSensitivity</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataSensitivity</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">technical</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">interaction</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">stored_content</span> <span class="o">=</span> <span class="mi">3</span>
@@ -74,13 +74,13 @@
 
 <div class="viewcode-block" id="Metric">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric">[docs]</a>
-<span class="k">class</span> <span class="nc">Metric</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Metric</span><span class="p">:</span>
     <span class="n">typename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
     <span class="n">glean_internal_metric_cat</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;glean.internal.metrics&quot;</span>
     <span class="n">metric_types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">default_store_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -105,7 +105,7 @@
         <span class="n">_validated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># Avoid cyclical import</span>
-        <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parser</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">parser</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">category</span>
@@ -159,7 +159,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">Metric</span><span class="o">.</span><span class="n">glean_internal_metric_cat</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Create a mapping of all of the subclasses of this class</span>
         <span class="k">if</span> <span class="bp">cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Metric</span><span class="o">.</span><span class="n">metric_types</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;typename&quot;</span><span class="p">):</span>
             <span class="n">Metric</span><span class="o">.</span><span class="n">metric_types</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">typename</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span>
@@ -168,7 +168,7 @@
 <div class="viewcode-block" id="Metric.make_metric">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.make_metric">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">make_metric</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_metric</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -207,7 +207,7 @@
 
 <div class="viewcode-block" id="Metric.serialize">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.serialize">[docs]</a>
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Serialize the metric back to JSON object model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -230,14 +230,14 @@
         <span class="k">return</span> <span class="n">d</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_serialize_input</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_serialize_input</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
         <span class="n">modified_dict</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">remove_output_params</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s2">&quot;defined_in&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">modified_dict</span>
 
 <div class="viewcode-block" id="Metric.identifier">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.identifier">[docs]</a>
-    <span class="k">def</span> <span class="nf">identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">identifier</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create an identifier unique for this metric.</span>
 <span class="sd">        Generally, category.name; however, Glean internal</span>
@@ -250,14 +250,14 @@
 
 <div class="viewcode-block" id="Metric.is_disabled">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_disabled">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_disabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_disabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_expired</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Metric.is_expired">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_expired">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">default_handler</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_expired</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">default_handler</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">is_expired</span><span class="p">(</span><span class="n">expires</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expire_by_version&quot;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_is_expired&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span></div>
@@ -265,8 +265,8 @@
 
 <div class="viewcode-block" id="Metric.validate_expires">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.validate_expires">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">default_handler</span><span class="p">(</span><span class="n">expires</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">default_handler</span><span class="p">(</span><span class="n">expires</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">util</span><span class="o">.</span><span class="n">validate_expires</span><span class="p">(</span><span class="n">expires</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expire_by_version&quot;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_validate_expires&quot;</span><span class="p">,</span> <span class="n">default_handler</span><span class="p">)(</span>
@@ -276,7 +276,7 @@
 
 <div class="viewcode-block" id="Metric.is_internal_metric">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Metric.is_internal_metric">[docs]</a>
-    <span class="k">def</span> <span class="nf">is_internal_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_internal_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Metric</span><span class="o">.</span><span class="n">glean_internal_metric_cat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 </div>
 
@@ -284,42 +284,42 @@
 
 <div class="viewcode-block" id="Boolean">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Boolean">[docs]</a>
-<span class="k">class</span> <span class="nc">Boolean</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Boolean</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;boolean&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="String">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.String">[docs]</a>
-<span class="k">class</span> <span class="nc">String</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">String</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="StringList">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.StringList">[docs]</a>
-<span class="k">class</span> <span class="nc">StringList</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StringList</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;string_list&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Counter">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Counter">[docs]</a>
-<span class="k">class</span> <span class="nc">Counter</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Counter</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;counter&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Quantity">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Quantity">[docs]</a>
-<span class="k">class</span> <span class="nc">Quantity</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Quantity</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;quantity&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="TimeUnit">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimeUnit">[docs]</a>
-<span class="k">class</span> <span class="nc">TimeUnit</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeUnit</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">nanosecond</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">millisecond</span> <span class="o">=</span> <span class="mi">2</span>
@@ -332,8 +332,8 @@
 
 <div class="viewcode-block" id="TimeBase">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimeBase">[docs]</a>
-<span class="k">class</span> <span class="nc">TimeBase</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimeBase</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;time_unit&quot;</span><span class="p">,</span> <span class="s2">&quot;millisecond&quot;</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -341,17 +341,17 @@
 
 <div class="viewcode-block" id="Timespan">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Timespan">[docs]</a>
-<span class="k">class</span> <span class="nc">Timespan</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Timespan</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;timespan&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="TimingDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.TimingDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">TimingDistribution</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TimingDistribution</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;timing_distribution&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">TimeUnit</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;time_unit&quot;</span><span class="p">,</span> <span class="s2">&quot;nanosecond&quot;</span><span class="p">))</span>
         <span class="n">Metric</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -359,7 +359,7 @@
 
 <div class="viewcode-block" id="MemoryUnit">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.MemoryUnit">[docs]</a>
-<span class="k">class</span> <span class="nc">MemoryUnit</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MemoryUnit</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">kilobyte</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">megabyte</span> <span class="o">=</span> <span class="mi">2</span>
@@ -369,10 +369,10 @@
 
 <div class="viewcode-block" id="MemoryDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.MemoryDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">MemoryDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MemoryDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;memory_distribution&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memory_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">MemoryUnit</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;memory_unit&quot;</span><span class="p">,</span> <span class="s2">&quot;byte&quot;</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -380,7 +380,7 @@
 
 <div class="viewcode-block" id="HistogramType">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.HistogramType">[docs]</a>
-<span class="k">class</span> <span class="nc">HistogramType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HistogramType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">linear</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">exponential</span> <span class="o">=</span> <span class="mi">1</span></div>
 
@@ -388,10 +388,10 @@
 
 <div class="viewcode-block" id="CustomDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.CustomDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">CustomDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomDistribution</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;custom_distribution&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_min</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;range_min&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;range_max&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket_count</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;bucket_count&quot;</span><span class="p">)</span>
@@ -404,31 +404,31 @@
 
 <div class="viewcode-block" id="Datetime">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Datetime">[docs]</a>
-<span class="k">class</span> <span class="nc">Datetime</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Datetime</span><span class="p">(</span><span class="n">TimeBase</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Event">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Event">[docs]</a>
-<span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;event&quot;</span>
 
     <span class="n">default_store_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;events&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_keys</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extra_keys&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_extra_keys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_keys</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_config&quot;</span><span class="p">,</span> <span class="p">{}))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_generate_enums</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;allowed_extra_keys_with_types&quot;</span><span class="p">,</span> <span class="s2">&quot;Extra&quot;</span><span class="p">)]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">allowed_extra_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allowed_extra_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Sort keys so that output is deterministic</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">allowed_extra_keys_with_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allowed_extra_keys_with_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Sort keys so that output is deterministic</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_keys</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
@@ -438,7 +438,7 @@
 <div class="viewcode-block" id="Event.validate_extra_keys">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Event.validate_extra_keys">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate_extra_keys</span><span class="p">(</span><span class="n">extra_keys</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_extra_keys</span><span class="p">(</span><span class="n">extra_keys</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;allow_reserved&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
             <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;glean.&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">extra_keys</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="p">):</span>
@@ -452,24 +452,24 @@
 
 <div class="viewcode-block" id="Uuid">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Uuid">[docs]</a>
-<span class="k">class</span> <span class="nc">Uuid</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Uuid</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;uuid&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Url">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Url">[docs]</a>
-<span class="k">class</span> <span class="nc">Url</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Url</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;url&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Jwe">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Jwe">[docs]</a>
-<span class="k">class</span> <span class="nc">Jwe</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Jwe</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;jwe&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;JWE support was removed. &quot;</span>
             <span class="s2">&quot;If you require this send an email to glean-team@mozilla.com.&quot;</span>
@@ -479,7 +479,7 @@
 
 <div class="viewcode-block" id="CowString">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.CowString">[docs]</a>
-<span class="k">class</span> <span class="nc">CowString</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CowString</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper class for strings that should be represented</span>
 <span class="sd">    as a `Cow&lt;&#39;static, str&gt;` in Rust,</span>
@@ -490,26 +490,26 @@
 <span class="sd">    as a string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">val</span>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">inner</span>
 
-    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="fm">__hash__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">inner</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="Labeled">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Labeled">[docs]</a>
-<span class="k">class</span> <span class="nc">Labeled</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Labeled</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">labeled</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ordered_labels</span> <span class="o">=</span> <span class="n">labels</span>
@@ -521,7 +521,7 @@
 
 <div class="viewcode-block" id="Labeled.serialize">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Labeled.serialize">[docs]</a>
-    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">JSONType</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Serialize the metric back to JSON object model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -535,54 +535,54 @@
 
 <div class="viewcode-block" id="LabeledBoolean">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledBoolean">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledBoolean</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Boolean</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledBoolean</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Boolean</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_boolean&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="LabeledString">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledString">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledString</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">String</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledString</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">String</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_string&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="LabeledCounter">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledCounter">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledCounter</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledCounter</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Counter</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_counter&quot;</span></div>
 
 
 <div class="viewcode-block" id="LabeledCustomDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledCustomDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledCustomDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">CustomDistribution</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledCustomDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">CustomDistribution</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_custom_distribution&quot;</span></div>
 
 
 <div class="viewcode-block" id="LabeledMemoryDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledMemoryDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledMemoryDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">MemoryDistribution</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledMemoryDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">MemoryDistribution</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_memory_distribution&quot;</span></div>
 
 
 <div class="viewcode-block" id="LabeledTimingDistribution">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledTimingDistribution">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledTimingDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">TimingDistribution</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledTimingDistribution</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">TimingDistribution</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_timing_distribution&quot;</span></div>
 
 
 <div class="viewcode-block" id="LabeledQuantity">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.LabeledQuantity">[docs]</a>
-<span class="k">class</span> <span class="nc">LabeledQuantity</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LabeledQuantity</span><span class="p">(</span><span class="n">Labeled</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;labeled_quantity&quot;</span></div>
 
 
 <div class="viewcode-block" id="Rate">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Rate">[docs]</a>
-<span class="k">class</span> <span class="nc">Rate</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Rate</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;rate&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">denominator_metric</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;denominator_metric&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -590,7 +590,7 @@
 
 <div class="viewcode-block" id="Denominator">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Denominator">[docs]</a>
-<span class="k">class</span> <span class="nc">Denominator</span><span class="p">(</span><span class="n">Counter</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Denominator</span><span class="p">(</span><span class="n">Counter</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;denominator&quot;</span>
     <span class="c1"># A denominator is a counter with an additional list of numerators.</span>
     <span class="n">numerators</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Rate</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
@@ -599,17 +599,17 @@
 
 <div class="viewcode-block" id="Text">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Text">[docs]</a>
-<span class="k">class</span> <span class="nc">Text</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Text</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="Object">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Object">[docs]</a>
-<span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Object</span><span class="p">(</span><span class="n">Metric</span><span class="p">):</span>
     <span class="n">typename</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">structure</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">structure</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`object` is missing required parameter `structure`&quot;</span><span class="p">)</span>
@@ -621,7 +621,7 @@
     <span class="n">ALLOWED_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_validate_substructure</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_substructure</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
         <span class="n">extra</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="n">Object</span><span class="o">.</span><span class="n">ALLOWED_TOPLEVEL</span>
         <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
             <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
@@ -667,9 +667,23 @@
 <div class="viewcode-block" id="Object.validate_structure">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.metrics.Object.validate_structure">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">):</span>
         <span class="k">if</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`structure` needed for object metric.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Different from `ALLOWED_TYPES`:</span>
+        <span class="c1"># We _require_ the root type to be an object or array.</span>
+        <span class="n">allowed_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;array&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">structure</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;missing `type` in object structure. Allowed: </span><span class="si">{</span><span class="n">allowed_types</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">structure</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_types</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;invalid `type` in object structure. found: </span><span class="si">{}</span><span class="s2">, allowed: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">structure</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span> <span class="n">allowed_types</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="n">structure</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">_validate_substructure</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">structure</span></div>
