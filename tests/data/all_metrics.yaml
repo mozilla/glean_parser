@@ -72,8 +72,8 @@ all_metrics:
     <<: *defaults
     type: custom_distribution
     range_min: 0
-    range_max: 100
-    bucket_count: 10
+    range_max: 200
+    bucket_count: 201
     histogram_type: linear
 
   uuid:
