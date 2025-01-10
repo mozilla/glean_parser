@@ -4,6 +4,7 @@
 
 - New lint: error when there are metrics whose names are too similar ([bug 1934099](https://bugzilla.mozilla.org/show_bug.cgi?id=1934099))
 - Require `array` or `object` as the root type in object metrics ([#780](https://github.com/mozilla/glean_parser/pull/780))
+- Remove 100-bucket limit for `custom_distribution` metrics ([bug 1940967](https://bugzilla.mozilla.org/show_bug.cgi?id=1940967))
 
 ## 16.1.0
 

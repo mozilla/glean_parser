@@ -573,7 +573,7 @@ def test_custom_distribution():
                     "type": "custom_distribution",
                     "range_min": 0,
                     "range_max": 60000,
-                    "bucket_count": 100,
+                    "bucket_count": 200,
                     "histogram_type": "exponential",
                 }
             }
@@ -591,7 +591,6 @@ def test_custom_distribution():
             "category": {
                 "metric": {
                     "type": "custom_distribution",
-                    "gecko_datapoint": "FROM_GECKO",
                 }
             }
         }
@@ -603,27 +602,6 @@ def test_custom_distribution():
     assert len(errors) == 1
     assert "`custom_distribution` is missing required parameters" in errors[0]
 
-    # Test maximum bucket_count is enforced
-    contents = [
-        {
-            "category": {
-                "metric": {
-                    "type": "custom_distribution",
-                    "gecko_datapoint": "FROM_GECKO",
-                    "range_max": 60000,
-                    "bucket_count": 101,
-                    "histogram_type": "exponential",
-                }
-            }
-        }
-    ]
-
-    contents = [util.add_required(x) for x in contents]
-    all_metrics = parser.parse_objects(contents)
-    errors = list(all_metrics)
-    assert len(errors) == 1
-    assert "101 is greater than" in errors[0]
-
     # Test that correct usage
     contents = [
         {
@@ -631,7 +609,7 @@ def test_custom_distribution():
                 "metric": {
                     "type": "custom_distribution",
                     "range_max": 60000,
-                    "bucket_count": 100,
+                    "bucket_count": 200,
                     "histogram_type": "exponential",
                 }
             }
@@ -645,7 +623,7 @@ def test_custom_distribution():
     distribution = all_metrics.value["category"]["metric"]
     assert distribution.range_min == 1
     assert distribution.range_max == 60000
-    assert distribution.bucket_count == 100
+    assert distribution.bucket_count == 200
     assert distribution.histogram_type == metrics.HistogramType.exponential
 
 
