@@ -6,7 +6,7 @@ pytest==8.2.2
 recommonmark==0.7.1
 ruff==0.7.2
 Sphinx==7.3.7; python_version > '3.8'
-twine==5.0.0
+twine==6.1.0
 types-Jinja2==2.11.9
 types-PyYAML==6.0.12.20240311
 wheel
