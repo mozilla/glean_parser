@@ -35,41 +35,39 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style
-	python3 -m ruff check glean_parser tests setup.py
-	python3 -m yamllint glean_parser tests
-	python3 -m mypy glean_parser
+	uv run ruff check glean_parser tests
+	uv run yamllint glean_parser tests
+	uv run mypy glean_parser
 
 fmt: ## autoformat files
-	python3 -m ruff format glean_parser tests setup.py
+	uv run ruff format glean_parser tests
 
 test: ## run tests quickly with the default Python
-	py.test
+	uv run pytest
 
 test-full:  ## run tests, including those with additional dependencies
-	py.test --run-web-tests --run-node-tests --run-ruby-tests --run-go-tests  --run-rust-tests
+	uv run pytest --run-web-tests --run-node-tests --run-ruby-tests --run-go-tests  --run-rust-tests
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source glean_parser -m pytest
-	coverage report -m
-	coverage html
+	uv run coverage run --source glean_parser -m pytest
+	uv run coverage report -m
+	uv run coverage html
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/glean_parser.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ glean_parser
+	uv run sphinx-apidoc -o docs/ glean_parser
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 
 release: dist ## package and upload a release
-	twine upload dist/*
+	uv publish
 
 dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
+	uv build
 
 install: clean ## install the package to the active Python's site-packages
-	pip install .
+	uv sync
 
 install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
 	test -f ktlint || curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
