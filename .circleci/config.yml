@@ -2,6 +2,7 @@
 version: 2.1
 
 commands:
+  # Required for testing the `rust_server` implementation
   setup-rust-toolchain:
     steps:
       - run:
@@ -14,46 +15,50 @@ commands:
             echo "export RUST_BACKTRACE=1" >> $BASH_ENV
             echo "export CARGO_INCREMENTAL=0" >> $BASH_ENV
 
+  setup-uv:
+    steps:
+      - run:
+          name: Installing uv
+          # To update:
+          # 1. Pick a release from https://github.com/astral-sh/uv/releases/
+          # 2. Download the checksum.
+          # 3. Replace the version in `UV_VERSION` with the selected version.
+          # 4. Replace the checksum in `UV_SHA256` with the checksum from the downloaded file.
+          command: |
+            cd /tmp
+            UV_SHA256=f6788fd45a25ea1033a671eaa9ece6c9b004ce5c9cf09552effadde567a7d7a5
+            UV=uv-x86_64-unknown-linux-gnu
+            UV_VERSION=0.6.13
+            URL="https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${UV}.tar.gz"
+            curl -sfSL --retry 5 -o "${UV}.tar.gz" "${URL}"
+            echo "${UV_SHA256} *${UV}.tar.gz" | shasum -a 256 -c -
+            tar -xf "${UV}.tar.gz"
+            mv ./${UV}/* ~/.local/bin/
+      - run:
+          name: Set path for local binaries
+          command: |
+            echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
+
   test-start:
     steps:
       - checkout
       - run:
-          name: environment
-          command: |
-            echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
-      - run:
-          name: Upgrade pip
-          command: |
-            pip install --upgrade --user pip
+          name: Install glean_parser
+          command: CC=broken_compiler uv sync
 
   test-min-requirements:
     steps:
       - run:
-          name: install minimum requirements
+          name: Install minimum requirements
           command: |
-            # Use requirements-builder to determine the minimum versions of
-            # all requirements and test those
-            # We install requirements-builder itself into its own venv, since
-            # otherwise its dependencies might install newer versions of
-            # glean_parser's dependencies.
-            python3 -m venv .rb
-            .rb/bin/pip install requirements-builder
-            .rb/bin/requirements-builder --level=min setup.py > min_requirements.txt
-
-            pip install --progress-bar off --user -U -r min_requirements.txt
+            uv sync --resolution lowest-direct
 
   test-python-version:
-    parameters:
-      requirements-file:
-        type: string
-        default: "requirements_dev.txt"
     steps:
       - run:
           name: Install required native dependencies
           command: |
-            pip install --progress-bar off --user -U -r <<parameters.requirements-file>>
             sudo apt update -q
-            sudo apt upgrade -q
             sudo apt install \
                 --yes --no-install-recommends \
                 openjdk-11-jdk-headless \
@@ -62,64 +67,44 @@ commands:
             make install-kotlin-linters
       - setup-rust-toolchain
       - run:
-          name: Install glean_parser
-          # Set CC to something that isn't a working compiler so we
-          # can detect if any of the dependencies require a compiler
-          # to be installed. We can't count on a working compiler
-          # being available to pip on all of the platforms we need to
-          # support, so we need to make sure the dependencies are all
-          # pure Python or provide pre-built wheels.
-          command: CC=broken_compiler pip install . --user
-      - run:
-          name: test
+          name: Test
           command: make test-full
 
   lint:
-    parameters:
-      requirements-file:
-        type: string
-        default: "requirements_dev.txt"
     steps:
       - run:
-          name: install
-          command: |
-            pip install --progress-bar off --user -U -r <<parameters.requirements-file>>
-      - run:
-          name: install
-          # Set CC to something that isn't a working compiler so we
-          # can detect if any of the dependencies require a compiler
-          # to be installed. We can't count on a working compiler
-          # being available to pip on all of the platforms we need to
-          # support, so we need to make sure the dependencies are all
-          # pure Python or provide pre-built wheels.
-          command: CC=broken_compiler pip install . --user
-      - run:
-          name: lint
+          name: Lint
           command: make lint
+
   license-check:
     steps:
       - run:
-          name: install
+          name: License check
           command: |
-            pip install --user pip-licenses
-            CC=broken_compiler pip install . --user
-      - run:
-          name: license-check
-          command: |
-            pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)'
+            uv run pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)' --ignore-packages yamllint
 
 jobs:
   build-38:
     docker:
       - image: cimg/python:3.8-node
     steps:
+      - setup-uv
       - test-start
       - test-python-version
+      - run:
+          name: Build docs
+          command: |
+            make docs
+            touch docs/_build/html/.nojekyll
+      - persist_to_workspace:
+          root: docs/_build
+          paths: html
 
   build-38-min:
     docker:
       - image: cimg/python:3.8-node
     steps:
+      - setup-uv
       - test-start
       - test-min-requirements
       - test-python-version
@@ -137,14 +122,6 @@ jobs:
     steps:
       - test-start
       - test-python-version
-      - run:
-          name: make-docs
-          command: |
-            make docs
-            touch docs/_build/html/.nojekyll
-      - persist_to_workspace:
-          root: docs/_build
-          paths: html
 
   build-311:
     docker:
@@ -185,35 +162,23 @@ jobs:
       - attach_workspace:
           at: docs/_build
       - run:
-          name: install gh-pages
+          name: Install gh-pages
           command: |
             npm install -g --silent gh-pages@2.0.1
             git config user.email "glean-ci@nowhere.com"
             git config user.name "glean-ci"
       - run:
-          name: deploy
+          name: Deploy docs
           command: |
             gh-pages --dotfiles --message "[ci skip] updates" --dist docs/_build/html
 
   pypi-deploy:
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.9
     steps:
       - checkout
       - run:
-          name: environment
-          command: |
-            echo 'export PATH=.:$HOME/.local/bin:$PATH' >> $BASH_ENV
-      - run:
-          name: Upgrade pip
-          command: |
-            pip install --upgrade --user pip
-      - run:
-          name: install Python dependencies
-          command: |
-            pip install --user -U -r requirements_dev.txt
-      - run:
-          name: deploy
+          name: Release package on PyPi
           # Requires that the TWINE_USERNAME and TWINE_PASSWORD environment
           # variables are configured in CircleCI's environment variables.
           command: |
@@ -257,13 +222,13 @@ workflows:
               only: /.*/
       - docs-deploy:
           requires:
-            - build-310
+            - build-38
           filters:
             branches:
               only: main
       - pypi-deploy:
           requires:
-            - build-38
+            - build-39
           filters:
             branches:
               ignore: /.*/

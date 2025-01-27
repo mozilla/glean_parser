@@ -16,17 +16,7 @@ code for various integrations, linting and coverage testing.
 
 ## Requirements
 
--   Python 3.8 (or later)
-
-The following library requirements are installed automatically when
-`glean_parser` is installed by `pip`.
-
--   Click
--   diskcache
--   Jinja2
--   jsonschema
--   platformdirs
--   PyYAML
+- Python 3.8 (or later)
 
 ## Usage
 
