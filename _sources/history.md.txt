@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Support `uploader_capabilities` for pings ([bug 1920732](https://bugzilla.mozilla.org/show_bug.cgi?id=1920732))
+
 ## 16.2.0
 
 - New lint: error when there are metrics whose names are too similar ([bug 1934099](https://bugzilla.mozilla.org/show_bug.cgi?id=1934099))
