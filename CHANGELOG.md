@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Fix missing `ping_arg` "`uploader_capabilities`" in util.py ([#786](https://github.com/mozilla/glean_parser/pull/786))
+
 ## 17.0.0
 
 - BREAKING CHANGE: Support `uploader_capabilities` for pings ([bug 1920732](https://bugzilla.mozilla.org/show_bug.cgi?id=1920732))
