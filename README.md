@@ -16,33 +16,23 @@ code for various integrations, linting and coverage testing.
 
 ## Requirements
 
--   Python 3.8 (or later)
-
-The following library requirements are installed automatically when
-`glean_parser` is installed by `pip`.
-
--   Click
--   diskcache
--   Jinja2
--   jsonschema
--   platformdirs
--   PyYAML
+- Python 3.8 (or later)
 
 ## Usage
 
 ```sh
-$ glean_parser --help
+$ glean-parser --help
 ```
 
 Read in `metrics.yaml`, translate to Kotlin format, and
 output to `output_dir`:
 
 ```sh
-$ glean_parser translate -o output_dir -f kotlin metrics.yaml
+$ glean-parser translate -o output_dir -f kotlin metrics.yaml
 ```
 
 Check a Glean ping against the ping schema:
 
 ```sh
-$ glean_parser check < ping.json
+$ glean-parser check < ping.json
 ```
