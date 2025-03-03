@@ -67,6 +67,7 @@ def test_unit_in_name():
                     "type": "memory_distribution",
                     "memory_unit": "megabyte",
                 },
+                # This should be allowed.
                 "width_pixels": {
                     "type": "quantity",
                     "gecko_datapoint": "WIDTH_PIXELS",
@@ -83,7 +84,7 @@ def test_unit_in_name():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert len(nits) == 3
+    assert len(nits) == 2
     assert all(nit.check_name == "UNIT_IN_NAME" for nit in nits)
 
     # Now make sure the override works
@@ -94,7 +95,7 @@ def test_unit_in_name():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert len(nits) == 2
+    assert len(nits) == 1
 
 
 def test_category_generic():
@@ -135,7 +136,7 @@ def test_combined():
                 "m_width_pixels": {
                     "type": "quantity",
                     "gecko_datapoint": "WIDTH_PIXELS",
-                    "unit": "pixels",
+                    "unit": "pixels", # not a lint issue
                 },
             }
         }
@@ -148,7 +149,7 @@ def test_combined():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert len(nits) == 5
+    assert len(nits) == 4
     assert set(["COMMON_PREFIX", "CATEGORY_GENERIC", "UNIT_IN_NAME"]) == set(
         v.check_name for v in nits
     )
