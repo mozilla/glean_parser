@@ -1,0 +1,36 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+glean.attribution:
+  not_ext:
+    type: object
+    description: |
+      Can only use glean.attribution if our name is ext.
+    bugs:
+      - https://bugzilla.mozilla.org/1955428
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    structure:
+      type: object
+      properties:
+        experiment:
+          type: string
+
+glean.distribution:
+  ext:
+    type: counter
+    description: |
+      Can only use glean.distribution.ext if our type is object.
+    bugs:
+      - https://bugzilla.mozilla.org/1955428
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
