@@ -714,7 +714,7 @@ def test_interesting_disables_others():
     # But, only the metrics in metric-with-tags.yaml are marked as interesting
     # so every other metric will be marked as disabled.
     metrics_with_tags_yaml = ROOT / "data" / "metric-with-tags.yaml"
-    interesting = [Path(path) for path in [ metrics_with_tags_yaml ]]
+    interesting = [Path(path) for path in [metrics_with_tags_yaml]]
     config = {"interesting": interesting}
 
     all_metrics = parser.parse_objects([all_metrics, metrics_with_tags_yaml], config)
@@ -728,14 +728,14 @@ def test_interesting_disables_others():
     metrics = all_metrics.value
     for category_key, category_val in metrics.items():
         if category_key == "tags":
-          continue
+            continue
 
         for metric_key, metric_val in sorted(category_val.items()):
             cat = interesting_metrics.value.get(category_key)
             if cat and cat.get(metric_key):
-              disabled = cat.get(metric_key).disabled
+                disabled = cat.get(metric_key).disabled
             else:
-              disabled = True
+                disabled = True
             assert metrics[category_key][metric_key].disabled is disabled
 
 
@@ -1259,3 +1259,31 @@ def test_object_invalid():
     errors = list(all_metrics)
     assert len(errors) == 1
     assert "invalid `type` in object structure." in errors[0]
+
+
+def test_reserved_category():
+    all_metrics = parser.parse_objects(ROOT / "data" / "reserved_categories.yamlx")
+
+    errors = list(all_metrics)
+    assert len(errors) == 2
+    assert "Categories beginning with 'glean' are reserved" in errors[0]
+    assert "Categories beginning with 'glean' are reserved" in errors[1]
+
+
+def test_attribution_distribution():
+    all_metrics = parser.parse_objects(ROOT / "data" / "attribution.yaml")
+
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+
+def test_forbid_non_ext_non_object_attribution_distribution():
+    all_metrics = parser.parse_objects(ROOT / "data" / "bad_attribution.yamlx")
+
+    errors = list(all_metrics)
+    assert len(errors) == 2
+    assert "May only use semi-reserved category" in errors[0]
+    assert (
+        "Extended attribution/distribution metrics must be of type 'object'"
+        in errors[1]
+    )
