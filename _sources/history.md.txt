@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 17.1.0
+
 - Permit object metrics named 'glean.attribution.ext' or 'glean.distribution.ext' even if allow_reserved is false ([bug 1955428](https://bugzilla.mozilla.org/show_bug.cgi?id=1955428))
 
 ## 17.0.1
