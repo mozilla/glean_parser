@@ -1,0 +1,30 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/pings/2-0-0
+
+some-ping:
+  description:
+    This is some custom ping
+  include_client_id: false
+  bugs:
+    - http://bugzilla.mozilla.com/1921089
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  no_lint: [REDUNDANT_PING]
+
+
+some-ping:
+  description:
+    This is some other custom ping
+  include_client_id: false
+  bugs:
+    - http://bugzilla.mozilla.com/1921089
+  data_reviews:
+    - http://nowhere.com/reviews
+  notification_emails:
+    - CHANGE-ME@test-only.com
+  no_lint: [REDUNDANT_PING]

@@ -136,7 +136,7 @@ def test_combined():
                 "m_width_pixels": {
                     "type": "quantity",
                     "gecko_datapoint": "WIDTH_PIXELS",
-                    "unit": "pixels", # not a lint issue
+                    "unit": "pixels",  # not a lint issue
                 },
             }
         }
@@ -523,6 +523,53 @@ def test_name_too_similar_lint():
     assert nits[0].check_name == "NAME_TOO_SIMILAR"
     assert nits[0].name == "all_metrics.validmetric"
     assert "all_metrics.valid_metric" in nits[0].msg
+
+
+def test_redefined_metric():
+    """Ensure we fail when folks redefine a metric with the same category+name."""
+    input = [
+        ROOT / "data" / "redefined_metric.yamlx",
+        ROOT / "data" / "same_name_different_category.yaml",
+    ]
+    all_objects = parser.parse_objects(input)
+
+    errs = list(all_objects)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_objects.value, parser_config={})
+    assert len(nits) == 1
+    assert nits[0].check_name == "REDEFINED_METRIC"
+    assert nits[0].name == "redefined.metric"
+    assert "metric_name" in nits[0].msg
+
+
+def test_redefined_category():
+    """Ensure we fail when folks redefine a category."""
+    input = [
+        ROOT / "data" / "redefined_category.yamlx",
+        ROOT / "data" / "same_name_different_category.yaml",
+    ]
+    all_objects = parser.parse_objects(input)
+
+    errs = list(all_objects)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_objects.value, parser_config={})
+    assert len(nits) == 1
+    assert nits[0].check_name == "REDEFINED_CATEGORY"
+
+
+def test_redefined_ping():
+    """Ensure we fail when folks redefine a ping."""
+    input = [
+        ROOT / "data" / "redefined_ping.yamlx",
+        ROOT / "data" / "pings.yaml",
+    ]
+    all_objects = parser.parse_objects(input)
+
+    errs = list(all_objects)
+    assert len(errs) == 1
+    assert "Duplicate ping named 'some-ping'" in errs[0]
 
 
 @pytest.mark.parametrize(

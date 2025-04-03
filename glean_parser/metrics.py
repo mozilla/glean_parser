@@ -416,17 +416,22 @@ class LabeledString(Labeled, String):
 class LabeledCounter(Labeled, Counter):
     typename = "labeled_counter"
 
+
 class LabeledCustomDistribution(Labeled, CustomDistribution):
     typename = "labeled_custom_distribution"
+
 
 class LabeledMemoryDistribution(Labeled, MemoryDistribution):
     typename = "labeled_memory_distribution"
 
+
 class LabeledTimingDistribution(Labeled, TimingDistribution):
     typename = "labeled_timing_distribution"
 
+
 class LabeledQuantity(Labeled, Quantity):
     typename = "labeled_quantity"
+
 
 class Rate(Metric):
     typename = "rate"

@@ -1,0 +1,32 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+# Note: we're using YAML anchors to re-use the values
+# defined in the first metric.
+# Saves us some typing.
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+some.category:
+  metric_name:
+    type: counter
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1921089
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+
+some.other.category:
+  metric_name:
+    type: event
+    description: for testing
+    bugs:
+      - https://bugzilla.mozilla.org/1921089
+    data_reviews:
+      - http://example.com/
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
