@@ -58,15 +58,7 @@ development.
     $ git clone git@github.com:your_name_here/glean_parser.git
     ```
 
-3. Install your local copy into a virtualenv. Assuming you have
-   virtualenvwrapper installed, this is how you set up your fork for local
-   development:
-
-    ```sh
-    $ mkvirtualenv glean_parser
-    $ cd glean_parser/
-    $ pip install --editable .
-    ```
+3. Install [`uv`](https://docs.astral.sh/uv).
 
 4. Create a branch for local development:
 
@@ -78,10 +70,10 @@ development.
 
 5. To test your changes to `glean_parser`:
 
-   Install the testing dependencies:
+   Install all development dependencies:
 
     ```sh
-    $ pip install -r requirements_dev.txt
+    $ uv sync
     ```
 
    Optionally, if you want to ensure that the generated Kotlin code lints
@@ -125,7 +117,7 @@ Before you submit a pull request, check that it meets these guidelines:
 To run a subset of tests:
 
 ```sh
-$ py.test tests.test_glean_parser
+$ uv run pytest tests/test_parser.py
 ```
 
 ## Deploying
