@@ -479,7 +479,7 @@ def invalid_in_label(name):
 @pytest.mark.parametrize(
     "name",
     [
-        "1" * 72,
+        "1" * 112,
         "Møøse",
     ],
 )

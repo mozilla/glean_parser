@@ -52,7 +52,7 @@ definitions:
   labeled_metric_id:
     type: string
     pattern: "^[ -~]+$"
-    maxLength: 71  # Note: this should be category + metric + 1
+    maxLength: 111  # Note: this should be category + metric + 1
 
   metric:
     description: |

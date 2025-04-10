@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Forbid redefinition of metrics, categories, or pings within the same YAML document ([bug 1921089](https://bugzilla.mozilla.org/show_bug.cgi?id=1921089))
+- Increase the maximum label length to 111 ([#796](https://github.com/mozilla/glean_parser/pull/796))
 
 ## 17.1.0
 
