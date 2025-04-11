@@ -1,0 +1,76 @@
+[project]
+name = "glean-parser"
+dynamic = ["version"]
+authors = [
+    { name = "The Glean Team", email = "glean-team@mozilla.com" }
+]
+description = "Parser tools for Mozilla's Glean telemetry"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Click>=7",
+    "diskcache>=4",
+    "Jinja2>=2.10.1",
+    "jsonschema>=3.0.2",
+    "platformdirs>=2.4.0",
+    "PyYAML>=5.3.1",
+]
+
+[project.urls]
+Homepage = "https://mozilla.github.io/glean"
+Repository = "https://github.com/mozilla/glean_parser"
+Changelog = "https://github.com/mozilla/glean_parser/blob/main/CHANGELOG.md"
+
+[project.scripts]
+glean_parser = "glean_parser.__main__:main_wrapper"
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "coverage>=7.6.1",
+    "mypy>=1.14.1",
+    "pip-licenses>=4.5.1",
+    "pytest>=8.3.4",
+    "recommonmark>=0.7.1",
+    "ruff>=0.9.3",
+    "sphinx>=7.1.2",
+    "types-pyyaml>=6.0.12.20241230",
+    "yamllint>=1.35.1",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/glean_parser",
+  "/server_telemetry",
+  "/tests",
+]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "no-guess-dev"
+
+[tool.pytest.ini_options]
+markers = [
+    "web_dependency: mark a test that requires a web connection.",
+    "node_dependency: mark a test that requires node.",
+    "ruby_dependency: mark a test that requires ruby.",
+    "go_dependency: mark a test that requires go.",
+    "rust_dependency: mark a test that requires rust.",
+]
