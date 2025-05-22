@@ -287,3 +287,35 @@ def test_object_metric(tmp_path):
         assert "ip: Option<String>, " in content
         assert "trust: Option<String>, " in content
         assert "}" in content
+
+def test_dual_labeled_counter_metric(tmp_path):
+    """
+    Assert that an dual labeled counter metric is created.
+    """
+    translate.translate(
+        ROOT / "data" / "dual_labeled.yaml",
+        "rust",
+        tmp_path,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
+
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        # assert "ObjectMetric<ThreadsObject>" in content
+        # assert "pub struct ThreadsObjectItem { " in content
+        # assert "frames: ThreadsObjectItemFrames, }" in content
+        # assert (
+        #     "pub type ThreadsObjectItemFrames = "
+        #     "Vec<ThreadsObjectItemFramesItem>;" in content
+        # )
+
+        # assert "pub struct ThreadsObjectItemFramesItem { " in content
+        # assert "module_index: Option<i64>, " in content
+        # assert "ip: Option<String>, " in content
+        # assert "trust: Option<String>, " in content
+        # assert "}" in content
+

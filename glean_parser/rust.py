@@ -161,6 +161,8 @@ def class_name(obj_type):
         return "Ping"
     if obj_type.startswith("labeled_"):
         obj_type = obj_type[8:]
+    if obj_type.startswith("dual_labeled_"):
+        obj_type = obj_type[13:]
     return util.Camelize(obj_type) + "Metric"
 
 

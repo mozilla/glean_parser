@@ -532,4 +532,48 @@ class Object(Metric):
         return structure
 
 
+class DualLabeledCounter(Metric):
+    typename = "dual_labeled_counter"
+    def __init__(self, *args, **kwargs):
+        dual_labels = kwargs.pop("dual_labels", None)
+        if not dual_labels:
+            raise ValueError("`object` is missing required parameter `dual_labels`")
+        k = dual_labels.keys if dual_labels else None
+        if not k:
+            raise ValueError("`dual_labels` is missing required parameter `keys`")
+        c = dual_labels.categories if dual_labels else None
+        if not c:
+            raise ValueError("`dual_labels` is missing required parameter `categories`")
+        keys = k.labels if k else None
+        if keys is not None and not isinstance(keys, list):
+            raise ValueError("`keys` must be a list of strings")
+        categories = c.labels if c else None
+        if categories is not None and not isinstance(categories, list):
+            raise ValueError("`categories` must be a list of strings")
+        if keys is not None:
+            self.ordered_keys = keys
+            self.keys = set([CowString(key) for key in keys])
+        else:
+            self.ordered_keys = None
+            self.keys = None
+        if categories is not None:
+            self.ordered_categories = categories
+            self.categories = set([CowString(category) for category in categories])
+        else:
+            self.ordered_categories = None
+            self.categories = None
+        super().__init__(*args, **kwargs)
+
+    def serialize(self) -> Dict[str, util.JSONType]:
+        """
+        Serialize the metric back to JSON object model.
+        """
+        d = super().serialize()
+        d["keys"] = self.ordered_keys
+        d["categories"] = self.ordered_categories
+        del d["ordered_keys"]
+        del d["ordered_categories"]
+        return d
+
+
 ObjectTree = Dict[str, Dict[str, Union[Metric, pings.Ping, tags.Tag]]]
