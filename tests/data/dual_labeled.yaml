@@ -5,7 +5,7 @@
 $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
 test.dual_labeled:
-  dlc_static_static:
+  static_static:
     type: dual_labeled_counter
     description: >
       A dual labeled counter with static keys and categories
@@ -29,7 +29,7 @@ test.dual_labeled:
     notification_emails:
       - CHANGE-ME@example.com
     expires: 2100-01-01
-  dlc_dynamic_static:
+  dynamic_static:
     type: dual_labeled_counter
     description: >
       A dual labeled counter with static keys and dynamic categories
@@ -43,6 +43,7 @@ test.dual_labeled:
       category:
         description: >
           The category for the dual labeled counter
+        labels: []
     bugs:
       - https://bugzilla.mozilla.org/11137353
     data_reviews:
@@ -50,7 +51,7 @@ test.dual_labeled:
     notification_emails:
       - CHANGE-ME@example.com
     expires: 2100-01-01
-  dlc_static_dynamic:
+  static_dynamic:
     type: dual_labeled_counter
     description: >
       A dual labeled counter with dynamic keys and static categories
@@ -58,6 +59,7 @@ test.dual_labeled:
       key:
         description: >
           The key for the dual labeled counter
+        labels: []
       category:
         description: >
           The category for the dual labeled counter
@@ -71,7 +73,7 @@ test.dual_labeled:
     notification_emails:
       - CHANGE-ME@example.com
     expires: 2100-01-01
-  dlc_dynamic_dynamic:
+  dynamic_dynamic:
     type: dual_labeled_counter
     description: >
       A dual labeled counter with dynamic keys and dynamic categories
@@ -79,9 +81,11 @@ test.dual_labeled:
       key:
         description: >
           The key for the dual labeled counter
+        labels: []
       category:
         description: >
           The category for the dual labeled counter
+        labels: []
     bugs:
       - https://bugzilla.mozilla.org/11137353
     data_reviews:

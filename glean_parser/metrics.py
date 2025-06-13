@@ -534,20 +534,21 @@ class Object(Metric):
 
 class DualLabeledCounter(Metric):
     typename = "dual_labeled_counter"
+    dual_labeled = True
     def __init__(self, *args, **kwargs):
         dual_labels = kwargs.pop("dual_labels", None)
         if not dual_labels:
             raise ValueError("`object` is missing required parameter `dual_labels`")
-        k = dual_labels.keys if dual_labels else None
+        k = dual_labels["key"] if dual_labels else None
         if not k:
             raise ValueError("`dual_labels` is missing required parameter `keys`")
-        c = dual_labels.categories if dual_labels else None
+        c = dual_labels["category"] if dual_labels else None
         if not c:
             raise ValueError("`dual_labels` is missing required parameter `categories`")
-        keys = k.labels if k else None
+        keys = k["labels"] if k else None
         if keys is not None and not isinstance(keys, list):
             raise ValueError("`keys` must be a list of strings")
-        categories = c.labels if c else None
+        categories = c["labels"] if c else None
         if categories is not None and not isinstance(categories, list):
             raise ValueError("`categories` must be a list of strings")
         if keys is not None:

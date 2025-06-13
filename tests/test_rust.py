@@ -305,6 +305,7 @@ def test_dual_labeled_counter_metric(tmp_path):
         content = fd.read()
         content = " ".join(content.split())
 
+        # TODO: work in progress, this is not yet implemented
         # assert "ObjectMetric<ThreadsObject>" in content
         # assert "pub struct ThreadsObjectItem { " in content
         # assert "frames: ThreadsObjectItemFrames, }" in content

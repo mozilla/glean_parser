@@ -158,7 +158,7 @@ pub mod {{ category.name|snake_case }} {
         None
         {%- endif -%})
         {% endif %}
-        {%- if obj.type == "dual_labeled_counter" -%}
+        {%- if obj.dual_labeled -%}
         {%- if obj.keys -%}
         Some({{ obj.keys|rust }}),
         {%- else -%}
