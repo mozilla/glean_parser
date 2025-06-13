@@ -306,7 +306,14 @@ def test_dual_labeled_counter_metric(tmp_path):
         content = " ".join(content.split())
 
         # TODO: work in progress, this is not yet fully implemented
-        assert "DualLabeledCounter" in content
+        assert "pub static dynamic_dynamic: ::glean::private::__export::Lazy<DualLabeledCounter>" in content
+        assert "DualLabeledCounterMetric::new(meta, None, None)" in content
+        assert "pub static static_dynamic: ::glean::private::__export::Lazy<DualLabeledCounter>" in content
+        assert 'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), None)' in content
+        assert "pub static dynamic_static: ::glean::private::__export::Lazy<DualLabeledCounter>" in content
+        assert 'DualLabeledCounterMetric::new(meta, None, Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))' in content
+        assert "pub static static_static: ::glean::private::__export::Lazy<DualLabeledCounter>" in content
+        assert 'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))' in content
         # assert "pub struct ThreadsObjectItem { " in content
         # assert "frames: ThreadsObjectItemFrames, }" in content
         # assert (
