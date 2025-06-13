@@ -574,6 +574,7 @@ class DualLabeledCounter(Metric):
         d["categories"] = self.ordered_categories
         del d["ordered_keys"]
         del d["ordered_categories"]
+        del d["dual_labeled"]
         return d
 
 
