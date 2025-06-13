@@ -101,6 +101,8 @@ def type_name(obj):
 
     if getattr(obj, "labeled", False):
         return "LabeledMetric<{}>".format(class_name(obj.type))
+    if getattr(obj, "dual_labeled", False):
+        return "DualLabeledCounter".format(class_name(obj.type))
     generate_enums = getattr(obj, "_generate_enums", [])  # Extra Keys? Reasons?
     if len(generate_enums):
         generic = None
@@ -161,8 +163,6 @@ def class_name(obj_type):
         return "Ping"
     if obj_type.startswith("labeled_"):
         obj_type = obj_type[8:]
-    if obj_type.startswith("dual_labeled_"):
-        obj_type = obj_type[13:]
     return util.Camelize(obj_type) + "Metric"
 
 

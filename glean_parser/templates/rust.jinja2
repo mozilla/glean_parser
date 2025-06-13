@@ -89,7 +89,7 @@ CommonMetricData {
     disabled: {{ obj.is_disabled()|rust }},
     ..Default::default()
 }
-{% endmacro %}
+{%- endmacro -%}
 {% for category in categories %}
 {% if category.contains_pings %}
 {% for obj in category.objs.values() %}
@@ -150,7 +150,7 @@ pub mod {{ category.name|snake_case }} {
         {%- for arg_name in extra_metric_args if not obj.labeled and obj[arg_name] is defined and arg_name != 'allowed_extra_keys' -%}
             , {{ obj[arg_name]|rust }}
         {%- endfor -%}
-        {{ ", " if obj.labeled or obj.type == "dual_labeled_counter" else ")\n" }}
+        {{ ", " if obj.labeled or obj.dual_labeled else ")\n" }}
         {%- if obj.labeled -%}
         {%- if obj.labels -%}
         Some({{ obj.labels|rust }})
@@ -160,14 +160,15 @@ pub mod {{ category.name|snake_case }} {
         {% endif %}
         {%- if obj.dual_labeled -%}
         {%- if obj.keys -%}
-        Some({{ obj.keys|rust }}),
+        Some({{ obj.keys|rust }})
         {%- else -%}
-        None,
-        {%- endif -%})
+        None
+        {%- endif -%}
+        {{ ", " }}
         {%- if obj.categories -%}
-        Some({{ obj.categories|rust }}),
+        Some({{ obj.categories|rust }})
         {%- else -%}
-        None,
+        None
         {%- endif -%})
         {% endif %}
     });
