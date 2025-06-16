@@ -27,6 +27,21 @@ all_metrics:
       - label_a
       - label_b
 
+  dual_labeled_counter:
+    <<: *defaults
+    type: dual_labeled_counter
+    dual_labels:
+      key:
+        description: The key for the dual labeled counter
+        labels:
+          - key1
+          - key2
+      category:
+        description: The category for the dual labeled counter
+        labels:
+          - category1
+          - category2
+
   bool:
     <<: *defaults
     type: boolean

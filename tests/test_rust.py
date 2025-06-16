@@ -288,9 +288,10 @@ def test_object_metric(tmp_path):
         assert "trust: Option<String>, " in content
         assert "}" in content
 
+
 def test_dual_labeled_counter_metric(tmp_path):
     """
-    Assert that an dual labeled counter metric is created.
+    Assert that a dual labeled counter metric is created.
     """
     translate.translate(
         ROOT / "data" / "dual_labeled.yaml",
@@ -305,25 +306,32 @@ def test_dual_labeled_counter_metric(tmp_path):
         content = fd.read()
         content = " ".join(content.split())
 
-        # TODO: work in progress, this is not yet fully implemented
-        assert "pub static dynamic_dynamic: ::glean::private::__export::Lazy<DualLabeledCounterMetric>" in content
+        assert (
+            "pub static dynamic_dynamic: ::glean::private::__export::Lazy<DualLabeledCounterMetric>"
+            in content
+        )
         assert "DualLabeledCounterMetric::new(meta, None, None)" in content
-        assert "pub static static_dynamic: ::glean::private::__export::Lazy<DualLabeledCounterMetric>" in content
-        assert 'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), None)' in content
-        assert "pub static dynamic_static: ::glean::private::__export::Lazy<DualLabeledCounterMetric>" in content
-        assert 'DualLabeledCounterMetric::new(meta, None, Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))' in content
-        assert "pub static static_static: ::glean::private::__export::Lazy<DualLabeledCounterMetric>" in content
-        assert 'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))' in content
-        # assert "pub struct ThreadsObjectItem { " in content
-        # assert "frames: ThreadsObjectItemFrames, }" in content
-        # assert (
-        #     "pub type ThreadsObjectItemFrames = "
-        #     "Vec<ThreadsObjectItemFramesItem>;" in content
-        # )
-
-        # assert "pub struct ThreadsObjectItemFramesItem { " in content
-        # assert "module_index: Option<i64>, " in content
-        # assert "ip: Option<String>, " in content
-        # assert "trust: Option<String>, " in content
-        # assert "}" in content
-
+        assert (
+            "pub static static_dynamic: ::glean::private::__export::Lazy<DualLabeledCounterMetric>"
+            in content
+        )
+        assert (
+            'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), None)'
+            in content
+        )
+        assert (
+            "pub static dynamic_static: ::glean::private::__export::Lazy<DualLabeledCounterMetric>"
+            in content
+        )
+        assert (
+            'DualLabeledCounterMetric::new(meta, None, Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))'
+            in content
+        )
+        assert (
+            "pub static static_static: ::glean::private::__export::Lazy<DualLabeledCounterMetric>"
+            in content
+        )
+        assert (
+            'DualLabeledCounterMetric::new(meta, Some(vec![::std::borrow::Cow::from("key1"), ::std::borrow::Cow::from("key2")]), Some(vec![::std::borrow::Cow::from("category1"), ::std::borrow::Cow::from("category2")]))'
+            in content
+        )

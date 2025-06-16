@@ -1261,6 +1261,79 @@ def test_object_invalid():
     assert "invalid `type` in object structure." in errors[0]
 
 
+def test_dual_labeled_counter():
+    """
+    Ensure that `dual_labeled_counter` metrics parse properly.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "dual_labeled.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errors = list(all_metrics)
+    assert len(errors) == 0
+
+    assert all_metrics.value["test.dual_labeled"]["static_static"].ordered_keys == [
+        "key1",
+        "key2",
+    ]
+    assert all_metrics.value["test.dual_labeled"][
+        "static_static"
+    ].ordered_categories == ["category1", "category2"]
+    assert all_metrics.value["test.dual_labeled"]["static_dynamic"].ordered_keys == [
+        "key1",
+        "key2",
+    ]
+    assert (
+        all_metrics.value["test.dual_labeled"]["static_dynamic"].ordered_categories
+        is None
+    )
+    assert all_metrics.value["test.dual_labeled"]["dynamic_static"].ordered_keys is None
+    assert all_metrics.value["test.dual_labeled"][
+        "dynamic_static"
+    ].ordered_categories == ["category1", "category2"]
+    assert (
+        all_metrics.value["test.dual_labeled"]["dynamic_dynamic"].ordered_keys is None
+    )
+    assert (
+        all_metrics.value["test.dual_labeled"]["dynamic_dynamic"].ordered_categories
+        is None
+    )
+
+
+def test_dual_labeled_counter_invalid():
+    """
+    Ensure that `dual_labeled_counter` metrics parse properly.
+    """
+
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "dual_labeled_invalid.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errors = list(all_metrics)
+    assert len(errors) == 4
+
+    def compare(expected, found):
+        return "".join(expected.split()) in "".join(found.split())
+
+    for error in errors:
+        if "`key`" in error:
+            assert compare("`dual_labels` is missing required parameter `key`", error)
+
+        if "`category`" in error:
+            assert compare(
+                "`dual_labels` is missing required parameter `categories`", error
+            )
+
+        if "`dual_labels`" in error:
+            assert compare(
+                "`dual_labeled_counter` is missing required parameter `dual_labels`",
+                error,
+            )
+
+
 def test_reserved_category():
     all_metrics = parser.parse_objects(ROOT / "data" / "reserved_categories.yamlx")
 
