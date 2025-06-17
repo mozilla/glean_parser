@@ -11,7 +11,7 @@ from pathlib import Path
 import sys
 import re
 import textwrap
-from typing import Any, Callable, Iterable, Sequence, Tuple, Union, Optional
+from typing import Any, Callable, Iterable, Sequence, Tuple, Union, Optional, TextIO
 import urllib.request
 
 import diskcache  # type: ignore
@@ -106,6 +106,18 @@ def yaml_load(stream):
     return yaml.load(stream, SafeLineLoader)
 
 
+def json_load(stream: TextIO):
+
+    # The Python json parser doesn't give us access to the line number
+    def _construct_mapping_adding_empty_line(obj):
+        mapping = DictWrapper(obj)
+        mapping.defined_in = {"line": 0}
+        return mapping
+
+    return json.load(stream, object_hook=_construct_mapping_adding_empty_line)
+
+
+
 def ordered_yaml_dump(data, **kwargs):
     class OrderedDumper(yaml.Dumper):
         pass
@@ -135,7 +147,7 @@ def load_yaml_or_json(path: Path):
 
     if path.suffix == ".json":
         with path.open("r", encoding="utf-8") as fd:
-            return json.load(fd)
+            return json_load(fd)
     elif path.suffix in (".yml", ".yaml", ".yamlx"):
         with path.open("r", encoding="utf-8") as fd:
             return yaml_load(fd)
