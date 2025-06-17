@@ -363,8 +363,7 @@ def _instantiate_pings(
             yield util.format_error(
                 filepath,
                 "",
-                f"Duplicate ping name '{ping_key}' "
-                f"already defined in '{already_seen}'",
+                f"Duplicate ping name '{ping_key}' already defined in '{already_seen}'",
             )
         else:
             all_objects.setdefault("pings", {})[ping_key] = ping_obj
@@ -422,8 +421,7 @@ def _instantiate_tags(
             yield util.format_error(
                 filepath,
                 "",
-                f"Duplicate tag name '{tag_key}' "
-                f"already defined in '{already_seen}'",
+                f"Duplicate tag name '{tag_key}' already defined in '{already_seen}'",
             )
         else:
             all_objects.setdefault("tags", {})[tag_key] = tag_obj
