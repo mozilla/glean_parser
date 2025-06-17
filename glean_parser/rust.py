@@ -101,7 +101,7 @@ def type_name(obj):
 
     if getattr(obj, "labeled", False):
         return "LabeledMetric<{}>".format(class_name(obj.type))
-    if getattr(obj, "dual_labeled", False):
+    if getattr(obj, "dual_labeled_counter", False):
         return "DualLabeledCounterMetric"
     generate_enums = getattr(obj, "_generate_enums", [])  # Extra Keys? Reasons?
     if len(generate_enums):

@@ -1304,7 +1304,7 @@ def test_dual_labeled_counter():
 
 def test_dual_labeled_counter_invalid():
     """
-    Ensure that `dual_labeled_counter` metrics parse properly.
+    Ensure that invalidly-defined `dual_labeled_counter` metrics fail to parse.
     """
 
     all_metrics = parser.parse_objects(

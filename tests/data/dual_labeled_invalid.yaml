@@ -10,7 +10,7 @@ test.dual_labeled:
   missing_key:
     type: dual_labeled_counter
     description: >
-      A dual labeled counter with static keys and categories
+      A dual labeled counter with missing `key` property of `dual_labels`
     dual_labels:
       category:
         description: >
@@ -29,7 +29,7 @@ test.dual_labeled:
   missing_category:
     type: dual_labeled_counter
     description: >
-      A dual labeled counter with static keys and dynamic categories
+      A dual labeled counter with missing `category` property of `dual_labels`
     dual_labels:
       key:
         description: >
@@ -48,7 +48,7 @@ test.dual_labeled:
   missing_dual_labels:
     type: dual_labeled_counter
     description: >
-      A dual labeled counter with dynamic keys and static categories
+      A dual labeled counter with missing `dual_labels` property
     bugs:
       - https://bugzilla.mozilla.org/11137353
     data_reviews:
@@ -60,7 +60,7 @@ test.dual_labeled:
   missing_key_and_category:
     type: dual_labeled_counter
     description: >
-      A dual labeled counter with dynamic keys and dynamic categories
+      A dual labeled counter with missing both `key` and `category` properties
     dual_labels:
       foo: bar
     bugs:
