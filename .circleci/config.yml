@@ -186,8 +186,8 @@ jobs:
       - checkout
       - run:
           name: Release package on PyPi
-          # Requires that the TWINE_USERNAME and TWINE_PASSWORD environment
-          # variables are configured in CircleCI's environment variables.
+          # Requires that the UV_PUBLISH_TOKEN environment variable
+          # is configured in CircleCI's environment variables.
           command: |
             make release
 
