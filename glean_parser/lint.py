@@ -320,6 +320,36 @@ def check_empty_datareview(
         yield "List of data reviews should not contain empty strings or TODO markers."
 
 
+def check_event_extras_potential_data_sensitivity_required(
+    metric: metrics.Metric, parser_config: Dict[str, Any]
+) -> LintGenerator:
+    # Only looking at event metrics
+    if not isinstance(metric, metrics.Event):
+        return
+
+    # TODO(bug 1890648): Not all metrics have `data_sensitivity` defined.
+    has_data_sensitivity = hasattr(metric, "data_sensitivity")
+    # If already marked as "highly sensitive" no need for further checks
+    if has_data_sensitivity and any(
+        [
+            sensitivity == metrics.DataSensitivity.highly_sensitive
+            for sensitivity in metric.data_sensitivity
+        ]
+    ):
+        return
+
+    # List of potentially sensitive extra key names we want to flag.
+    potential_sensitive_names = ["url", "uri"]
+    name_list = ", ".join(potential_sensitive_names)
+
+    for extra_key in metric.extra_keys.keys():
+        if extra_key in potential_sensitive_names:
+            yield (
+                f"`{extra_key}` could potentially be used to collect sensitive data. Increase the metric's data sensitivity or disable the lint."
+                + f" (This lint applies for the following extra key names: {name_list})"
+            )
+
+
 def check_redundant_ping(
     pings: pings.Ping, parser_config: Dict[str, Any]
 ) -> LintGenerator:
@@ -432,6 +462,10 @@ METRIC_CHECKS: Dict[
     "METRIC_ON_EVENTS_LIFETIME": (check_metric_on_events_lifetime, CheckType.error),
     "UNEXPECTED_UNIT": (check_unexpected_unit, CheckType.warning),
     "EMPTY_DATAREVIEW": (check_empty_datareview, CheckType.warning),
+    "HIGHER_DATA_SENSITIVITY_REQUIRED": (
+        check_event_extras_potential_data_sensitivity_required,
+        CheckType.warning,
+    ),
 }
 
 

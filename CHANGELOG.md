@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New lint: `HIGHER_DATA_SENSITIVITY_REQUIRED` for when an event extra key could potentially contain sensitive data ([bug 1973017](https://bugzilla.mozilla.org/show_bug.cgi?id=1973017))
+
 ## 17.2.0
 
 - Forbid redefinition of metrics, categories, or pings within the same YAML document ([bug 1921089](https://bugzilla.mozilla.org/show_bug.cgi?id=1921089))
