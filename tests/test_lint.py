@@ -644,3 +644,112 @@ def test_unit_on_metrics(metric, num_nits):
     assert len(nits) == num_nits
     if num_nits > 0:
         assert set(["UNEXPECTED_UNIT"]) == set(v.check_name for v in nits)
+
+
+@pytest.mark.parametrize(
+    "metric, num_nits",
+    [
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "id": {"type": "string", "description": "description"}
+                    },
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "url": {"type": "string", "description": "description"}
+                    },
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "url": {"type": "string", "description": "description"}
+                    },
+                    "no_lint": ["HIGHER_DATA_SENSITIVITY_REQUIRED"],
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "url": {"type": "string", "description": "description"}
+                    },
+                    "data_sensitivity": ["technical"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "url": {"type": "string", "description": "description"}
+                    },
+                    "data_sensitivity": ["highly_sensitive"],
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "metric": {
+                    "type": "event",
+                    "extra_keys": {
+                        "url": {"type": "string", "description": "description"}
+                    },
+                    "data_sensitivity": ["technical", "highly_sensitive"],
+                }
+            },
+            0,
+        ),
+    ],
+)
+def test_events_data_sensitivity(metric, num_nits):
+    content = {"category": metric}
+    content = util.add_required(content)
+    all_metrics = parser.parse_objects(content)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["HIGHER_DATA_SENSITIVITY_REQUIRED"]) == set(
+            v.check_name for v in nits
+        )
+
+
+def test_events_data_sensitivity_from_file():
+    """Test that the 'glinter' reports issues with the old event API."""
+    all_metrics = parser.parse_objects([ROOT / "data" / "events_data_sensitivity.yaml"])
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value, parser_config={})
+    assert len(nits) == 2
+    assert nits[0].check_name == "HIGHER_DATA_SENSITIVITY_REQUIRED"
+    assert nits[0].name == "event.low_sensitivity"
+    assert "data sensitivity" in nits[0].msg
+
+    assert nits[1].check_name == "HIGHER_DATA_SENSITIVITY_REQUIRED"
+    assert nits[1].name == "event.no_data_sensitivity"
+    assert "data sensitivity" in nits[1].msg

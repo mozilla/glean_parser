@@ -1,0 +1,78 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+event:
+  low_sensitivity:
+    type: event
+    description: |
+      Just testing events
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1973017
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    extra_keys:
+      url:
+        type: string
+        description: "This is key one"
+    expires: never
+    data_sensitivity:
+      - technical
+
+  no_data_sensitivity:
+    type: event
+    description: |
+      Just testing events
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1973017
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    extra_keys:
+      url:
+        type: string
+        description: "This is key one"
+    expires: never
+
+  correct_sensitivity:
+    type: event
+    description: |
+      Just testing events
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1973017
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    extra_keys:
+      url:
+        type: string
+        description: "This is key one"
+    expires: never
+    data_sensitivity:
+      - highly_sensitive
+
+  exempt:
+    type: event
+    description: |
+      Just testing events
+    bugs:
+      - https://bugzilla.mozilla.org/show_bug.cgi?id=1973017
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    extra_keys:
+      url:
+        type: string
+        description: "This is key one"
+    expires: never
+    data_sensitivity:
+      - technical
+    no_lint:
+      - HIGHER_DATA_SENSITIVITY_REQUIRED
