@@ -84,28 +84,20 @@ commands:
             uv run pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)' --ignore-packages yamllint
 
 jobs:
-  build-38:
-    docker:
-      - image: cimg/python:3.8-node
-    steps:
-      - setup-uv
-      - test-start
-      - test-python-version
-
-  build-38-min:
-    docker:
-      - image: cimg/python:3.8-node
-    steps:
-      - setup-uv
-      - test-start
-      - test-min-requirements
-      - test-python-version
-
   build-39:
     docker:
       - image: cimg/python:3.9-node
     steps:
       - test-start
+      - test-python-version
+
+  build-39-min:
+    docker:
+      - image: cimg/python:3.9-node
+    steps:
+      - setup-uv
+      - test-start
+      - test-min-requirements
       - test-python-version
 
   build-310:
@@ -203,15 +195,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - build-38:
-          filters:
-            tags:
-              only: /.*/
-      - build-38-min:
-          filters:
-            tags:
-              only: /.*/
       - build-39:
+          filters:
+            tags:
+              only: /.*/
+      - build-39-min:
           filters:
             tags:
               only: /.*/
