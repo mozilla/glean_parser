@@ -16,7 +16,7 @@ code for various integrations, linting and coverage testing.
 
 ## Requirements
 
-- Python 3.8 (or later)
+- Python 3.9 (or later)
 
 ## Usage
 
