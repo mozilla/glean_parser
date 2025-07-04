@@ -26,9 +26,9 @@ commands:
           # 4. Replace the checksum in `UV_SHA256` with the checksum from the downloaded file.
           command: |
             cd /tmp
-            UV_SHA256=f6788fd45a25ea1033a671eaa9ece6c9b004ce5c9cf09552effadde567a7d7a5
+            UV_SHA256=5ad6f11d5a04cb3af2418666031f20b63190f82032ec5a7f3a174385cc5567e4
             UV=uv-x86_64-unknown-linux-gnu
-            UV_VERSION=0.6.13
+            UV_VERSION=0.7.19
             URL="https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${UV}.tar.gz"
             curl -sfSL --retry 5 -o "${UV}.tar.gz" "${URL}"
             echo "${UV_SHA256} *${UV}.tar.gz" | shasum -a 256 -c -
