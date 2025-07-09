@@ -3,6 +3,7 @@
 ## Unreleased
 
 - New lint: `HIGHER_DATA_SENSITIVITY_REQUIRED` for when an event extra key could potentially contain sensitive data ([bug 1973017](https://bugzilla.mozilla.org/show_bug.cgi?id=1973017))
+- BUGFIX: Don't try to remove non-existent key on dual labeled metrics ([#801](https://github.com/mozilla/glean_parser/pull/801))
 
 ## 17.2.0
 
