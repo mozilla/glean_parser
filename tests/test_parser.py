@@ -1153,6 +1153,13 @@ def test_no_internal_fields_exposed():
                             "extra_keys": {
                                 "key_a": {"description": "desc-a", "type": "boolean"}
                             },
+                        },
+                        "metric2": {
+                            "type": "dual_labeled_counter",
+                            "dual_labels": {
+                                "key": { "description": "desc-a" },
+                                "category": { "description": "desc-b" },
+                            }
                         }
                     },
                 }
@@ -1185,7 +1192,25 @@ def test_no_internal_fields_exposed():
             "send_in_pings": ["events"],
             "type": "event",
             "version": 0,
-        }
+        },
+        "category.metric2": {
+            "bugs": ["http://bugzilla.mozilla.org/12345678"],
+            "categories": None,
+            "data_reviews": ["https://example.com/review/"],
+            "defined_in": {"line": 17},
+            "description": "DESCRIPTION...",
+            "disabled": False,
+            "expires": "never",
+            "gecko_datapoint": "",
+            "keys": None,
+            "lifetime": "ping",
+            "metadata": {},
+            "no_lint": [],
+            "notification_emails": ["nobody@example.com"],
+            "send_in_pings": ["metrics"],
+            "type": "dual_labeled_counter",
+            "version": 0,
+        },
     }
     expected_json = json.dumps(expected, sort_keys=True, indent=2)
 
