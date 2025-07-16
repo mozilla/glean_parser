@@ -9,173 +9,173 @@ glean\_parser.coverage module
 
 .. automodule:: glean_parser.coverage
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.data\_review module
 ---------------------------------
 
 .. automodule:: glean_parser.data_review
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.go\_server module
 -------------------------------
 
 .. automodule:: glean_parser.go_server
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.javascript module
 -------------------------------
 
 .. automodule:: glean_parser.javascript
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.javascript\_server module
 ---------------------------------------
 
 .. automodule:: glean_parser.javascript_server
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.kotlin module
 ---------------------------
 
 .. automodule:: glean_parser.kotlin
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.lint module
 -------------------------
 
 .. automodule:: glean_parser.lint
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.markdown module
 -----------------------------
 
 .. automodule:: glean_parser.markdown
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.metrics module
 ----------------------------
 
 .. automodule:: glean_parser.metrics
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.parser module
 ---------------------------
 
 .. automodule:: glean_parser.parser
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.pings module
 --------------------------
 
 .. automodule:: glean_parser.pings
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.python\_server module
 -----------------------------------
 
 .. automodule:: glean_parser.python_server
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.ruby\_server module
 ---------------------------------
 
 .. automodule:: glean_parser.ruby_server
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.rust module
 -------------------------
 
 .. automodule:: glean_parser.rust
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.rust\_server module
 ---------------------------------
 
 .. automodule:: glean_parser.rust_server
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.swift module
 --------------------------
 
 .. automodule:: glean_parser.swift
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.tags module
 -------------------------
 
 .. automodule:: glean_parser.tags
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.translate module
 ------------------------------
 
 .. automodule:: glean_parser.translate
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.translation\_options module
 -----------------------------------------
 
 .. automodule:: glean_parser.translation_options
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.util module
 -------------------------
 
 .. automodule:: glean_parser.util
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 glean\_parser.validate\_ping module
 -----------------------------------
 
 .. automodule:: glean_parser.validate_ping
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: glean_parser
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

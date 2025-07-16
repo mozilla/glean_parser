@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Dropped support for Python 3.8 ([#800](https://github.com/mozilla/glean_parser/pull/800))
+
 ## 17.3.0
 
 - New lint: `HIGHER_DATA_SENSITIVITY_REQUIRED` for when an event extra key could potentially contain sensitive data ([bug 1973017](https://bugzilla.mozilla.org/show_bug.cgi?id=1973017))
