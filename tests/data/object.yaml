@@ -16,8 +16,10 @@ complex.types:
       - CHANGE-ME@example.com
     expires: never
     structure:
+      description: An array of numbers
       type: array
       items:
+        description: Every number counts
         type: number
 
   array_in_array:
