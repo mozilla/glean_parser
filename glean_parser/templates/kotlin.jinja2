@@ -67,7 +67,17 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 {%- endmacro -%}
 
 {%- macro generate_structure(name, struct) %}
-{%- if struct.type == "array" -%}
+{%- if struct.type == "oneof" -%}
+    sealed class {{ name }}(): ObjectSerialize {
+    {% for ty in struct.subtypes %}
+        class {{ty|Camelize}}(val inner: kotlin.{{ty|structure_type_name}}? = null) : {{ name }}() {
+            override fun intoSerializedObject(): kotlin.String {
+                return this.inner?.intoSerializedObject() ?: "null"
+            }
+        }
+    {% endfor %}
+    }
+{%- elif struct.type == "array" -%}
     data class {{ name }}(var items: MutableList<{{ name }}Item> = mutableListOf()) : ObjectSerialize {
         fun add(elem: {{ name }}Item) = items.add(elem)
 
@@ -107,6 +117,8 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
           var {{itemname|camelize}}: {{ name ~ itemname|Camelize }} = {{ name ~ itemname|Camelize }}(),
           {% elif val.type == "object" %}
           var {{itemname|camelize}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}? = null,
+          {% elif val.type == "oneof" %}
+          var {{itemname|camelize}}: {{ name ~ itemname|Camelize ~ "Enum" }}? = null,
           {% else %}
           var {{itemname|camelize}}: {{val.type|structure_type_name}}? = null,
           {% endif %}
@@ -137,6 +149,9 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
         {{ generate_structure(nested_name, val) }}
         {% elif val.type == "object" %}
         {% set nested_name = name ~ "Item" ~ itemname|Camelize ~ "Object" %}
+        {{ generate_structure(nested_name, val) }}
+        {% elif val.type == "oneof" %}
+        {% set nested_name = name ~ itemname|Camelize ~ "Enum" %}
         {{ generate_structure(nested_name, val) }}
         {% endif %}
     {% endfor %}

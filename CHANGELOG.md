@@ -6,6 +6,7 @@
 - New lint: `UNUSED_NO_LINT` when a lint is listed for a metric but doesn't actually trigger
 - New lint: `UNKNOWN_LINT` when an unknown lint is named in the `no_lint` list
 - Add Sendable conformance to Pings ([#810](https://github.com/mozilla/glean_parser/pull/810))
+- BREAKING CHANGE: Add `oneOf` type to object metric type structure. This requires changes in the generated code and is thus breaking, but shouldn't affect users ([#803](https://github.com/mozilla/glean_parser/pull/803))
 
 ## 17.3.0
 
