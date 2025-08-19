@@ -661,8 +661,20 @@ def lint_metrics(
             )
 
         for _metric_name, metric in sorted(list(category_metrics.items())):
+            check_unused_lints = "UNUSED_NO_LINT" not in metric.no_lint
+
             for check_name, (check_func, check_type) in METRIC_CHECKS.items():
                 new_nits = list(check_func(metric, parser_config))
+                if check_unused_lints and check_name in metric.no_lint and not len(new_nits):
+                    nits.append(
+                        GlinterNit(
+                            "UNUSED_NO_LINT",
+                            ".".join([metric.category, metric.name]),
+                            f"Metric contains a no_lint: {check_name}, but {check_name} does not apply. Please remove the `no_lint` entry.",
+                            CheckType.warning,
+                        )
+                    )
+
                 if len(new_nits):
                     if check_name not in metric.no_lint:
                         nits.extend(
