@@ -815,3 +815,63 @@ def test_unused_no_lint_warning(content, num_nits):
         assert set(["UNUSED_NO_LINT"]) == set(
             v.check_name for v in nits
         )
+
+@pytest.mark.parametrize(
+    "content,num_nits",
+    [
+        (
+            {
+                "unknown_lint": {
+                    "type": "counter",
+                    "expires": "2100-01-01",
+                    "no_lint": ["EXPIRATION_DATE_TOO_FAR", "DOES_NOT_EXIST", "UNKNOWN_LINT"],
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "unknown_lint": {
+                    "type": "counter",
+                    "expires": "2100-01-01",
+                    "no_lint": ["EXPIRATION_DATE_TOO_FAR", "DOES_NOT_EXIST"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "unknown_lint": {
+                    "type": "counter",
+                    "expires": "never",
+                    "no_lint": ["DOES_NOT_EXIST"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "ping_lint": {
+                    "type": "counter",
+                    "expires": "never",
+                    "no_lint": ["REDUNDANT_PING"],
+                }
+            },
+            1,
+        ),
+    ],
+)
+def test_unknown_lint_warning(content, num_nits):
+    content = {"cat": content}
+    content = util.add_required(content)
+    all_metrics = parser.parse_objects(content)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["UNKNOWN_LINT"]) == set(
+            v.check_name for v in nits
+        )
