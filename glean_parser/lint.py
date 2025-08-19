@@ -34,6 +34,12 @@ LintGenerator = Generator[str, None, None]
 NitGenerator = Generator["GlinterNit", None, None]
 
 
+def noop(*args):
+    """ A noop `LintGenerator`. Never yields a GlinterNit."""
+    return
+    yield
+
+
 class CheckType(enum.Enum):
     warning = 0
     error = 1
@@ -466,6 +472,8 @@ METRIC_CHECKS: Dict[
         check_event_extras_potential_data_sensitivity_required,
         CheckType.warning,
     ),
+    # Implemented inline, listed here so that `UNKNOWN_LINT` knows about it.
+    "UNUSED_NO_LINT": (noop, CheckType.warning),
 }
 
 
@@ -662,6 +670,26 @@ def lint_metrics(
 
         for _metric_name, metric in sorted(list(category_metrics.items())):
             check_unused_lints = "UNUSED_NO_LINT" not in metric.no_lint
+            check_unknown_lint = "UNKNOWN_LINT" not in metric.no_lint
+
+            if check_unknown_lint and metric.no_lint:
+                known_lint_names = (
+                    set(METRIC_CHECKS.keys())
+                    | set(ALL_OBJECT_CHECKS.keys())
+                    | set(CATEGORY_CHECKS.keys())
+                )
+                unknown_lints = [
+                    lint for lint in metric.no_lint if lint not in known_lint_names
+                ]
+                if unknown_lints:
+                    nits.append(
+                        GlinterNit(
+                            "UNKNOWN_LINT",
+                            ".".join([metric.category, metric.name]),
+                            f"Metric contains unknown no_lints: {unknown_lints}. Please remove the `no_lint` entry.",
+                            CheckType.warning,
+                        )
+                    )
 
             for check_name, (check_func, check_type) in METRIC_CHECKS.items():
                 new_nits = list(check_func(metric, parser_config))
