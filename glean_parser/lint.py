@@ -313,7 +313,7 @@ def check_unexpected_unit(
 def check_empty_datareview(
     metric: metrics.Metric, parser_config: Dict[str, Any]
 ) -> LintGenerator:
-    disallowed_datareview = ["", "todo"]
+    disallowed_datareview = ["", "todo", "tbd"]
     data_reviews = [dr.lower() in disallowed_datareview for dr in metric.data_reviews]
 
     if any(data_reviews):
