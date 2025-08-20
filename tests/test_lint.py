@@ -581,6 +581,7 @@ def test_redefined_ping():
         ({"metric": {"data_reviews": [""], "no_lint": ["EMPTY_DATAREVIEW"]}}, 0),
         ({"metric": {"data_reviews": ["TODO"]}}, 1),
         ({"metric": {"data_reviews": ["TODO"], "no_lint": ["EMPTY_DATAREVIEW"]}}, 0),
+        ({"metric": {"data_reviews": ["TBD"]}}, 1),
     ],
 )
 def test_empty_datareviews(metric, num_nits):
