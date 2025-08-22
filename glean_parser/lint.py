@@ -100,7 +100,7 @@ def check_common_prefix(
         common_prefix = "_".join(first[:i])
         yield (
             f"Within category '{category_name}', all metrics begin with "
-            f"prefix '{common_prefix}'."
+            f"prefix '{common_prefix}'. "
             "Remove the prefixes on the metric names and (possibly) "
             "rename the category."
         )
