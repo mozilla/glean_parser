@@ -138,9 +138,9 @@ eventLogger.record({ user_agent: "glean-test/1.0", event_name: "testing" });
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
 
 
 @pytest.mark.node_dependency
@@ -184,6 +184,6 @@ eventLogger.recordBackendObjectUpdate({
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )

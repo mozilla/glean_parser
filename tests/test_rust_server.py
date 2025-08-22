@@ -73,12 +73,13 @@ def test_parser_rust_server_events_only(tmp_path):
     compare = compare_raw.replace("{current_version}", glean_version)
     assert content == compare
 
+
 def test_parser_rust_server_events_and_custom_ping(tmp_path):
     """Test that parser works for definitions that use events ping and custom pings"""
     translate.translate(
         [
             ROOT / "data" / "rust_server_events_and_custom_ping_metrics.yaml",
-            ROOT / "data" / "rust_server_events_and_custom_ping_pings.yaml"
+            ROOT / "data" / "rust_server_events_and_custom_ping_pings.yaml",
         ],
         "rust_server",
         tmp_path,
@@ -98,12 +99,13 @@ def test_parser_rust_server_events_and_custom_ping(tmp_path):
     compare = compare_raw.replace("{current_version}", glean_version)
     assert content == compare
 
+
 def test_parser_rust_server_custom_ping_only(tmp_path):
     """Test that parser works for definitions that only use custom pings"""
     translate.translate(
         [
             ROOT / "data" / "rust_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml",
         ],
         "rust_server",
         tmp_path,
@@ -123,16 +125,17 @@ def test_parser_rust_server_custom_ping_only(tmp_path):
     compare = compare_raw.replace("{current_version}", glean_version)
     assert content == compare
 
+
 def run_rust_logger(code_dir, code):
     """
     Run the Rust logger and capture the output sent to STDOUT.
     """
     # Define paths
     tmpl_code_path = Path("test.rs.tmpl")
-    
+
     # Read and replace placeholder in the template
     tmpl_code = ""
-    with open(ROOT / "test-rs" /tmpl_code_path, "r") as fp:
+    with open(ROOT / "test-rs" / tmpl_code_path, "r") as fp:
         tmpl_code = fp.read()
 
     # Replace placeholder with actual code
@@ -140,14 +143,13 @@ def run_rust_logger(code_dir, code):
 
     # Write the modified template to main.rs in the Rust project
 
-        # Initialize a Rust project if not already initialized
+    # Initialize a Rust project if not already initialized
     if not (code_dir / "Cargo.toml").exists():
         subprocess.call(["cargo", "init", "--bin"], cwd=code_dir)
 
     # Add each dependency to Cargo.toml
     # Define the dependencies to add with their version and features
     dependencies = [
-
         ("serde", "1.0", ["derive"]),
         ("serde_json", "1.0", None),
         ("chrono", "0.4", ["serde"]),
@@ -155,20 +157,24 @@ def run_rust_logger(code_dir, code):
     ]
     for name, version, features in dependencies:
         # Construct the cargo add command
-        command = ["cargo", "add", f"{name}@{version}",]
+        command = [
+            "cargo",
+            "add",
+            f"{name}@{version}",
+        ]
         if features:
             command.extend(["--features", ",".join(features)])
         subprocess.call(command, cwd=code_dir)
-    
+
     # Run cargo build to ensure dependencies are up-to-date
     subprocess.call(["cargo", "build"], cwd=code_dir)
     with open(code_dir / "src" / "main.rs", "w") as fp:
         fp.write(tmpl_code)
 
-    
     # Run the Rust code and capture output
     result = subprocess.check_output(["cargo", "run"], cwd=code_dir).decode("utf-8")
     return result
+
 
 @pytest.mark.rust_dependency
 def test_run_logging_events_ping(tmp_path):
@@ -228,9 +234,10 @@ def test_run_logging_events_ping(tmp_path):
     payload = fields["payload"]
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
+
 
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_without_event(tmp_path):
@@ -239,7 +246,7 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "rust_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml",
         ],
         "rust_server",
         glean_module_path,
@@ -263,7 +270,7 @@ def test_run_logging_custom_ping_without_event(tmp_path):
 
     // Calling the `record_events_ping` function on `logger`
     logger.record_server_telemetry_scenario_one_ping(&request_info, &params);
-    """    
+    """
 
     logged_output = run_rust_logger(tmp_path, code)
     logged_output = json.loads(logged_output)
@@ -284,9 +291,10 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     payload = fields["payload"]
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
+
 
 @pytest.mark.rust_dependency
 def test_run_logging_custom_ping_with_event(tmp_path):
@@ -295,7 +303,7 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "rust_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "rust_server_custom_ping_only_pings.yaml",
         ],
         "rust_server",
         glean_module_path,
@@ -332,7 +340,6 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
 
-
     assert "glean-server-event" == logged_output["Type"]
     assert "glean.test" == fields["document_namespace"]
     assert "server-telemetry-scenario-one" == fields["document_type"]
@@ -349,6 +356,6 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     input = io.StringIO(payload)
     output = io.StringIO()
 
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )

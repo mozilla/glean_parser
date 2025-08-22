@@ -72,6 +72,6 @@ def test_logging(tmp_path):
     # validate that ping payload is valid against glean schema
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )

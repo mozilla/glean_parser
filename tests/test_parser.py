@@ -1157,10 +1157,10 @@ def test_no_internal_fields_exposed():
                         "metric2": {
                             "type": "dual_labeled_counter",
                             "dual_labels": {
-                                "key": { "description": "desc-a" },
-                                "category": { "description": "desc-b" },
-                            }
-                        }
+                                "key": {"description": "desc-a"},
+                                "category": {"description": "desc-b"},
+                            },
+                        },
                     },
                 }
             ),
