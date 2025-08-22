@@ -80,7 +80,7 @@ def test_parser_go_server_events_and_custom_ping(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_events_and_custom_ping_metrics.yaml",
-            ROOT / "data" / "go_server_events_and_custom_ping_pings.yaml"
+            ROOT / "data" / "go_server_events_and_custom_ping_pings.yaml",
         ],
         "go_server",
         tmp_path,
@@ -107,7 +107,7 @@ def test_parser_go_server_custon_ping_only(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml",
         ],
         "go_server",
         tmp_path,
@@ -202,9 +202,9 @@ def test_run_logging_events_ping(tmp_path):
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
 
 
 @pytest.mark.go_dependency
@@ -214,7 +214,7 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml",
         ],
         "go_server",
         glean_module_path,
@@ -254,9 +254,9 @@ def test_run_logging_custom_ping_without_event(tmp_path):
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
 
 
 @pytest.mark.go_dependency
@@ -266,7 +266,7 @@ def test_run_logging_discard_writer(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml",
         ],
         "go_server",
         glean_module_path,
@@ -308,7 +308,7 @@ def test_run_logging_nil_writer(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml",
         ],
         "go_server",
         glean_module_path,
@@ -349,7 +349,7 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     translate.translate(
         [
             ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
-            ROOT / "data" / "go_server_custom_ping_only_pings.yaml"
+            ROOT / "data" / "go_server_custom_ping_only_pings.yaml",
         ],
         "go_server",
         glean_module_path,
@@ -394,6 +394,6 @@ def test_run_logging_custom_ping_with_event(tmp_path):
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )

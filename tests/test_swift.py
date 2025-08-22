@@ -288,7 +288,8 @@ def test_event_extra_keys_in_correct_order(tmp_path):
         content = " ".join(content.split())
         assert (
             "struct ExampleExtra: EventExtras "
-            "{ var and1withextracasing: Bool? var alice: String? var bob: String? var charlie: String?" in content
+            "{ var and1withextracasing: Bool? var alice: String? var bob: String? var charlie: String?"
+            in content
         )
         assert ', ["And1WithExtraCasing", "alice", "bob", "charlie"]' in content
 
@@ -368,13 +369,15 @@ def test_object_metric(tmp_path):
 
         assert "ObjectMetricType<ThreadsObject>" in content
         assert "typealias ThreadsObject = [ThreadsObjectItem]" in content
-        assert "struct ThreadsObjectItem: Codable, Equatable, ObjectSerialize {" in content
         assert (
-            "var frames: ThreadsObjectItemFrames"
+            "struct ThreadsObjectItem: Codable, Equatable, ObjectSerialize {" in content
+        )
+        assert "var frames: ThreadsObjectItemFrames" in content
+
+        assert (
+            "struct ThreadsObjectItemFramesItem: Codable, Equatable, ObjectSerialize {"
             in content
         )
-
-        assert "struct ThreadsObjectItemFramesItem: Codable, Equatable, ObjectSerialize {" in content
         assert "var moduleIndex: Int64?" in content
         assert "var ip: String?" in content
         assert "var trust: String?" in content

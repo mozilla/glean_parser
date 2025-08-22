@@ -159,6 +159,6 @@ events.backend_object_update.record(
 
     input = io.StringIO(payload)
     output = io.StringIO()
-    assert (
-        validate_ping.validate_ping(input, output, schema_url=schema_url) == 0
-    ), output.getvalue()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
