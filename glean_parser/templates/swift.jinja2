@@ -63,9 +63,22 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {% endfor %}
 
         func intoSerializedObject() -> String {
-            let jsonEncoder = JSONEncoder()
-            let jsonData = try! jsonEncoder.encode(self)
-            let json = String(data: jsonData, encoding: String.Encoding.utf8)!
+            var data = [String]()
+            {% for itemname, val in struct.properties.items() %}
+                {% if val.type == "array" %}
+                if {{itemname|camelize|variable_name}}.count > 0 {
+                    let {{itemname|camelize|variable_name}} = self.{{itemname|camelize|variable_name}}
+                {% else %}
+                if let {{itemname}} = self.{{itemname}} {
+                {% endif %}
+                    var elem = "\"{{itemname}}\":"
+                    elem.append({{itemname|camelize|variable_name}}.intoSerializedObject())
+                    data.append(elem)
+                }
+            {% endfor %}
+            var json = "{"
+            json.append(data.joined(separator: ","))
+            json.append("}")
             return json
         }
     }
