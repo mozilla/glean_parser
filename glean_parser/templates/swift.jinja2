@@ -45,7 +45,14 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
 {% endmacro %}
 
 {%- macro generate_structure(name, struct) %}
-{%- if struct.type == "array" -%}
+{%- if struct.type == "oneof" -%}
+    enum {{ name }}: Codable, Equatable, ObjectSerialize {
+        {% for ty in struct.subtypes %}
+          case {{ty}}({{ty|structure_type_name}})
+        {% endfor %}
+    }
+
+{%- elif struct.type == "array" -%}
     typealias {{ name }} = [{{ name }}Item]
 
     {{ generate_structure(name ~ "Item", struct["items"]) }}
@@ -57,6 +64,8 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
           var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize }} = []
           {% elif val.type == "object" %}
           var {{itemname|camelize|variable_name}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}?
+          {% elif val.type == "oneof" %}
+          var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize ~ "Enum" }}?
           {% else %}
           var {{itemname|camelize|variable_name}}: {{val.type|structure_type_name}}?
           {% endif %}
@@ -76,6 +85,9 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {{ generate_structure(nested_name, val) }}
         {% elif val.type == "object" %}
         {% set nested_name = name ~ "Item" ~ itemname|Camelize ~ "Object" %}
+        {{ generate_structure(nested_name, val) }}
+        {% elif val.type == "oneof" %}
+        {% set nested_name = name ~ itemname|Camelize ~ "Enum" %}
         {{ generate_structure(nested_name, val) }}
         {% endif %}
     {% endfor %}

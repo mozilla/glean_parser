@@ -39,6 +39,30 @@ complex.types:
         items:
           type: boolean
 
+  oneof:
+    type: object
+    description: |
+      Array of key-value elements
+    bugs:
+      - https://bugzilla.mozilla.org/111
+    data_reviews:
+      - http://example.com/reviews
+    notification_emails:
+      - CHANGE-ME@example.com
+    expires: never
+    structure:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            oneOf:
+              - type: string
+              - type: number
+              - type: boolean
+
 # yamllint disable rule:line-length
 activity.stream:
   tiles:
