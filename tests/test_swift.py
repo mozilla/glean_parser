@@ -370,12 +370,12 @@ def test_object_metric(tmp_path):
         assert "ObjectMetricType<ThreadsObject>" in content
         assert "typealias ThreadsObject = [ThreadsObjectItem]" in content
         assert (
-            "struct ThreadsObjectItem: Codable, Equatable, ObjectSerialize {" in content
+            "struct ThreadsObjectItem: Decodable, Equatable, ObjectSerialize {" in content
         )
         assert "var frames: ThreadsObjectItemFrames" in content
 
         assert (
-            "struct ThreadsObjectItemFramesItem: Codable, Equatable, ObjectSerialize {"
+            "struct ThreadsObjectItemFramesItem: Decodable, Equatable, ObjectSerialize {"
             in content
         )
         assert "var moduleIndex: Int64?" in content

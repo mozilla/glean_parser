@@ -51,7 +51,7 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
     {{ generate_structure(name ~ "Item", struct["items"]) }}
 
 {%- elif struct.type == "object" -%}
-    struct {{ name }}: Codable, Equatable, ObjectSerialize {
+    struct {{ name }}: Decodable, Equatable, ObjectSerialize {
         {% for itemname, val in struct.properties.items() %}
           {% if val.type == "array" %}
           var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize }} = []
@@ -63,9 +63,25 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {% endfor %}
 
         func intoSerializedObject() -> String {
-            let jsonEncoder = JSONEncoder()
-            let jsonData = try! jsonEncoder.encode(self)
-            let json = String(data: jsonData, encoding: String.Encoding.utf8)!
+            var data: [String] = []
+            {% for itemname, val in struct.properties.items() %}
+            {% if val.type == "array" %}
+            let val = self.{{itemname|camelize|variable_name}}
+            if val.isEmpty == false {
+                var elem = "\"{{itemname}}\":"
+                elem.append(val.intoSerializedObject())
+                data.append(elem)
+            }
+            {% else %}
+            if let val = self.{{itemname|camelize|variable_name}} {
+                var elem = "\"{{itemname}}\":"
+                elem.append(val.intoSerializedObject())
+                data.append(elem)
+            }
+            {% endif %}
+            {% endfor %}
+            let obj = data.joined(separator: ",")
+            let json = "{" + obj + "}"
             return json
         }
     }
