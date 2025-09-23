@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.lint &#8212; Glean Parser 17.3.0.post1.dev7+g86d3fcc22 documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 17.3.0.post1.dev9+g8c4e08846 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
-    <script src="../../_static/documentation_options.js?v=dc670502"></script>
+    <script src="../../_static/documentation_options.js?v=e30543fe"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -65,6 +65,15 @@
 
 <span class="c1"># Yield fully constructed GlinterNits</span>
 <span class="n">NitGenerator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">[</span><span class="s2">&quot;GlinterNit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="noop">
+<a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.noop">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">noop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; A noop `LintGenerator`. Never yields a GlinterNit.&quot;&quot;&quot;</span>
+    <span class="k">return</span>
+    <span class="k">yield</span></div>
+
 
 
 <div class="viewcode-block" id="CheckType">
@@ -556,6 +565,8 @@
         <span class="n">check_event_extras_potential_data_sensitivity_required</span><span class="p">,</span>
         <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">,</span>
     <span class="p">),</span>
+    <span class="c1"># Implemented inline, listed here so that `UNKNOWN_LINT` knows about it.</span>
+    <span class="s2">&quot;UNUSED_NO_LINT&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">noop</span><span class="p">,</span> <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">),</span>
 <span class="p">}</span>
 
 
@@ -759,8 +770,40 @@
             <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">_metric_name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">category_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+            <span class="n">check_unused_lints</span> <span class="o">=</span> <span class="s2">&quot;UNUSED_NO_LINT&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span>
+            <span class="n">check_unknown_lint</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN_LINT&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span>
+
+            <span class="k">if</span> <span class="n">check_unknown_lint</span> <span class="ow">and</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span><span class="p">:</span>
+                <span class="n">known_lint_names</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">set</span><span class="p">(</span><span class="n">METRIC_CHECKS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                    <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALL_OBJECT_CHECKS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                    <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">CATEGORY_CHECKS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="p">)</span>
+                <span class="n">unknown_lints</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">lint</span> <span class="k">for</span> <span class="n">lint</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span> <span class="k">if</span> <span class="n">lint</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">known_lint_names</span>
+                <span class="p">]</span>
+                <span class="k">if</span> <span class="n">unknown_lints</span><span class="p">:</span>
+                    <span class="n">nits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">GlinterNit</span><span class="p">(</span>
+                            <span class="s2">&quot;UNKNOWN_LINT&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">]),</span>
+                            <span class="sa">f</span><span class="s2">&quot;Metric contains unknown no_lints: </span><span class="si">{</span><span class="n">unknown_lints</span><span class="si">}</span><span class="s2">. Please remove the `no_lint` entry.&quot;</span><span class="p">,</span>
+                            <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
             <span class="k">for</span> <span class="n">check_name</span><span class="p">,</span> <span class="p">(</span><span class="n">check_func</span><span class="p">,</span> <span class="n">check_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">METRIC_CHECKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check_func</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">check_unused_lints</span> <span class="ow">and</span> <span class="n">check_name</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">):</span>
+                    <span class="n">nits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">GlinterNit</span><span class="p">(</span>
+                            <span class="s2">&quot;UNUSED_NO_LINT&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">metric</span><span class="o">.</span><span class="n">category</span><span class="p">,</span> <span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="p">]),</span>
+                            <span class="sa">f</span><span class="s2">&quot;Metric contains a no_lint: </span><span class="si">{</span><span class="n">check_name</span><span class="si">}</span><span class="s2">, but </span><span class="si">{</span><span class="n">check_name</span><span class="si">}</span><span class="s2"> does not apply. Please remove the `no_lint` entry.&quot;</span><span class="p">,</span>
+                            <span class="n">CheckType</span><span class="o">.</span><span class="n">warning</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">check_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span><span class="p">:</span>
                         <span class="n">nits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
