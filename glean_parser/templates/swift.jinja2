@@ -111,7 +111,7 @@ extension {{ namespace }} {
 
     {% for category in categories %}
     {% if category.contains_pings %}
-    class {{ category.name|Camelize }} {
+    class {{ category.name|Camelize }} : Sendable {
         public static let shared = {{ category.name|Camelize }}()
         private init() {
             // Intentionally left private, no external user can instantiate a new global object.
