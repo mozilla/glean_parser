@@ -337,7 +337,7 @@ def test_reasons(tmp_path):
         content = fd.read()
         content = " ".join(content.split())
 
-    expected = "enum CustomPingMightBeEmptyReasonCodes: Int, ReasonCodes { case serious = 0 case silly = 1 public func index() -> Int { return self.rawValue } }"  # noqa
+    expected = "enum CustomPingMightBeEmptyReasonCodes: Int, ReasonCodes, Sendable { case serious = 0 case silly = 1 public func index() -> Int { return self.rawValue } }"  # noqa
     assert expected in content
 
     expected = "let customPing = Ping<NoReasonCodes>("
