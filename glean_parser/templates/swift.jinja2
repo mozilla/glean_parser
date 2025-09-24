@@ -111,7 +111,7 @@ extension {{ namespace }} {
 
     {% for category in categories %}
     {% if category.contains_pings %}
-    class {{ category.name|Camelize }} : Sendable {
+    final class {{ category.name|Camelize }}: Sendable {
         public static let shared = {{ category.name|Camelize }}()
         private init() {
             // Intentionally left private, no external user can instantiate a new global object.
@@ -121,7 +121,7 @@ extension {{ namespace }} {
         {% if obj|attr("_generate_enums") %}
         {% for name, suffix in obj["_generate_enums"] %}
         {% if obj|attr(name)|length %}
-        enum {{ obj.name|Camelize }}{{ suffix }}: Int, ReasonCodes {
+        enum {{ obj.name|Camelize }}{{ suffix }}: Int, ReasonCodes, Sendable {
             {% for key in obj|attr(name) %}
             case {{ key|camelize|variable_name }} = {{ loop.index-1 }}
             {% endfor %}
