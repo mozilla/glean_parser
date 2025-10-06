@@ -69,28 +69,30 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
 {%- elif struct.type == "object" -%}
     struct {{ name }}: Codable, Equatable, ObjectSerialize {
         {% for itemname, val in struct.properties.items() %}
+          {%- set varname = itemname|camelize|variable_name -%}
           {% if val.type == "array" %}
-          var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize }} = []
+          var {{varname}}: {{ name ~ itemname|Camelize }} = []
           {% elif val.type == "object" %}
-          var {{itemname|camelize|variable_name}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}?
+          var {{varname}}: {{ name ~ "Item" ~ itemname|Camelize ~ "Object" }}?
           {% elif val.type == "oneof" %}
-          var {{itemname|camelize|variable_name}}: {{ name ~ itemname|Camelize ~ "Enum" }}?
+          var {{varname}}: {{ name ~ itemname|Camelize ~ "Enum" }}?
           {% else %}
-          var {{itemname|camelize|variable_name}}: {{val.type|structure_type_name}}?
+          var {{varname}}: {{val.type|structure_type_name}}?
           {% endif %}
         {% endfor %}
 
         func intoSerializedObject() -> String {
             var data = [String]()
             {% for itemname, val in struct.properties.items() %}
+                {%- set varname = itemname|camelize|variable_name -%}
                 {% if val.type == "array" %}
-                if {{itemname|camelize|variable_name}}.count > 0 {
-                    let {{itemname|camelize|variable_name}} = self.{{itemname|camelize|variable_name}}
+                if {{varname}}.count > 0 {
+                    let {{varname}} = self.{{varname}}
                 {% else %}
-                if let {{itemname}} = self.{{itemname}} {
+                if let {{varname}} = self.{{varname}} {
                 {% endif %}
                     var elem = "\"{{itemname}}\":"
-                    elem.append({{itemname|camelize|variable_name}}.intoSerializedObject())
+                    elem.append({{varname}}.intoSerializedObject())
                     data.append(elem)
                 }
             {% endfor %}
