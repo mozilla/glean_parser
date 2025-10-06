@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 18.0.1
+
+- BUGFIX: Swift: Fix variable naming in Swift template for object metric code ([#811](https://github.com/mozilla/glean_parser/pull/811))
+
 ## 18.0.0
 
 - BREAKING CHANGE: Dropped support for Python 3.8 ([#800](https://github.com/mozilla/glean_parser/pull/800))
