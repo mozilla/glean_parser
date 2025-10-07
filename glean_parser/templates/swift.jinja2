@@ -82,7 +82,7 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
         {% endfor %}
 
         func intoSerializedObject() -> String {
-            var data = [String]()
+            var __obj = [String]()
             {% for itemname, val in struct.properties.items() %}
                 {%- set varname = itemname|camelize|variable_name -%}
                 {% if val.type == "array" %}
@@ -91,15 +91,15 @@ struct {{ obj.name|Camelize }}{{ suffix }}: EventExtras {
                 {% else %}
                 if let {{varname}} = self.{{varname}} {
                 {% endif %}
-                    var elem = "\"{{itemname}}\":"
-                    elem.append({{varname}}.intoSerializedObject())
-                    data.append(elem)
+                    var __elem = "\"{{itemname}}\":"
+                    __elem.append({{varname}}.intoSerializedObject())
+                    __obj.append(__elem)
                 }
             {% endfor %}
-            var json = "{"
-            json.append(data.joined(separator: ","))
-            json.append("}")
-            return json
+            var __json = "{"
+            __json.append(__obj.joined(separator: ","))
+            __json.append("}")
+            return __json
         }
     }
 

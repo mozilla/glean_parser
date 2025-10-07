@@ -125,19 +125,19 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
         {% endfor %}
     ): ObjectSerialize {
         override fun intoSerializedObject(): String {
-            var data: MutableList<String> = mutableListOf()
+            var __obj: MutableList<String> = mutableListOf()
             {% for itemname, val in struct.properties.items() %}
             this.{{itemname|camelize}}?.let { {{itemname|camelize}} ->
-                val elem = buildString {
+                val __elem = buildString {
                     append("\"{{itemname}}\":")
                     append({{itemname|camelize}}.intoSerializedObject())
                 }
-                data.add(elem)
+                __obj.add(__elem)
             }
             {% endfor %}
             return buildString {
                 append("{")
-                append(data.joinToString(","))
+                append(__obj.joinToString(","))
                 append("}")
             }
         }
