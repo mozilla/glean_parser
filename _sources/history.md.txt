@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 18.0.2
+
+- BUGFIX: Kotlin/Swift: Prefix new variables to avoid clashes with user code ([#812](https://github.com/mozilla/glean_parser/pull/812))
+
 ## 18.0.1
 
 - BUGFIX: Swift: Fix variable naming in Swift template for object metric code ([#811](https://github.com/mozilla/glean_parser/pull/811))
