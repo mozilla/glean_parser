@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Kotlin: Implement Serializable again for object items ([#813](https://github.com/mozilla/glean_parser/pull/813))
+
 ## 18.0.2
 
 - BUGFIX: Kotlin/Swift: Prefix new variables to avoid clashes with user code ([#812](https://github.com/mozilla/glean_parser/pull/812))

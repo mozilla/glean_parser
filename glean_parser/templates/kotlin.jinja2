@@ -78,6 +78,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
     {% endfor %}
     }
 {%- elif struct.type == "array" -%}
+    @Serializable(with = {{name}}.Serializer::class)
     data class {{ name }}(var items: MutableList<{{ name }}Item> = mutableListOf()) : ObjectSerialize {
         fun add(elem: {{ name }}Item) = items.add(elem)
 
@@ -106,11 +107,26 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
             }
             return json
         }
+
+        internal object Serializer : KSerializer<{{name}}> {
+            @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+            override val descriptor = listSerialDescriptor<String>()
+
+            override fun deserialize(decoder: Decoder): {{ name }} {
+                val list = decoder.decodeSerializableValue(ListSerializer(serializer<{{name}}Item>()))
+                    return {{name}}(items = list.toMutableList())
+            }
+
+            override fun serialize(encoder: Encoder, value: {{name}}) {
+                encoder.encodeSerializableValue(ListSerializer(serializer<{{name}}Item>()), value.items)
+            }
+        }
     }
 
     {{ generate_structure(name ~ "Item", struct["items"]) }}
 
 {%- elif struct.type == "object" -%}
+    @Serializable
     data class {{ name }}(
         {% for itemname, val in struct.properties.items() %}
           {% if val.type == "array" %}
@@ -200,6 +216,15 @@ import {{ glean_namespace }}.private.LabeledMetricType // ktlint-disable import-
 {% endif %}
 {% if has_object_metrics %}
 import {{ glean_namespace }}.private.intoSerializedObject
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 {% endif %}
 
 {# HACK HACK HACK -- typealiases MUST BE top-level #}
