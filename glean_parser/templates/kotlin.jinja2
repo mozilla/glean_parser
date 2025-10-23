@@ -84,6 +84,8 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
 
         fun addAll(elements: Collection<{{ name }}Item>) = items.addAll(elements)
 
+        val size get() = items.size
+
         fun clear() = items.clear()
 
         fun remove(element: {{ name }}Item) = items.remove(element)
@@ -143,7 +145,12 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
         override fun intoSerializedObject(): String {
             var __obj: MutableList<String> = mutableListOf()
             {% for itemname, val in struct.properties.items() %}
+            {% if val.type == "array" %}
+            if (this.{{itemname|camelize}}.size > 0) {
+                val {{itemname|camelize}} = this.{{itemname|camelize}}
+            {% else %}
             this.{{itemname|camelize}}?.let { {{itemname|camelize}} ->
+            {% endif %}
                 val __elem = buildString {
                     append("\"{{itemname}}\":")
                     append({{itemname|camelize}}.intoSerializedObject())
