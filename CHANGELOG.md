@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 18.0.3
+
 - BUGFIX: Kotlin: Implement Serializable again for object items ([#813](https://github.com/mozilla/glean_parser/pull/813))
 - BUGFIX: Kotlin: Properly check that object arrays are non-empty before serializable ([#813](https://github.com/mozilla/glean_parser/pull/813))
 
