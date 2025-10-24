@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Glean parser &#8212; Glean Parser 18.0.2.post1.dev2+g8a046ec77 documentation</title>
+    <title>Glean parser &#8212; Glean Parser 18.0.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
-    <script src="_static/documentation_options.js?v=d5f5ba95"></script>
+    <script src="_static/documentation_options.js?v=82e4e1ba"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -84,158 +84,159 @@ using Glean is available in <a class="reference external" href="https://mozilla.
 </li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">Changelog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="history.html#unreleased">Unreleased</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id1">18.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id2">18.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id3">18.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id4">17.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id5">17.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id6">17.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id7">17.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id8">17.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id9">16.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id10">16.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id11">16.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id12">15.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id13">15.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id14">15.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id15">15.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id16">15.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id17">14.5.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id18">14.5.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id19">14.5.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id20">14.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id21">14.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id22">14.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id23">14.1.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id24">14.1.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id25">14.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id26">14.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id27">14.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id28">14.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id29">13.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id30">13.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id31">12.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id32">12.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id33">11.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id34">11.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id35">11.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id36">10.0.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id37">10.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id38">10.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id39">10.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id40">9.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id41">8.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id42">8.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id43">8.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id44">7.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id45">7.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id46">7.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id47">7.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id48">6.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id49">6.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id50">6.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id51">6.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id52">6.1.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id53">6.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id54">6.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id55">6.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id56">6.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id57">5.1.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id58">5.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id59">5.1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id60">5.0.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id61">5.0.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id62">4.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id63">4.3.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id64">4.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id65">4.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id66">4.1.1 (2021-09-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id67">4.1.0 (2021-09-16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id68">4.0.0 (2021-08-20)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id69">3.8.0 (2021-08-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id70">3.7.0 (2021-07-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id71">3.6.0 (2021-06-11)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id72">3.5.0 (2021-06-03)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id73">3.4.0 (2021-05-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id74">3.3.2 (2021-05-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id75">3.3.1 (2021-05-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id76">3.3.0 (2021-05-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id77">3.2.0 (2021-04-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id78">3.1.2 (2021-04-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id79">3.1.1 (2021-04-19)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id80">3.1.0 (2021-04-16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id81">3.0.0 (2021-04-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id82">2.5.0 (2021-02-23)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id83">2.4.0 (2021-02-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id84">2.3.0 (2021-02-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id85">2.2.0 (2021-02-11)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id86">2.1.0 (2021-02-10)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id87">2.0.0 (2021-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id88">1.29.1 (2020-12-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id89">1.29.0 (2020-10-07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id90">1.28.6 (2020-09-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id91">1.28.5 (2020-09-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id92">1.28.4 (2020-09-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id93">1.28.3 (2020-07-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id94">1.28.2 (2020-07-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id95">1.28.1 (2020-07-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id96">1.28.0 (2020-07-23)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id97">1.27.0 (2020-07-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id98">1.26.0 (2020-07-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id99">1.25.0 (2020-07-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id100">1.24.0 (2020-06-30)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id101">1.23.0 (2020-06-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id102">1.22.0 (2020-05-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id103">1.21.0 (2020-05-25)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id104">1.20.4 (2020-05-07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id105">1.20.3 (2020-05-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id106">1.20.2 (2020-04-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id107">1.20.1 (2020-04-21)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id108">1.20.0 (2020-04-15)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id109">1.19.0 (2020-03-18)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id110">1.18.3 (2020-02-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id111">1.18.2 (2020-02-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id112">1.18.1 (2020-02-14)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id113">1.18.0 (2020-02-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id114">1.17.3 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id115">1.17.2 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id116">1.17.1 (2020-02-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id117">1.17.0 (2020-02-03)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id118">1.16.0 (2020-01-15)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id119">1.15.6 (2020-02-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id120">1.15.5 (2019-12-19)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id121">1.15.4 (2019-12-19)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id122">1.15.3 (2019-12-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id123">1.15.2 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id124">1.15.1 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id125">1.15.0 (2019-12-12)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id126">1.14.0 (2019-12-06)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id127">1.13.0 (2019-12-04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id128">1.12.0 (2019-11-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id129">1.11.0 (2019-11-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id130">1.10.0 (2019-11-11)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id131">1.9.5 (2019-10-22)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id132">1.9.4 (2019-10-16)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id133">1.9.3 (2019-10-09)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id134">1.9.2 (2019-10-08)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id135">1.9.1 (2019-10-07)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id136">1.9.0 (2019-10-04)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id137">1.8.4 (2019-10-02)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id138">1.8.3 (2019-10-02)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id139">1.8.2 (2019-10-01)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id140">1.8.1 (2019-09-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id141">1.8.0 (2019-09-26)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id142">1.7.0 (2019-09-24)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id143">1.6.1 (2019-09-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id144">1.6.0 (2019-09-17)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id145">1.4.1 (2019-08-28)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id146">1.4.0 (2019-08-27)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id147">1.3.0 (2019-08-22)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id148">1.2.1 (2019-08-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id149">1.2.0 (2019-08-13)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id150">1.1.0 (2019-08-05)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id151">1.0.0 (2019-07-29)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="history.html#id152">0.1.0 (2018-10-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">18.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id2">18.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id3">18.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id4">18.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id5">17.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id6">17.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id7">17.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id8">17.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id9">17.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id10">16.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id11">16.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id12">16.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id13">15.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id14">15.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id15">15.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id16">15.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id17">15.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id18">14.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id19">14.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id20">14.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id21">14.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id22">14.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id23">14.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id24">14.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id25">14.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id26">14.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id27">14.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id28">14.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id29">14.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id30">13.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id31">13.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id32">12.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id33">12.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id34">11.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id35">11.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id36">11.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id37">10.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id38">10.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id39">10.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id40">10.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id41">9.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id42">8.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id43">8.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id44">8.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id45">7.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id46">7.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id47">7.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id48">7.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id49">6.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id50">6.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id51">6.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id52">6.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id53">6.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id54">6.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id55">6.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id56">6.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id57">6.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id58">5.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id59">5.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id60">5.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id61">5.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id62">5.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id63">4.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id64">4.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id65">4.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id66">4.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id67">4.1.1 (2021-09-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id68">4.1.0 (2021-09-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id69">4.0.0 (2021-08-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id70">3.8.0 (2021-08-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id71">3.7.0 (2021-07-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id72">3.6.0 (2021-06-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id73">3.5.0 (2021-06-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id74">3.4.0 (2021-05-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id75">3.3.2 (2021-05-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id76">3.3.1 (2021-05-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id77">3.3.0 (2021-05-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id78">3.2.0 (2021-04-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id79">3.1.2 (2021-04-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id80">3.1.1 (2021-04-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id81">3.1.0 (2021-04-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id82">3.0.0 (2021-04-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id83">2.5.0 (2021-02-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id84">2.4.0 (2021-02-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id85">2.3.0 (2021-02-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id86">2.2.0 (2021-02-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id87">2.1.0 (2021-02-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id88">2.0.0 (2021-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id89">1.29.1 (2020-12-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id90">1.29.0 (2020-10-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id91">1.28.6 (2020-09-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id92">1.28.5 (2020-09-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id93">1.28.4 (2020-09-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id94">1.28.3 (2020-07-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id95">1.28.2 (2020-07-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id96">1.28.1 (2020-07-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id97">1.28.0 (2020-07-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id98">1.27.0 (2020-07-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id99">1.26.0 (2020-07-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id100">1.25.0 (2020-07-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id101">1.24.0 (2020-06-30)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id102">1.23.0 (2020-06-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id103">1.22.0 (2020-05-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id104">1.21.0 (2020-05-25)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id105">1.20.4 (2020-05-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id106">1.20.3 (2020-05-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id107">1.20.2 (2020-04-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id108">1.20.1 (2020-04-21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id109">1.20.0 (2020-04-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id110">1.19.0 (2020-03-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id111">1.18.3 (2020-02-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id112">1.18.2 (2020-02-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id113">1.18.1 (2020-02-14)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id114">1.18.0 (2020-02-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id115">1.17.3 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id116">1.17.2 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id117">1.17.1 (2020-02-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id118">1.17.0 (2020-02-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id119">1.16.0 (2020-01-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id120">1.15.6 (2020-02-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id121">1.15.5 (2019-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id122">1.15.4 (2019-12-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id123">1.15.3 (2019-12-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id124">1.15.2 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id125">1.15.1 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id126">1.15.0 (2019-12-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id127">1.14.0 (2019-12-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id128">1.13.0 (2019-12-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id129">1.12.0 (2019-11-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id130">1.11.0 (2019-11-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id131">1.10.0 (2019-11-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id132">1.9.5 (2019-10-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id133">1.9.4 (2019-10-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id134">1.9.3 (2019-10-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id135">1.9.2 (2019-10-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id136">1.9.1 (2019-10-07)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id137">1.9.0 (2019-10-04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id138">1.8.4 (2019-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id139">1.8.3 (2019-10-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id140">1.8.2 (2019-10-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id141">1.8.1 (2019-09-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id142">1.8.0 (2019-09-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id143">1.7.0 (2019-09-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id144">1.6.1 (2019-09-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id145">1.6.0 (2019-09-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id146">1.4.1 (2019-08-28)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id147">1.4.0 (2019-08-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id148">1.3.0 (2019-08-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id149">1.2.1 (2019-08-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id150">1.2.0 (2019-08-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id151">1.1.0 (2019-08-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id152">1.0.0 (2019-07-29)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id153">0.1.0 (2018-10-15)</a></li>
 </ul>
 </li>
 </ul>
