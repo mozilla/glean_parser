@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Kotlin: Implement serializers for the `oneOf` subtypes ([#814](https://github.com/mozilla/glean_parser/pull/814))
+
 ## 18.0.3
 
 - BUGFIX: Kotlin: Implement Serializable again for object items ([#813](https://github.com/mozilla/glean_parser/pull/813))
