@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Kotlin: correctly build a serial descriptor
+
 ## 18.0.4
 
 - BUGFIX: Kotlin: Implement serializers for the `oneOf` subtypes ([#814](https://github.com/mozilla/glean_parser/pull/814))

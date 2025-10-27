@@ -71,8 +71,8 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
     @Serializable(with = {{name}}.Serializer::class)
     sealed class {{ name }}(): ObjectSerialize {
         internal object Serializer : KSerializer<{{name}}> {
-            @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
-            override val descriptor = SerialKind.CONTEXTUAL
+            @OptIn(kotlinx.serialization.InternalSerializationApi::class)
+            override val descriptor = buildSerialDescriptor("inner", SerialKind.CONTEXTUAL)
 
             override fun deserialize(decoder: Decoder): {{name}} {
                 throw NullPointerException()
@@ -82,7 +82,7 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
             override fun serialize(encoder: Encoder, value: {{name}}) {
                 when (value) {
                 {% for ty in struct.subtypes %}
-                    is {{ty|Camelize}} -> {{ty|Camelize}}.Serializer.seralize(encoder, it)
+                    is {{ty|Camelize}} -> {{ty|Camelize}}.Serializer.serialize(encoder, value)
                 {% endfor %}
                 }
             }
@@ -292,6 +292,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.descriptors.SerialKind
 import kotlinx.serialization.encodeToString
