@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 18.0.5
+
 - BUGFIX: Kotlin: correctly build a serial descriptor
 
 ## 18.0.4
