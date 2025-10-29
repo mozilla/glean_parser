@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Swift: Rely on Swift's Codable and configure it properly for the expected serialization ([#815](https://github.com/mozilla/glean_parser/pull/815))
+
 ## 18.0.5
 
 - BUGFIX: Kotlin: correctly build a serial descriptor
