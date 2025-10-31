@@ -75,3 +75,19 @@ def test_logging(tmp_path):
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
         output.getvalue()
     )
+
+
+def test_custom_ping_no_event(tmp_path):
+    translate.translate(
+        [
+            ROOT / "data" / "custom_ping_no_event_metrics.yaml",
+            ROOT / "data" / "custom_ping_no_event_pings.yaml",
+        ],
+        "python_server",
+        tmp_path,
+    )
+
+    # Make sure descriptions made it in
+    with (tmp_path / "server_events.py").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "def record(" in content
