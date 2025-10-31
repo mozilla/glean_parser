@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Python server: Add 'object' and 'boolean' to supported metric types
+
 ## 18.0.6
 
 - Swift: Rely on Swift's Codable and configure it properly for the expected serialization ([#815](https://github.com/mozilla/glean_parser/pull/815))
