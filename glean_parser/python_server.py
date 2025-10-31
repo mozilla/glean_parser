@@ -112,14 +112,6 @@ def output_python(
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
 
-    for ping, metrics_by_type in ping_to_metrics.items():
-        if "event" not in metrics_by_type:
-            print(
-                f"❌ No event metrics found for ping: {ping}."
-                + " At least one event metric is required."
-            )
-            return
-
     extension = ".py"
     filepath = output_dir / ("server_events" + extension)
     with filepath.open("w", encoding="utf-8") as fd:
