@@ -56,9 +56,13 @@ data class {{ obj.name|Camelize }}{{ suffix }}(
     override fun toExtraRecord(): Map<String, String> {
         val map = mutableMapOf<String, String>()
 
-        {% for item in obj|attr(name) %}
-        this.{{ item[0]|camelize }}?.let {
-            map.put("{{item[0]}}", it.toString())
+        {% for item, typ in obj|attr(name) %}
+        this.{{ item|camelize }}?.let {
+            {% if typ != "string" %}
+            map.put("{{item}}", it.toString())
+            {% else %}
+            map.put("{{item}}", it)
+            {% endif %}
         }
         {% endfor %}
         return map

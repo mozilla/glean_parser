@@ -334,6 +334,9 @@ def test_event_extra_keys_with_types(tmp_path):
         assert (
             'allowedExtraKeys = listOf("enabled", "preference", "swapped")' in content
         )
+        assert "map.put(\"enabled\", it.toString())" in content
+        assert "map.put(\"preference\", it)" in content
+        assert "map.put(\"swapped\", it.toString())" in content
 
 
 def test_reasons(tmp_path):
