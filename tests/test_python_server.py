@@ -77,6 +77,28 @@ def test_logging(tmp_path):
     )
 
 
+def test_parser_python_server_metrics_unsupported_type(tmp_path, capsys):
+    """Test that no files are generated with unsupported metric types."""
+    translate.translate(
+        [
+            ROOT / "data" / "python_server_metrics_unsupported.yaml",
+        ],
+        "python_server",
+        tmp_path,
+    )
+    captured = capsys.readouterr()
+    unsupported_types = [
+        "labeled_boolean",
+        "labeled_string",
+        "string_list",
+        "timespan",
+        "url",
+        "uuid",
+    ]
+    for t in unsupported_types:
+        assert f"Ignoring unsupported metric type: {t}" in captured.out
+
+
 def test_custom_ping_no_event(tmp_path):
     translate.translate(
         [
