@@ -4,6 +4,7 @@
 
 - Python server: Support sending custom pings without events
 - Python server: Add 'object' and 'boolean' to supported metric types
+- Kotlin: Avoid `toString()` conversion on strings ([#818](https://github.com/mozilla/glean_parser/issues/818))
 
 ## 18.0.6
 
