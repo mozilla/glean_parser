@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Python server: Support sending custom pings without events
 - Python server: Add 'object' and 'boolean' to supported metric types
 
 ## 18.0.6
