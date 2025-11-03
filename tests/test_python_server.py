@@ -97,3 +97,19 @@ def test_parser_python_server_metrics_unsupported_type(tmp_path, capsys):
     ]
     for t in unsupported_types:
         assert f"Ignoring unsupported metric type: {t}" in captured.out
+
+
+def test_custom_ping_no_event(tmp_path):
+    translate.translate(
+        [
+            ROOT / "data" / "custom_ping_no_event_metrics.yaml",
+            ROOT / "data" / "custom_ping_no_event_pings.yaml",
+        ],
+        "python_server",
+        tmp_path,
+    )
+
+    # Make sure descriptions made it in
+    with (tmp_path / "server_events.py").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "def record(" in content
