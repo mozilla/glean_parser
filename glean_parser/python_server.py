@@ -17,9 +17,6 @@ conforming to Glean schema.
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 
-The generated code creates a `ServerEventLogger` class for each ping that has
-at least one event metric. The class has a `record` method for each event metric.
-
 There are two patterns for event structure supported in this environment:
 * Events as `Event` metric type, where we generate a `ServerEventLogger` class per ping with
   `record_{event_name}()` methods for each event metric. This is the recommended pattern for new
