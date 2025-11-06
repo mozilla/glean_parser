@@ -415,22 +415,30 @@ def test_parser_go_server_pubsub_generation(tmp_path):
 
         # Check for pubsub imports
         assert "cloud.google.com/go/pubsub" in content
-        assert "sync/atomic" in content
         assert "context" in content
+
+        # Check for Prometheus imports (not atomic)
+        assert "github.com/prometheus/client_golang/prometheus" in content
+        assert "github.com/prometheus/client_golang/prometheus/promauto" in content
+        assert "sync/atomic" not in content
 
         # Check for GleanEventsPublisher struct (not GleanEventsLogger)
         assert "type GleanEventsPublisher struct" in content
         assert "type GleanEventsLogger struct" not in content
 
+        # Check for Prometheus metrics
+        assert "gleanPublishTotal" in content
+        assert "type publishRequest struct" in content
+
         # Check for pubsub-specific methods
         assert "func NewGleanEventsPublisher" in content
         assert "func (g *GleanEventsPublisher) publish(" in content
-        assert "func (g *GleanEventsPublisher) Stats()" in content
         assert "func (g *GleanEventsPublisher) Flush()" in content
         assert "func (g *GleanEventsPublisher) Close()" in content
 
-        # Check for Stats type
-        assert "type Stats struct" in content
+        # Check Stats methods are removed
+        assert "func (g *GleanEventsPublisher) Stats()" not in content
+        assert "type Stats struct" not in content
 
         # Check there's no MozLog envelope
         assert "type logEnvelope struct" not in content
@@ -458,9 +466,9 @@ def test_parser_go_server_logging_backward_compat(tmp_path):
         assert "type logEnvelope struct" in content
         assert "gleanEventMozlogType" in content
 
-        # Check no pubsub imports
+        # Check no pubsub or Prometheus imports
         assert "cloud.google.com/go/pubsub" not in content
-        assert "sync/atomic" not in content
+        assert "prometheus" not in content
 
         # Check Record methods use value receiver
         assert "func (g GleanEventsLogger) RecordEventsPing(" in content

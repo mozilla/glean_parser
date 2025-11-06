@@ -15,11 +15,12 @@ import (
     "fmt"
     "log"
     "sync"
-    "sync/atomic"
     "time"
 
     "cloud.google.com/go/pubsub"
     "github.com/google/uuid"
+    "github.com/prometheus/client_golang/prometheus"
+    "github.com/prometheus/client_golang/prometheus/promauto"
 {% else %}
     "encoding/json"
     "errors"
@@ -47,6 +48,23 @@ type GleanEventsLogger struct {
     Writer            io.Writer // Writer to output to. Normal operation expects os.Stdout
 }
 {% else %}
+// Prometheus metrics for monitoring publishing to Pub/Sub
+var (
+    gleanPublishTotal = promauto.NewCounterVec(
+        prometheus.CounterOpts{
+            Name: "glean_pubsub_publish_total",
+            Help: "Total number of Glean events published to Pub/Sub by status (success/error)",
+        },
+        []string{"app_id", "document_type", "status"},
+    )
+)
+
+// publishRequest tracks metadata for async publish operations
+type publishRequest struct {
+    result       *pubsub.PublishResult
+    documentType string
+}
+
 // GleanEventsPublisher publishes Glean events directly to Pub/Sub
 type GleanEventsPublisher struct {
     AppID             string // Application ID to identify application per Glean standards
@@ -55,9 +73,7 @@ type GleanEventsPublisher struct {
 
     topic          *pubsub.Topic
     ctx            context.Context
-    publishedCount atomic.Int64
-    errorCount     atomic.Int64
-    pendingResults chan *pubsub.PublishResult
+    pendingResults chan *publishRequest
     wg             sync.WaitGroup
     once           sync.Once
 }
@@ -183,16 +199,9 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 }
 
 {% if transport == "pubsub" %}
-// Stats holds publishing statistics
-type Stats struct {
-    Published int64
-    Errors    int64
-}
-
 // NewGleanEventsPublisher creates a new Pub/Sub-based Glean events publisher
 // Authentication uses Application Default Credentials (ADC) - typically GKE Workload Identity
 func NewGleanEventsPublisher(ctx context.Context, projectID, topicID, appID, appDisplayVersion, appChannel string) (*GleanEventsPublisher, error) {
-    // Create Pub/Sub client using Application Default Credentials
     client, err := pubsub.NewClient(ctx, projectID)
     if err != nil {
         return nil, fmt.Errorf("failed to create pubsub client: %w", err)
@@ -200,18 +209,16 @@ func NewGleanEventsPublisher(ctx context.Context, projectID, topicID, appID, app
 
     topic := client.Topic(topicID)
 
-    // Configure publish settings following Pub/Sub best practices for high throughput
-    // https://cloud.google.com/pubsub/docs/publish-best-practices
     topic.PublishSettings = pubsub.PublishSettings{
         CountThreshold: 1000,
         ByteThreshold:  10e6,
-        DelayThreshold: 100 * time.Millisecond,
+        DelayThreshold: 10 * time.Millisecond,
 
         // Flow control prevents memory exhaustion when producing faster than publishing
         FlowControlSettings: pubsub.FlowControlSettings{
             MaxOutstandingMessages: 100000,
             MaxOutstandingBytes:    200e6,
-            LimitExceededBehavior:  pubsub.FlowControlBlock, // Block Publish() calls when limit exceeded (backpressure)
+            LimitExceededBehavior:  pubsub.FlowControlBlock,
         },
     }
 
@@ -221,7 +228,7 @@ func NewGleanEventsPublisher(ctx context.Context, projectID, topicID, appID, app
         AppChannel:        appChannel,
         topic:             topic,
         ctx:               ctx,
-        pendingResults:    make(chan *pubsub.PublishResult, 10000), // Buffer for pending results
+        pendingResults:    make(chan *publishRequest, 10000),
     }
 
     // Start background goroutine to process publish results asynchronously
@@ -235,16 +242,20 @@ func NewGleanEventsPublisher(ctx context.Context, projectID, topicID, appID, app
 func (g *GleanEventsPublisher) processResults() {
     defer g.wg.Done()
 
-    for result := range g.pendingResults {
-        // Get() blocks until the publish completes or fails
-        _, err := result.Get(g.ctx)
+    for req := range g.pendingResults {
+        _, err := req.result.Get(g.ctx)
+
+        status := "success"
         if err != nil {
-            g.errorCount.Add(1)
-            // Log error but don't block on I/O
+            status = "error"
             log.Printf("Pub/Sub publish error: %v", err)
-        } else {
-            g.publishedCount.Add(1)
         }
+
+        gleanPublishTotal.WithLabelValues(
+            g.AppID,
+            req.documentType,
+            status,
+        ).Inc()
     }
 }
 
@@ -280,22 +291,20 @@ func (g *GleanEventsPublisher) publish(
         Data: envelopeJSON,
     })
 
-    // Send result to background processor (non-blocking if channel has space)
+    // Create publish request with metadata for metrics tracking
+    req := &publishRequest{
+        result:       result,
+        documentType: documentType,
+    }
+
+    // Send request to background processor (non-blocking if channel has space)
     select {
-    case g.pendingResults <- result:
+    case g.pendingResults <- req:
         // Successfully queued
         return nil
     case <-g.ctx.Done():
         // Context cancelled
         return g.ctx.Err()
-    }
-}
-
-// Stats returns current publishing statistics
-func (g *GleanEventsPublisher) Stats() Stats {
-    return Stats{
-        Published: g.publishedCount.Load(),
-        Errors:    g.errorCount.Load(),
     }
 }
 
@@ -314,9 +323,7 @@ func (g *GleanEventsPublisher) Flush() {
 
     // Wait for background processor to finish
     g.wg.Wait()
-
-    stats := g.Stats()
-    log.Printf("Flush complete. Published: %d, Errors: %d", stats.Published, stats.Errors)
+    log.Println("All pending publishes flushed.")
 }
 
 // Close performs graceful shutdown, flushing all pending messages
