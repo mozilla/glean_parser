@@ -56,7 +56,8 @@ class Outputter:
 
 
 OUTPUTTERS = {
-    "go_server": Outputter(go_server.output_go, []),
+    "go_server": Outputter(go_server.output_go_logger, []),
+    "go_server_pubsub": Outputter(go_server.output_go_pubsub, []),
     "javascript": Outputter(javascript.output_javascript, []),
     "typescript": Outputter(javascript.output_typescript, []),
     "javascript_server": Outputter(javascript_server.output_javascript, []),
