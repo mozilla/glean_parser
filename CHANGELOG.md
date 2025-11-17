@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Python server: Fix logging mechanism ([#820](https://github.com/mozilla/glean_parser/pull/820))
+
 ## 18.1.0
 
 - Python server: Support sending custom pings without events ([#817](https://github.com/mozilla/glean_parser/pull/817))
