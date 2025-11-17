@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 18.1.1
+
 - Python server: Fix logging mechanism ([#820](https://github.com/mozilla/glean_parser/pull/820))
 
 ## 18.1.0
