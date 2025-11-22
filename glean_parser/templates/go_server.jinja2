@@ -14,6 +14,7 @@ import (
     "fmt"
     "io"
     "strconv"
+    "strings"
     "time"
 
     "github.com/google/uuid"
@@ -261,6 +262,8 @@ func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
         {% for metric in metrics %}
             {% if metric_type == 'datetime' %}
             "{{ metric|metric_name }}": params.{{ metric|metric_argument_name }}.Format("2006-01-02T15:04:05.000Z"),
+            {% elif metric_type == 'string_list' %}
+            "{{ metric|metric_name }}": strings.Join(params.{{ metric|metric_argument_name }}, ","),
             {% else %}
             "{{ metric|metric_name }}": params.{{ metric|metric_argument_name }},
             {% endif %}
