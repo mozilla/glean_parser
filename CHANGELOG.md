@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- New lint: Warn against event metrics on the `metrics` or `baseline` ping ([#823](https://github.com/mozilla/glean_parser/pull/823))
+
 ## 18.1.1
 
 - Python server: Fix logging mechanism ([#820](https://github.com/mozilla/glean_parser/pull/820))
