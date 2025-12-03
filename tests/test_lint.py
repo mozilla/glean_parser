@@ -875,3 +875,89 @@ def test_unknown_lint_warning(content, num_nits):
         assert set(["UNKNOWN_LINT"]) == set(
             v.check_name for v in nits
         )
+
+
+@pytest.mark.parametrize(
+    "content,num_nits",
+    [
+        (
+            {
+                "plain_event": {
+                    "type": "event",
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "event_on_metrics": {
+                    "type": "event",
+                    "send_in_pings": ["metrics"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "event_on_metrics_and_events": {
+                    "type": "event",
+                    "send_in_pings": ["metrics", "events"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "event_on_baseline": {
+                    "type": "event",
+                    "send_in_pings": ["baseline"],
+                    "no_lint": ["BASELINE_PING"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "event_on_baseline_and_metrics": {
+                    "type": "event",
+                    "send_in_pings": ["baseline", "metrics"],
+                    "no_lint": ["BASELINE_PING"],
+                }
+            },
+            1,
+        ),
+        (
+            {
+                "no_lint_events_on_metrics": {
+                    "type": "event",
+                    "send_in_pings": ["metrics", "events"],
+                    "no_lint": ["EVENT_ON_NON_EVENTS_PING"],
+                }
+            },
+            0,
+        ),
+        (
+            {
+                "default_ping": {
+                    "type": "event",
+                    "send_in_pings": ["default"],
+                }
+            },
+            0,
+        ),
+    ],
+)
+def test_events_on_metrics_ping(content, num_nits):
+    content = {"cat": content}
+    content = util.add_required(content)
+    all_metrics = parser.parse_objects(content)
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_metrics.value)
+    assert len(nits) == num_nits
+    if num_nits > 0:
+        assert set(["EVENT_ON_NON_EVENTS_PING"]) == set(
+            v.check_name for v in nits
+        )
