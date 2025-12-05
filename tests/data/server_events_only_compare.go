@@ -13,6 +13,7 @@ import (
     "fmt"
     "io"
     "strconv"
+    "strings"
     "time"
 
     "github.com/google/uuid"
@@ -218,6 +219,7 @@ type EventsPing struct {
     MetricRequestBool bool // boolean
     MetricRequestCount int64 // Test quantity metric
     MetricRequestDatetime time.Time // Test datetime metric
+    MetricRequestStringList []string // Test string_list metric
     Event EventsPingEvent // valid event for this ping
 }
 
@@ -238,6 +240,9 @@ func (g GleanEventsLogger) RecordEventsPing(
         },
         "datetime": {
             "metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
+        },
+        "string_list": {
+            "metric.request_string_list": strings.Join(params.MetricRequestStringList, ","),
         },
     }
 

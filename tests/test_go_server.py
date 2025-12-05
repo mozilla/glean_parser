@@ -42,7 +42,6 @@ def test_parser_go_server_metrics_unsupported_type(tmp_path, capsys):
         "boolean",
         "labeled_boolean",
         "labeled_string",
-        "string_list",
         "timespan",
         "uuid",
         "url",
@@ -102,7 +101,7 @@ def test_parser_go_server_events_and_custom_ping(tmp_path):
     assert content == compare
 
 
-def test_parser_go_server_custon_ping_only(tmp_path):
+def test_parser_go_server_custom_ping_only(tmp_path):
     """Test that parser works for definitions that only use custom pings"""
     translate.translate(
         [
