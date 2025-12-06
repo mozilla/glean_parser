@@ -169,10 +169,11 @@ def test_run_logging_events_ping(tmp_path):
             IpAddress: "127.0.0.1",
         },
         glean.EventsPing{
-            MetricName:            "string value",
-            MetricRequestBool:     true,
-            MetricRequestCount:    10,
-            MetricRequestDatetime: time.Now(),
+            MetricName:              "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      10,
+            MetricRequestDatetime:   time.Now(),
+            MetricRequestStringList: []string{"list", "of", "strings"},
             Event: glean.BackendTestEventEvent{
                 EventFieldString:      "event extra string value",
                 EventFieldQuantity:    100,
@@ -226,10 +227,11 @@ def test_run_logging_custom_ping_without_event(tmp_path):
             IpAddress: "127.0.0.1",
         },
         glean.ServerTelemetryScenarioOnePing{
-            MetricName:            "string value",
-            MetricRequestBool:     true,
-            MetricRequestCount:    20,
-            MetricRequestDatetime: time.Now(),
+            MetricName:             "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      20,
+            MetricRequestDatetime:   time.Now(),
+            MetricRequestStringList: []string{"list", "of", "strings"},
         },
     )
     """
@@ -284,10 +286,11 @@ def test_run_logging_discard_writer(tmp_path):
             IpAddress: "127.0.0.1",
         },
         glean.ServerTelemetryScenarioOnePing{
-            MetricName:            "string value",
-            MetricRequestBool:     true,
-            MetricRequestCount:    20,
-            MetricRequestDatetime: time.Now(),
+            MetricName:             "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      20,
+            MetricRequestDatetime:   time.Now(),
+            MetricRequestStringList: []string{"list", "of", "strings"},
         },
     )
     if err != nil {
@@ -361,10 +364,11 @@ def test_run_logging_custom_ping_with_event(tmp_path):
             IpAddress: "127.0.0.1",
         },
         glean.ServerTelemetryScenarioOnePing{
-            MetricName:            "string value",
-            MetricRequestBool:     true,
-            MetricRequestCount:    20,
-            MetricRequestDatetime: time.Now(),
+            MetricName:              "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      20,
+            MetricRequestDatetime:   time.Now(),
+            MetricRequestStringList: []string{"list", "of", "strings"},
             Event: glean.BackendSpecialEventEvent{
                 EventFieldString: "exta value string",
                 EventFieldQuantity: 30,
