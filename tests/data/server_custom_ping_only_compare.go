@@ -206,14 +206,6 @@ func (e BackendSpecialEventEvent) gleanEvent() gleanEvent {
     )
 }
 
-func StringListStringify(stringListMetricValue []string) (string, error) {
-    stringListString, err := json.Marshal(stringListMetricValue)
-	if err != nil {
-		return "", err
-	}
-	return string(stringListString), nil
-}
-
 type ServerTelemetryScenarioOnePingEvent interface {
     isServerTelemetryScenarioOnePingEvent()
     gleanEvent() gleanEvent
@@ -235,11 +227,6 @@ func (g GleanEventsLogger) RecordServerTelemetryScenarioOnePing(
     requestInfo RequestInfo,
     params ServerTelemetryScenarioOnePing,
 ) error {
-    MetricRequestStringListString, error := StringListStringify(params.MetricRequestStringList)
-    if error != nil {
-        return error
-    }
-
     metrics := metrics{
         "string": {
             "metric.name": params.MetricName,
@@ -254,7 +241,7 @@ func (g GleanEventsLogger) RecordServerTelemetryScenarioOnePing(
             "metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
         },
         "string_list": {
-            "metric.request_string_list": MetricRequestStringListString,
+            "metric.request_string_list": params.MetricRequestStringList,
         },
     }
 
