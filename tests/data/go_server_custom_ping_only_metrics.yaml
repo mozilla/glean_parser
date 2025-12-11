@@ -66,6 +66,21 @@ metric:
       - TBD
     expires: never
 
+  request_string_list:
+    type: string_list
+    description: >
+      Test string_list metric
+    lifetime: application
+    send_in_pings:
+      - server-telemetry-scenario-one
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+
 backend:
   special_event:
     type: event

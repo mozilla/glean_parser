@@ -60,21 +60,6 @@ metric:
           attribute_two:
             type: number
 
-  string_list:
-    type: string_list
-    description: >
-      string list
-    bugs:
-      - TBD
-    data_reviews:
-      - TBD
-    notification_emails:
-      - CHANGE-ME@example.com
-    lifetime: application
-    expires: never
-    send_in_pings:
-      - events
-
   timespan:
     type: timespan
     description: >
