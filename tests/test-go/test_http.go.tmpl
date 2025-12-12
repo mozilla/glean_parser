@@ -1,0 +1,46 @@
+package main
+
+import (
+  "context"
+  "fmt"
+  "glean/glean"
+  "io"
+  "net/http"
+  "net/http/httptest"
+  "time"
+  /* IMPORTS */
+)
+
+var receivedPayload string
+
+func main() {
+  // Create mock HTTP server to receive pings
+  server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    receivedPayload = string(body)
+    w.WriteHeader(http.StatusOK)
+  }))
+  defer server.Close()
+
+  ctx := context.Background()
+  publisher, err := glean.NewGleanEventsPublisher(
+    ctx,
+    server.URL+"/submit",
+    "glean.test",
+    "0.0.1",
+    "nightly",
+    10,
+  )
+  if err != nil {
+    panic(err)
+  }
+  defer publisher.Close()
+
+  /* CODE */
+
+  // Flush all pending requests
+  publisher.Flush()
+
+  // Print the received payload for validation
+  fmt.Print(receivedPayload)
+}
