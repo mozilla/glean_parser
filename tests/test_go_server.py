@@ -400,3 +400,81 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
         output.getvalue()
     )
+
+
+def test_parser_go_server_pubsub_generation(tmp_path):
+    """Test that parser generates pubsub transport code correctly"""
+    translate.translate(
+        ROOT / "data" / "go_server_events_only_metrics.yaml",
+        "go_server_pubsub",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
+
+    # Verify pubsub-specific code exists in generated file
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        # Check for pubsub imports
+        assert "cloud.google.com/go/pubsub" in content
+        assert "context" in content
+
+        # Check for Prometheus imports (not atomic)
+        assert "github.com/prometheus/client_golang/prometheus" in content
+        assert "github.com/prometheus/client_golang/prometheus/promauto" in content
+        assert "sync/atomic" not in content
+
+        # Check for GleanEventsPublisher struct (not GleanEventsLogger)
+        assert "type GleanEventsPublisher struct" in content
+        assert "type GleanEventsLogger struct" not in content
+
+        # Check for Prometheus metrics
+        assert "gleanPublishTotal" in content
+        assert "type publishRequest struct" in content
+
+        # Check for pubsub-specific methods
+        assert "func NewGleanEventsPublisher" in content
+        assert "func (g *GleanEventsPublisher) publish(" in content
+        assert "func (g *GleanEventsPublisher) Flush()" in content
+        assert "func (g *GleanEventsPublisher) Close()" in content
+
+        # Check Stats methods are removed
+        assert "func (g *GleanEventsPublisher) Stats()" not in content
+        assert "type Stats struct" not in content
+
+        # Check there's no MozLog envelope
+        assert "type logEnvelope struct" not in content
+        assert "gleanEventMozlogType" not in content
+
+        # Check Record methods use pointer receiver
+        assert "func (g *GleanEventsPublisher) RecordEventsPing(" in content
+
+
+def test_parser_go_server_logging_backward_compat(tmp_path):
+    """Test that default go_server outputter still generates logging code"""
+    translate.translate(
+        ROOT / "data" / "go_server_events_only_metrics.yaml",
+        "go_server",
+        tmp_path,
+    )
+
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        # Check for logging-specific code
+        assert "type GleanEventsLogger struct" in content
+        assert "type GleanEventsPublisher struct" not in content
+        assert "io.Writer" in content
+        assert "type logEnvelope struct" in content
+        assert "gleanEventMozlogType" in content
+
+        # Check no pubsub or Prometheus imports
+        assert "cloud.google.com/go/pubsub" not in content
+        assert "prometheus" not in content
+
+        # Check Record methods use value receiver
+        assert "func (g GleanEventsLogger) RecordEventsPing(" in content
+
+        # Check SDK build string does not include (pubsub)
+        assert f"glean_parser v{glean_parser.__version__} (pubsub)" not in content
