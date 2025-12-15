@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 18.2.0
+
 - New lint: Warn against event metrics on the `metrics` or `baseline` ping ([#823](https://github.com/mozilla/glean_parser/pull/823))
 - Go server: Add 'string_list' to supported metric types ([#825](https://github.com/mozilla/glean_parser/pull/825))
 
