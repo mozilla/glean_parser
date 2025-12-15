@@ -71,7 +71,6 @@ type ping struct {
     IpAddress         string `json:"ip_address,omitempty"`
     Payload           string `json:"payload"`
 }
-
 type metrics map[string]map[string]interface{}
 
 type pingPayload struct {
@@ -94,7 +93,6 @@ type logEnvelope struct {
     Type      string
     Fields    ping
 }
-
 func (g GleanEventsLogger) createClientInfo() clientInfo {
     // Fields with default values are required in the Glean schema, but not used in server context
     return clientInfo{
@@ -184,7 +182,7 @@ func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
         Category:  category,
         Name:      name,
         Timestamp: time.Now().UnixMilli(),
-        Extra: extra,
+        Extra:     extra,
     }
 }
 

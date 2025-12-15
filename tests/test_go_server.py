@@ -400,3 +400,109 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
         output.getvalue()
     )
+
+
+def test_parser_go_server_http_events_only(tmp_path):
+    """Test that parser works for HTTP transport with events ping"""
+    translate.translate(
+        ROOT / "data" / "go_server_events_only_metrics.yaml",
+        "go_server_http",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
+
+    # Make sure generated file matches expected
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        with (ROOT / "data" / "server_events_only_http_compare.go").open(
+            "r", encoding="utf-8"
+        ) as cd:
+            compare_raw = cd.read()
+
+    glean_version = f"glean_parser v{glean_parser.__version__}"
+    # use replace instead of format since Go uses { }
+    compare = compare_raw.replace("{current_version}", glean_version)
+    assert content == compare
+
+
+def run_http_publisher(code_dir, code, imports=""):
+    """
+    Run the Go HTTP publisher and capture the received payload.
+    """
+
+    tmpl_code = ""
+    with open(ROOT / "test-go" / "test_http.go.tmpl", "r") as fp:
+        tmpl_code = fp.read()
+
+    tmpl_code = tmpl_code.replace("/* CODE */", code).replace("/* IMPORTS */", imports)
+
+    with open(code_dir / "test.go", "w") as fp:
+        fp.write(tmpl_code)
+
+    subprocess.call(["go", "mod", "init", "glean"], cwd=code_dir)
+    subprocess.call(["go", "mod", "tidy"], cwd=code_dir)
+
+    return subprocess.check_output(["go", "run", "test.go"], cwd=code_dir).decode(
+        "utf-8"
+    )
+
+
+@pytest.mark.go_dependency
+def test_run_http_events_ping(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_events_only_metrics.yaml",
+        ],
+        "go_server_http",
+        glean_module_path,
+    )
+
+    code = """
+    publisher.RecordEventsPing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.EventsPing{
+            MetricName:              "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      10,
+            MetricRequestDatetime:   time.Now(),
+            MetricRequestStringList: []string{"list", "of", "strings"},
+            Event: glean.BackendTestEventEvent{
+                EventFieldString:      "event extra string value",
+                EventFieldQuantity:    100,
+                EventFieldBool:        false,
+            },
+        },
+    )
+    """
+
+    received_output = run_http_publisher(tmp_path, code)
+    received_payload = json.loads(received_output.strip())
+
+    # Verify basic structure of received payload
+    assert "0.0.1" == received_payload["client_info"]["app_display_version"]
+    assert "nightly" == received_payload["client_info"]["app_channel"]
+    assert "seq" in received_payload["ping_info"]
+    assert "metrics" in received_payload
+    assert "events" in received_payload
+    assert len(received_payload["events"]) == 1
+    assert received_payload["events"][0]["category"] == "backend"
+    assert received_payload["events"][0]["name"] == "test_event"
+
+    # Validate against Glean schema
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(received_output.strip())
+    output = io.StringIO()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
