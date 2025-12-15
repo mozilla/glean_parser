@@ -62,8 +62,10 @@ commands:
             sudo apt install \
                 --yes --no-install-recommends \
                 openjdk-11-jdk-headless \
-                ruby \
-                golang-go
+                ruby
+            # Install Go 1.22 (required for prometheus client library)
+            curl -sL https://go.dev/dl/go1.22.10.linux-amd64.tar.gz | sudo tar -C /usr/local -xzf -
+            echo 'export PATH=/usr/local/go/bin:$PATH' >> $BASH_ENV
             make install-kotlin-linters
       - setup-rust-toolchain
       - run:
