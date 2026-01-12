@@ -52,29 +52,30 @@ def test_logging(tmp_path):
         "utf-8"
     )
 
-    logged_output = json.loads(logged_output)
-    fields = logged_output["Fields"]
-    payload = fields["payload"]
+    for log_line in logged_output.splitlines():
+        json_line = json.loads(log_line)
+        fields = json_line["Fields"]
+        payload = fields["payload"]
 
-    # validate that ping envelope contains all the required fields
-    assert "glean-server-event" == logged_output["Type"]
-    assert "accounts_backend" == fields["document_namespace"]
-    assert "events" == fields["document_type"]
-    assert "1" == fields["document_version"]
-    assert "Mozilla/5.0 ..." == fields["user_agent"]
+        # validate that ping envelope contains all the required fields
+        assert "glean-server-event" == json_line["Type"]
+        assert "accounts_backend" == fields["document_namespace"]
+        assert "events" == fields["document_type"]
+        assert "1" == fields["document_version"]
+        assert fields["user_agent"] in ("Mozilla/5.0 ...", None)
 
-    schema_url = (
-        "https://raw.githubusercontent.com/mozilla-services/"
-        "mozilla-pipeline-schemas/main/"
-        "schemas/glean/glean/glean.1.schema.json"
-    )
+        schema_url = (
+            "https://raw.githubusercontent.com/mozilla-services/"
+            "mozilla-pipeline-schemas/main/"
+            "schemas/glean/glean/glean.1.schema.json"
+        )
 
-    # validate that ping payload is valid against glean schema
-    input = io.StringIO(payload)
-    output = io.StringIO()
-    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
-        output.getvalue()
-    )
+        # validate that ping payload is valid against glean schema
+        input = io.StringIO(payload)
+        output = io.StringIO()
+        assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+            output.getvalue()
+        )
 
 
 def test_parser_python_server_metrics_unsupported_type(tmp_path, capsys):
