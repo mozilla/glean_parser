@@ -50,7 +50,9 @@ def pytest_collection_modifyitems(config, items):
     else:
         # Node.js removed some deprecated items currently in use by dependencies of mozlog.
         # We can't fix that.
-        node_version = subprocess.check_output(["node", "--version"]).decode("utf-8").strip()
+        node_version = (
+            subprocess.check_output(["node", "--version"]).decode("utf-8").strip()
+        )
         major_version = int(node_version[1:].split(".")[0])
         print(f"jer. {node_version=}, {major_version=}")
         if major_version >= 24:

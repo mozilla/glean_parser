@@ -36,6 +36,7 @@ clean-test: ## remove test and coverage artifacts
 
 lint: ## check style
 	uv run ruff check glean_parser tests
+	uv run ruff format --check glean_parser tests
 	uv run yamllint glean_parser tests
 	uv run mypy glean_parser
 

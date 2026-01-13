@@ -1299,28 +1299,40 @@ def test_object_invalid():
         (
             {
                 "type": "object",
-                "properties": {"key": {"type": "string"}, "value": {"oneOf": [ { "type": "object" } ]}},
+                "properties": {
+                    "key": {"type": "string"},
+                    "value": {"oneOf": [{"type": "object"}]},
+                },
             },
             1,
         ),
         (
             {
                 "type": "object",
-                "properties": {"key": {"type": "string"}, "value": {"oneOf": [ { "type": "number", "other": "unsupported" } ]}},
+                "properties": {
+                    "key": {"type": "string"},
+                    "value": {"oneOf": [{"type": "number", "other": "unsupported"}]},
+                },
             },
             1,
         ),
         (
             {
                 "type": "object",
-                "properties": {"key": {"type": "string"}, "value": {"oneOf": [ { "type": "number" } ]}},
+                "properties": {
+                    "key": {"type": "string"},
+                    "value": {"oneOf": [{"type": "number"}]},
+                },
             },
             0,
         ),
         (
             {
                 "type": "object",
-                "properties": {"key": {"type": "string"}, "value": {"oneOf": [ { "type": "number", "description": "desc" } ]}},
+                "properties": {
+                    "key": {"type": "string"},
+                    "value": {"oneOf": [{"type": "number", "description": "desc"}]},
+                },
             },
             0,
         ),
