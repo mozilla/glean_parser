@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Python server: Support optional metrics ([#828](https://github.com/mozilla/glean_parser/pull/828))
+
 ## 18.2.0
 
 - New lint: Warn against event metrics on the `metrics` or `baseline` ping ([#823](https://github.com/mozilla/glean_parser/pull/823))
