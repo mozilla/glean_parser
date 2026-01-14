@@ -172,7 +172,9 @@ def check(schema):
     type=click.INT,
     required=False,
 )
-def glinter(input, allow_reserved, allow_missing_files, require_tags, expire_by_version):
+def glinter(
+    input, allow_reserved, allow_missing_files, require_tags, expire_by_version
+):
     """
     Runs a linter over the metrics.
     """

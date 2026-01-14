@@ -774,7 +774,11 @@ def test_events_data_sensitivity_from_file():
                 "too_many_no_lints": {
                     "type": "counter",
                     "expires": "2100-01-01",
-                    "no_lint": ["EXPIRATION_DATE_TOO_FAR", "UNIT_IN_NAME", "UNUSED_NO_LINT"],
+                    "no_lint": [
+                        "EXPIRATION_DATE_TOO_FAR",
+                        "UNIT_IN_NAME",
+                        "UNUSED_NO_LINT",
+                    ],
                 }
             },
             0,
@@ -812,9 +816,8 @@ def test_unused_no_lint_warning(content, num_nits):
     nits = lint.lint_metrics(all_metrics.value)
     assert len(nits) == num_nits
     if num_nits > 0:
-        assert set(["UNUSED_NO_LINT"]) == set(
-            v.check_name for v in nits
-        )
+        assert set(["UNUSED_NO_LINT"]) == set(v.check_name for v in nits)
+
 
 @pytest.mark.parametrize(
     "content,num_nits",
@@ -824,7 +827,11 @@ def test_unused_no_lint_warning(content, num_nits):
                 "unknown_lint": {
                     "type": "counter",
                     "expires": "2100-01-01",
-                    "no_lint": ["EXPIRATION_DATE_TOO_FAR", "DOES_NOT_EXIST", "UNKNOWN_LINT"],
+                    "no_lint": [
+                        "EXPIRATION_DATE_TOO_FAR",
+                        "DOES_NOT_EXIST",
+                        "UNKNOWN_LINT",
+                    ],
                 }
             },
             0,
@@ -872,9 +879,7 @@ def test_unknown_lint_warning(content, num_nits):
     nits = lint.lint_metrics(all_metrics.value)
     assert len(nits) == num_nits
     if num_nits > 0:
-        assert set(["UNKNOWN_LINT"]) == set(
-            v.check_name for v in nits
-        )
+        assert set(["UNKNOWN_LINT"]) == set(v.check_name for v in nits)
 
 
 @pytest.mark.parametrize(
@@ -958,6 +963,4 @@ def test_events_on_metrics_ping(content, num_nits):
     nits = lint.lint_metrics(all_metrics.value)
     assert len(nits) == num_nits
     if num_nits > 0:
-        assert set(["EVENT_ON_NON_EVENTS_PING"]) == set(
-            v.check_name for v in nits
-        )
+        assert set(["EVENT_ON_NON_EVENTS_PING"]) == set(v.check_name for v in nits)
