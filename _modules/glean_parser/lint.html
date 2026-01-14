@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.lint &#8212; Glean Parser 18.1.1.post1.dev4+g39c9b070d documentation</title>
+    <title>glean_parser.lint &#8212; Glean Parser 18.2.0.post1.dev1+g5b7a140d1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
-    <script src="../../_static/documentation_options.js?v=b9a9a075"></script>
+    <script src="../../_static/documentation_options.js?v=4200267a"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -70,7 +70,7 @@
 <div class="viewcode-block" id="noop">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.lint.noop">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">noop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; A noop `LintGenerator`. Never yields a GlinterNit.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A noop `LintGenerator`. Never yields a GlinterNit.&quot;&quot;&quot;</span>
     <span class="k">return</span>
     <span class="k">yield</span></div>
 
@@ -384,8 +384,12 @@
 <span class="sd">    An event metric should usually go on the `events` ping or a custom ping,</span>
 <span class="sd">    not on a builtin ping.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">disallowed_pings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">}</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;health&quot;</span><span class="p">}</span>
-    <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;event&quot;</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">([</span><span class="n">ping</span> <span class="ow">in</span> <span class="n">disallowed_pings</span> <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">]):</span>
+    <span class="n">disallowed_pings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pings</span><span class="o">.</span><span class="n">RESERVED_PING_NAMES</span><span class="p">)</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">}</span> <span class="o">|</span> <span class="p">{</span>
+        <span class="s2">&quot;health&quot;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;event&quot;</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">ping</span> <span class="ow">in</span> <span class="n">disallowed_pings</span> <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">]</span>
+    <span class="p">):</span>
         <span class="k">yield</span> <span class="p">(</span>
             <span class="s2">&quot;An event metric should usually go on the `events` ping or a custom ping, &quot;</span>
             <span class="o">+</span> <span class="s2">&quot;not on a builtin ping.&quot;</span>
@@ -813,7 +817,11 @@
 
             <span class="k">for</span> <span class="n">check_name</span><span class="p">,</span> <span class="p">(</span><span class="n">check_func</span><span class="p">,</span> <span class="n">check_type</span><span class="p">)</span> <span class="ow">in</span> <span class="n">METRIC_CHECKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">new_nits</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check_func</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">parser_config</span><span class="p">))</span>
-                <span class="k">if</span> <span class="n">check_unused_lints</span> <span class="ow">and</span> <span class="n">check_name</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">check_unused_lints</span>
+                    <span class="ow">and</span> <span class="n">check_name</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">no_lint</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_nits</span><span class="p">)</span>
+                <span class="p">):</span>
                     <span class="n">nits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">GlinterNit</span><span class="p">(</span>
                             <span class="s2">&quot;UNUSED_NO_LINT&quot;</span><span class="p">,</span>
