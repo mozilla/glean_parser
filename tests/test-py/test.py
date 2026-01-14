@@ -15,3 +15,7 @@ logger.record_backend_object_update(
     object_state="some_object_state",
     linking=True,
 )
+
+logger.record_backend_object_update()
+
+logger.record()
