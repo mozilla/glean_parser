@@ -11,15 +11,18 @@ This outputter is different from the rest of the outputters in that the code it
 generates does not use the Glean SDK. It is meant to be used to collect events
 in server-side environments. In these environments SDK assumptions to measurement
 window and connectivity don't hold.
+
 Generated code takes care of assembling pings with metrics, and serializing to messages
-conforming to Glean schema.
+conforming to Glean schema. Two transport modes are supported:
+- Cloud Logging (go_server): Logs to stdout in MozLog format for ingestion via GCP log routing
+- HTTP through Ingestion Edge (go_server_http): Publishes to standard Ingestion Edge endpoint
 
 Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 
 Generated code creates two methods for each ping (`RecordPingX` and `RecordPingXWithoutUserInfo`)
-that are used for submitting (logging) them.
-If pings have `event` metrics assigned, they can be passed to these methods.
+that are used for submitting events. If pings have `event` metrics assigned, they can be
+passed to these methods.
 """
 
 from collections import defaultdict
@@ -88,7 +91,10 @@ def clean_string(s: str) -> str:
 
 
 def output_go(
-    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]]
+    objs: metrics.ObjectTree,
+    output_dir: Path,
+    options: Optional[Dict[str, Any]],
+    transport: str = "logging",
 ) -> None:
     """
     Given a tree of objects, output Go code to `output_dir`.
@@ -99,6 +105,8 @@ def output_go(
     :param objects: A tree of objects (metrics and pings) as returned from
         `parser.parse_objects`.
     :param output_dir: Path to an output directory to write to.
+    :param transport: Transport mode - either "logging" (Cloud Logging) or
+        "http" (HTTP Edge direct publishing). Default is "logging".
     """
 
     template = util.get_jinja2_template(
@@ -156,6 +164,37 @@ def output_go(
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
-                parser_version=__version__, pings=ping_to_metrics, events=event_metrics
+                parser_version=__version__,
+                pings=ping_to_metrics,
+                events=event_metrics,
+                transport=transport,
             )
         )
+
+
+def output_go_logger(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Go code using Cloud Logging transport.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary (currently unused for Go).
+    """
+    output_go(objs, output_dir, options, transport="logging")
+
+
+def output_go_http(
+    objs: metrics.ObjectTree, output_dir: Path, options: Optional[Dict[str, Any]] = None
+) -> None:
+    """
+    Given a tree of objects, output Go code using HTTP Edge transport.
+
+    :param objects: A tree of objects (metrics and pings) as returned from
+        `parser.parse_objects`.
+    :param output_dir: Path to an output directory to write to.
+    :param options: options dictionary (currently unused for Go).
+    """
+    output_go(objs, output_dir, options, transport="http")
