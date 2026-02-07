@@ -107,7 +107,7 @@ pub fn new_glean_event(
     GleanEvent {
         category: category.to_owned(),
         name: name.to_owned(),
-        timestamp: Utc::now().timestamp_millis(),
+        timestamp: 0,
         extra,
     }
 }
@@ -217,7 +217,7 @@ impl EventsPingEvent for BackendTestEventEvent {
     /// Create a GleanEvent for the above-defined Event struct (BackendTestEventEvent).
     /// Any metadata `extra` values are passed into the extra HashMap.
     fn glean_event(&self) -> GleanEvent {
-        // Any `extra_keys` will be output below to be inserted into `extra`. 
+        // Any `extra_keys` will be output below to be inserted into `extra`.
         // If there are none, an empty, immutable HashMap is created.
         let mut extra: HashMap<String, String> = HashMap::new();
 
@@ -295,7 +295,7 @@ impl GleanEventsLogger {
         if let Some(event) = &params.event {
             events.push(event.glean_event());
         }
-        
+
         self.record("events", request_info, metrics, events);
     }
 }
