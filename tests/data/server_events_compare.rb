@@ -115,7 +115,7 @@ module Glean
         {{
           'category' => 'backend',
           'name' => 'object_update',
-          'timestamp' => (Time.now.utc.to_f * 1000).to_i,
+          'timestamp' => 0,
           'extra' => [
             ['object_type', object_type.to_s],
             ['object_state', object_state.to_s],

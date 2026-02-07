@@ -183,7 +183,7 @@ func newGleanEvent(category, name string, extra map[string]string) gleanEvent {
     return gleanEvent{
         Category:  category,
         Name:      name,
-        Timestamp: time.Now().UnixMilli(),
+        Timestamp: 0,
         Extra: extra,
     }
 }
