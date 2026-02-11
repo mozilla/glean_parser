@@ -6,7 +6,7 @@ Parser tools for Mozilla's Glean telemetry.
 
 Contains various utilities for handling `metrics.yaml` and `pings.yaml` for [the
 Glean SDKs](https://mozilla.github.io/glean). This includes producing generated
-code for various integrations, linting and coverage testing.
+code for various integrations and linting.
 
 ## Documentation
 
