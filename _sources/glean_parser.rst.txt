@@ -4,14 +4,6 @@ glean\_parser package
 Submodules
 ----------
 
-glean\_parser.coverage module
------------------------------
-
-.. automodule:: glean_parser.coverage
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 glean\_parser.data\_review module
 ---------------------------------
 
