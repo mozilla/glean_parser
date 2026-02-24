@@ -96,13 +96,13 @@ def generate_object_type_name(metric: metrics.Metric) -> str:
 def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
     """
     Convert a JSON schema type definition to a Go type string.
-    
+
     :param schema: JSON schema definition (e.g., from metric.structure)
     :param indent: Current indentation level for nested structs
     :return: Go type string
     """
     schema_type = schema.get("type")
-    
+
     if schema_type == "string":
         return "string"
     elif schema_type == "number":
@@ -117,20 +117,22 @@ def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
         properties = schema.get("properties", {})
         if not properties:
             return "map[string]interface{}"
-        
+
         indent_str = "\t" * (indent + 1)
         fields = []
         for prop_name, prop_schema in properties.items():
             if "oneOf" in prop_schema:
-                print(f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'")
+                print(
+                    f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'"
+                )
                 field_type = "interface{}"
             else:
                 field_type = schema_type_to_go_type(prop_schema, indent + 1)
-            
+
             field_name = util.Camelize(prop_name)
             json_tag = f'`json:"{prop_name}"`'
             fields.append(f"{indent_str}{field_name} {field_type} {json_tag}")
-        
+
         fields_str = "\n".join(fields)
         close_indent = "\t" * indent
         return f"struct {{\n{fields_str}\n{close_indent}}}"
@@ -142,18 +144,18 @@ def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
 def generate_object_struct_definition(metric: metrics.Metric) -> str:
     """
     Generate a complete Go struct definition for an object metric.
-    
+
     :param metric: The object metric
     :return: Go struct definition as a string
     """
     type_name = generate_object_type_name(metric)
-    
+
     if not hasattr(metric, "structure") or not metric.structure:
         print(f"⚠️  Warning: Object metric {metric.name} has no structure")
         return f"type {type_name} interface{{}}"
-    
+
     schema_type = metric.structure.get("type")
-    
+
     if schema_type == "array":
         items_schema = metric.structure.get("items", {})
         item_type = schema_type_to_go_type(items_schema, 0)
@@ -162,19 +164,21 @@ def generate_object_struct_definition(metric: metrics.Metric) -> str:
         properties = metric.structure.get("properties", {})
         if not properties:
             return f"type {type_name} map[string]interface{{}}"
-        
+
         fields = []
         for prop_name, prop_schema in properties.items():
             if "oneOf" in prop_schema:
-                print(f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'")
+                print(
+                    f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'"
+                )
                 field_type = "interface{}"
             else:
                 field_type = schema_type_to_go_type(prop_schema, 1)
-            
+
             field_name = util.Camelize(prop_name)
             json_tag = f'`json:"{prop_name}"`'
             fields.append(f"\t{field_name} {field_type} {json_tag}")
-        
+
         fields_str = "\n".join(fields)
         return f"type {type_name} struct {{\n{fields_str}\n}}"
     else:
@@ -218,7 +222,7 @@ def output_go(
 
     # unique list of event metrics used in any ping
     event_metrics: List[metrics.Metric] = []
-    
+
     # unique list of object metrics used in any ping
     object_metrics: List[metrics.Metric] = []
 
@@ -241,7 +245,7 @@ def output_go(
                 for ping in metric.send_in_pings:
                     if metric.type == "event" and metric not in event_metrics:
                         event_metrics.append(metric)
-                    
+
                     if metric.type == "object" and metric not in object_metrics:
                         object_metrics.append(metric)
 
