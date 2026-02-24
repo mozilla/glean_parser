@@ -220,6 +220,13 @@ func (e {{ event|event_type_name }}) gleanEvent() gleanEvent {
 }
 {% endfor %}
 {% endif %}
+{# if any ping has an object metric, create type definitions for them #}
+{% if objects %}
+{% for object in objects %}
+
+{{ object|object_struct_definition }}
+{% endfor %}
+{% endif %}
 {# struct & methods for submitting pings #}
 {% for ping, metrics_by_type in pings.items() %}
 {% if metrics_by_type['event'] %}
@@ -240,7 +247,11 @@ type {{ ping|ping_type_name }} struct {
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% if metric_type != 'event' %}
     {% for metric in metrics %}
+    {% if metric_type == 'object' %}
+    {{ metric|metric_argument_name }} {{ metric|object_type_name }} // {{ metric.description|clean_string }}
+    {% else %}
     {{ metric|metric_argument_name }} {{ metric_type|go_metric_type}} // {{ metric.description|clean_string }}
+    {% endif %}
     {% endfor %}
     {% endif %}
     {% endfor %}
