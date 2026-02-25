@@ -1,0 +1,116 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+metric:
+  name:
+    type: string
+    description: |
+      Test string metric
+    lifetime: application
+    send_in_pings:
+      - server-telemetry-objects
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+
+test:
+  simple_object:
+    type: object
+    description: Simple object with basic types
+    send_in_pings:
+      - server-telemetry-objects
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+    structure:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: number
+        enabled:
+          type: boolean
+
+  number_array:
+    type: object
+    description: Array of numbers
+    send_in_pings:
+      - server-telemetry-objects
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+    structure:
+      type: array
+      items:
+        type: number
+
+  nested_object:
+    type: object
+    description: Object with nested structures
+    send_in_pings:
+      - server-telemetry-objects
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+    structure:
+      type: object
+      properties:
+        user_id:
+          type: string
+        metadata:
+          type: object
+          properties:
+            version:
+              type: number
+            active:
+              type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+
+  complex_array:
+    type: object
+    description: Array of objects
+    send_in_pings:
+      - server-telemetry-objects
+    notification_emails:
+      - CHANGE-ME@example.com
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    expires: never
+    structure:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: number
+          name:
+            type: string
+          data:
+            type: array
+            items:
+              type: number

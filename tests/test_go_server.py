@@ -207,6 +207,33 @@ def test_run_logging_events_ping(tmp_path):
     )
 
 
+def test_parser_go_server_with_objects(tmp_path):
+    """Test that parser works with object metrics"""
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_objects_metrics.yaml",
+            ROOT / "data" / "go_server_objects_pings.yaml",
+        ],
+        "go_server",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
+
+    # Make sure generated file matches expected
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        with (ROOT / "data" / "server_objects_compare.go").open(
+            "r", encoding="utf-8"
+        ) as cd:
+            compare_raw = cd.read()
+
+    glean_version = f"glean_parser v{glean_parser.__version__}"
+    # use replace instead of format since Go uses { }
+    compare = compare_raw.replace("{current_version}", glean_version)
+    assert content == compare
+
+
 @pytest.mark.go_dependency
 def test_run_logging_custom_ping_without_event(tmp_path):
     glean_module_path = tmp_path / "glean"

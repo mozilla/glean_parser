@@ -190,6 +190,7 @@ def generate_object_struct_definition(metric: metrics.Metric) -> str:
         exit
         return "NONE"
 
+
 def generate_array_struct_definition(schema: Dict[str, Any], indent: int) -> str:
     """
     Generate Go type for an array schema.
@@ -205,7 +206,9 @@ def generate_array_struct_definition(schema: Dict[str, Any], indent: int) -> str
         exit
         return "NONE"
     elif "type" not in items_schema:
-        print("❌ Unable to generate Go type. Array items schema must have 'type' field")
+        print(
+            "❌ Unable to generate Go type. Array items schema must have 'type' field"
+        )
         exit
         return "NONE"
 
