@@ -67,6 +67,15 @@ def generate_metric_argument_name(metric: metrics.Metric) -> str:
     return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
 
 
+def generate_object_type_name(metric: metrics.Metric) -> str:
+    """Generate the Go type name for an object metric."""
+    return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}Object"
+
+
+def clean_string(s: str) -> str:
+    return s.replace("\n", " ").rstrip()
+
+
 def generate_metric_type(metric_type: str) -> str:
     if metric_type == "quantity":
         return "int64"
@@ -78,9 +87,8 @@ def generate_metric_type(metric_type: str) -> str:
         return "time.Time"
     elif metric_type == "string_list":
         return "[]string"
+    # 'oneOf' is not currently supported in object structures
     elif metric_type == "object":
-        # Object types are handled specially - the actual type name is generated
-        # from the metric name (e.g., ActivityStreamTilesObject)
         return "object"
     else:
         print("❌ Unable to generate Go type from metric type: " + metric_type)
@@ -88,12 +96,7 @@ def generate_metric_type(metric_type: str) -> str:
         return "NONE"
 
 
-def generate_object_type_name(metric: metrics.Metric) -> str:
-    """Generate the Go type name for an object metric."""
-    return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}Object"
-
-
-def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
+def generate_parameter_type(schema: Dict[str, Any], indent: int = 0) -> str:
     """
     Convert a JSON schema type definition to a Go type string.
 
@@ -101,34 +104,29 @@ def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
     :param indent: Current indentation level for nested structs
     :return: Go type string
     """
-    schema_type = schema.get("type")
+    parameter_type = schema.get("type")
 
-    if schema_type == "string":
+    if parameter_type == "string":
         return "string"
-    elif schema_type == "number":
+    elif parameter_type == "number":
         return "float64"
-    elif schema_type == "boolean":
+    elif parameter_type == "boolean":
         return "bool"
-    elif schema_type == "array":
-        items_schema = schema.get("items", {})
-        item_type = schema_type_to_go_type(items_schema, indent)
-        return f"[]{item_type}"
-    elif schema_type == "object":
+    elif parameter_type == "array":
+        return generate_array_struct_definition(schema, indent)
+    elif parameter_type == "object":
         properties = schema.get("properties", {})
         if not properties:
-            return "map[string]interface{}"
+            print(
+                "❌ Unable to generate Go type. Object type must have 'properties' field with at least one property"
+            )
+            exit
+            return "NONE"
 
         indent_str = "\t" * (indent + 1)
         fields = []
         for prop_name, prop_schema in properties.items():
-            if "oneOf" in prop_schema:
-                print(
-                    f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'"
-                )
-                field_type = "interface{}"
-            else:
-                field_type = schema_type_to_go_type(prop_schema, indent + 1)
-
+            field_type = generate_parameter_type(prop_schema, indent + 1)
             field_name = util.Camelize(prop_name)
             json_tag = f'`json:"{prop_name}"`'
             fields.append(f"{indent_str}{field_name} {field_type} {json_tag}")
@@ -137,8 +135,11 @@ def schema_type_to_go_type(schema: Dict[str, Any], indent: int = 0) -> str:
         close_indent = "\t" * indent
         return f"struct {{\n{fields_str}\n{close_indent}}}"
     else:
-        print(f"⚠️  Warning: Unknown schema type '{schema_type}', using interface{{}}")
-        return "interface{}"
+        print(
+            f"❌ Unable to generate Go type. Unknown parameter type '{parameter_type}'. Supported types: string, number, boolean, array, object"
+        )
+        exit
+        return "NONE"
 
 
 def generate_object_struct_definition(metric: metrics.Metric) -> str:
@@ -151,30 +152,31 @@ def generate_object_struct_definition(metric: metrics.Metric) -> str:
     type_name = generate_object_type_name(metric)
 
     if not hasattr(metric, "structure") or not metric.structure:
-        print(f"⚠️  Warning: Object metric {metric.name} has no structure")
-        return f"type {type_name} interface{{}}"
+        print(
+            f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' is missing required 'structure' field"
+        )
+        exit
+        return "NONE"
 
-    schema_type = metric.structure.get("type")
+    parameter_type = metric.structure.get("type")
+    indent = 0
 
-    if schema_type == "array":
-        items_schema = metric.structure.get("items", {})
-        item_type = schema_type_to_go_type(items_schema, 0)
-        return f"type {type_name} []{item_type}"
-    elif schema_type == "object":
+    if parameter_type == "array":
+        array_type = generate_array_struct_definition(metric.structure, indent)
+        return f"type {type_name} {array_type}"
+    elif parameter_type == "object":
         properties = metric.structure.get("properties", {})
         if not properties:
-            return f"type {type_name} map[string]interface{{}}"
+            print(
+                f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' has object type but no 'properties' defined"
+            )
+            exit
+            return "NONE"
 
+        indent += 1
         fields = []
         for prop_name, prop_schema in properties.items():
-            if "oneOf" in prop_schema:
-                print(
-                    f"⚠️  Warning: oneOf not supported, using interface{{}} for '{prop_name}'"
-                )
-                field_type = "interface{}"
-            else:
-                field_type = schema_type_to_go_type(prop_schema, 1)
-
+            field_type = generate_parameter_type(prop_schema, indent)
             field_name = util.Camelize(prop_name)
             json_tag = f'`json:"{prop_name}"`'
             fields.append(f"\t{field_name} {field_type} {json_tag}")
@@ -182,12 +184,34 @@ def generate_object_struct_definition(metric: metrics.Metric) -> str:
         fields_str = "\n".join(fields)
         return f"type {type_name} struct {{\n{fields_str}\n}}"
     else:
-        print(f"⚠️  Warning: Unexpected type '{schema_type}' for object metric")
-        return f"type {type_name} interface{{}}"
+        print(
+            f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' has unexpected type '{parameter_type}'. Expected 'array' or 'object'"
+        )
+        exit
+        return "NONE"
 
+def generate_array_struct_definition(schema: Dict[str, Any], indent: int) -> str:
+    """
+    Generate Go type for an array schema.
 
-def clean_string(s: str) -> str:
-    return s.replace("\n", " ").rstrip()
+    :param schema: Array schema with 'items' field
+    :param indent: Current indentation level for nested structs
+    :return: Go array type string
+    """
+    items_schema = schema.get("items", {})
+
+    # Check for unsupported oneOf
+    if "oneOf" in items_schema and "type" not in items_schema:
+        print("❌ oneOf is currently not supported in Go struct generation")
+        exit
+        return "NONE"
+    elif "type" not in items_schema:
+        print("❌ Unable to generate Go type. Array items schema must have 'type' field")
+        exit
+        return "NONE"
+
+    item_type = generate_parameter_type(items_schema, indent)
+    return f"[]{item_type}"
 
 
 def output_go(
