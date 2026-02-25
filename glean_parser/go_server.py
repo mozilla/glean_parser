@@ -200,7 +200,6 @@ def generate_array_struct_definition(schema: Dict[str, Any], indent: int) -> str
     """
     items_schema = schema.get("items", {})
 
-    # Check for unsupported oneOf
     if "oneOf" in items_schema and "type" not in items_schema:
         print("❌ oneOf is currently not supported in Go struct generation")
         exit
