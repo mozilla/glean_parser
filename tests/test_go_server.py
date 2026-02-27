@@ -183,7 +183,7 @@ def test_run_logging_events_ping(tmp_path):
     )
     """
 
-    logged_output = run_logger(tmp_path, code)
+    logged_output = run_logger(tmp_path, code, imports='"time"')
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
     payload = fields["payload"]
@@ -375,7 +375,7 @@ def test_run_logging_custom_ping_without_event(tmp_path):
     )
     """
 
-    logged_output = run_logger(tmp_path, code)
+    logged_output = run_logger(tmp_path, code, imports='"time"')
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
     payload = fields["payload"]
@@ -415,6 +415,7 @@ def test_run_logging_discard_writer(tmp_path):
     imports = """
     "io"
     "fmt"
+    "time"
     """
 
     code = """
@@ -457,6 +458,7 @@ def test_run_logging_nil_writer(tmp_path):
 
     imports = """
     "fmt"
+    "time"
     """
 
     code = """
@@ -517,7 +519,7 @@ def test_run_logging_custom_ping_with_event(tmp_path):
     )
     """
 
-    logged_output = run_logger(tmp_path, code)
+    logged_output = run_logger(tmp_path, code, imports='"time"')
     logged_output = json.loads(logged_output)
     fields = logged_output["Fields"]
     payload = fields["payload"]
