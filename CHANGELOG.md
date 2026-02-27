@@ -7,6 +7,7 @@
 - Python server: Support optional metrics ([#828](https://github.com/mozilla/glean_parser/pull/828))
 - BUGFIX: Correct event timestamp values in server language templates ([#831](https://github.com/mozilla/glean_parser/pull/831))
 - Remove the `coverage` subcommand. The SDK also removed metric testing covergae ([#832](https://github.com/mozilla/glean_parser/pull/832))
+- Add Go support for parsing the Object metric type. The oneOf parameter type is currently unsupported.
 
 ## 18.2.0
 

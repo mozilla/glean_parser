@@ -39,6 +39,7 @@ SUPPORTED_METRIC_TYPES = [
     "datetime",
     "boolean",
     "string_list",
+    "object",
 ]
 
 
@@ -66,6 +67,15 @@ def generate_metric_argument_name(metric: metrics.Metric) -> str:
     return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}"
 
 
+def generate_object_type_name(metric: metrics.Metric) -> str:
+    """Generate the Go type name for an object metric."""
+    return f"{util.Camelize(metric.category)}{util.Camelize(metric.name)}Object"
+
+
+def clean_string(s: str) -> str:
+    return s.replace("\n", " ").rstrip()
+
+
 def generate_metric_type(metric_type: str) -> str:
     if metric_type == "quantity":
         return "int64"
@@ -77,14 +87,133 @@ def generate_metric_type(metric_type: str) -> str:
         return "time.Time"
     elif metric_type == "string_list":
         return "[]string"
+    # 'oneOf' is not currently supported in object structures
+    elif metric_type == "object":
+        return "object"
     else:
         print("❌ Unable to generate Go type from metric type: " + metric_type)
         exit
         return "NONE"
 
 
-def clean_string(s: str) -> str:
-    return s.replace("\n", " ").rstrip()
+def generate_parameter_type(schema: Dict[str, Any], indent: int = 0) -> str:
+    """
+    Convert a JSON schema type definition to a Go type string.
+
+    :param schema: JSON schema definition (e.g., from metric.structure)
+    :param indent: Current indentation level for nested structs
+    :return: Go type string
+    """
+    parameter_type = schema.get("type")
+
+    if parameter_type == "string":
+        return "string"
+    elif parameter_type == "number":
+        return "float64"
+    elif parameter_type == "boolean":
+        return "bool"
+    elif parameter_type == "array":
+        return generate_array_struct_definition(schema, indent)
+    elif parameter_type == "object":
+        properties = schema.get("properties", {})
+        if not properties:
+            print(
+                "❌ Unable to generate Go type. Object type must have 'properties' field with at least one property"
+            )
+            exit
+            return "NONE"
+
+        indent_str = "\t" * (indent + 1)
+        fields = []
+        for prop_name, prop_schema in properties.items():
+            field_type = generate_parameter_type(prop_schema, indent + 1)
+            field_name = util.Camelize(prop_name)
+            json_tag = f'`json:"{prop_name}"`'
+            fields.append(f"{indent_str}{field_name} {field_type} {json_tag}")
+
+        fields_str = "\n".join(fields)
+        close_indent = "\t" * indent
+        return f"struct {{\n{fields_str}\n{close_indent}}}"
+    else:
+        print(
+            f"❌ Unable to generate Go type. Unknown parameter type '{parameter_type}'. Supported types: string, number, boolean, array, object"
+        )
+        exit
+        return "NONE"
+
+
+def generate_object_struct_definition(metric: metrics.Metric) -> str:
+    """
+    Generate a complete Go struct definition for an object metric.
+
+    :param metric: The object metric
+    :return: Go struct definition as a string
+    """
+    type_name = generate_object_type_name(metric)
+
+    if not hasattr(metric, "structure") or not metric.structure:
+        print(
+            f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' is missing required 'structure' field"
+        )
+        exit
+        return "NONE"
+
+    parameter_type = metric.structure.get("type")
+    indent = 0
+
+    if parameter_type == "array":
+        array_type = generate_array_struct_definition(metric.structure, indent)
+        return f"type {type_name} {array_type}"
+    elif parameter_type == "object":
+        properties = metric.structure.get("properties", {})
+        if not properties:
+            print(
+                f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' has object type but no 'properties' defined"
+            )
+            exit
+            return "NONE"
+
+        indent += 1
+        fields = []
+        for prop_name, prop_schema in properties.items():
+            field_type = generate_parameter_type(prop_schema, indent)
+            field_name = util.Camelize(prop_name)
+            json_tag = f'`json:"{prop_name}"`'
+            fields.append(f"\t{field_name} {field_type} {json_tag}")
+
+        fields_str = "\n".join(fields)
+        return f"type {type_name} struct {{\n{fields_str}\n}}"
+    else:
+        print(
+            f"❌ Unable to generate Go type. Object metric '{metric.category}.{metric.name}' has unexpected type '{parameter_type}'. Expected 'array' or 'object'"
+        )
+        exit
+        return "NONE"
+
+
+def generate_array_struct_definition(schema: Dict[str, Any], indent: int) -> str:
+    """
+    Generate Go type for an array schema.
+
+    :param schema: Array schema with 'items' field
+    :param indent: Current indentation level for nested structs
+    :return: Go array type string
+    """
+    items_schema = schema.get("items", {})
+
+    if "oneOf" in items_schema and "type" not in items_schema:
+        print("❌ oneOf is currently not supported in Go struct generation")
+        exit
+        return "NONE"
+    elif "type" not in items_schema:
+        print(
+            "❌ Unable to generate Go type. Array items schema must have 'type' field"
+        )
+        exit
+        return "NONE"
+
+    item_type = generate_parameter_type(items_schema, indent)
+    return f"[]{item_type}"
 
 
 def output_go(
@@ -112,11 +241,16 @@ def output_go(
             ("metric_argument_name", generate_metric_argument_name),
             ("go_metric_type", generate_metric_type),
             ("clean_string", clean_string),
+            ("object_type_name", generate_object_type_name),
+            ("object_struct_definition", generate_object_struct_definition),
         ),
     )
 
     # unique list of event metrics used in any ping
     event_metrics: List[metrics.Metric] = []
+
+    # unique list of object metrics used in any ping
+    object_metrics: List[metrics.Metric] = []
 
     # Go through all metrics in objs and build a map of
     # ping->list of metric categories->list of metrics
@@ -138,6 +272,9 @@ def output_go(
                     if metric.type == "event" and metric not in event_metrics:
                         event_metrics.append(metric)
 
+                    if metric.type == "object" and metric not in object_metrics:
+                        object_metrics.append(metric)
+
                     metrics_by_type = ping_to_metrics[ping]
                     metrics_list = metrics_by_type.setdefault(metric.type, [])
                     metrics_list.append(metric)
@@ -156,6 +293,9 @@ def output_go(
     with filepath.open("w", encoding="utf-8") as fd:
         fd.write(
             template.render(
-                parser_version=__version__, pings=ping_to_metrics, events=event_metrics
+                parser_version=__version__,
+                pings=ping_to_metrics,
+                events=event_metrics,
+                objects=object_metrics,
             )
         )

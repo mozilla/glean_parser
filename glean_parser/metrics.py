@@ -462,6 +462,11 @@ class Object(Metric):
         self._generate_structure = self.validate_structure(structure)
         super().__init__(*args, **kwargs)
 
+    @property
+    def structure(self):
+        """Return the validated structure for this object metric."""
+        return self._generate_structure
+
     ALLOWED_TOPLEVEL = {"type", "properties", "items", "description", "oneOf"}
     ALLOWED_TYPES = ["object", "array", "number", "string", "boolean"]
     ALLOWED_SUBTYPES = ["number", "string", "boolean"]
