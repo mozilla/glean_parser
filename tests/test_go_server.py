@@ -331,6 +331,20 @@ def test_run_logging_objects_ping(tmp_path):
     assert simple_obj["count"] == 42.5
     assert simple_obj["enabled"]
 
+    # Validate number array
+    number_array = metrics["object"]["test.number_array"]
+    assert number_array[0] == 1.1
+
+    # Validate nested object
+    nested_obj = metrics["object"]["test.nested_object"]
+    assert nested_obj["user_id"] == "user123"
+    assert nested_obj["metadata"]["version"] == 1.0
+
+    # Validate complex array
+    complex_array = metrics["object"]["test.complex_array"]
+    assert complex_array[0]["name"] == "item1"
+    assert complex_array[1]["data"][0] == 30.3
+
 
 @pytest.mark.go_dependency
 def test_run_logging_custom_ping_without_event(tmp_path):
