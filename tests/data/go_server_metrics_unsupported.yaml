@@ -9,7 +9,7 @@ metric:
   labeled_bool:
     type: labeled_boolean
     description: >
-      labeled boolean
+      labeled boolean without predefined labels (should be rejected)
     bugs:
       - TBD
     data_reviews:

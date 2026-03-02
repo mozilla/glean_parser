@@ -96,11 +96,11 @@ def clean_string(s: str) -> str:
 def validate_labeled_boolean(metric: metrics.Metric) -> bool:
     """
     Validate that a labeled_boolean metric has predefined labels.
-    
+
     Returns:
         bool: True if valid, False otherwise
     """
-    if not hasattr(metric, 'labels') or not metric.labels:
+    if not hasattr(metric, "labels") or not metric.labels:
         print(
             "❌ Ignoring labeled_boolean metric without predefined labels: "
             + f"{metric.name}. labeled_boolean requires a 'labels' list."
@@ -140,7 +140,7 @@ def output_go(
 
     # unique list of event metrics used in any ping
     event_metrics: List[metrics.Metric] = []
-    
+
     # unique list of labeled_boolean metrics used in any ping
     labeled_boolean_metrics: List[metrics.Metric] = []
 
@@ -161,14 +161,19 @@ def output_go(
                     continue
 
                 # Validate labeled_boolean metrics
-                if metric.type == "labeled_boolean" and not validate_labeled_boolean(metric):
+                if metric.type == "labeled_boolean" and not validate_labeled_boolean(
+                    metric
+                ):
                     continue
 
                 for ping in metric.send_in_pings:
                     if metric.type == "event" and metric not in event_metrics:
                         event_metrics.append(metric)
-                    
-                    if metric.type == "labeled_boolean" and metric not in labeled_boolean_metrics:
+
+                    if (
+                        metric.type == "labeled_boolean"
+                        and metric not in labeled_boolean_metrics
+                    ):
                         labeled_boolean_metrics.append(metric)
 
                     metrics_by_type = ping_to_metrics[ping]
@@ -192,6 +197,6 @@ def output_go(
                 parser_version=__version__,
                 pings=ping_to_metrics,
                 events=event_metrics,
-                labeled_booleans=labeled_boolean_metrics
+                labeled_booleans=labeled_boolean_metrics,
             )
         )

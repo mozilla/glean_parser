@@ -39,8 +39,6 @@ def test_parser_go_server_metrics_unsupported_type(tmp_path, capsys):
     captured = capsys.readouterr()
     assert "Ignoring unsupported metric type" in captured.out
     unsupported_types = [
-        "boolean",
-        "labeled_boolean",
         "labeled_string",
         "timespan",
         "uuid",
@@ -48,6 +46,49 @@ def test_parser_go_server_metrics_unsupported_type(tmp_path, capsys):
     ]
     for t in unsupported_types:
         assert t in captured.out
+
+
+def test_parser_go_server_labeled_boolean_without_labels(tmp_path, capsys):
+    """Test that labeled_boolean without predefined labels is rejected."""
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_metrics_unsupported.yaml",
+        ],
+        "go_server",
+        tmp_path,
+    )
+    captured = capsys.readouterr()
+    assert "Ignoring labeled_boolean metric without predefined labels" in captured.out
+
+
+def test_parser_go_server_labeled_boolean(tmp_path):
+    """Test that labeled_boolean metrics generate proper struct types."""
+    translate.translate(
+        ROOT / "data" / "go_server_labeled_boolean_metrics.yaml",
+        "go_server",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
+
+    # Read generated file and verify struct is created
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        # Check that the labeled_boolean struct type was generated
+        assert "type TelemetryFeatureFlags struct {" in content
+        assert "FeatureOne bool" in content
+        assert "FeatureTwo bool" in content
+        assert "FeatureThree bool" in content
+
+        # Check that it's used in the ping struct
+        assert "TelemetryFeatureFlags TelemetryFeatureFlags" in content
+
+        # Check that serialization includes map creation
+        assert "map[string]bool{" in content
+        assert '"feature_one":' in content
+        assert '"feature_two":' in content
+        assert '"feature_three":' in content
 
 
 def test_parser_go_server_events_only(tmp_path):
