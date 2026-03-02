@@ -386,6 +386,53 @@ def test_run_logging_nil_writer(tmp_path):
 
 
 @pytest.mark.go_dependency
+def test_run_logging_labeled_boolean(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_labeled_boolean_metrics.yaml",
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    code = """
+    logger.RecordEventsPing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.EventsPing{
+            TelemetryFeatureFlags: glean.TelemetryFeatureFlags{
+                FeatureOne:   true,
+                FeatureTwo:   false,
+                FeatureThree: true,
+            },
+        },
+    )
+    """
+
+    logged_output = run_logger(tmp_path, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload_str = fields["payload"]
+    payload = json.loads(payload_str)
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "events" == fields["document_type"]
+
+    # Check that labeled_boolean is properly serialized as a map
+    labeled_boolean_metrics = payload["metrics"]["labeled_boolean"]
+    assert "telemetry.feature_flags" in labeled_boolean_metrics
+    feature_flags = labeled_boolean_metrics["telemetry.feature_flags"]
+    assert feature_flags["feature_one"] is True
+    assert feature_flags["feature_two"] is False
+    assert feature_flags["feature_three"] is True
+
+
+@pytest.mark.go_dependency
 def test_run_logging_custom_ping_with_event(tmp_path):
     glean_module_path = tmp_path / "glean"
 
