@@ -106,6 +106,15 @@ def validate_labeled_boolean(metric: metrics.Metric) -> bool:
             + f"{metric.name}. labeled_boolean requires a 'labels' list."
         )
         return False
+
+    if len(metric.labels) > 100:
+        print(
+            "❌ Ignoring labeled_boolean metric with too many labels: "
+            + f"{metric.name} has {len(metric.labels)} labels, "
+            + "but the maximum is 100."
+        )
+        return False
+
     return True
 
 
