@@ -38,7 +38,7 @@ SUPPORTED_METRIC_TYPES = [
     "event",
     "datetime",
     "boolean",
-    "labeled_boolean",
+    "labeled_boolean", # does not support dynamic labeling
     "string_list",
 ]
 
