@@ -227,7 +227,7 @@ func (e {{ event|event_type_name }}) gleanEvent() gleanEvent {
 // {{ metric.description|clean_string }}
 type {{ metric|metric_argument_name }} struct {
     {% for label in metric.ordered_labels %}
-    {{ label|event_extra_name }} bool // {{ label }}
+    {{ label|event_extra_name }} *bool `json:"{{ label }},omitempty"`
     {% endfor %}
 }
 {% endfor %}
@@ -277,12 +277,6 @@ func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
         {% for metric in metrics %}
             {% if metric_type == 'datetime' %}
             "{{ metric|metric_name }}": params.{{ metric|metric_argument_name }}.Format("2006-01-02T15:04:05.000Z"),
-            {% elif metric_type == 'labeled_boolean' %}
-            "{{ metric|metric_name }}": map[string]bool{
-                {% for label in metric.ordered_labels %}
-                "{{ label }}": params.{{ metric|metric_argument_name }}.{{ label|event_extra_name }},
-                {% endfor %}
-            },
             {% else %}
             "{{ metric|metric_name }}": params.{{ metric|metric_argument_name }},
             {% endif %}

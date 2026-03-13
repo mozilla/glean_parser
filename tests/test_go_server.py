@@ -77,18 +77,12 @@ def test_parser_go_server_labeled_boolean(tmp_path):
 
         # Check that the labeled_boolean struct type was generated
         assert "type TelemetryFeatureFlags struct {" in content
-        assert "FeatureOne bool" in content
-        assert "FeatureTwo bool" in content
-        assert "FeatureThree bool" in content
+        assert "FeatureOne *bool" in content
+        assert "FeatureTwo *bool" in content
+        assert "FeatureThree *bool" in content
 
         # Check that it's used in the ping struct
         assert "TelemetryFeatureFlags TelemetryFeatureFlags" in content
-
-        # Check that serialization includes map creation
-        assert "map[string]bool{" in content
-        assert '"feature_one":' in content
-        assert '"feature_two":' in content
-        assert '"feature_three":' in content
 
 
 def test_parser_go_server_events_only(tmp_path):
@@ -399,6 +393,8 @@ def test_run_logging_labeled_boolean(tmp_path):
 
     code = """
     _ = time.Now() // satisfy Go's unused import check for "time"
+    t := true
+    f := false
     logger.RecordEventsPing(
         glean.RequestInfo{
             UserAgent: "glean-test/1.0",
@@ -406,9 +402,10 @@ def test_run_logging_labeled_boolean(tmp_path):
         },
         glean.EventsPing{
             TelemetryFeatureFlags: glean.TelemetryFeatureFlags{
-                FeatureOne:   true,
-                FeatureTwo:   false,
-                FeatureThree: true,
+                FeatureOne:   &t,
+                FeatureTwo:   &f,
+                FeatureThree: nil, // valid label on metric but this request had no value for it
+                // FeatureFour omitted to illustrate zero value behavior
             },
         },
     )
@@ -437,13 +434,14 @@ def test_run_logging_labeled_boolean(tmp_path):
         output.getvalue()
     )
 
-    # Check that labeled_boolean is properly serialized as a map
+    # Check that labeled_boolean is properly serialized
     labeled_boolean_metrics = payload["metrics"]["labeled_boolean"]
     assert "telemetry.feature_flags" in labeled_boolean_metrics
     feature_flags = labeled_boolean_metrics["telemetry.feature_flags"]
     assert feature_flags["feature_one"] is True
     assert feature_flags["feature_two"] is False
-    assert feature_flags["feature_three"] is True
+    assert feature_flags.get("feature_three") is None
+    assert feature_flags.get("feature_four") is None
 
 
 @pytest.mark.go_dependency
