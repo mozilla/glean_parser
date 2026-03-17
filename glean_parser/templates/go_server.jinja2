@@ -270,6 +270,14 @@ func (g GleanEventsLogger) Record{{ ping|ping_type_name }}(
     requestInfo RequestInfo,
     params {{ ping|ping_type_name }},
 ) error {
+    {% if metrics_by_type['string_list'] %}
+    {% for metric in metrics_by_type['string_list'] %}
+    // Ensure nil string_list metrics serialize as empty arrays, not null
+    if params.{{ metric|metric_argument_name }} == nil {
+        params.{{ metric|metric_argument_name }} = []string{}
+    }
+    {% endfor %}
+    {% endif %}
     metrics := metrics{
     {% for metric_type, metrics in metrics_by_type.items() %}
     {% if metric_type != 'event' %}

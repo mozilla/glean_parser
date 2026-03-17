@@ -227,6 +227,10 @@ func (g GleanEventsLogger) RecordEventsPing(
     requestInfo RequestInfo,
     params EventsPing,
 ) error {
+    // Ensure nil string_list metrics serialize as empty arrays, not null
+    if params.MetricRequestStringList == nil {
+        params.MetricRequestStringList = []string{}
+    }
     metrics := metrics{
         "string": {
             "metric.name": params.MetricName,
@@ -272,6 +276,10 @@ func (g GleanEventsLogger) RecordServerTelemetryScenarioOnePing(
     requestInfo RequestInfo,
     params ServerTelemetryScenarioOnePing,
 ) error {
+    // Ensure nil string_list metrics serialize as empty arrays, not null
+    if params.MetricRequestStringList == nil {
+        params.MetricRequestStringList = []string{}
+    }
     metrics := metrics{
         "string": {
             "metric.name": params.MetricName,

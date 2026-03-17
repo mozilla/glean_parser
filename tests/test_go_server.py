@@ -445,6 +445,67 @@ def test_run_logging_labeled_boolean(tmp_path):
 
 
 @pytest.mark.go_dependency
+def test_run_logging_nil_string_list(tmp_path):
+    """Test that nil string_list metrics serialize as empty arrays, not null."""
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_events_and_custom_ping_metrics.yaml",
+            ROOT / "data" / "go_server_events_and_custom_ping_pings.yaml",
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    code = """
+    logger.RecordEventsPing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.EventsPing{
+            MetricName:              "string value",
+            MetricRequestBool:       true,
+            MetricRequestCount:      10,
+            MetricRequestDatetime:   time.Now(),
+            // MetricRequestStringList intentionally omitted (nil)
+            Event: glean.BackendTestEventEvent{
+                EventFieldString:      "event extra string value",
+                EventFieldQuantity:    100,
+                EventFieldBool:        false,
+            },
+        },
+    )
+    """
+
+    logged_output = run_logger(tmp_path, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload_str = fields["payload"]
+    payload = json.loads(payload_str)
+
+    # Verify string_list is an empty array, not null
+    string_list_value = payload["metrics"]["string_list"]["metric.request_string_list"]
+    assert string_list_value == [], (
+        f"Expected empty array for nil string_list, got: {string_list_value}"
+    )
+
+    # Validate payload against Glean schema
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(payload_str)
+    output = io.StringIO()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
+
+
+@pytest.mark.go_dependency
 def test_run_logging_custom_ping_with_event(tmp_path):
     glean_module_path = tmp_path / "glean"
 
