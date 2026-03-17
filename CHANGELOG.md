@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Go server: Add support for `labeled_boolean` metrics with static labels ([AE-1250](https://mozilla-hub.atlassian.net/browse/AE-1250))
+- BUGFIX: Go server: Serialize nil `string_list` metrics as empty arrays instead of null ([#837](https://github.com/mozilla/glean_parser/pull/837))
 
 ## 19.0.0
 
