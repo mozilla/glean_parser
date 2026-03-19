@@ -500,8 +500,8 @@ def test_run_logging_labeled_boolean_omitted(tmp_path):
     labeled_boolean_metrics = payload["metrics"]["labeled_boolean"]
     assert "telemetry.feature_flags" in labeled_boolean_metrics
     feature_flags = labeled_boolean_metrics["telemetry.feature_flags"]
-    # Verify it's an empty dict {}, not null
-    assert feature_flags == {} or feature_flags is None
+    # Verify it's an empty dict {}
+    assert feature_flags == {}
 
 
 @pytest.mark.go_dependency
