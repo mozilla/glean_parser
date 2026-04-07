@@ -72,7 +72,7 @@ type ping struct {
     Payload           string `json:"payload"`
 }
 
-type metrics map[string]map[string]interface{}
+type metrics map[string]map[string]any
 
 type pingPayload struct {
     ClientInfo clientInfo   `json:"client_info"`
