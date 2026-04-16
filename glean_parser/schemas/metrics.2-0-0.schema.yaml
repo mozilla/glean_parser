@@ -627,6 +627,18 @@ definitions:
           so glean_parser can find it.
         type: string
 
+      in_session:
+        title: In session
+        description: |
+          Whether this metric participates in session sampling.
+          When `true`, the metric is subject to session-level sampling and
+          session metadata is attached to it.
+          When `false` (default), the metric bypasses session sampling entirely.
+
+          Only valid when `type`_ is `event`.
+        type: boolean
+        default: false
+
       structure:
         title: A subset of a JSON schema definition
         description: |
@@ -773,6 +785,18 @@ additionalProperties:
               description: |
                 `denominator_metric` is only allowed for `rate`.
               maxLength: 0
+      - if:
+          not:
+            properties:
+              type:
+                const: event
+        then:
+          properties:
+            in_session:
+              description: |
+                `in_session: true` is only allowed for `event` metrics.
+                Only event metrics support session sampling.
+              const: false
       -
         if:
           properties:
