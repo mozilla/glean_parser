@@ -515,6 +515,7 @@ common_metric_args = [
     "send_in_pings",
     "lifetime",
     "disabled",
+    "out_of_session",
 ]
 
 
