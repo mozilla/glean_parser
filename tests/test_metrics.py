@@ -190,6 +190,66 @@ def test_no_unit():
     assert not event.unit
 
 
+def test_in_session_on_event():
+    """in_session: true on event produces out_of_session = False."""
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        in_session=True,
+    )
+    assert event.out_of_session is False
+    assert event.in_session is True
+
+
+def test_in_session_default_on_event():
+    """Omitting in_session defaults to out-of-session (no out_of_session attr)."""
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+    )
+    assert not hasattr(event, "out_of_session")
+
+
+def test_in_session_true_on_non_event_rejected():
+    """in_session: true on a non-event metric must raise a validation error."""
+    with pytest.raises(ValueError):
+        metrics.Counter(
+            type="counter",
+            category="category",
+            name="metric",
+            bugs=["http://bugzilla.mozilla.com/12345"],
+            notification_emails=["nobody@example.com"],
+            description="description...",
+            expires="never",
+            in_session=True,
+        )
+
+
+def test_in_session_false_on_non_event_accepted():
+    """in_session: false (explicit) on a non-event metric should be accepted."""
+    counter = metrics.Counter(
+        type="counter",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        in_session=False,
+    )
+    assert not hasattr(counter, "out_of_session")
+
+
 def test_jwe_is_rejected():
     with pytest.raises(ValueError):
         metrics.Jwe(
