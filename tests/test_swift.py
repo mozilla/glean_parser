@@ -109,6 +109,10 @@ def test_parser_all_metrics(tmp_path):
 
     assert set(x.name for x in tmp_path.iterdir()) == set(["Metrics.swift"])
 
+    with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        assert "outOfSession: false" in content
+
     run_linters(tmp_path.glob("*.swift"))
 
 

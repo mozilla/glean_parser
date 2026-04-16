@@ -107,6 +107,7 @@ all_metrics:
   event:
     <<: *defaults
     type: event
+    in_session: true
     extra_keys:
       source:
         description: Source of this event
