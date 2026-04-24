@@ -561,7 +561,7 @@ def test_all_pings_reserved():
     all_pings = parser.parse_objects(contents)
     errors = list(all_pings)
     assert len(errors) == 1
-    assert "is not allowed for 'all-pings'"
+    assert "'all-pings' should not be valid" in errors[0]
 
 
 def test_custom_distribution():
