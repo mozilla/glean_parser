@@ -289,6 +289,24 @@ def test_object_metric(tmp_path):
         assert "}" in content
 
 
+def test_in_session_output(tmp_path):
+    """Assert that in_session: true produces out_of_session: false in Rust output."""
+    translate.translate(
+        ROOT / "data" / "all_metrics.yaml",
+        "rust",
+        tmp_path,
+        {},
+        {"allow_reserved": False},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["glean_metrics.rs"])
+
+    with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        assert "out_of_session: false" in content
+
+
 def test_dual_labeled_counter_metric(tmp_path):
     """
     Assert that a dual labeled counter metric is created.
