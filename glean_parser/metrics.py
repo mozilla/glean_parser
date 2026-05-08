@@ -318,7 +318,6 @@ class Event(Metric):
         in_session = kwargs.pop("in_session", False)
         if in_session:
             self.in_session = True
-            self.out_of_session = False
         self.validate_extra_keys(self.extra_keys, kwargs.get("_config", {}))
         super().__init__(*args, **kwargs)
         self._generate_enums = [("allowed_extra_keys_with_types", "Extra")]
