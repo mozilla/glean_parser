@@ -5,11 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>glean_parser package &#8212; Glean Parser 19.0.0.post1.dev10+g2d1096fd6 documentation</title>
+    <title>glean_parser package &#8212; Glean Parser 19.0.0.post1.dev11+g872eccfd5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
-    <script src="_static/documentation_options.js?v=d9fde20f"></script>
+    <script src="_static/documentation_options.js?v=a9c72cac"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -1762,6 +1762,26 @@ metrics, serializing, and submitting.</p>
 <cite>parser.parse_objects</cite>.</p></li>
 <li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
 <li><p><strong>options</strong> – Optional dictionary of additional configuration options</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-glean_parser.rust_sym">
+<span id="glean-parser-rust-sym-module"></span><h2>glean_parser.rust_sym module<a class="headerlink" href="#module-glean_parser.rust_sym" title="Link to this heading">¶</a></h2>
+<p>Outputter to generate Rust code for metrics.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="glean_parser.rust_sym.output_rust">
+<span class="sig-prename descclassname"><span class="pre">glean_parser.rust_sym.</span></span><span class="sig-name descname"><span class="pre">output_rust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.metrics.Metric" title="glean_parser.metrics.Metric"><span class="pre">Metric</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.pings.Ping" title="glean_parser.pings.Ping"><span class="pre">Ping</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#glean_parser.tags.Tag" title="glean_parser.tags.Tag"><span class="pre">Tag</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/glean_parser/rust_sym.html#output_rust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#glean_parser.rust_sym.output_rust" title="Link to this definition">¶</a></dt>
+<dd><p>Given a tree of objects, output Rust code to <cite>output_dir</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objs</strong> – A tree of objects (metrics and pings) as returned from
+<cite>parser.parse_objects</cite>.</p></li>
+<li><p><strong>output_dir</strong> – Path to an output directory to write to.</p></li>
+<li><p><strong>options</strong> – options dictionary, not currently used for Rust</p></li>
 </ul>
 </dd>
 </dl>

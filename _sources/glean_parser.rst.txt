@@ -116,6 +116,14 @@ glean\_parser.rust\_server module
    :show-inheritance:
    :undoc-members:
 
+glean\_parser.rust\_sym module
+------------------------------
+
+.. automodule:: glean_parser.rust_sym
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 glean\_parser.swift module
 --------------------------
 
