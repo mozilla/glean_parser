@@ -190,6 +190,64 @@ def test_no_unit():
     assert not event.unit
 
 
+def test_in_session_on_event():
+    """in_session: true on event produces in_session = True."""
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        in_session=True,
+    )
+    assert event.in_session is True
+
+
+def test_in_session_default_on_event():
+    """Omitting in_session defaults to out-of-session (no in_session attr)."""
+    event = metrics.Event(
+        type="event",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+    )
+    assert not hasattr(event, "in_session")
+
+
+def test_in_session_true_on_non_event_rejected():
+    """in_session: true on a non-event metric must raise a validation error."""
+    with pytest.raises(ValueError):
+        metrics.Counter(
+            type="counter",
+            category="category",
+            name="metric",
+            bugs=["http://bugzilla.mozilla.com/12345"],
+            notification_emails=["nobody@example.com"],
+            description="description...",
+            expires="never",
+            in_session=True,
+        )
+
+
+def test_in_session_false_on_non_event_accepted():
+    """in_session: false (explicit) on a non-event metric should be accepted."""
+    metrics.Counter(
+        type="counter",
+        category="category",
+        name="metric",
+        bugs=["http://bugzilla.mozilla.com/12345"],
+        notification_emails=["nobody@example.com"],
+        description="description...",
+        expires="never",
+        in_session=False,
+    )
+
+
 def test_jwe_is_rejected():
     with pytest.raises(ValueError):
         metrics.Jwe(
