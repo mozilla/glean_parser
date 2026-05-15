@@ -111,7 +111,7 @@ def test_parser_all_metrics(tmp_path):
 
     with (tmp_path / "Metrics.swift").open("r", encoding="utf-8") as fd:
         content = fd.read()
-        assert "outOfSession: false" in content
+        assert "inSession: true" in content
 
     run_linters(tmp_path.glob("*.swift"))
 

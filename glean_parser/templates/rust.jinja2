@@ -102,8 +102,8 @@ CommonMetricData {
     send_in_pings: {{ obj.send_in_pings|rust }},
     lifetime: {{ obj.lifetime|rust }},
     disabled: {{ obj.is_disabled()|rust }},
-    {% if obj.out_of_session is defined %}
-    out_of_session: {{ obj.out_of_session|rust }},
+    {% if obj.in_session is defined %}
+    in_session: {{ obj.in_session|rust }},
     {% endif %}
     ..Default::default()
 }

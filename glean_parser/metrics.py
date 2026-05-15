@@ -322,11 +322,6 @@ class Event(Metric):
         super().__init__(*args, **kwargs)
         self._generate_enums = [("allowed_extra_keys_with_types", "Extra")]
 
-    def serialize(self) -> Dict[str, "util.JSONType"]:
-        d = super().serialize()
-        d.pop("out_of_session", None)
-        return d
-
     @property
     def allowed_extra_keys(self):
         # Sort keys so that output is deterministic
