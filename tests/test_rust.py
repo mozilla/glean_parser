@@ -290,7 +290,7 @@ def test_object_metric(tmp_path):
 
 
 def test_in_session_output(tmp_path):
-    """Assert that in_session: true produces out_of_session: false in Rust output."""
+    """Assert that in_session: true produces in_session: true in Rust output."""
     translate.translate(
         ROOT / "data" / "all_metrics.yaml",
         "rust",
@@ -304,7 +304,7 @@ def test_in_session_output(tmp_path):
     with (tmp_path / "glean_metrics.rs").open("r", encoding="utf-8") as fd:
         content = fd.read()
 
-        assert "out_of_session: false" in content
+        assert "in_session: true" in content
 
 
 def test_dual_labeled_counter_metric(tmp_path):

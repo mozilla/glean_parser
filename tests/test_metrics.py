@@ -191,7 +191,7 @@ def test_no_unit():
 
 
 def test_in_session_on_event():
-    """in_session: true on event produces out_of_session = False."""
+    """in_session: true on event produces in_session = True."""
     event = metrics.Event(
         type="event",
         category="category",
@@ -202,12 +202,11 @@ def test_in_session_on_event():
         expires="never",
         in_session=True,
     )
-    assert event.out_of_session is False
     assert event.in_session is True
 
 
 def test_in_session_default_on_event():
-    """Omitting in_session defaults to out-of-session (no out_of_session attr)."""
+    """Omitting in_session defaults to out-of-session (no in_session attr)."""
     event = metrics.Event(
         type="event",
         category="category",
@@ -217,7 +216,7 @@ def test_in_session_default_on_event():
         description="description...",
         expires="never",
     )
-    assert not hasattr(event, "out_of_session")
+    assert not hasattr(event, "in_session")
 
 
 def test_in_session_true_on_non_event_rejected():
@@ -237,7 +236,7 @@ def test_in_session_true_on_non_event_rejected():
 
 def test_in_session_false_on_non_event_accepted():
     """in_session: false (explicit) on a non-event metric should be accepted."""
-    counter = metrics.Counter(
+    metrics.Counter(
         type="counter",
         category="category",
         name="metric",
@@ -247,7 +246,6 @@ def test_in_session_false_on_non_event_accepted():
         expires="never",
         in_session=False,
     )
-    assert not hasattr(counter, "out_of_session")
 
 
 def test_jwe_is_rejected():
