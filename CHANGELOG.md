@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 19.1.1
+
 - Use JSON serialization for on-disk caching
 
 ## 19.1.0
