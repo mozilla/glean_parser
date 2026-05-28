@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use JSON serialization for on-disk caching
+
 ## 19.1.0
 
 - Go server: Add support for `labeled_boolean` metrics with static labels ([AE-1250](https://mozilla-hub.atlassian.net/browse/AE-1250))
