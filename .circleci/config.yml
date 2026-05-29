@@ -53,6 +53,27 @@ commands:
           command: |
             uv sync --resolution lowest-direct
 
+  setup-go:
+    steps:
+      - run:
+          name: Installing Go
+          # The Ubuntu-default Go available via apt in cimg/python is too
+          # old for the cloud.google.com/go/pubsub dependency chain (needs
+          # Go 1.24+). Install a newer release directly.
+          # To update: pick a release from https://go.dev/dl/ and bump
+          # GO_VERSION below.
+          command: |
+            cd /tmp
+            GO_VERSION=1.26.3
+            GO_TARBALL=go${GO_VERSION}.linux-amd64.tar.gz
+            curl -sfSL --retry 5 -o "${GO_TARBALL}" "https://go.dev/dl/${GO_TARBALL}"
+            sudo rm -rf /usr/local/go
+            sudo tar -C /usr/local -xf "${GO_TARBALL}"
+      - run:
+          name: Set Go path
+          command: |
+            echo 'export PATH=/usr/local/go/bin:$PATH' >> $BASH_ENV
+
   test-python-version:
     steps:
       - run:
@@ -62,9 +83,9 @@ commands:
             sudo apt install \
                 --yes --no-install-recommends \
                 openjdk-11-jdk-headless \
-                ruby \
-                golang-go
+                ruby
             make install-kotlin-linters
+      - setup-go
       - setup-rust-toolchain
       - run:
           name: Test

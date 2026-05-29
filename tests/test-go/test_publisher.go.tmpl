@@ -1,0 +1,103 @@
+package main
+
+import (
+    "context"
+    "encoding/base64"
+    "encoding/json"
+    "fmt"
+    "glean/glean"
+    "os"
+    "time"
+    /* IMPORTS */
+
+    pubsub "cloud.google.com/go/pubsub/v2"
+    "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+    "cloud.google.com/go/pubsub/v2/pstest"
+    "google.golang.org/api/option"
+    "google.golang.org/grpc"
+    "google.golang.org/grpc/credentials/insecure"
+)
+
+func main() {
+    ctx := context.Background()
+
+    // In-process Pub/Sub fake. The Go pubsub client picks up PUBSUB_EMULATOR_HOST
+    // automatically; pstest exposes its bound address via srv.Addr.
+    srv := pstest.NewServer()
+    defer srv.Close()
+    os.Setenv("PUBSUB_EMULATOR_HOST", srv.Addr)
+
+    // Pre-create the topic on the fake server. Use a transient client; the
+    // test code below opens its own client to mirror normal app usage.
+    setupConn, err := grpc.Dial(srv.Addr,
+        grpc.WithTransportCredentials(insecure.NewCredentials()))
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "dial:", err)
+        os.Exit(1)
+    }
+    setupClient, err := pubsub.NewClient(ctx, "test-project", option.WithGRPCConn(setupConn))
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "setup-client:", err)
+        os.Exit(1)
+    }
+    if _, err := setupClient.TopicAdminClient.CreateTopic(ctx, &pubsubpb.Topic{
+        Name: "projects/test-project/topics/test-topic",
+    }); err != nil {
+        fmt.Fprintln(os.Stderr, "create-topic:", err)
+        os.Exit(1)
+    }
+    setupClient.Close()
+    setupConn.Close()
+
+    // Client + publisher used by the test snippet to publish.
+    client, err := pubsub.NewClient(ctx, "test-project")
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "client:", err)
+        os.Exit(1)
+    }
+    topic := client.Publisher("test-topic")
+
+    builder := glean.GleanEventsBuilder{
+        AppID:             "glean.test",
+        AppDisplayVersion: "0.0.1",
+        AppChannel:        "nightly",
+    }
+    _ = builder // suppress unused warning if the snippet does not reference it
+
+    // The injected snippet must assign `msg, err` by calling a builder
+    // Build<Ping>Message method; the harness owns publish + result handling.
+    /* CODE */
+
+    if err != nil {
+        fmt.Fprintln(os.Stderr, "build:", err)
+        os.Exit(1)
+    }
+    result := topic.Publish(ctx, msg)
+    if _, err := result.Get(ctx); err != nil {
+        fmt.Fprintln(os.Stderr, "publish:", err)
+        os.Exit(1)
+    }
+
+    // Drain whatever was queued, then release the client. topic.Stop
+    // blocks until the batcher flushes; client.Close releases the gRPC conn.
+    // result.Get above already confirmed the server acked the message, so it
+    // is durably in pstest by the time we read srv.Messages below.
+    topic.Stop()
+    if err := client.Close(); err != nil {
+        fmt.Fprintln(os.Stderr, "client close:", err)
+        os.Exit(1)
+    }
+
+    msgs := srv.Messages()
+    out := make([]map[string]interface{}, 0, len(msgs))
+    for _, m := range msgs {
+        out = append(out, map[string]interface{}{
+            "data":       base64.StdEncoding.EncodeToString(m.Data),
+            "attributes": m.Attributes,
+        })
+    }
+    if err := json.NewEncoder(os.Stdout).Encode(out); err != nil {
+        fmt.Fprintln(os.Stderr, "encode:", err)
+        os.Exit(1)
+    }
+}
