@@ -32,21 +32,7 @@ import (
 {% endif %}
 )
 
-{% if transport == "logging" %}
-// log type string used to identify logs to process in the Moz Data Pipeline
-var gleanEventMozlogType string = "glean-server-event"
-
-// A GleanEventsLogger produces output in the required format for Glean to ingest.
-// Glean ingestion requires the output to be written to os.Stdout. Writing to a different
-// output will require the consumer to handle any closing as appropriate for the Writer.
-// e.g. if writing to a file.
-type GleanEventsLogger struct {
-    AppID             string // Application Id to identify application per Glean standards
-    AppDisplayVersion string // Version of application emitting the event
-    AppChannel        string // Channel to differentiate logs from prod/beta/staging/devel
-    Writer            io.Writer // Writer to output to. Normal operation expects os.Stdout
-}
-{% else %}
+{% if transport == "pubsub" %}
 // GleanEventsBuilder constructs Pub/Sub messages carrying Glean pings.
 // Builder is stateless beyond its app-identity fields; callers own the
 // pubsub.Client, the pubsub.Publisher, batching settings, retries, shutdown sequencing, and any
@@ -87,6 +73,20 @@ func compressPayload(data []byte) ([]byte, error) {
     }
     gzipPool.Put(gz)
     return buf.Bytes(), nil
+}
+{% else %}
+// log type string used to identify logs to process in the Moz Data Pipeline
+var gleanEventMozlogType string = "glean-server-event"
+
+// A GleanEventsLogger produces output in the required format for Glean to ingest.
+// Glean ingestion requires the output to be written to os.Stdout. Writing to a different
+// output will require the consumer to handle any closing as appropriate for the Writer.
+// e.g. if writing to a file.
+type GleanEventsLogger struct {
+    AppID             string // Application Id to identify application per Glean standards
+    AppDisplayVersion string // Version of application emitting the event
+    AppChannel        string // Channel to differentiate logs from prod/beta/staging/devel
+    Writer            io.Writer // Writer to output to. Normal operation expects os.Stdout
 }
 {% endif %}
 
@@ -207,9 +207,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
         Payload:           string(payloadJson),
     }, nil
 }
-{% endif %}
 
-{% if transport == "logging" %}
 // method called by each ping-specific record method.
 // construct the ping, wrap it in the envelope, and print to stdout
 func (g GleanEventsLogger) record(
