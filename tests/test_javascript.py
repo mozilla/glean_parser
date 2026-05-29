@@ -304,7 +304,7 @@ def test_arguments_are_generated_in_deterministic_order(tmp_path):
     with (tmp_path / "event.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         content = " ".join(content.split())
-        expected = 'export const example = new EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, }, ["And1WithExtraCasing", "alice", "bob", "charlie"]);'  # noqa
+        expected = 'export const example = new EventMetricType({ category: "event", name: "example", sendInPings: ["events"], lifetime: "ping", disabled: false, inSession: true, }, ["And1WithExtraCasing", "alice", "bob", "charlie"]);'  # noqa
         assert expected in content
 
 

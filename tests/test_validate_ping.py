@@ -34,8 +34,8 @@ def test_validate_ping():
 
     schema_url = (
         "https://raw.githubusercontent.com/mozilla-services/"
-        "mozilla-pipeline-schemas/3a15121c582ef0cffe430da024a5bf11b7c48740/"
-        "schemas/glean/baseline/baseline.1.schema.json"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
     )
 
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0

@@ -216,7 +216,7 @@ def test_in_session_default_on_event():
         description="description...",
         expires="never",
     )
-    assert not hasattr(event, "in_session")
+    assert hasattr(event, "in_session")
 
 
 def test_in_session_true_on_non_event_rejected():
