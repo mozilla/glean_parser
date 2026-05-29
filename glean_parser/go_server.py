@@ -21,8 +21,8 @@ Warning: this outputter supports limited set of metrics,
 see `SUPPORTED_METRIC_TYPES` below.
 
 Generated code creates two methods for each ping (`RecordPingX` and `RecordPingXWithoutUserInfo`)
-that are used for submitting events. If pings have `event` metrics assigned, they can be
-passed to these methods.
+that are used for submitting events. 
+If pings have `event` metrics assigned, they can be passed to these methods.
 """
 
 from collections import defaultdict
