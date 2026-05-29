@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 19.2.0
+
 - Go server template: add `go_server_pubsub` outputter to support direct
   Pub/Sub delivery ([DENG-9533](https://mozilla-hub.atlassian.net/browse/DENG-9533))
 
