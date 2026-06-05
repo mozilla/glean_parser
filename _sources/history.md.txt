@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add support for Glean session implementation ([#840](https://github.com/mozilla/glean_parser/pull/840))
+
 ## 19.2.0
 
 - Go server template: add `go_server_pubsub` outputter to support direct
