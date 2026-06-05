@@ -1185,6 +1185,7 @@ def test_no_internal_fields_exposed():
             "expires": "never",
             "extra_keys": {"key_a": {"description": "desc-a", "type": "boolean"}},
             "gecko_datapoint": "",
+            "in_session": True,
             "lifetime": "ping",
             "metadata": {},
             "no_lint": [],
