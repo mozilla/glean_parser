@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.go_server &#8212; Glean Parser 19.2.0.post1.dev1+g0c0ce2c05 documentation</title>
+    <title>glean_parser.go_server &#8212; Glean Parser 19.2.0.post1.dev2+gb953370b4 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
-    <script src="../../_static/documentation_options.js?v=32986322"></script>
+    <script src="../../_static/documentation_options.js?v=01747fcf"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -46,9 +46,11 @@
 <span class="sd">window and connectivity don&#39;t hold.</span>
 
 <span class="sd">Generated code takes care of assembling pings with metrics, and serializing to messages</span>
-<span class="sd">conforming to Glean schema. Two transport modes are supported:</span>
-<span class="sd">- Cloud Logging (go_server): Logs to stdout in MozLog format for ingestion via GCP log routing</span>
-<span class="sd">- Pub/Sub (go_server_pubsub): Publishes directly to GCP Pub/Sub topics</span>
+<span class="sd">conforming to Glean schema. The transport is selected with the `transport` option</span>
+<span class="sd">on the `go_server` outputter (`-s transport=...`):</span>
+<span class="sd">- `logging` (default): Logs to stdout in MozLog format for ingestion via GCP log routing</span>
+<span class="sd">- `pubsub`: Builds messages for direct publishing to GCP Pub/Sub topics</span>
+<span class="sd">- `combined`: Emits both in a single file (sharing common types) for gradual migration</span>
 
 <span class="sd">Warning: this outputter supports limited set of metrics,</span>
 <span class="sd">see `SUPPORTED_METRIC_TYPES` below.</span>
@@ -190,8 +192,9 @@
 <span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
 <span class="sd">        `parser.parse_objects`.</span>
 <span class="sd">    :param output_dir: Path to an output directory to write to.</span>
-<span class="sd">    :param transport: Transport mode - either &quot;logging&quot; (Cloud Logging) or</span>
-<span class="sd">        &quot;pubsub&quot; (Pub/Sub direct publishing). Default is &quot;logging&quot;.</span>
+<span class="sd">    :param transport: Transport mode - one of &quot;logging&quot; (Cloud Logging, the</span>
+<span class="sd">        default), &quot;pubsub&quot; (Pub/Sub direct publishing), or &quot;combined&quot; (both in</span>
+<span class="sd">        a single file, sharing common types).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">template</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_jinja2_template</span><span class="p">(</span>
@@ -274,37 +277,41 @@
 
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_transport</span><span class="p">(</span><span class="n">default</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="n">transport</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;transport&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transport</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="k">if</span> <span class="n">transport</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">,</span> <span class="s2">&quot;pubsub&quot;</span><span class="p">,</span> <span class="s2">&quot;combined&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid transport &#39;</span><span class="si">{</span><span class="n">transport</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="s2">&quot; Must be one of: logging, pubsub, combined.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">transport</span>
+
+
 <div class="viewcode-block" id="output_go_logger">
 <a class="viewcode-back" href="../../glean_parser.html#glean_parser.go_server.output_go_logger">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">output_go_logger</span><span class="p">(</span>
     <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given a tree of objects, output Go code using Cloud Logging transport.</span>
+<span class="sd">    Given a tree of objects, output server Go code.</span>
+
+<span class="sd">    Defaults to the Cloud Logging transport; pass `-s transport=pubsub` for</span>
+<span class="sd">    direct Pub/Sub publishing, or `-s transport=combined` to emit both in a</span>
+<span class="sd">    single file (sharing common types) for a gradual logging-&gt;pubsub migration.</span>
 
 <span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
 <span class="sd">        `parser.parse_objects`.</span>
 <span class="sd">    :param output_dir: Path to an output directory to write to.</span>
-<span class="sd">    :param options: options dictionary (currently unused for Go).</span>
+<span class="sd">    :param options: options dictionary. Supports `transport` key with values</span>
+<span class="sd">        `logging` (default), `pubsub`, or `combined`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">output_go</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="s2">&quot;logging&quot;</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="output_go_pubsub">
-<a class="viewcode-back" href="../../glean_parser.html#glean_parser.go_server.output_go_pubsub">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">output_go_pubsub</span><span class="p">(</span>
-    <span class="n">objs</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ObjectTree</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given a tree of objects, output Go code using Pub/Sub transport.</span>
-
-<span class="sd">    :param objects: A tree of objects (metrics and pings) as returned from</span>
-<span class="sd">        `parser.parse_objects`.</span>
-<span class="sd">    :param output_dir: Path to an output directory to write to.</span>
-<span class="sd">    :param options: options dictionary (currently unused for Go).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">output_go</span><span class="p">(</span><span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="s2">&quot;pubsub&quot;</span><span class="p">)</span></div>
+    <span class="n">output_go</span><span class="p">(</span>
+        <span class="n">objs</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="n">_resolve_transport</span><span class="p">(</span><span class="s2">&quot;logging&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+    <span class="p">)</span></div>
 
 </pre></div>
 
