@@ -95,8 +95,8 @@ type logEnvelope struct {
     Fields    ping
 }
 
-func (g GleanEventsLogger) createClientInfo() clientInfo {
-    // Fields with default values are required in the Glean schema, but not used in server context
+// Fields with default values are required in the Glean schema, but not used in server context
+func createClientInfo(appDisplayVersion, appChannel string) clientInfo {
     return clientInfo{
         TelemetrySDKBuild: "{current_version}",
         FirstRunDate:      "Unknown",
@@ -104,8 +104,8 @@ func (g GleanEventsLogger) createClientInfo() clientInfo {
         OSVersion:         "Unknown",
         Architecture:      "Unknown",
         AppBuild:          "Unknown",
-        AppDisplayVersion: g.AppDisplayVersion,
-        AppChannel:        g.AppChannel,
+        AppDisplayVersion: appDisplayVersion,
+        AppChannel:        appChannel,
     }
 }
 
@@ -118,13 +118,22 @@ func createPingInfo() pingInfo {
     }
 }
 
-func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, payload pingPayload) (ping, error) {
-    payloadJson, err := json.Marshal(payload)
-    if err != nil {
-        return ping{}, err
+// resolveDocumentID returns supplied if non-empty, otherwise a fresh UUID.
+// Set DocumentID on the ping params struct to share an ID across transports
+// (e.g., dual-write verification during a logging->pubsub migration).
+func resolveDocumentID(supplied string) (string, error) {
+    if supplied != "" {
+        return supplied, nil
     }
+    id, err := uuid.NewRandom()
+    if err != nil {
+        return "", err
+    }
+    return id.String(), nil
+}
 
-    documentID, err := uuid.NewRandom()
+func (g GleanEventsLogger) createPing(documentType, documentID string, config RequestInfo, payload pingPayload) (ping, error) {
+    payloadJson, err := json.Marshal(payload)
     if err != nil {
         return ping{}, err
     }
@@ -133,7 +142,7 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
         DocumentNamespace: g.AppID,
         DocumentType:      documentType,
         DocumentVersion:   "1",
-        DocumentID:        documentID.String(),
+        DocumentID:        documentID,
         UserAgent:         config.UserAgent,
         IpAddress:         config.IpAddress,
         Payload:           string(payloadJson),
@@ -141,25 +150,18 @@ func (g GleanEventsLogger) createPing(documentType string, config RequestInfo, p
 }
 
 // method called by each ping-specific record method.
-// construct the ping, wrap it in the envelope, and print to stdout
+// wrap the payload in the envelope and print to stdout
 func (g GleanEventsLogger) record(
     documentType string,
+    documentID string,
     requestInfo RequestInfo,
-    metrics metrics,
-    events []gleanEvent,
+    payload pingPayload,
 ) error {
     if g.Writer == nil {
         return errors.New("writer not specified")
     }
 
-    telemetryPayload := pingPayload{
-        ClientInfo: g.createClientInfo(),
-        PingInfo:   createPingInfo(),
-        Metrics:    metrics,
-        Events:     events,
-    }
-
-    ping, err := g.createPing(documentType, requestInfo, telemetryPayload)
+    ping, err := g.createPing(documentType, documentID, requestInfo, payload)
     if err != nil {
         return err
     }
@@ -220,6 +222,45 @@ type ServerTelemetryScenarioOnePing struct {
     MetricRequestDatetime time.Time // Test datetime metric
     MetricRequestStringList []string // Test string_list metric
     Event ServerTelemetryScenarioOnePingEvent // valid event for this ping
+    DocumentID string // optional; used as document_id if non-empty, otherwise a fresh UUID is generated
+}
+
+// buildPayload assembles the inner pingPayload for `server-telemetry-scenario-one`. Shared by
+// the logging and pub/sub code paths.
+func (p ServerTelemetryScenarioOnePing) buildPayload(appDisplayVersion, appChannel string) pingPayload {
+    // Ensure nil string_list metrics serialize as empty arrays, not null
+    if p.MetricRequestStringList == nil {
+        p.MetricRequestStringList = []string{}
+    }
+    metrics := metrics{
+        "string": {
+            "metric.name": p.MetricName,
+        },
+        "boolean": {
+            "metric.request_bool": p.MetricRequestBool,
+        },
+        "quantity": {
+            "metric.request_count": p.MetricRequestCount,
+        },
+        "datetime": {
+            "metric.request_datetime": p.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
+        },
+        "string_list": {
+            "metric.request_string_list": p.MetricRequestStringList,
+        },
+    }
+
+    events := []gleanEvent{}
+    if p.Event != nil {
+        events = append(events, p.Event.gleanEvent())
+    }
+
+    return pingPayload{
+        ClientInfo: createClientInfo(appDisplayVersion, appChannel),
+        PingInfo:   createPingInfo(),
+        Metrics:    metrics,
+        Events:     events,
+    }
 }
 
 // Record and submit `server-telemetry-scenario-one` ping
@@ -227,33 +268,12 @@ func (g GleanEventsLogger) RecordServerTelemetryScenarioOnePing(
     requestInfo RequestInfo,
     params ServerTelemetryScenarioOnePing,
 ) error {
-    // Ensure nil string_list metrics serialize as empty arrays, not null
-    if params.MetricRequestStringList == nil {
-        params.MetricRequestStringList = []string{}
+    documentID, err := resolveDocumentID(params.DocumentID)
+    if err != nil {
+        return fmt.Errorf("resolve document_id: %w", err)
     }
-    metrics := metrics{
-        "string": {
-            "metric.name": params.MetricName,
-        },
-        "boolean": {
-            "metric.request_bool": params.MetricRequestBool,
-        },
-        "quantity": {
-            "metric.request_count": params.MetricRequestCount,
-        },
-        "datetime": {
-            "metric.request_datetime": params.MetricRequestDatetime.Format("2006-01-02T15:04:05.000Z"),
-        },
-        "string_list": {
-            "metric.request_string_list": params.MetricRequestStringList,
-        },
-    }
-
-    events := []gleanEvent{}
-    if params.Event != nil {
-        events = append(events, params.Event.gleanEvent())
-    }
-    return g.record("server-telemetry-scenario-one", requestInfo, metrics, events)
+    payload := params.buildPayload(g.AppDisplayVersion, g.AppChannel)
+    return g.record("server-telemetry-scenario-one", documentID, requestInfo, payload)
 }
 
 // Record and submit `server-telemetry-scenario-one` ping omitting user request info

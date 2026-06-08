@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Go server: replaced the `go_server_pubsub` outputter with a `transport` option on `go_server` (`-s transport=logging|pubsub|combined`, default logging); `combined` emits both transports in one file and ping params gain an optional `DocumentID` to share a `document_id` across them for gradual migration ([#849](https://github.com/mozilla/glean_parser/pull/849))
 - Add support for Glean session implementation ([#840](https://github.com/mozilla/glean_parser/pull/840))
 
 ## 19.2.0
