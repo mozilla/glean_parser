@@ -4,7 +4,8 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 """
-Tests for the `go_server_pubsub` outputter and its runtime behavior.
+Tests for the `go_server` outputter's Pub/Sub and combined transports
+(`-s transport=pubsub` / `-s transport=combined`) and their runtime behavior.
 """
 
 from pathlib import Path
@@ -38,10 +39,12 @@ YAML_CUSTOM_PING = [
 # Helpers
 
 
-def _translate(glean_module_path, yaml_filenames):
-    """Translate the given YAML fixtures with the pubsub outputter."""
+def _translate(glean_module_path, yaml_filenames, transport="pubsub"):
+    """Translate the given YAML fixtures with the given go_server transport."""
     yaml_files = [ROOT / "data" / name for name in yaml_filenames]
-    translate.translate(yaml_files, "go_server_pubsub", glean_module_path)
+    translate.translate(
+        yaml_files, "go_server", glean_module_path, {"transport": transport}
+    )
 
 
 def _gofmt_parse_ok(path):
@@ -92,8 +95,9 @@ def test_parser_pubsub_ping_no_metrics(tmp_path, capsys):
     without any metrics."""
     translate.translate(
         ROOT / "data" / "server_pings.yaml",
-        "go_server_pubsub",
+        "go_server",
         tmp_path,
+        {"transport": "pubsub"},
     )
     assert all(False for _ in tmp_path.iterdir())
 
@@ -103,8 +107,9 @@ def test_parser_pubsub_metrics_unsupported_type(tmp_path, capsys):
     emitted for each unsupported type."""
     translate.translate(
         [ROOT / "data" / "go_server_metrics_unsupported.yaml"],
-        "go_server_pubsub",
+        "go_server",
         tmp_path,
+        {"transport": "pubsub"},
     )
     captured = capsys.readouterr()
     assert "Ignoring unsupported metric type" in captured.out
@@ -117,8 +122,9 @@ def test_parser_pubsub_labeled_boolean_without_labels(tmp_path, capsys):
     """labeled_boolean without static labels is rejected."""
     translate.translate(
         [ROOT / "data" / "go_server_metrics_unsupported.yaml"],
-        "go_server_pubsub",
+        "go_server",
         tmp_path,
+        {"transport": "pubsub"},
     )
     captured = capsys.readouterr()
     assert "Ignoring labeled_boolean metric without static labels" in captured.out
@@ -129,8 +135,9 @@ def test_parser_pubsub_labeled_boolean(tmp_path):
     """labeled_boolean metrics generate proper struct types."""
     translate.translate(
         ROOT / "data" / "go_server_labeled_boolean_metrics.yaml",
-        "go_server_pubsub",
+        "go_server",
         tmp_path,
+        {"transport": "pubsub"},
     )
 
     assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
@@ -165,8 +172,9 @@ def test_parser_pubsub_generation(tmp_path):
     we don't re-check it here."""
     translate.translate(
         ROOT / "data" / "go_server_events_only_metrics.yaml",
-        "go_server_pubsub",
+        "go_server",
         tmp_path,
+        {"transport": "pubsub"},
     )
 
     assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
@@ -342,3 +350,32 @@ def test_run_pubsub_nil_string_list(tmp_path):
     )
 
     _validate_payload_against_schema(payload_bytes)
+
+
+@pytest.mark.go_dependency
+def test_run_combined_transport(tmp_path):
+    """`transport=combined` emits both the logging Logger and the pubsub
+    Builder into one package, sharing common types. This is what lets a server
+    dual-write during a logging->pubsub migration. Assert both APIs coexist
+    with shared types emitted once, then compile + publish via the builder to
+    prove the combined package builds and the pubsub path still works."""
+    glean_module_path = tmp_path / "glean"
+    _translate(glean_module_path, YAML_EVENTS_PING, transport="combined")
+
+    with (glean_module_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+    # Both transports' entry types and APIs are present in the single file.
+    assert "type GleanEventsBuilder struct" in content
+    assert "type GleanEventsLogger struct" in content
+    assert "func (g GleanEventsBuilder) BuildEventsPingMessage(" in content
+    assert "func (g GleanEventsLogger) RecordEventsPing(" in content
+    # Shared types are emitted once, not duplicated across the two paths.
+    # gofmt validates syntax but not duplicate declarations, so guard here.
+    assert content.count("type clientInfo struct") == 1
+    assert content.count("type pingInfo struct") == 1
+
+    # The combined package compiles and the builder publishes a message.
+    msgs = _run_publisher(tmp_path, PUBSUB_SCENARIOS["events_ping"]["code"])
+    assert len(msgs) == 1, f"expected one published message, got {len(msgs)}"
+    assert msgs[0]["attributes"]["document_type"] == "events"

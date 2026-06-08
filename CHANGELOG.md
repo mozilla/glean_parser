@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **BREAKING:** Removed the `go_server_pubsub` outputter introduced in 19.2.0. Pub/Sub output is now selected via `--format go_server -s transport=pubsub`. Use `-s transport=combined` to emit logging and Pub/Sub in a single file (sharing common types) for a gradual migration.
+- Go server: ping params structs accept an optional `DocumentID` field. When set, it is used as the ping's `document_id` (otherwise a fresh UUID is generated). Set the same `DocumentID` on a params value passed to both `RecordXxxPing` and `BuildXxxMessage` to share an ID across transports during dual-write verification.
 - Add support for Glean session implementation ([#840](https://github.com/mozilla/glean_parser/pull/840))
 
 ## 19.2.0
