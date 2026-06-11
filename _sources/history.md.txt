@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Ensure `in_session` is present for all metrics in the object model, like the other CommonMetricData args ([bug 2046193](https://bugzilla.mozilla.org/show_bug.cgi?id=2046193)).
+
 ## 20.0.0
 
 - BREAKING CHANGE: Go server: replaced the `go_server_pubsub` outputter with a `transport` option on `go_server` (`-s transport=logging|pubsub|combined`, default logging); `combined` emits both transports in one file and ping params gain an optional `DocumentID` to share a `document_id` across them for gradual migration ([#849](https://github.com/mozilla/glean_parser/pull/849))
