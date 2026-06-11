@@ -99,7 +99,7 @@ class Metric:
         self.defined_in = defined_in
         if telemetry_mirror is not None:
             self.telemetry_mirror = telemetry_mirror
-        if in_session:
+        if not hasattr(self, "in_session"):
             self.in_session = in_session
 
         # _validated indicates whether this metric has already been jsonschema
