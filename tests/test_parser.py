@@ -1203,6 +1203,7 @@ def test_no_internal_fields_exposed():
             "disabled": False,
             "expires": "never",
             "gecko_datapoint": "",
+            "in_session": False,
             "keys": None,
             "lifetime": "ping",
             "metadata": {},
