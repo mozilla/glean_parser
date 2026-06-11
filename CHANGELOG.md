@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 20.0.1
+
 - Ensure `in_session` is present for all metrics in the object model, like the other CommonMetricData args ([bug 2046193](https://bugzilla.mozilla.org/show_bug.cgi?id=2046193)).
 
 ## 20.0.0
