@@ -4,7 +4,9 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 from pathlib import Path
+import datetime
 import json
+import os
 import re
 import textwrap
 
@@ -1450,3 +1452,62 @@ def test_forbid_non_ext_non_object_attribution_distribution():
         "Extended attribution/distribution metrics must be of type 'object'"
         in errors[1]
     )
+
+
+def test_expire_epoch_can_be_overriden():
+    metrics = [
+        {
+            "category": {
+                "metric": {
+                    "type": "boolean",
+                    "expires": "2023-12-31",  # definitely in the past
+                },
+            }
+        }
+    ]
+    metrics = [util.add_required(x) for x in metrics]
+
+    all_metrics = parser.parse_objects(metrics)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric"].disabled is True
+
+    # A date definitely before the above expiry.
+    dt = datetime.datetime.strptime("2020-01-01", "%Y-%m-%d")
+    os.environ["SOURCE_DATE_EPOCH"] = str(int(dt.timestamp()))
+
+    all_metrics = parser.parse_objects(metrics)
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric"].disabled is False
+
+    del os.environ["SOURCE_DATE_EPOCH"]
+
+
+@pytest.mark.parametrize(
+    "invalid_epoch",
+    [
+        "not-a-date",
+        "2020-01-01",
+        "",
+    ],
+)
+def test_overriden_expire_epoch_must_be_valid(invalid_epoch):
+    metrics = [
+        {
+            "category": {
+                "metric": {
+                    "type": "boolean",
+                    "expires": "2023-12-31",  # definitely in the past
+                },
+            }
+        }
+    ]
+    metrics = [util.add_required(x) for x in metrics]
+
+    with pytest.raises(ValueError, match="Invalid SOURCE_DATE_EPOCH"):
+        os.environ["SOURCE_DATE_EPOCH"] = invalid_epoch
+        all_metrics = parser.parse_objects(metrics)
+        list(all_metrics)
+
+    del os.environ["SOURCE_DATE_EPOCH"]
