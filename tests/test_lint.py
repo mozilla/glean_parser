@@ -20,6 +20,11 @@ ROOT = Path(__file__).parent
 
 
 def test_common_prefix():
+    """
+    The `COMMON_PREFIX` lint has been silenced.
+    This ensures we're not breaking anyone that lists it in `no_lint`
+    """
+
     contents = [
         {
             "telemetry": {
@@ -44,8 +49,7 @@ def test_common_prefix():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert len(nits) == 1
-    assert nits[0].check_name == "COMMON_PREFIX"
+    assert len(nits) == 0
 
     # Now make sure the override works
     contents[0]["no_lint"] = ["COMMON_PREFIX"]
@@ -149,10 +153,8 @@ def test_combined():
 
     nits = lint.lint_metrics(all_metrics.value)
 
-    assert len(nits) == 4
-    assert set(["COMMON_PREFIX", "CATEGORY_GENERIC", "UNIT_IN_NAME"]) == set(
-        v.check_name for v in nits
-    )
+    assert len(nits) == 3
+    assert set(["CATEGORY_GENERIC", "UNIT_IN_NAME"]) == set(v.check_name for v in nits)
 
 
 def test_baseline_restriction():
