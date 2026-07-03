@@ -54,7 +54,6 @@ def pytest_collection_modifyitems(config, items):
             subprocess.check_output(["node", "--version"]).decode("utf-8").strip()
         )
         major_version = int(node_version[1:].split(".")[0])
-        print(f"jer. {node_version=}, {major_version=}")
         if major_version >= 24:
             skip_node = pytest.mark.skip(reason="Node.js < v24 required")
             for item in items:
