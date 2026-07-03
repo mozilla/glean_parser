@@ -70,6 +70,9 @@ dist: clean ## builds source and wheel package
 install: clean ## install the package to the active Python's site-packages
 	uv sync
 
+license-check:
+	uv run pip-licenses --fail-on 'GNU General Public License v3 (GPLv3)' --ignore-packages yamllint
+
 install-kotlin-linters: ## install ktlint and detekt for linting Kotlin output
 	test -f ktlint || curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
 	echo "03c9f9f78f80bcdb44c292d95e4d9abf221daf5e377673c1b6675a8003eab94d *ktlint" | shasum -a256 -c -

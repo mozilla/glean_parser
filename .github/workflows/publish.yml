@@ -1,0 +1,40 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+
+permissions: {}
+
+jobs:
+  sbom:
+    uses: mozilla/ssdlc-actions/.github/workflows/ssdlc-sbom.yml@5cc2b20e42d53d1643853f12244fbec9ed2f2e0c
+    with:
+      sbom_name: ${{ github.event.release.tag_name || github.sha }}
+    permissions:
+      actions: read
+      contents: write
+
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        with:
+          python-version: "3.10"
+
+      - name: Release package on PyPi
+        run:
+          # Requires that the UV_PUBLISH_TOKEN environment variable
+          # is configured in CircleCI's environment variables.
+          make release
+        env:
+          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
