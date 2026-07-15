@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 20.1.0
+
 - Allow to overwrite date to check expiry against using the `SOURCE_DATE_EPOCH` environment variable ([bug 2052175](https://bugzilla.mozilla.org/show_bug.cgi?id=2052175))
 - Disable the `COMMON_PREFIX` lint. ([bug 2052480](https://bugzilla.mozilla.org/show_bug.cgi?id=2052480))
   This is not a breaking change: We keep the name, but the lint will never trigger.
