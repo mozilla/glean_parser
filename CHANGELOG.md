@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 20.2.0
+- Allow renaming of fields when serializing metrics ([mozilla/glean-dictionary#2309](https://github.com/mozilla/glean-dictionary/issues/2309))
+
 ## 20.1.0
 
 - Allow to overwrite date to check expiry against using the `SOURCE_DATE_EPOCH` environment variable ([bug 2052175](https://bugzilla.mozilla.org/show_bug.cgi?id=2052175))
