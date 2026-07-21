@@ -1136,6 +1136,88 @@ def test_no_lint_sorted():
     assert all_objects.value["tags"]["tag"].no_lint == ["lint1", "lint2"]
 
 
+def test_allow_renaming_of_fields():
+    results = parser.parse_objects(
+        [
+            util.add_required(
+                {
+                    "category": {
+                        "metric": {
+                            "type": "object",
+                            "structure": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "prop_a": {
+                                            "type": "string",
+                                        },
+                                        "prop_b": {
+                                            "type": "boolean",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }
+            ),
+        ]
+    )
+    errs = list(results)
+    assert len(errs) == 0
+
+    metrics = {
+        metric.identifier(): metric.serialize(
+            rename_fields={"_generate_structure": "structure"}
+        )
+        for category, probes in results.value.items()
+        for probe_name, metric in probes.items()
+    }
+
+    expected = {
+        "category.metric": {
+            "bugs": ["http://bugzilla.mozilla.org/12345678"],
+            "data_reviews": ["https://example.com/review/"],
+            "defined_in": {"line": 3},
+            "description": "DESCRIPTION...",
+            "disabled": False,
+            "expires": "never",
+            "gecko_datapoint": "",
+            "in_session": False,
+            "lifetime": "ping",
+            "metadata": {},
+            "no_lint": [],
+            "notification_emails": ["nobody@example.com"],
+            "send_in_pings": ["metrics"],
+            "type": "object",
+            "version": 0,
+            "structure": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "prop_a": {
+                            "type": "string",
+                        },
+                        "prop_b": {
+                            "type": "boolean",
+                        },
+                    },
+                },
+            },
+        },
+    }
+    expected_json = json.dumps(expected, sort_keys=True, indent=2)
+
+    out_json = json.dumps(
+        metrics,
+        sort_keys=True,
+        indent=2,
+    )
+    assert expected_json == out_json
+
+
 def test_no_internal_fields_exposed():
     """
     We accidentally exposed fields like `_config` and `_generate_enums` before.
