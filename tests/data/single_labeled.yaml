@@ -4,10 +4,13 @@
 ---
 $schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
 
+no_lint:
+  - EXPIRATION_DATE_TOO_FAR
+
 category:
-  labeled_counter:
+  labeled_counter: &defaults
     type: labeled_counter
-    lifetime: user
+    lifetime: ping
     description: >
       Foo
     bugs:
@@ -19,3 +22,46 @@ category:
     send_in_pings:
       - core
     expires: 2100-01-01
+
+  labeled_boolean:
+    <<: *defaults
+    type: labeled_boolean
+
+  labeled_string:
+    <<: *defaults
+    type: labeled_string
+
+  labeled_custom_distribution:
+    <<: *defaults
+    type: labeled_custom_distribution
+    range_min: 0
+    range_max: 100
+    bucket_count: 10
+    histogram_type: linear
+    labels:
+      - aLabel
+      - 2label
+
+  labeled_memory_distribution:
+    <<: *defaults
+    type: labeled_memory_distribution
+    memory_unit: kilobyte
+    labels:
+      - aLabel
+      - 2label
+
+  labeled_timing_distribution:
+    <<: *defaults
+    type: labeled_timing_distribution
+    time_unit: millisecond
+    labels:
+      - aLabel
+      - 2label
+
+  labeled_quantity:
+    <<: *defaults
+    type: labeled_quantity
+    unit: tabs
+    labels:
+      - aLabel
+      - 2label
