@@ -411,3 +411,35 @@ def test_object_metric(tmp_path):
         assert "var moduleIndex: Int? = null," in content
         assert "var ip: String? = null," in content
         assert "var trust: String? = null," in content
+
+
+def test_labeled_metrics(tmp_path):
+    """
+    Assert that labeled metrics are created.
+    """
+    translate.translate(
+        ROOT / "data" / "single_labeled.yaml",
+        "kotlin",
+        tmp_path,
+        {"namespace": "Foo"},
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(
+        ["Category.kt", "GleanBuildInfo.kt"]
+    )
+
+    with (tmp_path / "Category.kt").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        content = " ".join(content.split())
+
+        assert "LabeledMetricType<BooleanMetricType>" in content
+        assert "CommonMetricData(" in content
+        assert "LabeledMetricType<CounterMetricType>" in content
+        assert "LabeledMetricType<StringMetricType>" in content
+        assert "LabeledMetricType<QuantityMetricType>" in content
+        assert "LabeledMetricType<CustomDistributionMetricType>" in content
+        assert "CustomDistributionLabeledMetricData(" in content
+        assert "LabeledMetricType<TimingDistributionMetricType>" in content
+        assert "TimingDistributionLabeledMetricData(" in content
+        assert "LabeledMetricType<MemoryDistributionMetricType>" in content
+        assert "MemoryDistributionLabeledMetricData(" in content

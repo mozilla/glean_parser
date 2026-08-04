@@ -381,6 +381,7 @@ def test_object_metric(tmp_path):
         assert "var ip: String?" in content
         assert "var trust: String?" in content
 
+
 def test_labeled_metrics(tmp_path):
     """
     Assert that labeled metrics are created.
