@@ -19,7 +19,7 @@ gleantest.lifetime:
     expires: never
     data_reviews: ['http://example.com']
 gleantest.with.way.too.long.category.name:
-  test_event_inv_lt:
+  test_event_inv_lt: &valid_metric
     description: A test metric
     type: boolean
     bugs:
@@ -27,6 +27,9 @@ gleantest.with.way.too.long.category.name:
     notification_emails: ['nobody@example.com']
     expires: never
     data_reviews: ['http://example.com']
+gleantest_with_way_too_long_category_name_and_no_subcategories:
+  test_metric:
+    <<: *valid_metric
 gleantest.short.category:
   very_long_metric_name_this_is_too_long_as_well_since_it_has_sooooo_many_characters:
     description: A test metric

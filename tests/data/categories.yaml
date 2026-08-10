@@ -1,0 +1,28 @@
+# Any copyright is dedicated to the Public Domain.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+---
+$schema: moz://mozilla.org/schemas/glean/metrics/2-0-0
+
+
+we_used_to_have_subcategory_length:
+  but_we_dont_any_more: &defaults
+    type: counter
+    expires: never
+    description: A test metric
+    bugs: [https://bugzil.la/2062403]
+    data_reviews: [https://www.example.com]
+    notification_emails: [glean-team@mozilla.com]
+
+it.may_matter_that_theres_a_dot_here:
+  so_we_will_test_that_too:
+    <<: *defaults
+
+# Subcategory length 30, Category length 40
+start.abcdefghijklmnopqrstuvwxyzabcd.end:
+  no_problem:
+    <<: *defaults
+
+a.b:
+  really_short_categories_are_allowed:
+    <<: *defaults
