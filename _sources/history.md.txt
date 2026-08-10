@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Generate labeled {custom|memory|timing} distribution for mobile ([#857](https://github.com/mozilla/glean_parser/pull/857))
+
 ## 20.2.0
 - Allow renaming of fields when serializing metrics ([mozilla/glean-dictionary#2309](https://github.com/mozilla/glean-dictionary/issues/2309))
 
