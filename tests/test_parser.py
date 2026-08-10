@@ -357,6 +357,18 @@ def test_parser_schema_violation():
                 - `description`: **Required.** A description of the key.
             Valid when `type`_ is `event`.
         """,
+        """
+        ```
+        gleantest_with_way_too_long_category_name_and_no_subcategories
+        ...
+        ```
+
+        'gleantest_with_way_too_long_category_name_and_no_subcategories' is not valid under any of
+        the given schemas
+        'gleantest_with_way_too_long_category_name_and_no_subcategories' is too long
+        'gleantest_with_way_too_long_category_name_and_no_subcategories' is not one of
+        ['$schema', '$tags']
+        """,
     ]
 
     expected_errors = set(
@@ -370,6 +382,14 @@ def test_parser_schema_violation():
 
     for found_error, expected_error in zip(found, expected):
         assert found_error == expected_error
+
+    # If there are new errors and they're sorted after the expected list,
+    # the above checks won't find them. Log 'em, then assert 'em.
+    if len(found) > len(expected):
+        for i in range(len(expected), len(found)):
+            print(f"Unexpected error: {found[i]}")
+
+    assert len(found) == len(expected)
 
 
 def test_parser_empty():
@@ -1593,3 +1613,14 @@ def test_overriden_expire_epoch_must_be_valid(invalid_epoch):
         list(all_metrics)
 
     del os.environ["SOURCE_DATE_EPOCH"]
+
+
+def test_categories():
+    """Test the basics of parsing oddly-named-or-structured categories."""
+    all_metrics = parser.parse_objects(
+        [ROOT / "data" / "categories.yaml"],
+        config={"allow_reserved": False},
+    )
+
+    errs = list(all_metrics)
+    assert len(errs) == 0
