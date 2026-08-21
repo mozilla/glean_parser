@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 21.0.0
+
 - BREAKING CHANGE: Generate labeled {custom|memory|timing} distribution for mobile ([#857](https://github.com/mozilla/glean_parser/pull/857))
 - Allow categories to have subcategories longer than 29 characters ([bug 2062403](https://bugzilla.mozilla.org/show_bug.cgi?id=2062403))
 
