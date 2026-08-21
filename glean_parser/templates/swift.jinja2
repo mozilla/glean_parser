@@ -227,7 +227,7 @@ extension {{ namespace }} {
                     disabled: {{ obj.is_disabled()|swift }},
                 )
                 {% for arg_name in extra_metric_args if obj[arg_name] is defined %}
-                , {{ obj[arg_name]|swift }}
+                , {{arg_name|camelize}}: {{ obj[arg_name]|swift }}
                 {% endfor %}
             ),
             {% elif obj.type == "labeled_memory_distribution" %}
@@ -240,7 +240,11 @@ extension {{ namespace }} {
                     disabled: {{ obj.is_disabled()|swift }},
                 )
                 {% for arg_name in extra_metric_args if obj[arg_name] is defined %}
-                , {{ obj[arg_name]|swift }}
+                {% if arg_name == "memory_unit" %}
+                , unit: {{ obj[arg_name]|swift }}
+                {% else %}
+                , {{arg_name|camelize}}: {{ obj[arg_name]|swift }}
+                {% endif %}
                 {% endfor %}
             ),
             {% elif obj.type == "labeled_timing_distribution" %}
@@ -253,7 +257,11 @@ extension {{ namespace }} {
                     disabled: {{ obj.is_disabled()|swift }},
                 )
                 {% for arg_name in extra_metric_args if obj[arg_name] is defined %}
-                , {{ obj[arg_name]|swift }}
+                {% if arg_name == "time_unit" %}
+                , unit: {{ obj[arg_name]|swift }}
+                {% else %}
+                , {{arg_name|camelize}}: {{ obj[arg_name]|swift }}
+                {% endif %}
                 {% endfor %}
             ),
             {% elif obj.labeled %}
@@ -266,7 +274,7 @@ extension {{ namespace }} {
                     disabled: {{ obj.is_disabled()|swift }},
                 )
                 {% for arg_name in extra_metric_args if obj[arg_name] is defined %}
-                , {{ obj[arg_name]|swift }}
+                , {{arg_name|camelize}}: {{ obj[arg_name]|swift }}
                 {% endfor %}
             ),
             {% else %}
