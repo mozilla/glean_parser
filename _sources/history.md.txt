@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Swift: Fix argument labels in labeled *distributions ([#859](https://github.com/mozilla/glean_parser/issues/859))
+
 ## 21.0.0
 
 - BREAKING CHANGE: Generate labeled {custom|memory|timing} distribution for mobile ([#857](https://github.com/mozilla/glean_parser/pull/857))
