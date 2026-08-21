@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 21.0.1
+
 - Swift: Fix argument labels in labeled *distributions ([#859](https://github.com/mozilla/glean_parser/issues/859))
 
 ## 21.0.0
