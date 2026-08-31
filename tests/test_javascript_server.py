@@ -44,6 +44,19 @@ def test_parser_js_server_metrics_no_ping(tmp_path):
     assert all(False for _ in tmp_path.iterdir())
 
 
+def test_parser_js_server_event_metrics_custom_ping_no_pings_file(tmp_path):
+    """Test that no files are generated when event metrics target only a
+    custom ping and that ping isn't defined. Event metrics are allowed
+    without a pings.yaml only when they go in the standard `events` ping."""
+    translate.translate(
+        ROOT / "data" / "go_server_custom_ping_only_metrics.yaml",
+        "javascript_server",
+        tmp_path,
+    )
+
+    assert all(False for _ in tmp_path.iterdir())
+
+
 def test_parser_js_server(tmp_path):
     """Test that no files are generated if only metric definitions
     are provided without pings."""
@@ -141,6 +154,61 @@ eventLogger.record({ user_agent: "glean-test/1.0", event_name: "testing" });
     assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
         output.getvalue()
     )
+
+
+@pytest.mark.parametrize(
+    "outputter,ext,extra_assertions",
+    [
+        (
+            "javascript_server",
+            "js",
+            ["'account.user_id'", "document_type: 'server-deletion-request'"],
+        ),
+        ("typescript_server", "ts", ["account_user_id: string"]),
+    ],
+)
+def test_parser_server_deletion_request_standalone(
+    tmp_path, outputter, ext, extra_assertions
+):
+    """Test that server-deletion-request ping code is generated when metrics
+    target it, even without a pings.yaml file."""
+    translate.translate(
+        ROOT / "data" / "server_deletion_request_metrics.yaml",
+        outputter,
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == {f"server_events.{ext}"}
+
+    content = (tmp_path / f"server_events.{ext}").read_text(encoding="utf-8")
+    assert "ServerDeletionRequestServerEvent" in content
+    assert "createServerDeletionRequestEvent" in content
+    for expected in extra_assertions:
+        assert expected in content
+
+
+def test_parser_js_server_deletion_request_with_other_pings(tmp_path):
+    """Test that server-deletion-request ping is generated alongside regular
+    pings when metrics target both."""
+    translate.translate(
+        [
+            ROOT / "data" / "fxa-server-pings.yaml",
+            ROOT / "data" / "fxa-server-metrics.yaml",
+            ROOT / "data" / "server_deletion_request_metrics.yaml",
+        ],
+        "javascript_server",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.js"])
+
+    with (tmp_path / "server_events.js").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+        # Both ping classes should be generated
+        assert "AccountsEventsServerEvent" in content
+        assert "ServerDeletionRequestServerEvent" in content
+        assert "createAccountsEventsEvent" in content
+        assert "createServerDeletionRequestEvent" in content
 
 
 @pytest.mark.node_dependency

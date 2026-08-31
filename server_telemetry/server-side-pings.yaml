@@ -21,3 +21,18 @@ events:
     - https://bugzilla.mozilla.org/show_bug.cgi?id=1512938#c3
   notification_emails:
     - glean-team@mozilla.com
+
+server-deletion-request:
+  description: |
+    This ping is submitted when a server application needs to request
+    deletion of a user's telemetry data from the warehouse.
+    Unlike the SDK's `deletion-request` ping, server applications have no
+    Glean-managed `client_id`, so this ping carries application-defined
+    identifier metrics that the pipeline uses to find the data to delete.
+  include_client_id: false
+  bugs:
+    - https://mozilla-hub.atlassian.net/browse/DENG-4079
+  data_reviews:
+    - TBD
+  notification_emails:
+    - glean-team@mozilla.com
