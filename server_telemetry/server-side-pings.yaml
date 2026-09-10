@@ -33,6 +33,6 @@ server-deletion-request:
   bugs:
     - https://mozilla-hub.atlassian.net/browse/DENG-4079
   data_reviews:
-    - TBD
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=1587095
   notification_emails:
     - glean-team@mozilla.com
