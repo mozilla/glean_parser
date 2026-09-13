@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.javascript_server &#8212; Glean Parser 21.0.0.post1.dev2+gbdc99c962 documentation</title>
+    <title>glean_parser.javascript_server &#8212; Glean Parser 21.0.1.post1.dev2+g8cba4e583 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
-    <script src="../../_static/documentation_options.js?v=27aa1b2b"></script>
+    <script src="../../_static/documentation_options.js?v=554a41c5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -73,6 +73,10 @@
 <span class="c1"># Adding a metric here will require updating the `generate_js_metric_type` function</span>
 <span class="c1"># and might require changes to the template.</span>
 <span class="n">SUPPORTED_METRIC_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;event&quot;</span><span class="p">]</span>
+
+<span class="c1"># Pings defined in the glean-server library (server_telemetry/server-side-pings.yaml)</span>
+<span class="c1"># are available to all server apps without needing a local pings.yaml definition.</span>
+<span class="n">KNOWN_SERVER_PINGS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="s2">&quot;server-deletion-request&quot;</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="event_class_name">
@@ -220,23 +224,23 @@
         <span class="o">+</span> <span class="s2">&quot; parser doesn&#39;t generate individual metric files. Make sure to pass all&quot;</span>
         <span class="o">+</span> <span class="s2">&quot; your ping and metric definitions in a single invocation of the parser.&quot;</span>
     <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;pings&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
-        <span class="c1"># If events are meant to be sent in custom pings, we need to make sure they</span>
-        <span class="c1"># are defined. Otherwise we won&#39;t have destination tables defined and</span>
-        <span class="c1"># submissions won&#39;t pass validation at ingestion.</span>
-        <span class="k">if</span> <span class="n">event_metric_exists</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ping_to_metrics</span><span class="p">:</span>
-                <span class="c1"># Event metrics can be sent in standard `events` ping</span>
-                <span class="c1"># or in custom pings.</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="s2">&quot;❌ &quot;</span>
-                    <span class="o">+</span> <span class="n">PING_METRIC_ERROR_MSG</span>
-                    <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> You need to either send your event metrics in standard&quot;</span>
-                    <span class="o">+</span> <span class="s2">&quot; `events` ping or define a custom one.&quot;</span>
-                <span class="p">)</span>
-                <span class="k">return</span>
-        <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># If custom pings are targeted, they must be explicitly defined in a</span>
+    <span class="c1"># pings.yaml - otherwise destination tables aren&#39;t set up and submissions</span>
+    <span class="c1"># fail ingestion. Pings from the glean-server library are exempt: they&#39;re</span>
+    <span class="c1"># centrally defined and available to all server apps.</span>
+    <span class="k">if</span> <span class="s2">&quot;pings&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">objs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="n">p</span> <span class="ow">in</span> <span class="n">KNOWN_SERVER_PINGS</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ping_to_metrics</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">event_metric_exists</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ No ping definition found.&quot;</span> <span class="o">+</span> <span class="n">PING_METRIC_ERROR_MSG</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ping_to_metrics</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;❌ &quot;</span>
+                <span class="o">+</span> <span class="n">PING_METRIC_ERROR_MSG</span>
+                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> You need to either send your event metrics in standard&quot;</span>
+                <span class="o">+</span> <span class="s2">&quot; `events` ping or define a custom one.&quot;</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ping_to_metrics</span><span class="p">:</span>
