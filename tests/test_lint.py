@@ -966,3 +966,29 @@ def test_events_on_metrics_ping(content, num_nits):
     assert len(nits) == num_nits
     if num_nits > 0:
         assert set(["EVENT_ON_NON_EVENTS_PING"]) == set(v.check_name for v in nits)
+
+
+def test_no_info_for_ohttp():
+    """
+    Test that pings must exclude *_info sections if they require OHTTP.
+    """
+    content = {
+        "uno": {"uploader_capabilities": ["ohttp"]},
+        "dos": {
+            "uploader_capabilities": ["ohttp"],
+            "metadata": {"include_info_sections": True},
+        },
+        "tres": {
+            "uploader_capabilities": ["ohttp"],
+            "metadata": {"include_info_sections": False},
+        },
+    }
+
+    content = util.add_required_ping(content)
+    all_pings = parser.parse_objects([content])
+    errs = list(all_pings)
+    assert len(errs) == 0
+
+    nits = lint.lint_metrics(all_pings.value)
+    assert len(nits) == 2
+    assert set(["NO_INFO_FOR_OHTTP"]) == set(v.check_name for v in nits)
