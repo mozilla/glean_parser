@@ -3,6 +3,7 @@
 ## Unreleased
 
 - JS/TS server: Add support for `server-deletion-request` ping. Server apps can now add `server-deletion-request` to `send_in_pings` on identifier metrics (e.g. user IDs) ([DENG-4079](https://mozilla-hub.atlassian.net/browse/DENG-4079))
+- BREAKING CHANGE: Require pings defined requiring an "ohttp" uploader capability to have `metadata.include_info_sections: false` ([bug 2074263](https://bugzilla.mozilla.org/show_bug.cgi?id=2074263))
 
 ## 21.0.1
 
