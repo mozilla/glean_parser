@@ -3,12 +3,11 @@
 # Any copyright is dedicated to the Public Domain.
 # http://creativecommons.org/publicdomain/zero/1.0/
 
-import datetime
-
 import pytest
 
 from glean_parser import parser
 from glean_parser import metrics
+from glean_parser import util
 
 
 def test_metrics_match_schema():
@@ -52,7 +51,7 @@ def test_expires():
     """
     for date, expired in [
         ("2018-06-10", True),
-        (datetime.datetime.now(datetime.timezone.utc).date().isoformat(), True),
+        (util.now_epoch().date().isoformat(), True),
         ("3000-01-01", False),
     ]:
         m = metrics.Boolean(
