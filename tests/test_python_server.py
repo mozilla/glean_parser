@@ -9,6 +9,7 @@ import json
 
 import shutil
 import subprocess
+import sys
 
 
 from glean_parser import translate
@@ -48,9 +49,9 @@ def test_logging(tmp_path):
     shutil.copy(ROOT / "test-py" / "test.py", tmp_path)
 
     # run test script
-    logged_output = subprocess.check_output(["python", "test.py"], cwd=tmp_path).decode(
-        "utf-8"
-    )
+    logged_output = subprocess.check_output(
+        [sys.executable, "test.py"], cwd=tmp_path
+    ).decode("utf-8")
 
     for log_line in logged_output.splitlines():
         json_line = json.loads(log_line)
