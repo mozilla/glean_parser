@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Support `flows.yaml` files (`moz://mozilla.org/schemas/glean/flows/1-0-0`), declaring multi-step tasks measured as a unit over existing event metrics. Flows are validated against the metrics passed to the parser, with warnings for events that aren't defined in any of them (`UNRESOLVED_FLOW_EVENT`) and for flows with no exit events (`EMPTY_ENDS_ON`). Kotlin, Swift, and Rust output gains the flow definitions to pass to Glean at initialization (`GleanFlows`), and Markdown output documents flows and the flows each event belongs to. Flows are passed to external translators as the `flows` option ([bug 2077133](https://bugzilla.mozilla.org/show_bug.cgi?id=2077133))
+
 ## 22.0.0
 
 - JS/TS server: Add support for `server-deletion-request` ping. Server apps can now add `server-deletion-request` to `send_in_pings` on identifier metrics (e.g. user IDs) ([DENG-4079](https://mozilla-hub.atlassian.net/browse/DENG-4079))

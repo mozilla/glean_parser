@@ -1,0 +1,40 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+---
+$schema: moz://mozilla.org/schemas/glean/flows/1-0-0
+
+onboarding:
+  description: First-run setup, from the first card to finishing or dismissing.
+  bugs:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=2077133
+  data_reviews:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=2077133
+  notification_emails:
+    - nobody@example.com
+  starts_on:
+    - onboarding.started
+  ends_on:
+    - onboarding.finished
+    - onboarding.dismissed
+  includes:
+    - onboarding.card_shown
+  auto_close_timeout: 45m
+
+checkout:
+  description: From starting checkout to paying.
+  bugs:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=2077133
+  data_reviews:
+    - https://bugzilla.mozilla.org/show_bug.cgi?id=2077133
+  notification_emails:
+    - nobody@example.com
+  starts_on:
+    - checkout.started
+  ends_on:
+    - checkout.paid
+  includes:
+    - onboarding.card_shown
+    - library.thing_happened
+  disabled: true
