@@ -15,6 +15,7 @@ using Glean is available in `the Glean book <https://mozilla.github.io/glean>`_.
    metrics-yaml
    pings-yaml
    tags-yaml
+   flows-yaml
    modules
    contributing
    authors
