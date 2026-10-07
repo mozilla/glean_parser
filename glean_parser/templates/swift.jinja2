@@ -12,7 +12,7 @@ Jinja2 template is not. Please file bugs! #}
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 {%- macro obj_declaration(obj, suffix='', access='') %}
-{{ access }}static let {{ obj.name|camelize|variable_name }}{{ suffix }} = {{ obj|type_name }}( // generated from {{ obj.identifier() }}
+{{ access }}static let {{ obj.name|camelize|variable_name }}{{ suffix }} = {{ obj|type_name }}( // generated from {{ obj.identifier }}
         CommonMetricData(
             {% for arg_name in common_metric_args if obj[arg_name] is defined %}
             {{ arg_name|camelize }}: {{ obj[arg_name]|swift }}{{ "," if not loop.last }}
@@ -216,7 +216,7 @@ extension {{ namespace }} {
         {% if obj.labeled %}
         {{ obj_declaration(obj, 'Label', 'private ') | indent }}
         /// {{ obj.description|wordwrap() | replace('\n', '\n        /// ') }}
-        static let {{ obj.name|camelize|variable_name }} = try! LabeledMetricType<{{ obj|type_name }}>( // generated from {{ obj.identifier() }}
+        static let {{ obj.name|camelize|variable_name }} = try! LabeledMetricType<{{ obj|type_name }}>( // generated from {{ obj.identifier }}
             {% if obj.type == "labeled_custom_distribution" %}
             .customDistribution(
                 cmd: CommonMetricData(

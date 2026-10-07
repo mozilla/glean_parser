@@ -58,7 +58,7 @@ def test_parser(tmp_path):
 
         assert "True if the user has set Firefox as the default browser." in content
         assert "جمع 搜集" in content
-        assert 'category: "telemetry"' in content
+        assert 'identifier: "telemetry.' in content
 
     # We don't have a cargo.toml, not sure what to do here aside from creating a fake
     # one for the purpose of running cargo fmt and cargo clippy
@@ -193,7 +193,7 @@ def test_order_of_fields(tmp_path):
         elif re.search("CommonMetricData {", line):
             found_metric = True
 
-    expected_fields = ["category", "name", "send_in_pings", "lifetime", "disabled"]
+    expected_fields = ["identifier", "send_in_pings", "lifetime", "disabled"]
 
     # We only check the limited list of always available fields.
     size = len(expected_fields)
