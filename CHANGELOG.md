@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BREAKING CHANGE: Combine category & name into a single identifier in generated code ([#864](https://github.com/mozilla/glean_parser/pull/864))
+
 ## 22.1.0
 
 - Rust and Rust Sym: Preserve object metric property names containing dots, hyphens, or uppercase letters when serializing and deserializing JSON ([bug 1929903](https://bugzilla.mozilla.org/show_bug.cgi?id=1929903)).

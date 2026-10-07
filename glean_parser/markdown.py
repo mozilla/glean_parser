@@ -246,7 +246,7 @@ def output_markdown(
     # in the docs and to make generated docs reproducible.
     for ping_name in metrics_by_pings:
         metrics_by_pings[ping_name] = sorted(
-            metrics_by_pings[ping_name], key=lambda x: x.identifier()
+            metrics_by_pings[ping_name], key=lambda x: x.identifier
         )
 
     # The flows each event belongs to, so the event's row can link to them.
@@ -279,7 +279,7 @@ def output_markdown(
                 lambda x: ping_include_client_id(x, custom_pings_cache),
             ),
             ("data_sensitivity_numbers", data_sensitivity_numbers),
-            ("event_flows", lambda x: flows_by_event.get(x.identifier(), [])),
+            ("event_flows", lambda x: flows_by_event.get(x.identifier, [])),
             ("timeout_desc", timeout_desc),
         ),
     )

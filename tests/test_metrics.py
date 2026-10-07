@@ -122,7 +122,7 @@ def test_identifier():
         expires="never",
     )
 
-    assert m.identifier() == "category.metric"
+    assert m.identifier == "category.metric"
 
 
 def test_identifier_glean_category():
@@ -140,7 +140,7 @@ def test_identifier_glean_category():
         expires="never",
     )
 
-    assert m.identifier() == "metric"
+    assert m.identifier == "metric"
 
 
 def test_reserved_extra_keys():
