@@ -436,10 +436,10 @@ def check_name_too_similar(
         if check_name in metric.no_lint:
             continue
 
-        no_punc = metric.identifier().replace("_", "").replace(".", "")
+        no_punc = metric.identifier.replace("_", "").replace(".", "")
         if no_punc in seen_metrics:
-            msg = f"Metric `{metric.identifier()}`'s name is too similar to existing metric `{seen_metrics[no_punc].identifier()}`"
-            nit = GlinterNit(check_name, metric.identifier(), msg, check_type)
+            msg = f"Metric `{metric.identifier}`'s name is too similar to existing metric `{seen_metrics[no_punc].identifier}`"
+            nit = GlinterNit(check_name, metric.identifier, msg, check_type)
             yield nit
 
         seen_metrics[no_punc] = metric

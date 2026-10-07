@@ -37,7 +37,7 @@ import {{ type|class_name }} from "@mozilla/glean/private/{{ type|import_path }}
 /**
  * {{ obj.description|wordwrap() | replace("\n", "\n * ") }}
  *
- * Generated from `{{ obj.identifier() }}`.
+ * Generated from `{{ obj.identifier }}`.
  */
 {% if obj.labeled %}
 {% if platform != "qt" %}export {% endif %}const {{ obj.name|camelize }} = {{ labeled_obj_declaration(obj) }};
@@ -49,7 +49,7 @@ import {{ type|class_name }} from "@mozilla/glean/private/{{ type|import_path }}
 {% for name, suffix in obj["_generate_enums"] %}
 {% if obj|attr(name)|length and name == "reason_codes" %}
 /**
- * Reason codes for `{{ obj.identifier() }}`.
+ * Reason codes for `{{ obj.identifier }}`.
  *
  * @readonly
  * @enum {string}
