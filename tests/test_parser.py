@@ -727,6 +727,21 @@ def test_do_not_disable_expired():
     assert metrics["category"]["metric"].disabled is False
 
 
+def test_skip_schema_validation():
+    contents = [{"category": {"metric": {"type": "boolean", "description": 42}}}]
+    contents = [util.add_required(x) for x in contents]
+
+    all_metrics = parser.parse_objects(contents)
+    errors = list(all_metrics)
+    assert len(errors) == 1
+    assert "description" in errors[0]
+
+    all_metrics = parser.parse_objects(contents, {"skip_schema_validation": True})
+    errors = list(all_metrics)
+    assert len(errors) == 0
+    assert all_metrics.value["category"]["metric"].description == 42
+
+
 def test_interesting_disables_others():
     # Test that if we get an "interesting" config param, only the metrics in
     # the provided config files are enabled.
