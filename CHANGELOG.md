@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a `skip_schema_validation` option to `parse_objects` to skip schema validation of input files ([bug 2076540](https://bugzilla.mozilla.org/show_bug.cgi?id=2076540))
+
 ## 22.0.1
 
 - JS/TS server: Fix the JSDoc `@returns` type on generated factory functions to name the class they actually return ([#871](https://github.com/mozilla/glean_parser/pull/871))
