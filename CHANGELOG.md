@@ -5,6 +5,7 @@
 - JS/TS server: Add support for `server-deletion-request` ping. Server apps can now add `server-deletion-request` to `send_in_pings` on identifier metrics (e.g. user IDs) ([DENG-4079](https://mozilla-hub.atlassian.net/browse/DENG-4079))
 - JS: Ensure imports are sorted ([#865](https://github.com/mozilla/glean_parser/pull/865))
 - BREAKING CHANGE: Require pings defined requiring an "ohttp" uploader capability to have `metadata.include_info_sections: false` ([bug 2074263](https://bugzilla.mozilla.org/show_bug.cgi?id=2074263))
+- Add a `skip_schema_validation` option to `parse_objects` to skip schema validation of input files ([bug 2076540](https://bugzilla.mozilla.org/show_bug.cgi?id=2076540))
 
 ## 21.0.1
 
