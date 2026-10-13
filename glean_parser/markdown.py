@@ -231,7 +231,7 @@ def output_markdown(
     # in the docs and to make generated docs reproducible.
     for ping_name in metrics_by_pings:
         metrics_by_pings[ping_name] = sorted(
-            metrics_by_pings[ping_name], key=lambda x: x.identifier()
+            metrics_by_pings[ping_name], key=lambda x: x.identifier
         )
 
     project_title = options.get("project_title", "this project")
