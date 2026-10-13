@@ -95,9 +95,10 @@ def _load_file(
     if filetype not in ("metrics", "pings", "tags"):
         filetype = None
 
-    for error in validate(content, filepath):
-        content = {}
-        yield error
+    if not parser_config.get("skip_schema_validation", False):
+        for error in validate(content, filepath):
+            content = {}
+            yield error
 
     return content, filetype
 
@@ -486,6 +487,10 @@ def parse_objects(
           the input `filepaths` do not exist.
         - `interesting`: Contains an array of interesting metrics/ping files.
           Probes not included in these files will be marked as disabled.
+        - `skip_schema_validation`: Don't validate the input files against the
+          schema, including checking that `$schema` is a known schema. This is
+          only safe when they have been validated elsewhere: invalid input may
+          raise exceptions rather than produce errors.
     """
     if config is None:
         config = {}
