@@ -85,6 +85,38 @@ def test_parser_go_server_labeled_boolean(tmp_path):
         assert "TelemetryFeatureFlags TelemetryFeatureFlags" in content
 
 
+def test_parser_go_server_labeled_quantity_with_labels(tmp_path, capsys):
+    """Test that labeled_quantity with static labels is rejected."""
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_metrics_unsupported.yaml",
+        ],
+        "go_server",
+        tmp_path,
+    )
+    captured = capsys.readouterr()
+    assert "Ignoring labeled_quantity metric with static labels" in captured.out
+
+
+def test_parser_go_server_labeled_quantity(tmp_path):
+    """Test that labeled_quantity metrics generate proper map[string]int64."""
+    translate.translate(
+        ROOT / "data" / "go_server_labeled_quantity_metrics.yaml",
+        "go_server",
+        tmp_path,
+    )
+
+    assert set(x.name for x in tmp_path.iterdir()) == set(["server_events.go"])
+
+    # Read generated file and verify struct is created
+    with (tmp_path / "server_events.go").open("r", encoding="utf-8") as fd:
+        content = fd.read()
+
+        # Check that it's used in the ping struct
+        assert "TelemetryTestLabeledQuantity map[string]int64" in content
+        assert "func sanitizeLabeledQuantity" in content
+
+
 def test_parser_go_server_events_only(tmp_path):
     """Test that parser works for definitions that only use events ping"""
     translate.translate(
@@ -502,6 +534,120 @@ def test_run_logging_labeled_boolean_omitted(tmp_path):
     feature_flags = labeled_boolean_metrics["telemetry.feature_flags"]
     # Verify it's an empty dict {}
     assert feature_flags == {}
+
+
+@pytest.mark.go_dependency
+def test_run_logging_labeled_quantity(tmp_path):
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_labeled_quantity_metrics.yaml",
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    code = f"""
+    _ = time.Now() // satisfy Go's unused import check for "time"
+    logger.RecordEventsPing(
+        glean.RequestInfo{{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        }},
+        glean.EventsPing{{
+            TelemetryTestLabeledQuantity: map[string]int64{{
+                "tile": 5,
+                "{"a" * 111}": 9,
+                "{"b" * 112}": 7,
+            }},
+        }},
+    )
+    """
+
+    logged_output = run_logger(tmp_path, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload_str = fields["payload"]
+    payload = json.loads(payload_str)
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "events" == fields["document_type"]
+
+    # Validate payload against Glean schema
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(payload_str)
+    output = io.StringIO()
+    assert validate_ping.validate_ping(input, output, schema_url=schema_url) == 0, (
+        output.getvalue()
+    )
+
+    # Labels over 111 bytes are recorded under __other__; 111 bytes is kept
+    value = payload["metrics"]["labeled_quantity"]["telemetry.test_labeled_quantity"]
+    assert value == {"tile": 5, "a" * 111: 9, "__other__": 7}
+
+
+@pytest.mark.go_dependency
+def test_run_logging_labeled_quantity_omitted(tmp_path):
+    """Test that completely omitted labeled_quantity metrics serialize correctly."""
+    glean_module_path = tmp_path / "glean"
+
+    translate.translate(
+        [
+            ROOT / "data" / "go_server_labeled_quantity_metrics.yaml",
+        ],
+        "go_server",
+        glean_module_path,
+    )
+
+    # This code logs an events ping without setting the labeled_quantity metric at all, not even to nil.
+    code = """
+    _ = time.Now() // satisfy Go's unused import check for "time"
+    logger.RecordEventsPing(
+        glean.RequestInfo{
+            UserAgent: "glean-test/1.0",
+            IpAddress: "127.0.0.1",
+        },
+        glean.EventsPing{
+            // TelemetryTestLabeledQuantity completely omitted (zero value)
+        },
+    )
+    """
+
+    logged_output = run_logger(tmp_path, code)
+    logged_output = json.loads(logged_output)
+    fields = logged_output["Fields"]
+    payload_str = fields["payload"]
+    payload = json.loads(payload_str)
+
+    assert "glean-server-event" == logged_output["Type"]
+    assert "glean.test" == fields["document_namespace"]
+    assert "events" == fields["document_type"]
+
+    # Validate payload against Glean schema
+    schema_url = (
+        "https://raw.githubusercontent.com/mozilla-services/"
+        "mozilla-pipeline-schemas/main/"
+        "schemas/glean/glean/glean.1.schema.json"
+    )
+
+    input = io.StringIO(payload_str)
+    output = io.StringIO()
+    validation_result = validate_ping.validate_ping(
+        input, output, schema_url=schema_url
+    )
+
+    assert validation_result == 0, f"Validation failed. Output: {output.getvalue()}"
+
+    # Check how labeled_quantity is serialized when omitted
+    labeled_quantity_metrics = payload["metrics"]["labeled_quantity"]
+    assert labeled_quantity_metrics["telemetry.test_labeled_quantity"] == {}
 
 
 @pytest.mark.go_dependency

@@ -36,6 +36,23 @@ metric:
     send_in_pings:
       - events
 
+  labeled_quantity:
+    type: labeled_quantity
+    description: >
+      labeled quantity
+    bugs:
+      - TBD
+    data_reviews:
+      - TBD
+    notification_emails:
+      - CHANGE-ME@example.com
+    lifetime: application
+    expires: never
+    send_in_pings:
+      - events
+    labels:
+      - sample_feature
+
   object:
     type: object
     description: >
