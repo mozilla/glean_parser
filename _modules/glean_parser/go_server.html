@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>glean_parser.go_server &#8212; Glean Parser 21.0.1.post1.dev6+ga1046f807 documentation</title>
+    <title>glean_parser.go_server &#8212; Glean Parser 21.0.1.post1.dev7+gb799f6a78 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
-    <script src="../../_static/documentation_options.js?v=58d27224"></script>
+    <script src="../../_static/documentation_options.js?v=e35bf51c"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -78,6 +78,7 @@
     <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
     <span class="s2">&quot;labeled_boolean&quot;</span><span class="p">,</span>  <span class="c1"># static labels only; dynamic labels are not supported</span>
     <span class="s2">&quot;string_list&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;labeled_quantity&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -136,6 +137,8 @@
         <span class="k">return</span> <span class="s2">&quot;time.Time&quot;</span>
     <span class="k">elif</span> <span class="n">metric_type</span> <span class="o">==</span> <span class="s2">&quot;string_list&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;[]string&quot;</span>
+    <span class="k">elif</span> <span class="n">metric_type</span> <span class="o">==</span> <span class="s2">&quot;labeled_quantity&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;map[string]int64&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ Unable to generate Go type from metric type: &quot;</span> <span class="o">+</span> <span class="n">metric_type</span><span class="p">)</span>
         <span class="n">exit</span>
@@ -168,6 +171,30 @@
             <span class="s2">&quot;❌ Ignoring labeled_boolean metric without static labels: &quot;</span>
             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="o">+</span> <span class="s2">&quot; Define labels in metrics.yaml to use this metric type.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="validate_labeled_quantity">
+<a class="viewcode-back" href="../../glean_parser.html#glean_parser.go_server.validate_labeled_quantity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_labeled_quantity</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate that a labeled_quantity metric does not have static labels defined.</span>
+
+<span class="sd">    The Go server outputter does not support static labels. It generates a Go map[string]int64</span>
+<span class="sd">    Dynamic labels are supported.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if valid, False otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;ordered_labels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;❌ Ignoring labeled_quantity metric with static labels: &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; Do not define labels in metrics.yaml to use this metric type.&quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -217,6 +244,8 @@
     <span class="c1"># unique list of labeled_boolean metrics used in any ping</span>
     <span class="n">labeled_boolean_metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="n">has_labeled_quantity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
     <span class="c1"># Go through all metrics in objs and build a map of</span>
     <span class="c1"># ping-&gt;list of metric categories-&gt;list of metrics</span>
     <span class="c1"># for easier processing in the template.</span>
@@ -238,6 +267,12 @@
                     <span class="n">metric</span>
                 <span class="p">):</span>
                     <span class="k">continue</span>
+
+                <span class="c1"># Validate labeled_quantity metrics</span>
+                <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;labeled_quantity&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">validate_labeled_quantity</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">has_labeled_quantity</span> <span class="o">=</span> <span class="kc">True</span>
 
                 <span class="k">for</span> <span class="n">ping</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">send_in_pings</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">metric</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;event&quot;</span> <span class="ow">and</span> <span class="n">metric</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_metrics</span><span class="p">:</span>
@@ -271,6 +306,7 @@
                 <span class="n">pings</span><span class="o">=</span><span class="n">ping_to_metrics</span><span class="p">,</span>
                 <span class="n">events</span><span class="o">=</span><span class="n">event_metrics</span><span class="p">,</span>
                 <span class="n">labeled_booleans</span><span class="o">=</span><span class="n">labeled_boolean_metrics</span><span class="p">,</span>
+                <span class="n">has_labeled_quantity</span><span class="o">=</span><span class="n">has_labeled_quantity</span><span class="p">,</span>
                 <span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
