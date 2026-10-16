@@ -106,5 +106,7 @@ ENV/
 
 .vscode/
 
+*.swp
+
 detekt*.jar
 ktlint
