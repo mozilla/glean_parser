@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 22.0.1
+
 - JS/TS server: Fix the JSDoc `@returns` type on generated factory functions to name the class they actually return ([#871](https://github.com/mozilla/glean_parser/pull/871))
 
 ## 22.0.0
