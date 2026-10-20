@@ -75,6 +75,8 @@ def test_parser_js_server(tmp_path):
     with (tmp_path / "server_events.js").open("r", encoding="utf-8") as fd:
         content = fd.read()
         assert "'event.name': event_name" in content
+        # JSDoc return type must match the class the factory returns
+        assert "@returns {AccountsEventsServerEvent}" in content
 
 
 def test_generate_ping_factory_method():
