@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 
+import pytest
 
 from glean_parser import translate
 from glean_parser import validate_ping
@@ -31,6 +32,7 @@ def test_no_event_metrics(tmp_path):
     assert all(False for _ in tmp_path.iterdir())
 
 
+@pytest.mark.web_dependency
 def test_logging(tmp_path):
     """Test that generated code can be used to log events in the right format."""
 
