@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- JS/TS server: Fix the JSDoc `@returns` type on generated factory functions to name the class they actually return ([#871](https://github.com/mozilla/glean_parser/pull/871))
+
 ## 22.0.0
 
 - JS/TS server: Add support for `server-deletion-request` ping. Server apps can now add `server-deletion-request` to `send_in_pings` on identifier metrics (e.g. user IDs) ([DENG-4079](https://mozilla-hub.atlassian.net/browse/DENG-4079))
