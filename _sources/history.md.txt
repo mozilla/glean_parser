@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fix tests that failed when `SOURCE_DATE_EPOCH` is set in the environment
 - Add a `skip_schema_validation` option to `parse_objects` to skip schema validation of input files ([bug 2076540](https://bugzilla.mozilla.org/show_bug.cgi?id=2076540))
 
 ## 22.0.1
