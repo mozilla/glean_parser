@@ -201,6 +201,7 @@ class Metric:
         modified_dict = util.remove_output_params(d, "defined_in")
         return modified_dict
 
+    @property
     def identifier(self) -> str:
         """
         Create an identifier unique for this metric.

@@ -114,6 +114,7 @@ class Ping:
         modified_dict = util.remove_output_params(modified_dict, "schedules_pings")
         return modified_dict
 
+    @property
     def identifier(self) -> str:
         """
         Used for the "generated from ..." comment in the output.
