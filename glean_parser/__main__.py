@@ -231,7 +231,7 @@ def dump(input, allow_reserved, allow_missing_files, require_tags):
     assert len(errs) == 0
 
     metrics = {
-        metric.identifier(): metric.serialize()
+        metric.identifier: metric.serialize()
         for category, probes in results.value.items()
         for probe_name, metric in probes.items()
     }

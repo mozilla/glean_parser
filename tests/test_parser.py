@@ -1202,7 +1202,7 @@ def test_allow_renaming_of_fields():
     assert len(errs) == 0
 
     metrics = {
-        metric.identifier(): metric.serialize(
+        metric.identifier: metric.serialize(
             rename_fields={"_generate_structure": "structure"}
         )
         for category, probes in results.value.items()
@@ -1288,7 +1288,7 @@ def test_no_internal_fields_exposed():
     assert len(errs) == 0
 
     metrics = {
-        metric.identifier(): metric.serialize()
+        metric.identifier: metric.serialize()
         for category, probes in results.value.items()
         for probe_name, metric in probes.items()
     }

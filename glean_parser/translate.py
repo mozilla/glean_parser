@@ -87,7 +87,7 @@ def transform_metrics(objects):
         if category_name == "tags":
             continue
         for metric in category_val.values():
-            fqmn = metric.identifier()
+            fqmn = metric.identifier
             if getattr(metric, "type", None) == "counter":
                 counters[fqmn] = metric
             denominator_name = getattr(metric, "denominator_metric", None)

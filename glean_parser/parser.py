@@ -243,7 +243,7 @@ def _instantiate_metrics(
                         )
                         metric_obj = None
                     elif (
-                        metric_obj.identifier()
+                        metric_obj.identifier
                         in ("glean.attribution.ext", "glean.distribution.ext")
                         and metric_obj.type != "object"
                     ):
