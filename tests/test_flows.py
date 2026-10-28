@@ -123,9 +123,14 @@ def test_schema_rejects_malformed_flows():
 
 
 def test_schema_rejects_invalid_flow_names():
-    for name in ("Onboarding", "1st_run", "with-dash", "x" * 41):
+    for name in ("Onboarding", "1st_run", "with-dash", "x" * 112):
         _, errors = parse(onboarding_metrics(), flows_file(**{name: flow()}))
         assert len(errors) == 1, name
+
+
+def test_schema_accepts_flow_names_up_to_label_length():
+    _, errors = parse(onboarding_metrics(), flows_file(**{"x" * 111: flow()}))
+    assert errors == []
 
 
 def test_an_event_may_play_only_one_role_in_a_flow():

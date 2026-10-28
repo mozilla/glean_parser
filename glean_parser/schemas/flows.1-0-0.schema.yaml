@@ -38,9 +38,9 @@ propertyNames:
       description: |
         Flow names appear in event payloads and as metric labels, so they are
         limited to lowercase letters, digits, and underscores, starting with a
-        letter, up to 40 characters.
+        letter, up to 111 characters, the limit for metric labels.
       type: string
-      pattern: "^[a-z][a-z0-9_]{0,39}$"
+      pattern: "^[a-z][a-z0-9_]{0,110}$"
 
 properties:
   $schema:
@@ -127,7 +127,8 @@ additionalProperties:
         Events that close the open instance of the flow when recorded.
 
         A flow without exit events can only close by timing out or when its
-        session ends, so it can never record a conclusive outcome.
+        session ends, so it can never record a conclusive outcome. Until it
+        closes, recording an entry event again does not open a new instance.
       $ref: "#/definitions/event_list"
 
     includes:

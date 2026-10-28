@@ -501,9 +501,12 @@ def check_empty_ends_on(
 ) -> LintGenerator:
     if not flow.ends_on:
         yield (
-            "The flow has no `ends_on` events, so it can only close by timing out "
-            "or when its session ends, and can never record a conclusive outcome. "
-            "A second attempt is also absorbed into the instance that is still open."
+            "The flow has no `ends_on` events, so once an instance of it opens, it "
+            "can only close by timing out or when its session ends, and can never "
+            "record a conclusive outcome. Until it closes, recording a `starts_on` "
+            "event again does not open a new instance: if the user starts the task "
+            "over, their new run is counted as part of the instance that is still "
+            "open."
         )
 
 
