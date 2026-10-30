@@ -33,8 +33,6 @@ jobs:
 
       - name: Release package on PyPi
         run:
-          # Requires that the UV_PUBLISH_TOKEN environment variable
-          # is configured in CircleCI's environment variables.
           make release
         env:
-          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
