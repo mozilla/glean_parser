@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Support `flows.yaml` files (`moz://mozilla.org/schemas/glean/flows/1-0-0`), declaring multi-step tasks measured as a unit over existing event metrics. Flows are validated against the metrics passed to the parser, with warnings for events that aren't defined in any of them (`UNRESOLVED_FLOW_EVENT`) and for flows with no exit events (`EMPTY_ENDS_ON`). Kotlin, Swift, and Rust output gains the flow definitions to pass to Glean at initialization (`GleanFlows`), and Markdown output documents flows and the flows each event belongs to. Flows are passed to external translators as the `flows` option ([bug 2077133](https://bugzilla.mozilla.org/show_bug.cgi?id=2077133))
 - Fix tests that failed when `SOURCE_DATE_EPOCH` is set in the environment
 - Add a `skip_schema_validation` option to `parse_objects` to skip schema validation of input files ([bug 2076540](https://bugzilla.mozilla.org/show_bug.cgi?id=2076540))
 - Mark `test_logging` as requiring a web connection
