@@ -121,7 +121,9 @@ def args(obj_type: str) -> Dict[str, object]:
     if obj_type == "ping":
         return {"common": util.ping_args, "extra": []}
 
-    return {"common": util.common_metric_args, "extra": util.extra_metric_args}
+    common = ["category", "name"] + util.common_metric_args
+    common.remove("identifier")
+    return {"common": common, "extra": util.extra_metric_args}
 
 
 def generate_build_date(date: Optional[str]) -> str:

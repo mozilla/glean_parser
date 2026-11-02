@@ -97,8 +97,7 @@ impl ExtraKeys for {{ obj.name|Camelize }}{{ suffix }} {
 {% endmacro %}
 {% macro common_metric_data(obj) %}
 CommonMetricData {
-    category: {{ obj.category|rust }},
-    name: {{ obj.name|rust }},
+    identifier: {{ obj.identifier|rust }},
     send_in_pings: {{ obj.send_in_pings|rust }},
     lifetime: {{ obj.lifetime|rust }},
     disabled: {{ obj.is_disabled()|rust }},

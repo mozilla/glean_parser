@@ -521,8 +521,7 @@ def remove_output_params(d, output_params):
 
 # Names of  parameters to pass to all metrics constructors constructors.
 common_metric_args = [
-    "category",
-    "name",
+    "identifier",
     "send_in_pings",
     "lifetime",
     "disabled",

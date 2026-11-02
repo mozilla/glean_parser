@@ -13,7 +13,7 @@ Jinja2 template is not. Please file bugs! #}
 {% if (access != "private ") -%}
 @get:JvmName("{{ obj.name|camelize }}{{ suffix }}")
 {% endif -%}
-{{ access }}val {{ obj.name|camelize }}{{ suffix }}: {{ obj|type_name }}{% if lazy %} by lazy { {%- else %} ={% endif %} // generated from {{ obj.identifier() }}
+{{ access }}val {{ obj.name|camelize }}{{ suffix }}: {{ obj|type_name }}{% if lazy %} by lazy { {%- else %} ={% endif %} // generated from {{ obj.identifier }}
 {% if obj.type == 'ping' %}
     {{ obj|type_name }}(
         {% for arg_name in ping_args if obj[arg_name] is defined %}
@@ -346,7 +346,7 @@ internal object {{ category_name|Camelize }} {
     /**
      * {{ obj.description|wordwrap() | replace('\n', '\n        * ') }}
      */
-    val {{ obj.name|camelize }}: LabeledMetricType<{{ obj|type_name }}> by lazy { // generated from {{ obj.identifier() }}
+    val {{ obj.name|camelize }}: LabeledMetricType<{{ obj|type_name }}> by lazy { // generated from {{ obj.identifier }}
         LabeledMetricType(
             {% if obj.type == "labeled_custom_distribution" %}
             CustomDistributionLabeledMetricData(
