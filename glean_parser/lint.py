@@ -641,11 +641,20 @@ def _lint_all_objects(
 ) -> List[GlinterNit]:
     nits: List[GlinterNit] = []
 
-    pings = objects.get("pings")
+    pings = {}
+    metrics = {}
+
+    for key, item in objects.items():
+        if key == "pings":
+            pings.update(item)
+        elif key == "tags":
+            pass
+        else:
+            metrics.update(item)
+
     if not pings:
         return []
 
-    metrics = objects.get("all_metrics")
     if not metrics:
         return []
 
