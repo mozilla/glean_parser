@@ -12,6 +12,7 @@ import textwrap
 import pytest
 
 from glean_parser import metrics
+from glean_parser import pings
 from glean_parser import parser
 
 import util
@@ -1637,3 +1638,12 @@ def test_categories():
 
     errs = list(all_metrics)
     assert len(errs) == 0
+
+
+def test_reserved_pings():
+    all_metrics = parser.parse_objects(ROOT / "data" / "reserved_pings.yamlx")
+
+    errors = list(all_metrics)
+    assert len(errors) == len(pings.RESERVED_PING_NAMES)
+    for error in errors:
+        assert "Ping uses a reserved name" in error
