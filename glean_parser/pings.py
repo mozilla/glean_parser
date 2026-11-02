@@ -23,6 +23,7 @@ RESERVED_PING_NAMES = [
     "server-deletion-request",
     "tags",
     "pings",
+    "health",
 ]
 
 

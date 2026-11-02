@@ -25,3 +25,4 @@ default: *common
 server-deletion-request: *common
 tags: *common
 pings: *common
+health: *common
