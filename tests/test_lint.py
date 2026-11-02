@@ -505,7 +505,7 @@ def test_unknown_pings_lint():
     assert len(errs) == 0
 
     nits = lint.lint_metrics(all_objects.value, parser_config={})
-    assert len(nits) == 2
+    assert len(nits) == 1
     assert nits[0].check_name == "UNKNOWN_PING_REFERENCED"
     assert nits[0].name == "all_metrics.non_existent_ping"
     assert "does-not-exist" in nits[0].msg

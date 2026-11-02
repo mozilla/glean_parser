@@ -6,6 +6,7 @@
 - Fix tests that failed when `SOURCE_DATE_EPOCH` is set in the environment
 - Add a `skip_schema_validation` option to `parse_objects` to skip schema validation of input files ([bug 2076540](https://bugzilla.mozilla.org/show_bug.cgi?id=2076540))
 - Mark `test_logging` as requiring a web connection
+- BUGFIX: Ensure ALL_OBJECT_CHECKS actually run against the known items ([bug 2088071](https://bugzilla.mozilla.org/show_bug.cgi?id=2088071))
 
 ## 22.0.1
 

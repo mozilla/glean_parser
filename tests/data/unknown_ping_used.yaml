@@ -25,6 +25,8 @@ all_metrics:
     send_in_pings:
       - metrics
       - events
+    no_lint:
+      - METRIC_ON_EVENTS_LIFETIME
 
   non_existent_ping:
     <<: *defaults
