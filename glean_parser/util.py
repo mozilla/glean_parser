@@ -16,7 +16,7 @@ import textwrap
 from typing import Any, Callable, Iterable, Sequence, Tuple, Union, Optional
 import urllib.request
 
-import diskcache  # type: ignore
+import diskcache_community as diskcache
 import jinja2
 import jsonschema  # type: ignore
 from jsonschema import _utils  # type: ignore
@@ -283,6 +283,11 @@ def get_null_resolver(schema):
     return NullResolver.from_schema(schema)
 
 
+# SafeJSONDisk reads the same files as JSONDisk but never unpickles anything,
+# and on_error="miss" turns an unreadable entry into a cache miss.
+_CACHE_DISK = diskcache.SafeJSONDisk.with_options(on_error="miss")
+
+
 def fetch_remote_url(url: str, cache: bool = True):
     """
     Fetches the contents from an HTTP url or local file path, and optionally
@@ -300,14 +305,15 @@ def fetch_remote_url(url: str, cache: bool = True):
 
     if cache:
         cache_dir = platformdirs.user_cache_dir("glean_parser", "mozilla")
-        with diskcache.Cache(cache_dir, disk=diskcache.JSONDisk) as dc:
-            if key in dc:
-                return dc[key]
+        with diskcache.Cache(cache_dir, disk=_CACHE_DISK) as dc:
+            contents = dc.get(key)
+            if contents is not None:
+                return contents
 
     contents = urllib.request.urlopen(url).read().decode("utf-8")
 
     if cache:
-        with diskcache.Cache(cache_dir, disk=diskcache.JSONDisk) as dc:
+        with diskcache.Cache(cache_dir, disk=_CACHE_DISK) as dc:
             dc[key] = contents
 
     return contents
