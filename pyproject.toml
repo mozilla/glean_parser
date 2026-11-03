@@ -20,7 +20,6 @@ classifiers = [
 requires-python = ">=3.9"
 dependencies = [
     "Click>=7",
-    "diskcache>=4",
     "Jinja2>=2.10.1",
     "jsonschema>=3.0.2",
     "platformdirs>=2.4.0",
