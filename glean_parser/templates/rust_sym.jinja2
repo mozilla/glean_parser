@@ -29,6 +29,9 @@ Jinja2 template is not. Please file bugs! #}
     #[serde(deny_unknown_fields)]
     pub struct {{ name }} {
         {% for itemname, val in struct.properties.items() %}
+          {% if itemname != itemname|snake_case %}
+          #[serde(rename = "{{ itemname }}")]
+          {% endif %}
           {% if val.type == "array" %}
           #[serde(skip_serializing_if = "Vec::is_empty", default = "Vec::new", deserialize_with = "::glean_sym::__serde_helper::vec_null")]
           pub {{itemname|snake_case}}: {{ name ~ itemname|Camelize }},

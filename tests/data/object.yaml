@@ -52,11 +52,11 @@ complex.types:
     structure:
       type: object
       properties:
-        key1:
+        foo.bar-baz:
           type: string
-        another_value:
+        CamelCase:
           type: number
-        sub_array:
+        sub-array:
           type: array
           items:
             type: number
@@ -79,7 +79,7 @@ complex.types:
         properties:
           key:
             type: string
-          value:
+          choice-value:
             oneOf:
               - type: string
               - type: number
@@ -91,7 +91,7 @@ activity.stream:
     type: object
     description: |
       The id, position, and shim for each newtab tile and any extra nested data,
-      e.g. `[{"id": 1, "pos": 2, "shim": "long-id", "nested": { "count": 17, "info": "more info"}}]`
+      e.g. `[{"id": 1, "pos": 2, "shim": "long-id", "nested-object": { "count": 17, "nested.info": "more info"}}]`
     bugs:
       - https://bugzilla.mozilla.org/11137353
     data_reviews:
@@ -110,12 +110,12 @@ activity.stream:
             type: number
           shim:
             type: string
-          nested:
+          nested-object:
             type: object
             properties:
               count:
                 type: number
-              info:
+              nested.info:
                 type: string
 
 crash.stack:
