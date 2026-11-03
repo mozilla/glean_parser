@@ -296,6 +296,7 @@ def test_object_metric(tmp_path, output_format):
             ("nested-object", "nested_object"),
             ("nested.info", "nested_info"),
             ("choice-value", "choice_value"),
+            ("module_index", "module_index"),
         ]:
             assert re.search(
                 rf'#\[serde\(rename = "{re.escape(original)}"\)\] '
