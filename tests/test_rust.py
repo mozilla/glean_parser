@@ -8,6 +8,8 @@ import shutil
 import subprocess
 import re
 
+import pytest
+
 from glean_parser import rust
 from glean_parser import metrics
 from glean_parser import pings
@@ -257,13 +259,12 @@ def test_event_extra_keys_with_types(tmp_path):
         )
 
 
-def test_object_metric(tmp_path):
-    """
-    Assert that an object metric is created.
-    """
+@pytest.mark.parametrize("output_format", ["rust", "rust_sym"])
+def test_object_metric(tmp_path, output_format):
+    """Assert that object metrics preserve their property names in JSON."""
     translate.translate(
         ROOT / "data" / "object.yaml",
-        "rust",
+        output_format,
         tmp_path,
         {"namespace": "Foo"},
     )
@@ -287,6 +288,21 @@ def test_object_metric(tmp_path):
         assert "ip: Option<String>, " in content
         assert "trust: Option<String>, " in content
         assert "}" in content
+
+        for original, field in [
+            ("foo.bar-baz", "foo_bar_baz"),
+            ("CamelCase", "camelcase"),
+            ("sub-array", "sub_array"),
+            ("nested-object", "nested_object"),
+            ("nested.info", "nested_info"),
+            ("choice-value", "choice_value"),
+            ("module_index", "module_index"),
+        ]:
+            assert re.search(
+                rf'#\[serde\(rename = "{re.escape(original)}"\)\] '
+                + rf"#\[serde\([^\]]*\)\] pub {field}:",
+                content,
+            )
 
 
 def test_in_session_output(tmp_path):
