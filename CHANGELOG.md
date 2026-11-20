@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: Exclude `glean_*_info` and `all-pings` pseudo-pings from the `UNKNOWN_PING_REFERENCED` lint ([#897](https://github.com/mozilla/glean_parser/pull/897))
+
 ## 22.1.0
 
 - Rust and Rust Sym: Preserve object metric property names containing dots, hyphens, or uppercase letters when serializing and deserializing JSON ([bug 1929903](https://bugzilla.mozilla.org/show_bug.cgi?id=1929903)).
