@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 22.1.1
+
 - BUGFIX: Exclude `glean_*_info` and `all-pings` pseudo-pings from the `UNKNOWN_PING_REFERENCED` lint ([#897](https://github.com/mozilla/glean_parser/pull/897))
 
 ## 22.1.0
