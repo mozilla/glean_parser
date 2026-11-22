@@ -527,6 +527,80 @@ def test_name_too_similar_lint():
     assert "all_metrics.valid_metric" in nits[0].msg
 
 
+def _lint_with_pings(*inputs):
+    """Parse `inputs` along with one custom ping and return the glinter nits."""
+    pings = util.add_required_ping({"onboarding-sync": {}})
+    all_objects = parser.parse_objects([*inputs, pings])
+
+    errs = list(all_objects)
+    assert len(errs) == 0
+
+    return lint.lint_metrics(all_objects.value, parser_config={})
+
+
+@pytest.mark.parametrize(
+    "unknown_in",
+    [["first"], ["second"], ["first", "second"]],
+)
+def test_unknown_pings_lint_same_metric_name_in_two_categories(unknown_in):
+    """
+    Metric names are only unique within a category. A metric must be checked
+    even if a metric with the same name exists in another category.
+    """
+    content = {}
+    for category in ["first", "second"]:
+        ping = "does-not-exist" if category in unknown_in else "onboarding-sync"
+        content[category] = {"count": {"type": "counter", "send_in_pings": [ping]}}
+
+    nits = _lint_with_pings(util.add_required(content))
+
+    assert [nit.check_name for nit in nits] == ["UNKNOWN_PING_REFERENCED"] * len(
+        unknown_in
+    )
+    assert sorted(nit.name for nit in nits) == [f"{c}.count" for c in unknown_in]
+
+
+def test_name_too_similar_lint_same_metric_name_in_two_categories():
+    """
+    The identifiers `form_autofill.count` and `formautofill.count` only differ
+    in punctuation, even though the metric names are identical.
+    """
+    content = {
+        category: {"count": {"type": "counter"}}
+        for category in ["form_autofill", "formautofill"]
+    }
+
+    nits = _lint_with_pings(util.add_required(content))
+
+    assert [nit.check_name for nit in nits] == ["NAME_TOO_SIMILAR"]
+    assert nits[0].name == "formautofill.count"
+    assert "form_autofill.count" in nits[0].msg
+
+
+def test_all_object_lints_with_flows():
+    """
+    Flows live in the object tree next to the metric categories. They are not
+    metrics, so the lints over all metrics and pings must skip them, and still
+    lint the metrics.
+    """
+    unknown_ping = util.add_required(
+        {"unknown_ping": {"count": {"type": "counter", "send_in_pings": ["nope"]}}}
+    )
+
+    nits = _lint_with_pings(
+        ROOT / "data" / "flows_metrics.yaml",
+        ROOT / "data" / "flows.yaml",
+        unknown_ping,
+    )
+
+    assert sorted(nit.check_name for nit in nits) == [
+        "UNKNOWN_PING_REFERENCED",
+        "UNRESOLVED_FLOW_EVENT",
+    ]
+    unknown = [n for n in nits if n.check_name == "UNKNOWN_PING_REFERENCED"]
+    assert unknown[0].name == "unknown_ping.count"
+
+
 def test_redefined_metric():
     """Ensure we fail when folks redefine a metric with the same category+name."""
     input = [
