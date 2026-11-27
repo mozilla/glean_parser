@@ -42,7 +42,7 @@ jobs:
             os: ubuntu-latest
     steps:
       - &checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           filter: blob:none
@@ -50,7 +50,7 @@ jobs:
 
       - &setup-python
         name: Set up Python
-        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        uses: astral-sh/setup-uv@v10.4.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -64,12 +64,12 @@ jobs:
           uv sync --resolution lowest-direct
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@be3c7df29b3349ec6bcfc6b4792f1cf9f5237d18 # v1.343.0
+        uses: ruby/setup-ruby@v1.343.0
         with:
           ruby-version: '3.4'
 
       - name: Set up JDK 17
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        uses: actions/setup-java@v6.1.0
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -78,12 +78,12 @@ jobs:
         run: make install-kotlin-linters
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
+        uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: stable
 
       - name: Set up Go
-        uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0
+        uses: actions/setup-go@v7.1.0
         with:
           go-version: "1.26"
           cache: false
@@ -127,7 +127,7 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: mozilla/ssdlc-actions/.github/workflows/code-security-analysis-private-repo.yml@ca8be48f3c06204fb16a3bd5ffa6d916782bbc76 # v1
+    uses: mozilla/ssdlc-actions/.github/workflows/code-security-analysis-public-repo.yml@e9f3e1160146ff2bad75433503e410d71835de80 # 2026-11-20
 
   report-result:
     runs-on: ubuntu-latest
