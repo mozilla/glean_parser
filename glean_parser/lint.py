@@ -644,26 +644,30 @@ def _lint_all_objects(
 ) -> List[GlinterNit]:
     nits: List[GlinterNit] = []
 
-    pings = {}
-    metrics = {}
+    all_pings = {}
+    all_metrics = {}
 
-    for key, item in objects.items():
+    for key, category in objects.items():
         if key == "pings":
-            pings.update(item)
-        elif key == "tags":
-            pass
-        else:
-            metrics.update(item)
+            all_pings.update(category)
+            continue
 
-    if not pings:
+        # Metric names are only unique within a category, so key the metrics
+        # by their identifier. Anything that is not a metric (tags, flows) is
+        # left out: the checks below only know how to handle metrics.
+        for item in category.values():
+            if isinstance(item, metrics.Metric):
+                all_metrics[item.identifier()] = item
+
+    if not all_pings:
         return []
 
-    if not metrics:
+    if not all_metrics:
         return []
 
     for check_name, (check_func, check_type) in ALL_OBJECT_CHECKS.items():
         new_nits = list(
-            check_func(check_name, check_type, pings, metrics, parser_config)
+            check_func(check_name, check_type, all_pings, all_metrics, parser_config)
         )
         nits.extend(new_nits)
 

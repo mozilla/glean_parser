@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- BUGFIX: The `UNKNOWN_PING_REFERENCED` and `NAME_TOO_SIMILAR` lints no longer skip a metric when another category has a metric with the same name, and `glinter` and `translate` no longer fail with an `AttributeError` when `flows.yaml` files are passed together with pings.
+
 ## 22.1.1
 
 - BUGFIX: Exclude `glean_*_info` and `all-pings` pseudo-pings from the `UNKNOWN_PING_REFERENCED` lint ([#897](https://github.com/mozilla/glean_parser/pull/897))
